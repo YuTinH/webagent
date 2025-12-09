@@ -276,10 +276,40 @@
 <div class="container">
 
   <!-- Hero Section -->
-  <div class="hero">
-    <h1>发现精选好物</h1>
-    <p>千万商品，品质保证，快速送达</p>
+  
+  <div class="carousel-container" id="hero-carousel">
+    <div class="carousel-track">
+      <div class="carousel-slide" style="background: linear-gradient(135deg, #4f46e5, #ec4899)">
+        <div class="carousel-content">
+            <h1 style="font-size:48px; margin:0">年度科技盛典</h1>
+            <p style="font-size:20px">全场电子产品低至 5 折</p>
+            <button class="btn pri" style="margin-top:16px; font-size:16px" onclick="filterCategory('electronics')">立即抢购</button>
+        </div>
+      </div>
+      <div class="carousel-slide" style="background: linear-gradient(135deg, #059669, #3b82f6)">
+        <div class="carousel-content">
+            <h1 style="font-size:48px; margin:0">新书首发</h1>
+            <p style="font-size:20px">《Web Agent 编程指南》限量预售</p>
+            <button class="btn pri" style="margin-top:16px; font-size:16px" onclick="filterCategory('books')">查看详情</button>
+        </div>
+      </div>
+      <div class="carousel-slide" style="background: linear-gradient(135deg, #f59e0b, #ef4444)">
+        <div class="carousel-content">
+            <h1 style="font-size:48px; margin:0">会员专享</h1>
+            <p style="font-size:20px">注册即送 $50 优惠券</p>
+            <button class="btn pri" style="margin-top:16px; font-size:16px">免费注册</button>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-btn prev" onclick="moveCarousel(-1)">❮</button>
+    <button class="carousel-btn next" onclick="moveCarousel(1)">❯</button>
+    <div class="carousel-dots">
+        <div class="carousel-dot active" onclick="setCarousel(0)"></div>
+        <div class="carousel-dot" onclick="setCarousel(1)"></div>
+        <div class="carousel-dot" onclick="setCarousel(2)"></div>
+    </div>
   </div>
+
 
   <!-- Search Bar -->
   <div class="search-bar">
@@ -669,6 +699,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+</script>
+
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+const dots = document.querySelectorAll('.carousel-dot');
+const track = document.querySelector('.carousel-track');
+
+function updateCarousel() {
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+}
+
+function moveCarousel(n) {
+    currentSlide = (currentSlide + n + slides.length) % slides.length;
+    updateCarousel();
+}
+
+function setCarousel(n) {
+    currentSlide = n;
+    updateCarousel();
+}
+
+// Auto play
+setInterval(() => moveCarousel(1), 5000);
 </script>
 
 </body>

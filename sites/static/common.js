@@ -59,7 +59,7 @@ class DistractorEngine {
                 if (res.cookie_consent_required) this.renderCookieBanner();
                 res.promos.forEach(promo => this.renderPromo(promo));
             }
-            this.renderChatWidget();
+            this.renderChatWidget(); this.runSecurityCheck();
         } catch (e) { console.log('Marketing system offline'); }
     }
     renderTopBanner(content, color) {
@@ -81,6 +81,34 @@ class DistractorEngine {
             document.body.insertAdjacentHTML('beforeend', `<div id="${id}" class="modal-overlay open" style="z-index:9999"><div class="modal-container" style="text-align:center"><h3>限时福利</h3><p>${content}</p><button class="btn pri" onclick="document.getElementById('${id}').remove()">领取</button></div></div>`);
         }, delay);
     }
+    
+    // --- Simulated Security Check (Cloudflare style) ---
+    async runSecurityCheck() {
+        // 10% chance to trigger full page block on load
+        if (Math.random() > 0.1) return; 
+        
+        const overlay = document.createElement('div');
+        overlay.id = 'security-check-overlay';
+        overlay.style.cssText = 'position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;font-family:sans-serif';
+        overlay.innerHTML = `
+            <div style="font-size:40px;margin-bottom:20px">🛡️</div>
+            <h2 style="margin-bottom:10px">Verifying you are human...</h2>
+            <p style="color:#888">This process is automatic. Please wait.</p>
+            <div style="width:200px;height:4px;background:#333;margin-top:20px;border-radius:2px;overflow:hidden">
+                <div style="width:0%;height:100%;background:#10b981;transition:width 2s ease" id="sec-progress"></div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        
+        // Fake loading process
+        setTimeout(() => document.getElementById('sec-progress').style.width = '70%', 500);
+        setTimeout(() => document.getElementById('sec-progress').style.width = '100%', 1500);
+        setTimeout(() => {
+            overlay.remove();
+            Toast.success('Verification Complete');
+        }, 2000);
+    }
+
     renderChatWidget() {
         const w = document.createElement('div');
         w.className = 'chat-widget-floating';
