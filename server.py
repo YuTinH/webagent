@@ -645,7 +645,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
 
-if self.path.startswith('/api/task_executions'):
+        if self.path.startswith('/api/task_executions'):
             parsed = urllib.parse.urlparse(self.path)
             params = urllib.parse.parse_qs(parsed.query)
             task_id = params.get('task_id', [None])[0]
@@ -1001,7 +1001,7 @@ if self.path.startswith('/api/task_executions'):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
 
-if self.path.startswith('/api/task_executions'):
+        if self.path.startswith('/api/task_executions'):
             task_id = data.get('task_id', '')
             agent_version = data.get('agent_version', 'unknown')
             steps_total = data.get('steps_total', 0)

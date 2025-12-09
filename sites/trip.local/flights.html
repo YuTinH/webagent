@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Results - SkyHigh Travel</title>
+<link rel="stylesheet" href="/static/skin.css">
+<link rel="stylesheet" href="/static/components.css">
+<style>
+.flight-card {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 1fr auto;
+  align-items: center;
+  gap: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: var(--transition);
+}
+.flight-card:hover {
+  border-color: var(--pri);
+  transform: translateY(-2px);
+}
+.airline-logo {
+  width: 60px;
+  height: 60px;
+  background: var(--panel);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+}
+.flight-route {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.flight-meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+.flight-price {
+  font-size: 24px;
+  font-weight: 800;
+  color: #38bdf8;
+  text-align: right;
+}
+.duration-line {
+  position: relative;
+  height: 2px;
+  background: var(--border);
+  width: 100px;
+  margin: 0 10px;
+}
+.duration-line::after {
+  content: '✈️';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  background: var(--card);
+  padding: 0 4px;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #0ea5e9, #22d3ee)"></div>
+      SkyHigh Travel
+    </div>
+    <div class="navlinks">
+      <a href="/trip.local/index.html">Flights</a>
+      <a href="/trip.local/hotels.html">Hotels</a>
+      <a href="/trip.local/manage.html">My Trips</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="flex justify-between items-center mb-4">
+    <div class="breadcrumbs">
+      <a href="/trip.local/index.html">Home</a> / <span>Flight Results</span>
+    </div>
+    <button class="btn" onclick="toggleFilterPanel()">Filter & Sort</button>
+  </div>
+
+  <div class="grid cols-4" style="align-items:start">
+    <!-- Filters Sidebar -->
+    <div id="filter-container" style="display:block">
+      <!-- FilterPanel will render here -->
+    </div>
+
+    <!-- Results -->
+    <div style="grid-column: span 3">
+      <h2 id="results-title">Flights to ...</h2>
+      
+      <div id="flight-list">
+        <!-- Rendered by JS -->
+        <div class="skeleton" style="height:120px; margin-bottom:16px"></div>
+        <div class="skeleton" style="height:120px; margin-bottom:16px"></div>
+        <div class="skeleton" style="height:120px; margin-bottom:16px"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="/static/common.js"></script>
+<script src="/static/components.js"></script>
+<script>
+// Mock Data
+const FLIGHTS = [
+  { id: 'FL-101', airline: 'SkyAir', code: 'SA101', dep: '08:00', arr: '11:30', price: 450, stops: 0 },
+  { id: 'FL-202', airline: 'JetStream', code: 'JS202', dep: '10:15', arr: '14:45', price: 380, stops: 1 },
+  { id: 'FL-303', airline: 'GlobalWings', code: 'GW303', dep: '16:00', arr: '19:30', price: 520, stops: 0 },
+  { id: 'FL-404', airline: 'EcoFly', code: 'EF404', dep: '06:30', arr: '10:00', price: 290, stops: 2 },
+];
+
+function getParams() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    to: p.get('to') || 'Paris',
+    date: p.get('date') || 'Tomorrow'
+  };
+}
+
+function init() {
+  const { to, date } = getParams();
+  document.getElementById('results-title').textContent = `Flights to ${to} (${date})`;
+
+  // Init Filters
+  const filterPanel = new FilterPanel({
+    filters: [
+      {
+        type: 'checkbox',
+        key: 'stops',
+        label: 'Stops',
+        options: [
+          { value: 0, label: 'Non-stop' },
+          { value: 1, label: '1 Stop' },
+          { value: 2, label: '2+ Stops' }
+        ]
+      },
+      {
+        type: 'range',
+        key: 'price',
+        label: 'Price Range'
+      }
+    ],
+    onApply: (filters) => {
+      Toast.info('Filters applied (mock)');
+      renderFlights();
+    }
+  });
+  filterPanel.render('filter-container');
+
+  // Simulate Load
+  setTimeout(() => renderFlights(), 800);
+}
+
+function renderFlights() {
+  const list = document.getElementById('flight-list');
+  list.innerHTML = FLIGHTS.map(f => `
+    <div class="flight-card">
+      <div class="airline-logo">✈️</div>
+      <div>
+        <div class="flight-route">${f.dep} - ${f.arr}</div>
+        <div class="flight-meta">${f.airline} • ${f.code}</div>
+      </div>
+      <div style="text-align:center">
+        <div class="flight-meta">${f.stops === 0 ? 'Non-stop' : f.stops + ' Stop(s)'}</div>
+        <div class="duration-line"></div>
+        <div class="flight-meta">3h 30m</div>
+      </div>
+      <div class="flight-price">$${f.price}</div>
+      <button class="btn pri" onclick="bookFlight('${f.id}')">Select</button>
+    </div>
+  `).join('');
+}
+
+function bookFlight(id) {
+  window.location.href = `/trip.local/book.html?id=${id}`;
+}
+
+init();
+</script>
+
+
+<!-- Distractor: Popover Promo -->
+<div id="promo-popup" class="popover-promo">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+    <h4 style="margin:0">Special Offer!</h4>
+    <button onclick="document.getElementById('promo-popup').style.display='none'" style="background:none; border:none; color:var(--text); cursor:pointer">×</button>
+  </div>
+  <p style="font-size:14px; color:var(--muted); margin-bottom:16px">Get 50% off your next purchase. Limited time only!</p>
+  <button class="btn pri" style="width:100%" onclick="document.getElementById('promo-popup').style.display='none'; Toast.success('Coupon applied!')">Claim Now</button>
+</div>
+<script>
+setTimeout(() => {
+  const popup = document.getElementById('promo-popup');
+  if(popup) popup.classList.add('active');
+}, 2000);
+</script>
+
+</body>
+</html>

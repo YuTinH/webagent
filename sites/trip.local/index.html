@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkyHigh Travel - Book Your Next Adventure</title>
+<link rel="stylesheet" href="/static/skin.css">
+<link rel="stylesheet" href="/static/components.css">
+<style>
+.hero-trip {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(56, 189, 248, 0.1));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 60px 40px;
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-trip h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.search-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.search-form {
+  background: var(--panel-elevated);
+  padding: 32px;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 16px;
+  align-items: end;
+}
+.destination-card {
+  height: 240px;
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  border: 1px solid var(--border);
+}
+.destination-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+.destination-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #0ea5e9, #22d3ee)"></div>
+      SkyHigh Travel
+    </div>
+    <div class="navlinks">
+      <a href="/trip.local/index.html" class="active">Flights</a>
+      <a href="/trip.local/hotels.html">Hotels</a>
+      <a href="/trip.local/manage.html">My Trips</a>
+    </div>
+    <div class="search">
+      <button class="btn" onclick="Toast.info('Login feature coming soon')">Sign In</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="hero-trip">
+    <h1>Explore the World</h1>
+    <p class="muted">Find the best deals on flights, hotels, and more.</p>
+  </div>
+
+  <div class="search-form">
+    <div class="search-tabs">
+      <button class="btn pri">✈️ Flights</button>
+      <button class="btn">🏨 Hotels</button>
+      <button class="btn">🚗 Cars</button>
+    </div>
+    <div class="form-grid">
+      <div>
+        <label class="muted" style="display:block; margin-bottom:8px">Where to?</label>
+        <div class="flex">
+          <input type="text" class="input" placeholder="From (e.g. NYC)" value="New York (JFK)">
+          <input type="text" class="input" placeholder="To (e.g. LHR)" id="destination">
+        </div>
+      </div>
+      <div>
+        <label class="muted" style="display:block; margin-bottom:8px">Date</label>
+        <input type="date" class="input" id="flight-date">
+      </div>
+      <div>
+        <label class="muted" style="display:block; margin-bottom:8px">Passengers</label>
+        <select class="input">
+          <option>1 Adult</option>
+          <option>2 Adults</option>
+          <option>Family (2+2)</option>
+        </select>
+      </div>
+      <button class="btn pri" style="height:46px; padding:0 32px" onclick="searchFlights()">Search</button>
+    </div>
+  </div>
+
+  <h2 style="margin: 48px 0 24px">Popular Destinations</h2>
+  <div class="grid cols-3">
+    <div class="destination-card" style="background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80')">
+      <div class="destination-content">
+        <h3>Paris</h3>
+        <p class="muted">From $450</p>
+      </div>
+    </div>
+    <div class="destination-card" style="background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80')">
+      <div class="destination-content">
+        <h3>Tokyo</h3>
+        <p class="muted">From $620</p>
+      </div>
+    </div>
+    <div class="destination-card" style="background-image: url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80')">
+      <div class="destination-content">
+        <h3>Maldives</h3>
+        <p class="muted">From $890</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad-banner" style="margin-top: 40px">
+    <div>
+      <h3>Summer Sale!</h3>
+      <p>Get 20% off on all international flights.</p>
+    </div>
+    <button class="btn" style="background:white; color:var(--pri)">View Deals</button>
+  </div>
+
+</div>
+
+<script src="/static/common.js"></script>
+<script src="/static/components.js"></script>
+<script>
+function searchFlights() {
+  const dest = document.getElementById('destination').value;
+  const date = document.getElementById('flight-date').value;
+  
+  if(!dest || !date) {
+    Toast.error('Please fill in destination and date');
+    return;
+  }
+  
+  // Navigate to results
+  window.location.href = `/trip.local/flights.html?to=${encodeURIComponent(dest)}&date=${date}`;
+}
+
+// Set default date to tomorrow
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+document.getElementById('flight-date').valueAsDate = tomorrow;
+</script>
+
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

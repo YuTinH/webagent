@@ -1,0 +1,33 @@
+{
+  "task_id": "B3-2025-GEN",
+  "family": "B",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Order dinner delivery",
+  "inputs": {},
+  "allowed_domains": [
+    "shop.local",
+    "bank.local",
+    "gov.local"
+  ],
+  "preconditions": [
+    "mem('banking.balance.checking') > 50"
+  ],
+  "dependencies": [
+    "D1-check-balance"
+  ],
+  "memory_keys": [],
+  "success_criteria": [
+    "url().includes('/b3')"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30
+}

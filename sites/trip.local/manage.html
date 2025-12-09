@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Trip - SkyHigh Travel</title>
+<link rel="stylesheet" href="/static/skin.css">
+<link rel="stylesheet" href="/static/components.css">
+<style>
+.trip-summary-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.status-badge {
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 14px;
+}
+.status-badge.confirmed { background: var(--ok-bg); color: var(--ok); }
+.status-badge.pending { background: var(--warn-bg); color: var(--warn); }
+.status-badge.cancelled { background: var(--err-bg); color: var(--err); }
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.05);
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #0ea5e9, #22d3ee)"></div>
+      SkyHigh Travel
+    </div>
+    <div class="navlinks">
+      <a href="/trip.local/index.html">Flights</a>
+      <a href="/trip.local/hotels.html">Hotels</a>
+      <a href="/trip.local/manage.html" class="active">My Trips</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- Distractor: Top Ad Banner -->
+<div class="ad-banner" style="margin: 0 0 24px 0; background: linear-gradient(90deg, #ec4899, #8b5cf6);">
+  <div style="display:flex; align-items:center; gap:16px">
+    <span style="font-size:24px">🎁</span>
+    <div>
+      <div style="font-weight:700">Flash Sale</div>
+      <div style="font-size:13px; opacity:0.9">Ends in 02:14:59</div>
+    </div>
+  </div>
+  <button class="btn" style="background:rgba(255,255,255,0.2); border:none; color:white; font-size:13px">Shop</button>
+</div>
+
+  
+  <div class="breadcrumbs">
+    <a href="/trip.local/index.html">Home</a> / <span>Manage Trip</span>
+  </div>
+
+  <h1 style="margin-bottom: 24px;">Manage Your Trip</h1>
+
+  <div class="trip-summary-card">
+    <div class="flex justify-between items-center" style="margin-bottom: 24px;">
+      <h3 style="margin:0">PNR: <span id="pnr-display"></span></h3>
+      <span id="status-display" class="status-badge confirmed">Confirmed</span>
+    </div>
+
+    <div class="grid cols-2" style="margin-bottom: 24px;">
+      <div>
+        <h4>Flight Details</h4>
+        <div class="detail-row"><span>Airline</span><span>SkyHigh Air</span></div>
+        <div class="detail-row"><span>Flight No.</span><span>SA101</span></div>
+        <div class="detail-row"><span>From</span><span>New York (JFK)</span></div>
+        <div class="detail-row"><span>To</span><span>Paris (CDG)</span></div>
+        <div class="detail-row"><span>Departure</span><span><span id="dep-date"></span> 08:00 AM</span></div>
+        <div class="detail-row"><span>Arrival</span><span><span id="arr-date"></span> 11:30 AM</span></div>
+      </div>
+      <div>
+        <h4>Passenger Details</h4>
+        <div class="detail-row"><span>Name</span><span>John Doe</span></div>
+        <div class="detail-row"><span>Passport</span><span>X12345678</span></div>
+        <h4 style="margin-top:24px">Booking Details</h4>
+        <div class="detail-row"><span>Booking Date</span><span>2025-11-20</span></div>
+        <div class="detail-row"><span>Total Price</span><span>$450.00</span></div>
+      </div>
+    </div>
+    
+    <div class="flex" style="justify-content:flex-end; gap:16px">
+      <button class="btn err" onclick="Toast.error('Cancellation not available for this booking type.')">Cancel Trip</button>
+      <button class="btn" onclick="openChangeFlightModal()">Change Flight</button>
+      <button class="btn pri" onclick="Toast.info('Check-in opens 24h before departure.')">Online Check-in</button>
+    </div>
+  </div>
+
+  <div class="ad-banner" style="margin-top: 40px">
+    <div>
+      <h3>Need a Hotel?</h3>
+      <p>Book your perfect stay in Paris with 15% off.</p>
+    </div>
+    <a href="/trip.local/hotels.html" class="btn" style="background:white; color:var(--pri)">Find Hotels</a>
+  </div>
+
+</div>
+
+<script src="/static/common.js"></script>
+<script src="/static/components.js"></script>
+<script>
+function getParams() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    pnr: p.get('pnr') || 'PNR-DEFAULT',
+    status: p.get('status') || 'confirmed',
+    date: p.get('date') || new Date().toISOString().slice(0, 10)
+  };
+}
+
+function init() {
+  const { pnr, status, date } = getParams();
+  document.getElementById('pnr-display').textContent = pnr;
+  document.getElementById('status-display').textContent = status;
+  document.getElementById('status-display').className = `status-badge ${status}`;
+
+  document.getElementById('dep-date').textContent = date;
+  document.getElementById('arr-date').textContent = date;
+}
+
+function openChangeFlightModal() {
+  new Modal({
+    title: 'Change Flight',
+    content: `
+      <p class="muted" style="margin-bottom:16px;">Select a new date for your flight.</p>
+      <label class="muted">New Departure Date</label>
+      <input type="date" class="input" id="new-flight-date" style="margin-bottom:16px;">
+      <label class="muted">Reason for Change (Optional)</label>
+      <textarea class="input" rows="3" placeholder="Enter reason here..."></textarea>
+    `,
+    confirmText: 'Submit Change Request',
+    onConfirm: () => {
+      const newDate = document.getElementById('new-flight-date').value;
+      if (newDate) {
+        Toast.success('Flight change request submitted for ' + newDate);
+        // Simulate E6-flight-change task
+        // fetch('/api/trips/change-flight', { method: 'POST', body: JSON.stringify({ pnr: getParams().pnr, newDate })})
+      } else {
+        Toast.error('Please select a new date.');
+      }
+    }
+  }).open();
+}
+
+init();
+</script>
+
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

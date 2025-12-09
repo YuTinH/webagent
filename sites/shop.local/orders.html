@@ -363,5 +363,22 @@ function escapeHtml(text) {
 loadOrders();
 </script>
 
+
+<!-- Distractor: Popover Promo -->
+<div id="promo-popup" class="popover-promo">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+    <h4 style="margin:0">Special Offer!</h4>
+    <button onclick="document.getElementById('promo-popup').style.display='none'" style="background:none; border:none; color:var(--text); cursor:pointer">×</button>
+  </div>
+  <p style="font-size:14px; color:var(--muted); margin-bottom:16px">Get 50% off your next purchase. Limited time only!</p>
+  <button class="btn pri" style="width:100%" onclick="document.getElementById('promo-popup').style.display='none'; Toast.success('Coupon applied!')">Claim Now</button>
+</div>
+<script>
+setTimeout(() => {
+  const popup = document.getElementById('promo-popup');
+  if(popup) popup.classList.add('active');
+}, 2000);
+</script>
+
 </body>
 </html>

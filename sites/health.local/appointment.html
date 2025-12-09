@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Appointment - Health Connect</title>
+<link rel="stylesheet" href="/static/skin.css">
+<link rel="stylesheet" href="/static/components.css">
+<style>
+.appointment-form {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px;
+}
+.section-title {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #10b981, #6ee7b7)"></div>
+      Health Connect
+    </div>
+    <div class="navlinks">
+      <a href="/health.local/index.html">Home</a>
+      <a href="/health.local/doctors.html" class="active">Doctors</a>
+      <a href="/health.local/records.html">My Records</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumbs">
+    <a href="/health.local/index.html">Home</a> / <a href="/health.local/doctors.html">Doctors</a> / <span>Book</span>
+  </div>
+
+  <div class="appointment-form">
+    <h2 class="section-title">Book Appointment with <span id="doctor-name">Dr. Alice Smith</span></h2>
+    
+    <div class="mb-4">
+      <label class="muted">Date</label>
+      <input type="date" class="input mt-1" id="appt-date">
+    </div>
+    <div class="mb-4">
+      <label class="muted">Time Slot</label>
+      <select class="input mt-1" id="appt-time">
+        <option value="09:00">09:00 AM</option>
+        <option value="10:00">10:00 AM</option>
+        <option value="11:00">11:00 AM</option>
+        <option value="14:00">02:00 PM</option>
+        <option value="15:00">03:00 PM</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="muted">Reason for visit</label>
+      <textarea class="input mt-1" rows="4" placeholder="Briefly describe your symptoms or reason for visit"></textarea>
+    </div>
+
+    <div class="flex" style="justify-content:flex-end; gap:16px; margin-top:40px">
+      <button class="btn" onclick="history.back()">Cancel</button>
+      <button class="btn pri" style="padding: 12px 48px" onclick="confirmAppointment()">Confirm Appointment</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="/static/common.js"></script>
+<script src="/static/components.js"></script>
+<script>
+function getParams() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    doctor: p.get('doctor') || 'DR-001'
+  };
+}
+
+const DOCTORS = [
+  { id: 'DR-001', name: 'Dr. Alice Smith', specialty: 'General Practice', avatar: '👩‍⚕️' },
+  { id: 'DR-002', name: 'Dr. Bob Johnson', specialty: 'Cardiology', avatar: '👨‍⚕️' },
+  { id: 'DR-003', name: 'Dr. Carol White', specialty: 'Pediatrics', avatar: '👩‍⚕️' },
+  { id: 'DR-004', name: 'Dr. David Green', specialty: 'Dermatology', avatar: '👨‍⚕️' },
+];
+
+function init() {
+  const { doctor } = getParams();
+  const doc = DOCTORS.find(d => d.id === doctor);
+  if (doc) {
+    document.getElementById('doctor-name').textContent = doc.name;
+  }
+
+  // Set default date to tomorrow
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('appt-date').valueAsDate = tomorrow;
+}
+
+function confirmAppointment() {
+  const date = document.getElementById('appt-date').value;
+  const time = document.getElementById('appt-time').value;
+  const { doctor } = getParams();
+
+  if(!date || !time) {
+    Toast.error('Please select date and time.');
+    return;
+  }
+
+  // Simulate API call
+  // fetch('/api/health/book-appointment', { method: 'POST', body: JSON.stringify({ doctor, date, time })})
+
+  Toast.success('Appointment booked for ' + date + ' at ' + time);
+  
+  setTimeout(() => {
+    window.location.href = `/health.local/index.html`; // Go back to homepage
+  }, 1500);
+}
+
+init();
+</script>
+
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

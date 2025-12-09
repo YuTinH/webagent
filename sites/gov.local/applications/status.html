@@ -22,5 +22,15 @@
   const id = params.get('id') || 'APP-0000';
   document.getElementById('application-id').textContent = id;
   </script>
+
+<!-- Distractor: Random Toast -->
+<script>
+setTimeout(() => {
+  const msgs = ['New order from Tokyo', 'Server maintenance in 10m', 'High demand area', 'Stock running low'];
+  const msg = msgs[Math.floor(Math.random() * msgs.length)];
+  if (typeof Toast !== 'undefined') Toast.info(msg);
+}, 3500);
+</script>
+
 </body>
 </html>

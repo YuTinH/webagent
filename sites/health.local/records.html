@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Health Records - Health Connect</title>
+<link rel="stylesheet" href="/static/skin.css">
+<link rel="stylesheet" href="/static/components.css">
+<style>
+.record-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.record-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #10b981, #6ee7b7)"></div>
+      Health Connect
+    </div>
+    <div class="navlinks">
+      <a href="/health.local/index.html">Home</a>
+      <a href="/health.local/doctors.html">Doctors</a>
+      <a href="/health.local/records.html" class="active">My Records</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumbs">
+    <a href="/health.local/index.html">Home</a> / <span>My Records</span>
+  </div>
+
+  <h1 style="margin-bottom: 24px;">My Health Records</h1>
+
+  <div id="records-list">
+    <!-- Rendered by JS -->
+    <div class="record-card skeleton" style="height:200px"></div>
+    <div class="record-card skeleton" style="height:150px"></div>
+  </div>
+
+  <div class="ad-banner" style="margin-top: 40px; background:linear-gradient(90deg, #6ee7b7, #10b981)">
+    <div>
+      <h3>New Prescription?</h3>
+      <p>Order your refills directly to your home.</p>
+    </div>
+    <button class="btn" style="background:white; color:var(--ok)">Order Refill</button>
+  </div>
+
+</div>
+
+<script src="/static/common.js"></script>
+<script src="/static/components.js"></script>
+<script>
+const RECORDS = [
+  { 
+    id: 'REC-001', 
+    type: 'Visit', 
+    date: '2025-11-15', 
+    doctor: 'Dr. Alice Smith', 
+    reason: 'Routine check-up', 
+    diagnosis: 'Healthy',
+    meds: []
+  },
+  { 
+    id: 'REC-002', 
+    type: 'Prescription', 
+    date: '2025-11-15', 
+    doctor: 'Dr. Alice Smith', 
+    medication: 'Amoxicillin', 
+    dosage: '250mg', 
+    quantity: '30 tablets', 
+    refills: 2
+  },
+];
+
+function renderRecords() {
+  const list = document.getElementById('records-list');
+  list.innerHTML = RECORDS.map(record => {
+    if (record.type === 'Visit') {
+      return `
+        <div class="record-card">
+          <div class="record-header">
+            <h3>Visit Record - ${record.date}</h3>
+            <span class="badge ok">Completed</span>
+          </div>
+          <p class="muted">Doctor: ${record.doctor}</p>
+          <p class="muted">Reason: ${record.reason}</p>
+          <div class="record-details">
+            <div>
+              <strong>Diagnosis:</strong> ${record.diagnosis}
+            </div>
+            <div>
+              <strong>Notes:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </div>
+          </div>
+        </div>
+      `;
+    } else if (record.type === 'Prescription') {
+      return `
+        <div class="record-card">
+          <div class="record-header">
+            <h3>Prescription - ${record.date}</h3>
+            <span class="badge ok">Active</span>
+          </div>
+          <p class="muted">Doctor: ${record.doctor}</p>
+          <div class="record-details">
+            <div>
+              <strong>Medication:</strong> ${record.medication}
+            </div>
+            <div>
+              <strong>Dosage:</strong> ${record.dosage}
+            </div>
+            <div>
+              <strong>Quantity:</strong> ${record.quantity}
+            </div>
+            <div>
+              <strong>Refills Left:</strong> ${record.refills}
+            </div>
+          </div>
+          <button class="btn pri mt-4" style="background:var(--ok); border-color:transparent" onclick="Toast.info('Refill ordered!')">Order Refill</button>
+        </div>
+      `;
+    }
+    return '';
+  }).join('');
+}
+
+renderRecords();
+</script>
+
+</body>
+</html>

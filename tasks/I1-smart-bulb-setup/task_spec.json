@@ -1,0 +1,33 @@
+{
+  "task_id": "I1-2025-GEN",
+  "family": "I",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Setup smart bulb",
+  "inputs": {},
+  "allowed_domains": [
+    "shop.local",
+    "bank.local",
+    "gov.local"
+  ],
+  "preconditions": [
+    "mem('devices.new_bulb.id') != ''"
+  ],
+  "dependencies": [
+    "B1-shopping"
+  ],
+  "memory_keys": [],
+  "success_criteria": [
+    "url().includes('/i1')"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30
+}

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Connect - Your Digital Health Assistant</title>
+<link rel="stylesheet" href="/static/skin.css">
+<link rel="stylesheet" href="/static/components.css">
+<style>
+.hero-health {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.1));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 60px 40px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.hero-health h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #34d399, #6ee7b7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.service-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  transition: var(--transition);
+}
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--ok);
+}
+.service-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+.service-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #10b981, #6ee7b7)"></div>
+      Health Connect
+    </div>
+    <div class="navlinks">
+      <a href="/health.local/index.html" class="active">Home</a>
+      <a href="/health.local/doctors.html">Doctors</a>
+      <a href="/health.local/records.html">My Records</a>
+    </div>
+    <div class="search">
+      <button class="btn" onclick="Toast.info('Login/Signup not implemented.')">Login</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="hero-health">
+    <h1>Your Digital Health Assistant</h1>
+    <p class="muted">Manage your appointments, records, and well-being.</p>
+    <a href="/health.local/doctors.html" class="btn pri mt-4" style="background:var(--ok); border-color:transparent; box-shadow:0 0 15px rgba(16,185,129,0.5)">Book Appointment</a>
+  </div>
+
+  <h2 style="margin: 48px 0 24px">Our Services</h2>
+  <div class="service-grid">
+    <a href="/health.local/doctors.html" class="service-card">
+      <div class="service-icon">👨‍⚕️</div>
+      <h3 class="service-title">Find a Doctor</h3>
+      <p class="muted">Book appointments with specialists.</p>
+    </a>
+    <a href="/health.local/records.html" class="service-card">
+      <div class="service-icon">📝</div>
+      <h3 class="service-title">My Health Records</h3>
+      <p class="muted">View your medical history and prescriptions.</p>
+    </a>
+    <a href="#" class="service-card" onclick="Toast.info('Feature coming soon!')">
+      <div class="service-icon">💊</div>
+      <h3 class="service-title">Prescription Refills</h3>
+      <p class="muted">Order your medications online.</p>
+    </a>
+    <a href="#" class="service-card" onclick="Toast.info('Feature coming soon!')">
+      <div class="service-icon">🏥</div>
+      <h3 class="service-title">Find a Clinic</h3>
+      <p class="muted">Locate nearby hospitals and clinics.</p>
+    </a>
+  </div>
+
+  <div class="ad-banner" style="margin-top: 40px; background:linear-gradient(90deg, var(--ok), #6ee7b7)">
+    <div>
+      <h3>Stay Healthy!</h3>
+      <p>Sign up for our wellness newsletter for tips.</p>
+    </div>
+    <button class="btn" style="background:white; color:var(--ok)">Subscribe</button>
+  </div>
+
+</div>
+
+<script src="/static/common.js"></script>
+<script src="/static/components.js"></script>
+
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

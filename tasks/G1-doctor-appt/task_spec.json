@@ -1,0 +1,31 @@
+{
+  "task_id": "G1-2025-GEN",
+  "family": "G",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Book doctor appointment",
+  "inputs": {},
+  "allowed_domains": [
+    "shop.local",
+    "bank.local",
+    "gov.local"
+  ],
+  "preconditions": [
+    "mem('health.insurance.active') == true"
+  ],
+  "dependencies": [],
+  "memory_keys": [],
+  "success_criteria": [
+    "url().includes('/g1')"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30
+}

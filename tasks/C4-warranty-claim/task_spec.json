@@ -1,0 +1,33 @@
+{
+  "task_id": "C4-2025-GEN",
+  "family": "C",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "File warranty claim for broken item",
+  "inputs": {},
+  "allowed_domains": [
+    "shop.local",
+    "bank.local",
+    "gov.local"
+  ],
+  "preconditions": [
+    "mem('orders.last.id') != ''"
+  ],
+  "dependencies": [
+    "B1-shopping"
+  ],
+  "memory_keys": [],
+  "success_criteria": [
+    "url().includes('/c4')"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30
+}
