@@ -1,0 +1,12 @@
+{
+  "payments": {
+    "cards": {
+      "1234": {
+        "state": "active"
+      }
+    }
+  },
+  "merchant_bindings": {
+    "updated": []
+  }
+}

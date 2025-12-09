@@ -1,0 +1,69 @@
+{
+  "task_id": "B1-2025-001",
+  "family": "B",
+  "episode_id": "ep-001",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-11-16T09:00:00Z",
+  "persona": {
+    "budget": 500,
+    "preferences": ["electronics", "fast_shipping"],
+    "address": "123 Main St, Apt 5B"
+  },
+  "goal": "Purchase a wireless mouse under $30 with same-day delivery to my primary address",
+  "inputs": {
+    "category": "electronics",
+    "item_keywords": ["wireless", "mouse"],
+    "max_price": 30,
+    "shipping_speed": "same_day",
+    "payment_method": "credit_card_1234"
+  },
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "preconditions": [
+    "mem('address.primary') != ''",
+    "mem('payment.cards[0].last4') == '1234'",
+    "mem('payment.cards[0].status') == 'active'",
+    "json('env', 'banking.balance.checking') >= 50.00"
+  ],
+  "memory_keys": [
+    "orders.last.id",
+    "orders.last.total",
+    "orders.last.items",
+    "orders.last.timestamp"
+  ],
+  "success_criteria": [
+    "ALL[url().includes('/order/confirmation'), text('#order-id') != '', json('env','orders.*.state') == 'confirmed', mem('orders.last.id') != '']"
+  ],
+  "artifacts": [
+    "order_confirmation_screenshot",
+    "receipt_pdf"
+  ],
+  "rubrics": {
+    "SR": 1.0,
+    "LH-F1": 0.3,
+    "cost_efficiency": 0.2
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {
+      "strategy": "retry",
+      "max_retries": 3,
+      "retry_delay_ms": 1000
+    },
+    "on_element_not_found": {
+      "strategy": "wait_and_retry",
+      "wait_seconds": 10
+    },
+    "on_assertion_fail": {
+      "strategy": "save_trace_and_report",
+      "capture_screenshot": true,
+      "capture_dom": true,
+      "capture_memory": true
+    },
+    "on_precondition_fail": "abort_with_warning"
+  }
+}

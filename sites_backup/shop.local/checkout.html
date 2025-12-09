@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>结算 - Nebula商城</title>
+<link rel="stylesheet" href=window.RelRoot + "static/skin.css">
+<link rel="stylesheet" href=window.RelRoot + "static/components.css">
+<style>
+.checkout-layout { display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
+.section-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.section-title { font-size: 18px; font-weight: 700; }
+.address-item { padding: 16px; background: rgba(255,255,255,0.03); border: 2px solid var(--border); border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: .2s; }
+.address-item:hover { border-color: var(--pri); }
+.address-item.selected { border-color: var(--pri); background: rgba(79,70,229,0.1); }
+.address-name { font-weight: 600; margin-bottom: 4px; }
+.address-detail { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.shipping-option { padding: 14px; background: rgba(255,255,255,0.03); border: 2px solid var(--border); border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: .2s; display: flex; justify-content: space-between; align-items: center; }
+.shipping-option:hover { border-color: var(--pri); }
+.shipping-option.selected { border-color: var(--pri); background: rgba(79,70,229,0.1); }
+.order-items { max-height: 300px; overflow-y: auto; }
+.order-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.order-item:last-child { border-bottom: none; }
+.item-thumb { width: 60px; height: 60px; background: linear-gradient(135deg, #1e293b, #334155); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.item-details { flex: 1; }
+.item-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.item-spec { color: var(--muted); font-size: 12px; }
+.item-price { text-align: right; white-space: nowrap; }
+.price-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 15px; }
+.price-row.total { border-top: 2px solid var(--border); margin-top: 12px; padding-top: 16px; font-size: 18px; font-weight: 700; }
+.price-row .value { font-weight: 600; }
+.price-row.total .value { font-size: 28px; color: #60a5fa; }
+.submit-btn { width: 100%; padding: 18px; font-size: 17px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula商城</div>
+    <div class="navlinks">
+      <a href=window.RelRoot + "shop.local/index.html">首页</a>
+      <a href=window.RelRoot + "shop.local/orders.html">订单</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs" style="margin:20px 0">
+    <a href=window.RelRoot + "shop.local/index.html">首页</a> / <a href=window.RelRoot + "shop.local/cart.html">购物车</a> / <span>结算</span>
+  </div>
+
+  <h1 style="font-size:28px; font-weight:700; margin:0 0 24px 0">订单结算</h1>
+
+  <div class="checkout-layout">
+    <div>
+      <!-- Shipping Address -->
+      <div class="section-card" id="shipping-address">
+        <div class="section-header">
+          <div class="section-title">📍 收货地址</div>
+          <button class="btn" onclick="addAddress()">+ 新增地址</button>
+        </div>
+        <div id="address-list">
+          <div class="address-item selected" onclick="selectAddress(0)">
+            <div class="address-name">张三 138****8888</div>
+            <div class="address-detail address-display">123 Main St, Apt 5B</div>
+          </div>
+          <div class="address-item" onclick="selectAddress(1)">
+            <div class="address-name">李四 139****9999</div>
+            <div class="address-detail">上海市浦东新区陆家嘴环路1000号，200000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipping Method -->
+      <div class="section-card">
+        <div class="section-title" style="margin-bottom:20px">🚚 配送方式</div>
+        <div class="shipping-option selected" onclick="selectShipping('express')">
+          <div>
+            <div style="font-weight:600">极速配送</div>
+            <div style="color:var(--muted); font-size:13px">当日达，最快2小时送达</div>
+          </div>
+          <div style="color:#34d399; font-weight:600">免运费</div>
+        </div>
+        <div class="shipping-option" onclick="selectShipping('standard')">
+          <div>
+            <div style="font-weight:600">标准配送</div>
+            <div style="color:var(--muted); font-size:13px">预计2-3天送达</div>
+          </div>
+          <div style="color:#34d399; font-weight:600">免运费</div>
+        </div>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="section-card">
+        <div class="section-title" style="margin-bottom:20px">💳 支付方式</div>
+        <div class="shipping-option selected" id="payment-card-1234" onclick="selectPayment('online')">
+          <div>
+            <div style="font-weight:600">在线支付</div>
+            <div style="color:var(--muted); font-size:13px">支持微信、支付宝等</div>
+          </div>
+          <div class="badge ok">推荐</div>
+        </div>
+        <div class="shipping-option" onclick="selectPayment('cod')">
+          <div>
+            <div style="font-weight:600">货到付款</div>
+            <div style="color:var(--muted); font-size:13px">送货上门后付款</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div style="position:sticky; top:80px">
+      <div class="section-card">
+        <div class="section-title" style="margin-bottom:20px">订单商品</div>
+        <div class="order-items" id="order-items"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title" style="margin-bottom:16px">费用明细</div>
+        <div class="price-row">
+          <span>商品总价</span>
+          <span class="value" id="subtotal">¥0.00</span>
+        </div>
+        <div class="price-row">
+          <span>运费</span>
+          <span class="value" style="color:#34d399">免运费</span>
+        </div>
+        <div class="price-row">
+          <span>优惠</span>
+          <span class="value" style="color:#34d399" id="discount">-¥0.00</span>
+        </div>
+        <div class="price-row total">
+          <span>应付总额</span>
+          <span class="value" id="total">¥0.00</span>
+        </div>
+        <button class="btn ok submit-btn place-order" id="submit-order-btn" onclick="submitOrder()">提交订单</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Nebula商城 · Synthetic UI for Web Agent Research</div>
+</div>
+
+<script src=window.RelRoot + "static/common.js"></script>
+<script src=window.RelRoot + "static/components.js"></script>
+<script>
+let checkoutItems = JSON.parse(localStorage.getItem('checkout-items') || '[]');
+let selectedAddress = 0;
+let selectedShipping = 'express';
+let selectedPayment = 'online';
+
+function getSelectedAddressText() {
+  const el = document.querySelector('#address-list .address-item.selected .address-detail');
+  return el ? el.textContent : '123 Main St, Apt 5B';
+}
+
+function selectAddress(index) {
+  selectedAddress = index;
+  document.querySelectorAll('#address-list .address-item').forEach((el, i) => {
+    el.classList.toggle('selected', i === index);
+  });
+}
+
+function selectShipping(method) {
+  selectedShipping = method;
+  document.querySelectorAll('.shipping-option').forEach(el => {
+    el.classList.remove('selected');
+  });
+  event.target.closest('.shipping-option').classList.add('selected');
+}
+
+function selectPayment(method) {
+  selectedPayment = method;
+  const parent = event.target.closest('.section-card');
+  parent.querySelectorAll('.shipping-option').forEach(el => {
+    el.classList.remove('selected');
+  });
+  event.target.closest('.shipping-option').classList.add('selected');
+}
+
+function addAddress() {
+  new Modal({
+    title: '添加收货地址',
+    content: `
+      <div style="display:flex; flex-direction:column; gap:12px">
+        <input type="text" class="input" placeholder="收货人姓名" id="new-addr-name">
+        <input type="tel" class="input" placeholder="联系电话" id="new-addr-phone">
+        <textarea class="input" rows="3" placeholder="详细地址" id="new-addr-detail"></textarea>
+      </div>
+    `,
+    confirmText: '保存',
+    onConfirm: () => {
+      Toast.success('地址已保存');
+    }
+  }).open();
+}
+
+function loadOrderItems() {
+  if (checkoutItems.length === 0) {
+    window.location.href = window.RelRoot + 'shop.local/cart.html';
+    return;
+  }
+
+  const container = document.getElementById('order-items');
+  let subtotal = 0;
+  let originalTotal = 0;
+
+  container.innerHTML = checkoutItems.map(item => {
+    const icon = getCategoryIcon(item.category || 'electronics');
+    subtotal += item.price * item.quantity;
+    originalTotal += (item.original_price || item.price) * item.quantity;
+
+    return `
+      <div class="order-item">
+        <div class="item-thumb"><div>${icon}</div></div>
+        <div class="item-details">
+          <div class="item-name">${escapeHtml(item.name)}</div>
+          <div class="item-spec">x${item.quantity}</div>
+        </div>
+        <div class="item-price">¥${(item.price * item.quantity).toFixed(2)}</div>
+      </div>
+    `;
+  }).join('');
+
+  const discount = originalTotal - subtotal;
+  const total = subtotal;
+
+  document.getElementById('subtotal').textContent = `¥${subtotal.toFixed(2)}`;
+  document.getElementById('discount').textContent = discount > 0 ? `-¥${discount.toFixed(2)}` : '-¥0.00';
+  document.getElementById('total').textContent = `¥${total.toFixed(2)}`;
+}
+
+async function submitOrder() {
+  const btn = document.getElementById('submit-order-btn');
+  btn.disabled = true;
+  btn.textContent = '正在提交订单...';
+
+  try {
+    const response = await fetch(window.RelRoot + 'api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user_id: 1,
+        items: checkoutItems.map(item => ({
+          product_id: item.product_id,
+          quantity: item.quantity
+        })),
+        shipping_address: getSelectedAddressText()
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // Clear checkout items
+      localStorage.removeItem('checkout-items');
+
+      // Update cart (remove purchased items)
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const purchasedIds = new Set(checkoutItems.map(item => item.product_id));
+      const newCart = cart.filter(item => !purchasedIds.has(item.product_id));
+      localStorage.setItem('cart', JSON.stringify(newCart));
+
+      // Show success modal
+      new Modal({
+        title: '订单提交成功',
+        content: `
+          <div style="text-align:center; padding:20px">
+            <div style="font-size:64px; margin-bottom:16px">✅</div>
+            <div style="font-size:18px; margin-bottom:8px">订单号: ${data.order_id}</div>
+            <div style="color:var(--muted)">订单已成功提交,我们会尽快为您配送</div>
+          </div>
+        `,
+        showCancel: false,
+        confirmText: '查看订单',
+        onConfirm: () => {
+          window.location.href = `/shop.local/order/confirmation/${data.order_id}`;
+        }
+      }).open();
+    } else {
+      Toast.error('订单提交失败：' + data.error);
+      btn.disabled = false;
+      btn.textContent = '提交订单';
+    }
+  } catch (error) {
+    console.error('Order submission failed:', error);
+    Toast.error('订单提交失败，请稍后重试');
+    btn.disabled = false;
+    btn.textContent = '提交订单';
+  }
+}
+
+function showToast(message) {
+  Toast.info(message);
+}
+
+function getCategoryIcon(category) {
+  return {'electronics':'🖱️','home':'🏠','books':'📚','sports':'⚽','fashion':'👕','toys':'🧸','food':'🍜'}[category]||'📦';
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+loadOrderItems();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MemoryKV",
+  "description": "Long-term memory key-value entry",
+  "type": "object",
+  "required": ["key", "value", "ts", "source"],
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Memory key (e.g., 'orders.last.id', 'payment.cards[0].last4')",
+      "minLength": 1
+    },
+    "value": {
+      "description": "Memory value (can be any JSON type)",
+      "oneOf": [
+        {"type": "string"},
+        {"type": "number"},
+        {"type": "boolean"},
+        {"type": "object"},
+        {"type": "array"},
+        {"type": "null"}
+      ]
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when this entry was written"
+    },
+    "source": {
+      "type": "string",
+      "description": "Source of this memory entry (task_id or system)",
+      "minLength": 1
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 1.0,
+      "description": "Confidence score for this memory (1.0 = certain)"
+    }
+  }
+}

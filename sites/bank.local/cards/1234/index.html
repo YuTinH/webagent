@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../../../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - 卡片详情</title>
+  <link rel="stylesheet" href="../../../static/skin.css">
+  <script src="../../../static/common.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+    </div>
+  </div>
+  <div class="container">
+    <h1>****1234</h1>
+    <div class="card">
+      <div>状态：<span id="detail-status">active</span></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn err deactivate-card" onclick="showConfirm()">停用此卡</button>
+      </div>
+      <div id="confirm-panel" style="display:none; margin-top:12px">
+        <button class="btn" onclick="showConfirm(false)">取消</button>
+        <button class="btn err confirm-deactivate" onclick="deactivate()">确认停用</button>
+      </div>
+      <div style="margin-top:12px">
+        <div>商户绑定：</div>
+        <ul style="list-style:none;padding:0">
+          <li class="merchant-binding" data-merchant="shop.local">shop.local - ****1234</li>
+          <li class="merchant-binding" data-merchant="gov.local">gov.local - ****1234</li>
+          <li class="merchant-binding" data-merchant="util.local">util.local - ****1234</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script>
+  function showConfirm(show=true){
+    document.getElementById('confirm-panel').style.display = show ? 'block' : 'none';
+  }
+  async function deactivate(){
+    const res = await fetch('../../../api/cards/deactivate', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({last4:'1234'})
+    });
+    const data = await res.json();
+    if (data.success){
+      document.getElementById('detail-status').textContent = 'inactive';
+    }
+  }
+  </script>
+</body>
+</html>

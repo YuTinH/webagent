@@ -1,0 +1,3 @@
+{"task_id": "I5-6001", "action": "set_energy_plan", "payload": {"meterId": "M-321", "plan": "standard"}, "url": "/energy.local/plan.html", "ts": 1763448850542}
+{"task_id": "I5-6001", "action": "set_energy_plan", "payload": {"meterId": "M-321", "plan": "green_offpeak"}, "url": "/energy.local/plan.html", "ts": 1763448852703}
+{"task_id": "I5-6001", "action": "set_energy_plan", "payload": {"meterId": "M-321", "plan": "green_offpeak"}, "url": "/energy.local/plan.html", "ts": 1764158138215}

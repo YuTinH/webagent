@@ -1,0 +1,57 @@
+{
+  "task_id": "H1-2025-003",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 3,
+  "steps_total": 3,
+  "time_elapsed": 2.089221715927124,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "url": "https://gov.local/billing/index.html",
+      "frame": "main",
+      "act": "open",
+      "note": "Navigate to billing page"
+    },
+    {
+      "t": 2.0,
+      "url": "https://gov.local/billing/index.html",
+      "frame": "main",
+      "act": "wait",
+      "selector": ".bill-item",
+      "note": "Wait for billing page to load"
+    },
+    {
+      "t": 3.0,
+      "url": "https://gov.local/billing/index.html",
+      "frame": "main",
+      "act": "verify_state",
+      "checks": [
+        {
+          "type": "url",
+          "contains": "/billing"
+        },
+        {
+          "type": "dom",
+          "selector": ".summary-card",
+          "exists": true
+        },
+        {
+          "type": "dom",
+          "selector": ".bills-summary",
+          "exists": true
+        },
+        {
+          "type": "dom",
+          "selector": "#total-due",
+          "exists": true
+        }
+      ],
+      "note": "Verify billing page with bills loaded"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": []
+}

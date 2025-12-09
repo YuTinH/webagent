@@ -1,0 +1,137 @@
+{
+  "timestamp": "2025-12-08T08:35:52.647315",
+  "perturbation_level": 3,
+  "seed": 42,
+  "scenarios": [
+    {
+      "name": "Success Chain: B1 \u2192 C2",
+      "expected": true,
+      "actual": true,
+      "passed": true,
+      "tasks": [
+        {
+          "task": "B1-shopping",
+          "success": true,
+          "state": "completed",
+          "steps": "23/23",
+          "time": "7.02s",
+          "error": null,
+          "dependencies_met": true
+        },
+        {
+          "task": "C2-return",
+          "success": true,
+          "state": "completed",
+          "steps": "3/3",
+          "time": "1.43s",
+          "error": null,
+          "dependencies_met": true
+        }
+      ]
+    },
+    {
+      "name": "Dependency Failure: C2 without B1",
+      "expected": false,
+      "actual": false,
+      "passed": true,
+      "tasks": [
+        {
+          "task": "C2-return",
+          "success": false,
+          "state": "failed",
+          "steps": "0/0",
+          "time": "0.00s",
+          "error": null,
+          "dependencies_met": true
+        }
+      ]
+    },
+    {
+      "name": "Resource Constraint: Insufficient Balance",
+      "expected": false,
+      "actual": false,
+      "passed": true,
+      "tasks": [
+        {
+          "task": "B1-shopping",
+          "success": false,
+          "state": "failed",
+          "steps": "0/0",
+          "time": "0.00s",
+          "error": "Precondition failed: json('env', 'banking.balance.checking') >= 50.00",
+          "dependencies_met": true
+        }
+      ]
+    },
+    {
+      "name": "Complex Chain: B1 \u2192 D1 \u2192 H1 \u2192 D3",
+      "expected": true,
+      "actual": true,
+      "passed": true,
+      "tasks": [
+        {
+          "task": "B1-shopping",
+          "success": true,
+          "state": "completed",
+          "steps": "23/23",
+          "time": "7.05s",
+          "error": null,
+          "dependencies_met": true
+        },
+        {
+          "task": "D1-check-balance",
+          "success": true,
+          "state": "completed",
+          "steps": "12/12",
+          "time": "2.63s",
+          "error": null,
+          "dependencies_met": true
+        },
+        {
+          "task": "H1-check-bill",
+          "success": true,
+          "state": "completed",
+          "steps": "3/3",
+          "time": "1.47s",
+          "error": null,
+          "dependencies_met": true
+        },
+        {
+          "task": "D3-autopay",
+          "success": true,
+          "state": "completed",
+          "steps": "3/3",
+          "time": "1.50s",
+          "error": null,
+          "dependencies_met": true
+        }
+      ]
+    },
+    {
+      "name": "Cascading Failure: B1 fails \u2192 C2 blocked",
+      "expected": false,
+      "actual": false,
+      "passed": true,
+      "tasks": [
+        {
+          "task": "B1-shopping",
+          "success": false,
+          "state": "failed",
+          "steps": "0/0",
+          "time": "0.00s",
+          "error": "Precondition failed: json('env', 'banking.balance.checking') >= 50.00",
+          "dependencies_met": true
+        },
+        {
+          "task": "C2-return",
+          "success": true,
+          "state": "completed",
+          "steps": "3/3",
+          "time": "1.59s",
+          "error": null,
+          "dependencies_met": true
+        }
+      ]
+    }
+  ]
+}

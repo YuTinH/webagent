@@ -1,0 +1,33 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>permit.local - 续期预约</title>
+<link rel="stylesheet" href="../static/skin.css"><script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula</div>
+    <div class="navlinks">
+      <a href="../shop.local/index.html">商城</a>
+      <a href="../pay.local/wallet/cards.html">钱包</a>
+      <a href="../trip.local/manage/PNR9ZZ.html">行程</a>
+      <a href="../permit.local/RP-2024-77.html">许可</a>
+      <a href="../energy.local/plan.html">能源</a>
+      <a href="../card.local/block.html">安全</a>
+    </div>
+    <div class="search"><input placeholder="搜索订单/行程/卡号…"></div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs"><a href="../permit.local/RP-2024-77.html">许可</a> / <span>RP-2024-77</span></div>
+  <div class="card">
+    <div class="header"><div class="title">预约窗口</div><span class="badge">工作日 9:00–17:00</span></div>
+    <div class="kv">
+      <div class="key">当前预约</div><div id="appointment">未预约</div>
+      <div class="key">选择时段</div><div><input id="slot" class="input" value="2025-12-01T10:00"></div>
+    </div>
+    <div class="hr"></div>
+    <button class="btn pri" onclick="send('H3-5001','book_permit',{slot: document.getElementById('slot').value})">预约</button>
+  </div>
+</div>
+

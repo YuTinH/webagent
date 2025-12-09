@@ -1,0 +1,21 @@
+{
+  "task_id": "B5-2025-005",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "url": "https://shop.local/orders", "act": "open", "note": "Navigate to orders"},
+    {"t": 2, "act": "wait", "selector": ".order-list"},
+    {"t": 3, "act": "click", "selector": ".order-item:first-child"},
+    {"t": 5, "act": "wait", "selector": "#order-id"},
+    {
+      "t": 6,
+      "act": "verify_state",
+      "checks": [
+        {"type": "url", "contains": "/orders"},
+        {"type": "dom", "selector": "#order-id", "exists": true},
+        {"type": "dom", "selector": "#delivery-status", "exists": true},
+        {"type": "dom", "selector": ".detail-panel", "exists": true}
+      ],
+      "note": "Verify order details panel loaded successfully"
+    }
+  ]
+}

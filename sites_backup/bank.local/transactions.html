@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<title>交易记录 - Nebula Bank</title>
+<link rel="stylesheet" href=window.RelRoot + "static/skin.css">
+<link rel="stylesheet" href=window.RelRoot + "static/components.css">
+</head>
+<body>
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Bank</div>
+    <div class="navlinks">
+      <a href=window.RelRoot + "bank.local/dashboard.html">账户</a>
+      <a href=window.RelRoot + "bank.local/transactions.html" class="active">交易</a>
+      <a href=window.RelRoot + "bank.local/cards.html">卡片</a>
+      <a href=window.RelRoot + "bank.local/autopay.html">自动付款</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+<div class="container">
+  <h1>交易记录</h1>
+  <button class="btn pri" onclick="exportCSV()" style="margin:20px 0">导出CSV</button>
+  <div id="transactions-list"></div>
+  <div class="footer">Nebula Bank</div>
+</div>
+<script src=window.RelRoot + "static/common.js"></script>
+<script src=window.RelRoot + "static/components.js"></script>
+<script>
+let transactions = [];
+async function loadTransactions() {
+  const list = document.getElementById('transactions-list');
+  try {
+    const res = await fetch(window.RelRoot + 'api/transactions?account_id=1&days=30');
+    const data = await res.json();
+    if (data.success) {
+      transactions = data.transactions;
+      list.innerHTML = '<table class="table"><thead><tr><th>日期</th><th>描述</th><th>金额</th></tr></thead><tbody>' +
+        transactions.map(t => `<tr><td>${new Date(t.created_at).toLocaleDateString('zh-CN')}</td><td>${t.description||'-'}</td><td style="color:${t.amount>0?'var(--ok)':'var(--err)'}">¥${t.amount.toFixed(2)}</td></tr>`).join('') +
+        '</tbody></table>';
+      await fetch(window.RelRoot + 'api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({key:'banking.transactions.last_export',value:new Date().toISOString(),source:'user'})
+      });
+    }
+  } catch(e) {
+    list.innerHTML = '<div>加载失败</div>';
+  }
+}
+function exportCSV() {
+  const csv = 'Date,Description,Amount\n' + transactions.map(t =>
+    `"${new Date(t.created_at).toISOString()}","${t.description||''}",${t.amount}`
+  ).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'transactions.csv';
+  a.click();
+}
+loadTransactions();
+</script>
+</body>
+</html>

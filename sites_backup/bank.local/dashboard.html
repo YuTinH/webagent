@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<title>账户总览 - Nebula Bank</title>
+<link rel="stylesheet" href=window.RelRoot + "static/skin.css">
+<link rel="stylesheet" href=window.RelRoot + "static/components.css">
+<style>
+.dashboard-header {
+  background: radial-gradient(100% 140% at 0% 0%, rgba(99,102,241,.12), transparent 40%), var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.dashboard-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+}
+.dashboard-welcome {
+  color: var(--muted);
+  font-size: 16px;
+}
+.quick-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+}
+.quick-action-btn:hover {
+  background: rgba(79,70,229,0.15);
+  border-color: var(--pri);
+  transform: translateY(-2px);
+}
+.account-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: 0.2s;
+}
+.account-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+.account-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(99,102,241,0.15), transparent);
+  pointer-events: none;
+}
+.account-type {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.account-number {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+.account-balance {
+  font-size: 36px;
+  font-weight: 700;
+  color: #60a5fa;
+  margin-bottom: 20px;
+}
+.account-actions {
+  display: flex;
+  gap: 8px;
+}
+.account-actions .btn {
+  flex: 1;
+  font-size: 13px;
+  padding: 8px 12px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.stat-label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+.stat-change {
+  font-size: 12px;
+  margin-top: 4px;
+}
+.stat-change.up {
+  color: #34d399;
+}
+.stat-change.down {
+  color: #f87171;
+}
+.transactions-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  transition: 0.2s;
+}
+.transaction-item:hover {
+  background: rgba(255,255,255,0.06);
+}
+.transaction-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background: rgba(99,102,241,0.1);
+  flex-shrink: 0;
+}
+.transaction-info {
+  flex: 1;
+  min-width: 0;
+}
+.transaction-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.transaction-date {
+  font-size: 13px;
+  color: var(--muted);
+}
+.transaction-amount {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: right;
+}
+.transaction-amount.credit {
+  color: #34d399;
+}
+.transaction-amount.debit {
+  color: #f87171;
+}
+.chart-container {
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 20px 0;
+}
+.chart-bar {
+  flex: 1;
+  background: linear-gradient(to top, var(--pri), var(--pri-2));
+  border-radius: 4px 4px 0 0;
+  min-height: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.chart-bar:hover {
+  opacity: 0.8;
+  transform: scaleY(1.05);
+}
+.chart-bar-label {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Bank</div>
+    <div class="navlinks">
+      <a href=window.RelRoot + "bank.local/dashboard.html" class="active">账户</a>
+      <a href=window.RelRoot + "bank.local/transactions.html">交易</a>
+      <a href=window.RelRoot + "bank.local/cards.html">卡片</a>
+      <a href=window.RelRoot + "bank.local/autopay.html">自动付款</a>
+      <a href=window.RelRoot + "bank.local/settlements.html">结算</a>
+    </div>
+    <div style="margin-left:auto">
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; position:relative">
+        👤
+      </button>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+<div class="container">
+
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <h1>欢迎回来,张先生</h1>
+    <div class="dashboard-welcome">您的账户状况良好</div>
+    <div class="quick-actions">
+      <a href=window.RelRoot + "bank.local/transactions.html" class="quick-action-btn">
+        <span>💸</span>
+        <span>转账</span>
+      </a>
+      <a href=window.RelRoot + "bank.local/autopay.html" class="quick-action-btn">
+        <span>📋</span>
+        <span>支付账单</span>
+      </a>
+      <a href=window.RelRoot + "bank.local/cards.html" class="quick-action-btn">
+        <span>💳</span>
+        <span>卡片管理</span>
+      </a>
+      <button class="quick-action-btn" onclick="Toast.info('存款功能即将推出')">
+        <span>💰</span>
+        <span>存款</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">总资产</div>
+      <div class="stat-value" id="total-assets">¥0.00</div>
+      <div class="stat-change up">↑ 比上月增长 5.2%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">本月支出</div>
+      <div class="stat-value" id="monthly-spending">¥0.00</div>
+      <div class="stat-change down">↓ 比上月减少 12%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">本月收入</div>
+      <div class="stat-value" id="monthly-income">¥0.00</div>
+      <div class="stat-change up">↑ 比上月增长 8%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">待付账单</div>
+      <div class="stat-value">¥150.00</div>
+      <div class="stat-change" style="color:var(--warn)">⏰ 3天后到期</div>
+    </div>
+  </div>
+
+  <!-- Accounts Grid -->
+  <h2 style="margin-bottom:16px">我的账户</h2>
+  <div id="accounts-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:32px">
+    <!-- Loaded by JS -->
+  </div>
+
+  <!-- Spending Chart -->
+  <div class="transactions-section" style="margin-bottom:24px">
+    <div class="section-title">
+      <span>📊 近7天支出趋势</span>
+    </div>
+    <div class="chart-container" id="spending-chart">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="transactions-section">
+    <div class="section-title">
+      <span>💳 最近交易</span>
+      <a href=window.RelRoot + "bank.local/transactions.html" style="color:var(--pri); text-decoration:none; font-size:14px">查看全部 →</a>
+    </div>
+    <div id="recent-transactions">
+      <!-- Loaded by JS -->
+    </div>
+  </div>
+
+  <div class="footer">Nebula Bank</div>
+</div>
+<script src=window.RelRoot + "static/common.js"></script>
+<script src=window.RelRoot + "static/components.js"></script>
+<script>
+async function loadAccounts() {
+  const grid = document.getElementById('accounts-grid');
+  try {
+    const res = await fetch(window.RelRoot + 'api/accounts?user_id=1');
+    const data = await res.json();
+    if (data.success) {
+      let totalAssets = 0;
+
+      grid.innerHTML = data.accounts.map(acc => {
+        totalAssets += acc.balance;
+        const accountIcon = getAccountIcon(acc.type);
+
+        return `
+          <div class="account-card">
+            <div class="account-type">
+              <span>${accountIcon} ${getAccountName(acc.type)}</span>
+              <span class="badge ok">正常</span>
+            </div>
+            <div class="account-number">**** **** **** ${String(acc.account_id).slice(-4).padStart(4, '0')}</div>
+            <div class="account-balance">¥${acc.balance.toFixed(2)}</div>
+            <div class="account-actions">
+              <button class="btn" onclick="transferFrom('${acc.type}')">转账</button>
+              <button class="btn" onclick="viewDetails('${acc.type}')">详情</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Update total assets
+      document.getElementById('total-assets').textContent = `¥${totalAssets.toFixed(2)}`;
+
+      // Update memory
+      for (const acc of data.accounts) {
+        await fetch(window.RelRoot + 'api/memory', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            key: `banking.balance.${acc.type}`,
+            value: String(acc.balance),
+            source: 'system'
+          })
+        });
+      }
+
+      await fetch(window.RelRoot + 'api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          key: 'banking.balance.last_check',
+          value: new Date().toISOString(),
+          source: 'user'
+        })
+      });
+    }
+  } catch(e) {
+    grid.innerHTML = '<div class="card"><div>加载失败</div></div>';
+  }
+}
+
+function getAccountName(type) {
+  return {checking:'活期账户',savings:'储蓄账户',credit:'信用账户'}[type]||type;
+}
+
+function getAccountIcon(type) {
+  return {checking:'💵',savings:'💰',credit:'💳'}[type]||'🏦';
+}
+
+function transferFrom(accountType) {
+  const modal = new Modal({
+    title: `从${getAccountName(accountType)}转账`,
+    content: `
+      <div style="display:flex; flex-direction:column; gap:16px">
+        <div>
+          <label style="display:block; margin-bottom:8px; font-size:14px">转账金额</label>
+          <input type="number" id="transfer-amount" placeholder="0.00" class="input" style="width:100%">
+        </div>
+        <div>
+          <label style="display:block; margin-bottom:8px; font-size:14px">收款账户</label>
+          <input type="text" id="transfer-to" placeholder="请输入账户号码" class="input" style="width:100%">
+        </div>
+      </div>
+    `,
+    confirmText: '确认转账',
+    onConfirm: () => {
+      const amount = document.getElementById('transfer-amount').value;
+      const to = document.getElementById('transfer-to').value;
+      if (amount && to) {
+        Toast.success(`已成功转账 ¥${amount}`);
+      } else {
+        Toast.error('请填写完整信息');
+      }
+    }
+  }).open();
+}
+
+function viewDetails(accountType) {
+  window.location.href = `/bank.local/transactions.html?account=${accountType}`;
+}
+
+// Load recent transactions
+async function loadRecentTransactions() {
+  const container = document.getElementById('recent-transactions');
+
+  // Mock data for demonstration
+  const transactions = [
+    { icon: '🛒', title: 'Amazon 购物', date: '2025-11-27 14:30', amount: -49.99, type: 'debit' },
+    { icon: '💼', title: '工资入账', date: '2025-11-25 09:00', amount: +5000.00, type: 'credit' },
+    { icon: '🍜', title: '餐饮消费', date: '2025-11-24 18:45', amount: -38.50, type: 'debit' },
+    { icon: '⚡', title: '电费缴纳', date: '2025-11-23 10:20', amount: -120.00, type: 'debit' },
+    { icon: '🎬', title: '娱乐支出', date: '2025-11-22 20:15', amount: -45.00, type: 'debit' }
+  ];
+
+  container.innerHTML = transactions.map(tx => `
+    <div class="transaction-item">
+      <div class="transaction-icon">${tx.icon}</div>
+      <div class="transaction-info">
+        <div class="transaction-title">${tx.title}</div>
+        <div class="transaction-date">${tx.date}</div>
+      </div>
+      <div class="transaction-amount ${tx.type}">
+        ${tx.amount > 0 ? '+' : ''}¥${Math.abs(tx.amount).toFixed(2)}
+      </div>
+    </div>
+  `).join('');
+
+  // Calculate monthly spending and income
+  const spending = transactions.filter(t => t.type === 'debit').reduce((sum, t) => sum + Math.abs(t.amount), 0);
+  const income = transactions.filter(t => t.type === 'credit').reduce((sum, t) => sum + t.amount, 0);
+
+  document.getElementById('monthly-spending').textContent = `¥${spending.toFixed(2)}`;
+  document.getElementById('monthly-income').textContent = `¥${income.toFixed(2)}`;
+}
+
+// Generate spending chart
+function generateSpendingChart() {
+  const container = document.getElementById('spending-chart');
+
+  // Mock data: last 7 days spending
+  const data = [
+    { day: '周一', amount: 120 },
+    { day: '周二', amount: 80 },
+    { day: '周三', amount: 150 },
+    { day: '周四', amount: 95 },
+    { day: '周五', amount: 200 },
+    { day: '周六', amount: 180 },
+    { day: '周日', amount: 60 }
+  ];
+
+  const maxAmount = Math.max(...data.map(d => d.amount));
+
+  container.innerHTML = data.map(d => {
+    const height = (d.amount / maxAmount) * 100;
+    return `
+      <div class="chart-bar" style="height:${height}%" title="¥${d.amount}">
+        <div class="chart-bar-label">${d.day}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Initialize user dropdown
+document.addEventListener('DOMContentLoaded', () => {
+  const userDropdown = new Dropdown(document.getElementById('user-menu-btn'), {
+    align: 'right',
+    items: [
+      { icon: '👤', label: '个人信息' },
+      { icon: '🔒', label: '安全设置' },
+      { icon: '📊', label: '账户报表' },
+      { divider: true },
+      { icon: '❓', label: '帮助中心' },
+      { icon: '🚪', label: '退出登录' }
+    ],
+    onSelect: (item) => {
+      if (item.label === '退出登录') {
+        const modal = new Modal({
+          title: '确认退出',
+          content: '您确定要退出登录吗?',
+          confirmText: '确认',
+          cancelText: '取消',
+          onConfirm: () => {
+            Toast.success('已退出登录');
+            setTimeout(() => {
+              window.location.href = window.RelRoot + 'bank.local/login.html';
+            }, 1000);
+          }
+        }).open();
+      } else {
+        Toast.info(`${item.label}功能即将推出`);
+      }
+    }
+  });
+});
+
+loadAccounts();
+loadRecentTransactions();
+generateSpendingChart();
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "task_id": "B5-2025-005",
+  "family": "B",
+  "episode_id": "ep-001",
+  "priority": 3,
+  "seed": 55,
+  "time": "2025-11-20T09:00:00Z",
+  "persona": {
+    "tracking_frequency": "daily",
+    "patience_level": "low"
+  },
+  "goal": "Check status of 3 recent orders, report delivery delay if any order is overdue",
+  "inputs": {
+    "order_ids": ["O-10001", "O-10002", "O-10003"],
+    "expected_delivery_window": 7
+  },
+  "allowed_domains": ["shop.local"],
+  "preconditions": [
+    "mem('orders.last.id') != ''",
+    "time_since('orders.last.timestamp') < 86400"
+  ],
+  "memory_keys": [
+    "orders.tracking.last_check",
+    "orders.tracking.overdue_count",
+    "orders.tracking.issue_reported"
+  ],
+  "success_criteria": [
+    "ALL[url().includes('/orders'), mem('orders.tracking.last_check') != '']"
+  ],
+  "artifacts": ["tracking_screenshot"],
+  "rubrics": {
+    "SR": 1.0,
+    "LH-F1": 0.4
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "dependencies": ["B1-2025-001"],
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {"strategy": "retry", "max_retries": 3, "retry_delay_ms": 1000},
+    "on_element_not_found": {"strategy": "wait_and_retry", "wait_seconds": 10},
+    "on_assertion_fail": {"strategy": "save_trace_and_report", "capture_screenshot": true, "capture_dom": true, "capture_memory": true},
+    "on_precondition_fail": "abort_with_warning"
+  }
+}

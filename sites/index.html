@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "./";</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Agent Test Suite - Site Directory</title>
+    <link rel="stylesheet" href="./static/skin.css">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(79,70,229,0.1), rgba(99,102,241,0.05));
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin: 0 0 16px 0;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .site-card {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text);
+            display: block;
+        }
+        .site-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--pri);
+            box-shadow: var(--shadow), 0 0 0 1px var(--pri);
+        }
+        .site-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .site-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .site-desc {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        .status-active {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="inner">
+            <div class="brand">
+                <div class="logo"></div>
+                Web Agent Test Suite
+            </div>
+            <div class="navlinks">
+                <a href="./index.html" class="active">Site Directory</a>
+                <a href="./api/env">Environment API</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>🌐 Web Agent Test Sites</h1>
+            <p>Synthetic web environments for agent testing and lifelong learning research</p>
+        </div>
+
+        <div class="sites-grid">
+            <a href="./shop.local/index.html" class="site-card">
+                <div class="site-icon">🛒</div>
+                <div class="site-name">Nebula Shop</div>
+                <div class="site-desc">E-commerce platform with product browsing, search, cart, and checkout flows</div>
+                <span class="status-badge status-active">Active</span>
+            </a>
+
+            <a href="./pay.local/wallet/cards.html" class="site-card">
+                <div class="site-icon">💳</div>
+                <div class="site-name">Payment Wallet</div>
+                <div class="site-desc">Digital wallet management, payment cards, and transaction services</div>
+                <span class="status-badge status-active">Active</span>
+            </a>
+
+            <a href="./trip.local/manage/PNR9ZZ.html" class="site-card">
+                <div class="site-icon">✈️</div>
+                <div class="site-name">Travel Manager</div>
+                <div class="site-desc">Trip booking, management, and rebooking services</div>
+                <span class="status-badge status-active">Active</span>
+            </a>
+
+            <a href="./permit.local/RP-2024-77.html" class="site-card">
+                <div class="site-icon">📋</div>
+                <div class="site-name">Permit Services</div>
+                <div class="site-desc">Government permit applications and appointment scheduling</div>
+                <span class="status-badge status-active">Active</span>
+            </a>
+
+            <a href="./energy.local/plan.html" class="site-card">
+                <div class="site-icon">⚡</div>
+                <div class="site-name">Energy Portal</div>
+                <div class="site-desc">Utility billing, meter management, and energy plan selection</div>
+                <span class="status-badge status-active">Active</span>
+            </a>
+
+            <a href="./card.local/block.html" class="site-card">
+                <div class="site-icon">🔒</div>
+                <div class="site-name">Card Security</div>
+                <div class="site-desc">Card blocking, security settings, and fraud protection</div>
+                <span class="status-badge status-active">Active</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            Web Agent Lifelong Learning Dataset · Synthetic UI for Research
+        </div>
+    </div>
+</body>
+</html>

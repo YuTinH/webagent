@@ -1,0 +1,64 @@
+{
+  "task_id": "H2-2025-007",
+  "family": "H",
+  "episode_id": "ep-002",
+  "priority": 3,
+  "seed": 77,
+  "time": "2025-11-22T09:00:00Z",
+  "persona": {
+    "vehicle_owner": true
+  },
+  "goal": "Apply for parking permit by filling form and uploading documents",
+  "inputs": {
+    "permit_type": "parking",
+    "vehicle_plate": "ABC123",
+    "documents": [
+      "vehicle_registration.pdf",
+      "proof_of_address.pdf"
+    ]
+  },
+  "allowed_domains": [
+    "gov.local"
+  ],
+  "preconditions": [
+    "mem('identity.address') != ''",
+    "mem('identity.vehicle.plate') != ''"
+  ],
+  "memory_keys": [
+    "permits.parking.application_id",
+    "permits.parking.state",
+    "permits.parking.documents_uploaded"
+  ],
+  "success_criteria": [
+    "url().includes('/permits')"
+  ],
+  "artifacts": [
+    "application_receipt",
+    "upload_confirmation"
+  ],
+  "rubrics": {
+    "SR": 1.0,
+    "LH-F1": 0.4
+  },
+  "timeout": 400,
+  "step_timeout": 45,
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {
+      "strategy": "retry",
+      "max_retries": 3,
+      "retry_delay_ms": 1000
+    },
+    "on_element_not_found": {
+      "strategy": "wait_and_retry",
+      "wait_seconds": 10
+    },
+    "on_assertion_fail": {
+      "strategy": "save_trace_and_report",
+      "capture_screenshot": true,
+      "capture_dom": true,
+      "capture_memory": true
+    },
+    "on_precondition_fail": "abort_with_warning"
+  }
+}

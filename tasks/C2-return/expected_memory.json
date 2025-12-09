@@ -1,0 +1,30 @@
+{
+  "returns.last.id": {
+    "key": "returns.last.id",
+    "value": "R-50001",
+    "ts": "2025-11-18T14:00:13Z",
+    "source": "C2-2025-004",
+    "confidence": 1.0
+  },
+  "returns.last.order_id": {
+    "key": "returns.last.order_id",
+    "value": "O-10001",
+    "ts": "2025-11-18T14:00:13Z",
+    "source": "C2-2025-004",
+    "confidence": 1.0
+  },
+  "returns.last.refund_amount": {
+    "key": "returns.last.refund_amount",
+    "value": 30.98,
+    "ts": "2025-11-18T14:00:13Z",
+    "source": "C2-2025-004",
+    "confidence": 1.0
+  },
+  "returns.last.state": {
+    "key": "returns.last.state",
+    "value": "approved",
+    "ts": "2025-11-18T14:00:13Z",
+    "source": "C2-2025-004",
+    "confidence": 1.0
+  }
+}

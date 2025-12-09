@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../../";</script>
+<meta charset="utf-8">
+<title>停车许可申请 - Gov Services</title>
+<link rel="stylesheet" href="../../static/skin.css">
+<style>
+.apply-container { max-width: 700px; margin: 0 auto; }
+.form-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.form-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.form-field { margin-bottom: 20px; }
+.form-label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 14px; }
+.form-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 15px; }
+.form-input:focus { outline: none; border-color: var(--pri); }
+.file-upload { border: 2px dashed var(--border); border-radius: 12px; padding: 30px; text-align: center; cursor: pointer; transition: .2s; }
+.file-upload:hover { border-color: var(--pri); }
+.file-upload input { display: none; }
+.file-upload.has-file { border-color: var(--ok); background: rgba(34,197,94,0.1); }
+.upload-icon { font-size: 36px; margin-bottom: 12px; }
+.upload-text { color: var(--muted); font-size: 14px; }
+.fee-summary { background: rgba(79,70,229,0.1); border: 1px solid rgba(79,70,229,0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.fee-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+.fee-total { display: flex; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); font-weight: 600; font-size: 18px; }
+.submit-actions { display: flex; gap: 12px; justify-content: flex-end; }
+.success-banner { background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(16,185,129,0.1)); border: 1px solid rgba(34,197,94,0.3); border-radius: 12px; padding: 40px; text-align: center; }
+.success-icon { font-size: 64px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Gov Services</div>
+    <div class="navlinks">
+      <a href="../../gov.local/index.html">首页</a>
+      <a href="../../gov.local/billing/index.html">账单</a>
+      <a href="../../gov.local/permits/index.html" class="active">许可证</a>
+      <a href="../../gov.local/applications/index.html">申请记录</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+<div class="container">
+  <div class="breadcrumbs" style="margin:20px 0">
+    <a href="../../gov.local/permits/index.html">许可证</a> / <span>停车许可申请</span>
+  </div>
+
+  <div class="apply-container">
+    <h1 style="margin-bottom:8px">停车许可申请</h1>
+    <p style="color:var(--muted);margin-bottom:24px">填写以下信息申请居民停车许可证</p>
+
+    <div id="apply-form">
+      <!-- Vehicle Info -->
+      <div class="form-section">
+        <div class="form-title">🚗 车辆信息</div>
+        <div class="form-field">
+          <label class="form-label">车牌号 *</label>
+          <input type="text" id="vehicle-plate" class="form-input" placeholder="如: 京A12345">
+        </div>
+        <div class="form-field">
+          <label class="form-label">车辆类型</label>
+          <select id="vehicle-type" class="form-input">
+            <option value="sedan">轿车</option>
+            <option value="suv">SUV</option>
+            <option value="van">面包车</option>
+            <option value="motorcycle">摩托车</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">车辆品牌/型号</label>
+          <input type="text" id="vehicle-model" class="form-input" placeholder="如: 丰田卡罗拉">
+        </div>
+      </div>
+
+      <!-- Address Info -->
+      <div class="form-section">
+        <div class="form-title">🏠 地址信息</div>
+        <div class="form-field">
+          <label class="form-label">居住地址 *</label>
+          <input type="text" id="address" class="form-input" placeholder="详细地址,如: 朝阳区xxx路xxx号">
+        </div>
+        <div class="form-field">
+          <label class="form-label">停车区域</label>
+          <select id="parking-zone" class="form-input">
+            <option value="zone-a">A区 - 中心城区</option>
+            <option value="zone-b">B区 - 商业区</option>
+            <option value="zone-c">C区 - 住宅区</option>
+            <option value="zone-d">D区 - 郊区</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Documents -->
+      <div class="form-section">
+        <div class="form-title">📎 上传材料</div>
+        <div class="form-field">
+          <label class="form-label">行驶证照片 *</label>
+          <div class="file-upload" onclick="document.getElementById('upload-registration').click()">
+            <input type="file" id="upload-registration" accept="image/*" onchange="handleFileUpload(this, 'registration')">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text" id="registration-text">点击或拖拽上传行驶证</div>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">地址证明 *</label>
+          <div class="file-upload" onclick="document.getElementById('upload-address-proof').click()">
+            <input type="file" id="upload-address-proof" accept="image/*,.pdf" onchange="handleFileUpload(this, 'address')">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text" id="address-text">点击或拖拽上传地址证明 (如水电费账单)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fee Summary -->
+      <div class="fee-summary">
+        <div class="fee-item">
+          <span>许可证年费</span>
+          <span>¥100.00</span>
+        </div>
+        <div class="fee-item">
+          <span>工本费</span>
+          <span>¥10.00</span>
+        </div>
+        <div class="fee-total">
+          <span>合计</span>
+          <span>¥110.00</span>
+        </div>
+      </div>
+
+      <div class="submit-actions">
+        <a href="../../gov.local/permits/index.html" class="btn">取消</a>
+        <button class="btn pri submit-application" onclick="submitApplication()">提交申请</button>
+      </div>
+    </div>
+
+    <!-- Success View -->
+    <div id="success-view" style="display:none">
+      <div class="success-banner">
+        <div class="success-icon">✅</div>
+        <h2 style="margin-bottom:8px">申请已提交！</h2>
+        <p style="color:var(--muted);margin-bottom:8px">申请号: <span id="application-id" class="badge ok"></span></p>
+        <p style="color:var(--muted);margin-bottom:24px">我们将在3-5个工作日内审核您的申请</p>
+        <div style="display:flex;gap:12px;justify-content:center">
+          <a href="../../gov.local/applications/index.html" class="btn">查看申请进度</a>
+          <a href="../../gov.local/index.html" class="btn pri">返回首页</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Gov Services · 市政服务中心</div>
+</div>
+<script src="../../static/common.js"></script>
+<script>
+let uploadedFiles = { registration: null, address: null };
+
+function handleFileUpload(input, type) {
+  const file = input.files[0];
+  if (file) {
+    uploadedFiles[type] = file;
+    const textEl = document.getElementById(type + '-text');
+    textEl.textContent = file.name;
+    input.parentElement.classList.add('has-file');
+  }
+}
+
+async function submitApplication() {
+  const plate = document.getElementById('vehicle-plate').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const vehicleType = document.getElementById('vehicle-type').value;
+  const vehicleModel = document.getElementById('vehicle-model').value.trim();
+  const parkingZone = document.getElementById('parking-zone').value;
+
+  // Validation
+  if (!plate) {
+    showToast('请输入车牌号');
+    return;
+  }
+  if (!address) {
+    showToast('请输入居住地址');
+    return;
+  }
+  if (!uploadedFiles.registration) {
+    showToast('请上传行驶证');
+    return;
+  }
+  if (!uploadedFiles.address) {
+    showToast('请上传地址证明');
+    return;
+  }
+
+  try {
+    const res = await fetch('../../api/permits/apply', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        user_id: 1,
+        type: 'parking',
+        plate: plate,
+        address: address,
+        vehicle_type: vehicleType,
+        vehicle_model: vehicleModel,
+        parking_zone: parkingZone,
+        documents: {
+          registration: uploadedFiles.registration?.name || 'uploaded',
+          address_proof: uploadedFiles.address?.name || 'uploaded'
+        }
+      })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      // Update memory for H2 task
+      await fetch('/api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({key:'permits.last_application.id',value:data.application_id,source:'user'})
+      });
+      await fetch('/api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({key:'permits.last_application.type',value:'parking',source:'user'})
+      });
+      await fetch('/api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({key:'permits.last_application.plate',value:plate,source:'user'})
+      });
+      await fetch('/api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({key:'permits.last_application.time',value:new Date().toISOString(),source:'user'})
+      });
+
+      document.getElementById('application-id').textContent = data.application_id;
+      document.getElementById('apply-form').style.display = 'none';
+      document.getElementById('success-view').style.display = 'block';
+    } else {
+      showToast(data.error || '提交失败');
+    }
+  } catch(e) {
+    showToast('提交失败，请稍后重试');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('__toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

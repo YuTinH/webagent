@@ -1,0 +1,52 @@
+
+:root{
+  --bg:#0b1020; --panel:#11162a; --muted:#9aa0aa; --text:#e5e7eb;
+  --pri:#4f46e5; --pri-2:#6366f1; --ok:#16a34a; --warn:#f59e0b; --err:#ef4444;
+  --card:#0f1426; --border:#1f2937; --shadow:0 10px 20px rgba(0,0,0,.35); --radius:16px; --focus:0 0 0 3px rgba(99,102,241,.35);
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0; background:linear-gradient(180deg,#0a0f21,#0b1227 35%,#0a142f); color:var(--text); font:16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+.container{max-width:1100px; margin:24px auto; padding:0 20px}
+.navbar{position:sticky; top:0; z-index:20; backdrop-filter: blur(8px); background:rgba(10,14,28,.72); border-bottom:1px solid rgba(255,255,255,.06)}
+.navbar .inner{display:flex; align-items:center; gap:16px; padding:14px 20px; max-width:1100px; margin:0 auto}
+.brand{display:flex; align-items:center; gap:10px; font-weight:700}
+.brand .logo{width:28px; height:28px; border-radius:8px; background:conic-gradient(from 180deg at 50% 50%, #6ee7ff, #7c6cff, #25d0a8, #6ee7ff); box-shadow:var(--shadow)}
+.navlinks{display:flex; gap:14px; color:#a3a7b2}
+.navlinks a{color:inherit; text-decoration:none; padding:8px 10px; border-radius:10px}
+.navlinks a.active, .navlinks a:hover{background:rgba(255,255,255,.06); color:#fff}
+.search{margin-left:auto; display:flex; align-items:center; gap:8px}
+.search input{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); color:var(--text); padding:10px 12px; border-radius:12px; min-width:260px; outline:none; box-shadow:none}
+.grid{display:grid; gap:16px}
+.grid.cols-2{grid-template-columns:1fr 1fr}
+.grid.cols-3{grid-template-columns:repeat(3,1fr)}
+.card{background:radial-gradient(100% 140% at 0% 0%, rgba(99,102,241,.12), transparent 40%), var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow)}
+.card .header{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px}
+.card .title{font-weight:700}
+.badge{display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05)}
+.badge.ok{border-color:rgba(34,197,94,.4); background:rgba(34,197,94,.08); color:#a7f3d0}
+.badge.warn{border-color:rgba(245,158,11,.4); background:rgba(245,158,11,.08); color:#fde68a}
+.badge.err{border-color:rgba(239,68,68,.4); background:rgba(239,68,68,.08); color:#fecaca}
+.btn{appearance:none; border:1px solid rgba(255,255,255,.14); color:#fff; background:rgba(255,255,255,.06); padding:10px 14px; border-radius:12px; cursor:pointer; transition:.2s; box-shadow:var(--shadow)}
+.btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.12)}
+.btn:focus{outline:none; box-shadow:var(--focus)}
+.btn.pri{background:linear-gradient(135deg,var(--pri),var(--pri-2)); border-color:transparent}
+.btn.ok{background:linear-gradient(135deg,#34d399,#10b981); border-color:transparent}
+.btn.err{background:linear-gradient(135deg,#f43f5e,#ef4444); border-color:transparent}
+.input, select{width:100%; background:rgba(255,255,255,.06); color:var(--text); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:10px 12px; outline:none}
+.row{display:flex; gap:12px; align-items:center}
+.kv{display:grid; grid-template-columns:140px 1fr; gap:8px; font-size:14px; color:#cbd5e1}
+.kv .key{color:#9ca3af}
+.table{width:100%; border-collapse:separate; border-spacing:0 10px}
+.table tr{background:var(--card)}
+.table td, .table th{padding:12px 14px}
+.hr{height:1px; background:rgba(255,255,255,.08); margin:14px 0}
+.toast{position:fixed; right:24px; bottom:24px; background:#0b142c; border:1px solid rgba(99,102,241,.35); padding:12px 16px; border-radius:12px; box-shadow:var(--shadow); display:none}
+.toast.show{display:block; animation:pop .25s ease}
+@keyframes pop{from{transform:translateY(8px); opacity:.2} to{transform:none; opacity:1}}
+.modal{position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; align-items:center; justify-content:center}
+.modal.open{display:flex}
+.modal .panel{background:var(--panel); border:1px solid var(--border); border-radius:18px; padding:18px; width:min(520px,92vw); box-shadow:var(--shadow)}
+.flex{display:flex; gap:12px}.justify-between{justify-content:space-between}.muted{color:var(--muted)}
+.breadcrumbs{display:flex; gap:8px; color:var(--muted); font-size:13px; margin-bottom:10px}
+.breadcrumbs a{color:inherit; text-decoration:none}
+.footer{opacity:.7; font-size:12px; margin:40px 0; text-align:center}

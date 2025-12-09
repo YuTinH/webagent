@@ -1,0 +1,50 @@
+{
+  "task_id": "D3-2025-006",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 3,
+  "steps_total": 3,
+  "time_elapsed": 2.353966236114502,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "url": "https://bank.local/autopay.html",
+      "act": "open"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": ".card"
+    },
+    {
+      "t": 3,
+      "act": "verify_state",
+      "checks": [
+        {
+          "type": "url",
+          "contains": "/autopay"
+        },
+        {
+          "type": "dom",
+          "selector": ".card",
+          "exists": true
+        },
+        {
+          "type": "dom",
+          "selector": "#payee",
+          "exists": true
+        },
+        {
+          "type": "dom",
+          "selector": ".save-autopay",
+          "exists": true
+        }
+      ],
+      "note": "Verify autopay settings page loaded"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": []
+}

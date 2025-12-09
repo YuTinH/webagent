@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Trace",
+  "description": "Execution trace of agent actions",
+  "type": "object",
+  "required": ["task_id", "steps"],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Task ID this trace belongs to"
+    },
+    "agent_version": {
+      "type": "string",
+      "description": "Agent version identifier"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["t", "act"],
+        "properties": {
+          "t": {
+            "type": "number",
+            "description": "Relative time in seconds since task start",
+            "minimum": 0
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Current page URL"
+          },
+          "frame": {
+            "type": "string",
+            "description": "Frame name or 'main'",
+            "default": "main"
+          },
+          "act": {
+            "type": "string",
+            "enum": [
+              "open",
+              "click",
+              "type",
+              "select",
+              "submit",
+              "scroll",
+              "wait",
+              "upload",
+              "download",
+              "api",
+              "assert"
+            ],
+            "description": "Action type"
+          },
+          "selector": {
+            "type": "string",
+            "description": "CSS/XPath/ARIA selector for the element"
+          },
+          "value": {
+            "description": "Input value or expected value for assertions (string or other types)",
+            "oneOf": [
+              {"type": "string"},
+              {"type": "number"},
+              {"type": "boolean"},
+              {"type": "object"},
+              {"type": "array"}
+            ]
+          },
+          "screenshot_id": {
+            "type": "string",
+            "description": "Screenshot filename/ID"
+          },
+          "note": {
+            "type": "string",
+            "description": "Human-readable note about this step"
+          }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "description": "Non-fatal warnings during execution",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "step_index": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "description": "Fatal error that stopped execution",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "step_index": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

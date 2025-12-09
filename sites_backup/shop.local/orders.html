@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的订单 - Nebula商城</title>
+<link rel="stylesheet" href=window.RelRoot + "static/skin.css">
+<link rel="stylesheet" href=window.RelRoot + "static/components.css">
+<style>
+.orders-layout { display: grid; grid-template-columns: 1fr 400px; gap: 24px; align-items: start; }
+.order-list { display: flex; flex-direction: column; gap: 12px; }
+.order-item { padding: 16px; background: var(--card); border: 2px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: .2s; }
+.order-item:hover { border-color: var(--pri); }
+.order-item.active { border-color: var(--pri); background: rgba(79,70,229,0.1); }
+.order-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.order-item-id { font-weight: 600; }
+.order-item-date { font-size: 13px; color: var(--muted); }
+.order-item-product { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.order-item-thumb { width: 48px; height: 48px; background: linear-gradient(135deg, #1e293b, #334155); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.order-item-name { font-size: 14px; }
+.order-item-footer { display: flex; justify-content: space-between; align-items: center; }
+.order-item-total { font-weight: 600; color: #60a5fa; }
+.detail-panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; position: sticky; top: 80px; }
+.detail-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+.detail-kv { display: grid; grid-template-columns: auto 1fr; gap: 12px 16px; margin-bottom: 20px; }
+.detail-key { color: var(--muted); font-size: 14px; }
+.detail-value { font-size: 14px; }
+.delivery-status { display: flex; align-items: center; gap: 8px; }
+.delivery-status.delayed { color: var(--warn); }
+.delivery-status.delivered { color: var(--ok); }
+.detail-actions { display: flex; gap: 12px; margin-top: 20px; }
+.issue-form { margin-top: 16px; display: none; }
+.issue-form.show { display: block; }
+.issue-success { color: var(--ok); margin-top: 12px; padding: 12px; background: rgba(34,197,94,0.1); border-radius: 8px; display: none; }
+.issue-success.show { display: block; }
+.empty-detail { text-align: center; padding: 40px 20px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula商城</div>
+    <div class="navlinks">
+      <a href=window.RelRoot + "shop.local/index.html">首页</a>
+      <a href=window.RelRoot + "shop.local/orders.html" class="active">订单</a>
+      <a href=window.RelRoot + "pay.local/wallet/cards.html">钱包</a>
+    </div>
+    <div class="search"><input placeholder="搜索订单..." onkeypress="if(event.key==='Enter') searchOrders(this.value)"></div>
+    <div style="display:flex; gap:16px; margin-left:16px">
+      <a href=window.RelRoot + "shop.local/cart.html" style="color:var(--text); text-decoration:none; font-size:20px">🛒</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs" style="margin:20px 0"><a href=window.RelRoot + "shop.local/index.html">首页</a> / <span>我的订单</span></div>
+
+  <h1 style="font-size:28px; font-weight:700; margin:0 0 8px 0">我的订单</h1>
+  <p style="color:var(--muted); margin:0 0 24px 0">查看和管理您的所有订单</p>
+
+  <div class="orders-layout">
+    <!-- Order List -->
+    <div>
+      <div id="order-list" class="order-list">
+        <div style="text-align:center; padding:40px; color:var(--muted)">正在加载订单...</div>
+      </div>
+    </div>
+
+    <!-- Detail Panel -->
+    <div class="detail-panel" id="detail-panel">
+      <div class="empty-detail">
+        <div style="font-size:48px; margin-bottom:12px; opacity:0.5">📦</div>
+        <div>选择一个订单查看详情</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Nebula商城 · Synthetic UI for Web Agent Research</div>
+</div>
+
+<script src=window.RelRoot + "static/common.js"></script>
+<script src=window.RelRoot + "static/components.js"></script>
+<script>
+let orders = [];
+let selectedOrderId = null;
+
+async function loadOrders() {
+  const list = document.getElementById('order-list');
+  try {
+    const response = await fetch(window.RelRoot + 'api/orders?user_id=1&limit=20');
+    const data = await response.json();
+
+    if (data.success && data.orders && data.orders.length > 0) {
+      orders = data.orders;
+      renderOrderList();
+      // Auto-select first order
+      if (orders.length > 0) {
+        selectOrder(orders[0].id);
+      }
+      // Track check
+      trackOrdersCheck();
+    } else {
+      list.innerHTML = `
+        <div style="text-align:center; padding:60px 20px; color:var(--muted)">
+          <div style="font-size:48px; margin-bottom:16px; opacity:0.5">📦</div>
+          <div style="font-size:16px; margin-bottom:20px">暂无订单</div>
+          <a href=window.RelRoot + "shop.local/index.html" class="btn pri">去购物</a>
+        </div>
+      `;
+    }
+  } catch (err) {
+    console.error('Failed to load orders:', err);
+    list.innerHTML = `
+      <div style="text-align:center; padding:40px; color:var(--muted)">
+        <div>加载失败</div>
+        <button class="btn" style="margin-top:12px" onclick="loadOrders()">重试</button>
+      </div>
+    `;
+  }
+}
+
+function renderOrderList() {
+  const list = document.getElementById('order-list');
+  list.innerHTML = orders.map(order => {
+    const isActive = order.id === selectedOrderId;
+    const statusBadge = getStatusBadge(order.state);
+    const date = new Date(order.created_at).toLocaleDateString('zh-CN');
+    const firstItem = order.items && order.items[0];
+    const itemName = firstItem ? firstItem.name : '商品';
+    const itemCount = order.items ? order.items.length : 0;
+
+    return `
+      <div class="order-item ${isActive ? 'active' : ''}" onclick="selectOrder('${order.id}')">
+        <div class="order-item-header">
+          <span class="order-item-id">${order.id}</span>
+          <span class="badge ${statusBadge.class}">${statusBadge.text}</span>
+        </div>
+        <div class="order-item-product">
+          <div class="order-item-thumb">🖱️</div>
+          <div>
+            <div class="order-item-name">${escapeHtml(itemName)}</div>
+            <div class="order-item-date">${date}${itemCount > 1 ? ` · 共${itemCount}件` : ''}</div>
+          </div>
+        </div>
+        <div class="order-item-footer">
+          <span class="order-item-total">¥${order.total.toFixed(2)}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectOrder(orderId) {
+  selectedOrderId = orderId;
+  renderOrderList();
+
+  const order = orders.find(o => o.id === orderId);
+  if (!order) return;
+
+  const panel = document.getElementById('detail-panel');
+  const statusBadge = getStatusBadge(order.state);
+  const isOverdue = checkOverdue(order);
+  const deliveryClass = isOverdue ? 'delayed' : (order.state === 'delivered' ? 'delivered' : '');
+  const deliveryText = isOverdue ? '配送延迟' : getDeliveryText(order.state);
+
+  panel.innerHTML = `
+    <div class="detail-title">
+      订单详情
+      <span class="badge ${statusBadge.class}" id="order-state-badge">${statusBadge.text}</span>
+    </div>
+    <div class="detail-kv">
+      <div class="detail-key">订单号</div>
+      <div class="detail-value" id="order-id">${order.id}</div>
+      <div class="detail-key">下单时间</div>
+      <div class="detail-value">${new Date(order.created_at).toLocaleString('zh-CN')}</div>
+      <div class="detail-key">配送状态</div>
+      <div class="detail-value delivery-status ${deliveryClass}" id="delivery-status">${deliveryText}</div>
+      <div class="detail-key">收货地址</div>
+      <div class="detail-value" id="order-address">${order.shipping_address || '123 Main St, Apt 5B'}</div>
+      <div class="detail-key">订单金额</div>
+      <div class="detail-value" style="color:#60a5fa; font-weight:600">¥${order.total.toFixed(2)}</div>
+    </div>
+
+    <div style="border-top:1px solid var(--border); padding-top:16px; margin-top:4px">
+      <div style="font-weight:600; margin-bottom:12px">商品列表</div>
+      ${order.items.map(item => `
+        <div style="display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05)">
+          <div style="width:40px; height:40px; background:linear-gradient(135deg, #1e293b, #334155); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px">🖱️</div>
+          <div style="flex:1">
+            <div style="font-size:14px">${escapeHtml(item.name)}</div>
+            <div style="font-size:12px; color:var(--muted)">x${item.quantity}</div>
+          </div>
+          <div style="font-weight:600">¥${(item.price * item.quantity).toFixed(2)}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="detail-actions">
+      <button class="btn report-issue" onclick="openIssue()">报告问题</button>
+      <button class="btn" onclick="contactService()">联系客服</button>
+      ${order.state === 'delivered' ? `<button class="btn" onclick="initiateReturn('${order.id}')">申请退货</button>` : ''}
+    </div>
+
+    <div class="issue-form" id="issue-form">
+      <select id="issue-type" class="input" style="width:100%; margin-bottom:12px">
+        <option value="">选择问题类型</option>
+        <option value="delivery_delay">配送延迟</option>
+        <option value="damaged">商品破损</option>
+        <option value="wrong_item">发错商品</option>
+        <option value="other">其他问题</option>
+      </select>
+      <textarea id="issue-desc" class="input" placeholder="详细描述问题..." style="width:100%; min-height:80px; margin-bottom:12px"></textarea>
+      <button class="btn ok submit-issue" onclick="submitIssue('${order.id}')">提交问题</button>
+    </div>
+
+    <div class="issue-success" id="issue-success">
+      ✅ 问题已提交，我们会尽快处理！
+    </div>
+  `;
+}
+
+function getStatusBadge(state) {
+  const badges = {
+    'pending': { text: '待处理', class: 'warn' },
+    'confirmed': { text: '已确认', class: 'ok' },
+    'shipped': { text: '已发货', class: 'pri' },
+    'delivered': { text: '已送达', class: 'ok' },
+    'cancelled': { text: '已取消', class: 'err' }
+  };
+  return badges[state] || { text: state, class: '' };
+}
+
+function getDeliveryText(state) {
+  const texts = {
+    'pending': '等待发货',
+    'confirmed': '准备发货',
+    'shipped': '配送中',
+    'delivered': '已送达'
+  };
+  return texts[state] || state;
+}
+
+function checkOverdue(order) {
+  // Check if order is overdue (> 7 days since creation and not delivered)
+  if (order.state === 'delivered' || order.state === 'cancelled') return false;
+  const created = new Date(order.created_at);
+  const now = new Date();
+  const daysDiff = (now - created) / (1000 * 60 * 60 * 24);
+  return daysDiff > 7;
+}
+
+function openIssue() {
+  document.getElementById('issue-form').classList.add('show');
+}
+
+async function submitIssue(orderId) {
+  const issueType = document.getElementById('issue-type').value;
+  const issueDesc = document.getElementById('issue-desc').value;
+
+  if (!issueType) {
+    showToast('请选择问题类型');
+    return;
+  }
+
+  // Update memory
+  const ts = new Date().toISOString();
+  await fetch(window.RelRoot + 'api/memory', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      key: 'orders.tracking.issue_reported',
+      value: JSON.stringify({ order_id: orderId, type: issueType, ts }),
+      source: 'user'
+    })
+  });
+
+  document.getElementById('issue-form').classList.remove('show');
+  document.getElementById('issue-success').classList.add('show');
+  showToast('问题已提交');
+}
+
+async function trackOrdersCheck() {
+  // Record that orders were checked
+  const ts = new Date().toISOString();
+  let overdueCount = 0;
+
+  for (const order of orders) {
+    if (checkOverdue(order)) overdueCount++;
+  }
+
+  // Update memory keys for B5 task
+  await fetch(window.RelRoot + 'api/memory', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      key: 'orders.tracking.last_check',
+      value: ts,
+      source: 'user'
+    })
+  });
+
+  await fetch(window.RelRoot + 'api/memory', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      key: 'orders.tracking.overdue_count',
+      value: String(overdueCount),
+      source: 'user'
+    })
+  });
+
+  // Also call tracking API
+  fetch(window.RelRoot + 'api/orders/track', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+}
+
+function initiateReturn(orderId) {
+  localStorage.setItem('return-order-id', orderId);
+  window.location.href = window.RelRoot + 'shop.local/returns/new.html';
+}
+
+function contactService() {
+  showToast('客服功能开发中...');
+}
+
+function searchOrders(query) {
+  // Filter orders by query
+  if (!query) {
+    renderOrderList();
+    return;
+  }
+  const filtered = orders.filter(o =>
+    o.id.toLowerCase().includes(query.toLowerCase()) ||
+    o.items.some(i => i.name.toLowerCase().includes(query.toLowerCase()))
+  );
+  // Temporarily update display
+  const list = document.getElementById('order-list');
+  if (filtered.length === 0) {
+    list.innerHTML = `<div style="text-align:center; padding:40px; color:var(--muted)">未找到匹配的订单</div>`;
+  } else {
+    const originalOrders = orders;
+    orders = filtered;
+    renderOrderList();
+    orders = originalOrders;
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('__toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+loadOrders();
+</script>
+
+</body>
+</html>

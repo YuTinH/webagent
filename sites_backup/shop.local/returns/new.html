@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>申请退货 - Nebula商城</title>
+<link rel="stylesheet" href=window.RelRoot + "static/skin.css">
+<style>
+.return-form-container { max-width: 800px; margin: 0 auto; }
+.form-section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+.form-section-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+.form-field { margin-bottom: 20px; }
+.form-label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+.form-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 15px; }
+.form-input:focus { outline: none; border-color: var(--pri); }
+.form-select { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 15px; }
+.form-textarea { width: 100%; min-height: 120px; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 15px; resize: vertical; }
+.reason-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.reason-option { padding: 16px; background: rgba(255,255,255,0.03); border: 2px solid var(--border); border-radius: 12px; cursor: pointer; transition: .2s; }
+.reason-option:hover { border-color: var(--pri); }
+.reason-option.selected { border-color: var(--pri); background: rgba(79,70,229,0.1); }
+.reason-option input[type="radio"] { margin-right: 8px; }
+.order-summary { background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; margin-bottom: 20px; }
+.order-item { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.order-item:last-child { border-bottom: none; }
+.item-thumb { width: 60px; height: 60px; background: linear-gradient(135deg, #1e293b, #334155); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.item-info { flex: 1; }
+.item-name { font-weight: 500; margin-bottom: 4px; }
+.item-spec { color: var(--muted); font-size: 13px; }
+.submit-actions { display: flex; gap: 12px; justify-content: flex-end; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula商城</div>
+    <div class="navlinks">
+      <a href=window.RelRoot + "shop.local/index.html">首页</a>
+      <a href=window.RelRoot + "shop.local/orders.html">订单</a>
+      <a href=window.RelRoot + "pay.local/wallet/cards.html">钱包</a>
+    </div>
+    <div class="search"><input placeholder="搜索商品..."></div>
+    <div style="display:flex; gap:16px; margin-left:16px">
+      <a href=window.RelRoot + "shop.local/cart.html" style="color:var(--text); text-decoration:none; font-size:20px">🛒</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs" style="margin:20px 0">
+    <a href=window.RelRoot + "shop.local/index.html">首页</a> /
+    <a href=window.RelRoot + "shop.local/orders.html">订单</a> /
+    <span>申请退货</span>
+  </div>
+
+  <div class="return-form-container">
+    <h1 style="font-size:28px; font-weight:700; margin:0 0 8px 0">申请退货</h1>
+    <p style="color:var(--muted); margin:0 0 24px 0">请填写退货信息，我们将尽快处理您的申请</p>
+
+    <!-- Order Summary -->
+    <div class="form-section">
+      <div class="form-section-title">订单信息</div>
+      <div class="order-summary" id="order-summary">
+        <div style="display:grid; grid-template-columns: auto 1fr; gap: 8px 16px; font-size: 14px;">
+          <div style="color:var(--muted)">订单号:</div>
+          <div id="order-id">-</div>
+          <div style="color:var(--muted)">下单时间:</div>
+          <div id="order-date">-</div>
+          <div style="color:var(--muted)">订单金额:</div>
+          <div id="order-total" style="color:#60a5fa; font-weight:600">-</div>
+        </div>
+      </div>
+      <div id="order-items"></div>
+    </div>
+
+    <!-- Return Reason -->
+    <div class="form-section">
+      <div class="form-section-title">退货原因</div>
+      <div class="reason-options" id="reason-options">
+        <label class="reason-option">
+          <input type="radio" name="return-reason" value="defective">
+          <span>商品破损/质量问题</span>
+        </label>
+        <label class="reason-option">
+          <input type="radio" name="return-reason" value="wrong_item">
+          <span>发错商品</span>
+        </label>
+        <label class="reason-option">
+          <input type="radio" name="return-reason" value="not_as_described">
+          <span>与描述不符</span>
+        </label>
+        <label class="reason-option">
+          <input type="radio" name="return-reason" value="changed_mind">
+          <span>不想要了</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Details -->
+    <div class="form-section">
+      <div class="form-section-title">详细说明</div>
+      <div class="form-field">
+        <label class="form-label">问题描述</label>
+        <textarea id="return-description" class="form-textarea" placeholder="请详细描述退货原因，如有质量问题请说明..."></textarea>
+      </div>
+      <div class="form-field">
+        <label class="form-label">退款方式</label>
+        <select id="refund-method" class="form-select">
+          <option value="original_payment">原支付方式退款</option>
+          <option value="account_balance">退至账户余额</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="submit-actions">
+      <a href=window.RelRoot + "shop.local/orders.html" class="btn">取消</a>
+      <button class="btn ok" onclick="submitReturn()">提交退货申请</button>
+    </div>
+  </div>
+
+  <div class="footer">Nebula商城 · Synthetic UI for Web Agent Research</div>
+</div>
+
+<script src=window.RelRoot + "static/common.js"></script>
+<script>
+let order = null;
+let orderId = null;
+
+async function loadOrder() {
+  orderId = localStorage.getItem('return-order-id');
+  if (!orderId) {
+    // Try URL parameter
+    const params = new URLSearchParams(window.location.search);
+    orderId = params.get('order_id');
+  }
+
+  if (!orderId) {
+    showToast('未指定订单');
+    setTimeout(() => window.location.href = window.RelRoot + 'shop.local/orders.html', 2000);
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/orders/${orderId}`);
+    const data = await response.json();
+
+    if (data.success && data.order) {
+      order = data.order;
+      renderOrder();
+    } else {
+      showToast('订单不存在');
+      setTimeout(() => window.location.href = window.RelRoot + 'shop.local/orders.html', 2000);
+    }
+  } catch (err) {
+    console.error('Failed to load order:', err);
+    showToast('加载订单失败');
+  }
+}
+
+function renderOrder() {
+  document.getElementById('order-id').textContent = order.id;
+  document.getElementById('order-date').textContent = new Date(order.created_at).toLocaleString('zh-CN');
+  document.getElementById('order-total').textContent = `¥${order.total.toFixed(2)}`;
+
+  const itemsContainer = document.getElementById('order-items');
+  itemsContainer.innerHTML = order.items.map(item => `
+    <div class="order-item">
+      <div class="item-thumb">🖱️</div>
+      <div class="item-info">
+        <div class="item-name">${escapeHtml(item.name)}</div>
+        <div class="item-spec">x${item.quantity} · ¥${(item.price * item.quantity).toFixed(2)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function submitReturn() {
+  const reason = document.querySelector('input[name="return-reason"]:checked');
+  const description = document.getElementById('return-description').value.trim();
+  const refundMethod = document.getElementById('refund-method').value;
+
+  if (!reason) {
+    showToast('请选择退货原因');
+    return;
+  }
+
+  if (!description) {
+    showToast('请填写问题描述');
+    return;
+  }
+
+  try {
+    const response = await fetch(window.RelRoot + 'api/returns', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        order_id: orderId,
+        user_id: 1,
+        reason: reason.value,
+        description: description,
+        refund_method: refundMethod
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // Update memory
+      const ts = new Date().toISOString();
+      await fetch(window.RelRoot + 'api/memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: 'returns.last.id',
+          value: data.return_id,
+          source: 'user'
+        })
+      });
+      await fetch(window.RelRoot + 'api/memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: 'returns.last.order_id',
+          value: orderId,
+          source: 'user'
+        })
+      });
+      await fetch(window.RelRoot + 'api/memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: 'returns.last.state',
+          value: 'submitted',
+          source: 'user'
+        })
+      });
+      await fetch(window.RelRoot + 'api/memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: 'returns.last.refund_amount',
+          value: String(order.total),
+          source: 'user'
+        })
+      });
+
+      // Clear localStorage
+      localStorage.removeItem('return-order-id');
+
+      // Redirect to confirmation
+      window.location.href = `/shop.local/returns/confirm.html?id=${data.return_id}`;
+    } else {
+      showToast('提交失败: ' + data.error);
+    }
+  } catch (err) {
+    console.error('Failed to submit return:', err);
+    showToast('提交失败，请稍后重试');
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('__toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Add click handlers for reason options
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.reason-option').forEach(option => {
+    option.addEventListener('click', () => {
+      document.querySelectorAll('.reason-option').forEach(o => o.classList.remove('selected'));
+      option.classList.add('selected');
+      option.querySelector('input[type="radio"]').checked = true;
+    });
+  });
+});
+
+loadOrder();
+</script>
+
+</body>
+</html>

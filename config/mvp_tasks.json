@@ -1,0 +1,174 @@
+{
+  "mvp_version": "1.0",
+  "description": "MVP task list: 3 sites × 10 tasks",
+  "sites": [
+    {
+      "domain": "shop.local",
+      "name": "E-commerce Platform",
+      "port": 3001
+    },
+    {
+      "domain": "bank.local",
+      "name": "Banking & Finance",
+      "port": 3002
+    },
+    {
+      "domain": "gov.local",
+      "name": "Government Services",
+      "port": 3003
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T1",
+      "task_id": "B1-2025-001",
+      "name": "Basic E-commerce Shopping",
+      "family": "B",
+      "difficulty": "easy",
+      "sites": ["shop.local"],
+      "estimated_steps": 23,
+      "dependencies": [],
+      "description": "Search and purchase a product under budget with same-day delivery"
+    },
+    {
+      "id": "T2",
+      "task_id": "D1-2025-002",
+      "name": "Check Account Balance & Transactions",
+      "family": "D",
+      "difficulty": "easy",
+      "sites": ["bank.local"],
+      "estimated_steps": 12,
+      "dependencies": [],
+      "description": "Login, verify balance, export transactions CSV"
+    },
+    {
+      "id": "T3",
+      "task_id": "H1-2025-003",
+      "name": "Check Utility Bill",
+      "family": "H",
+      "difficulty": "easy",
+      "sites": ["gov.local"],
+      "estimated_steps": 10,
+      "dependencies": [],
+      "description": "Login to utility portal, check current bill amount and due date"
+    },
+    {
+      "id": "T4",
+      "task_id": "C2-2025-004",
+      "name": "Return & Refund",
+      "family": "C",
+      "difficulty": "medium",
+      "sites": ["shop.local"],
+      "estimated_steps": 10,
+      "dependencies": ["B1-2025-001"],
+      "description": "Return a product from recent order and get refund"
+    },
+    {
+      "id": "T5",
+      "task_id": "B5-2025-005",
+      "name": "Track Multiple Orders & Handle Delivery Issue",
+      "family": "B",
+      "difficulty": "medium",
+      "sites": ["shop.local"],
+      "estimated_steps": 25,
+      "dependencies": ["B1-2025-001"],
+      "description": "Check status of 3 recent orders, report delay if any order is overdue"
+    },
+    {
+      "id": "T6",
+      "task_id": "D3-2025-006",
+      "name": "Schedule Automatic Payment",
+      "family": "D",
+      "difficulty": "medium",
+      "sites": ["bank.local"],
+      "estimated_steps": 18,
+      "dependencies": ["H1-2025-003"],
+      "description": "Set up auto-pay for utility bill from checking account"
+    },
+    {
+      "id": "T7",
+      "task_id": "H2-2025-007",
+      "name": "Submit Permit Application with Documents",
+      "family": "H",
+      "difficulty": "medium",
+      "sites": ["gov.local"],
+      "estimated_steps": 20,
+      "dependencies": [],
+      "description": "Apply for parking permit by filling form and uploading documents"
+    },
+    {
+      "id": "T8",
+      "task_id": "D4-2025-008",
+      "name": "Credit Card Replacement & Binding Update",
+      "family": "D",
+      "difficulty": "hard",
+      "sites": ["bank.local", "shop.local", "gov.local"],
+      "estimated_steps": 50,
+      "dependencies": ["D1-2025-002"],
+      "description": "Replace expiring card and update all merchant bindings"
+    },
+    {
+      "id": "T9",
+      "task_id": "M1-2025-009",
+      "name": "Lost Bank Card Crisis Handling",
+      "family": "M",
+      "difficulty": "hard",
+      "sites": ["bank.local", "shop.local", "gov.local"],
+      "estimated_steps": 62,
+      "dependencies": ["D4-2025-008"],
+      "description": "Block lost card, issue virtual card, update 5+ merchants"
+    },
+    {
+      "id": "T10",
+      "task_id": "K2-2025-010",
+      "name": "Roommate Expense Sharing (AA Split)",
+      "family": "K",
+      "difficulty": "hard",
+      "sites": ["shop.local", "bank.local"],
+      "estimated_steps": 40,
+      "dependencies": ["B1-2025-001", "D1-2025-002"],
+      "description": "Review shared expenses and split bills with roommate"
+    }
+  ],
+  "evaluation_metrics": [
+    "SR",
+    "LH-F1",
+    "MemRet@k",
+    "MemRet-MRR",
+    "Bind-Update",
+    "Resilience@Shift",
+    "Cost-Efficiency"
+  ],
+  "implementation_phases": [
+    {
+      "phase": 1,
+      "name": "Foundation",
+      "weeks": 2,
+      "tasks": ["Infrastructure setup", "UI components", "Database schema"]
+    },
+    {
+      "phase": 2,
+      "name": "Easy Tasks",
+      "weeks": 2,
+      "tasks": ["T1", "T2", "T3"]
+    },
+    {
+      "phase": 3,
+      "name": "Medium Tasks",
+      "weeks": 3,
+      "tasks": ["T4", "T5", "T6", "T7"]
+    },
+    {
+      "phase": 4,
+      "name": "Hard Tasks",
+      "weeks": 3,
+      "tasks": ["T8", "T9", "T10"]
+    },
+    {
+      "phase": 5,
+      "name": "Testing & Refinement",
+      "weeks": 2,
+      "tasks": ["Perturbations", "Baseline evaluation", "Bug fixes"]
+    }
+  ]
+}

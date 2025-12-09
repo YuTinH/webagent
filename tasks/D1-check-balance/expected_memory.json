@@ -1,0 +1,23 @@
+{
+  "banking.balance.checking": {
+    "key": "banking.balance.checking",
+    "value": 1523.45,
+    "ts": "2025-11-16T10:00:14Z",
+    "source": "D1-2025-002",
+    "confidence": 1.0
+  },
+  "banking.balance.last_check": {
+    "key": "banking.balance.last_check",
+    "value": "2025-11-16T10:00:14Z",
+    "ts": "2025-11-16T10:00:14Z",
+    "source": "D1-2025-002",
+    "confidence": 1.0
+  },
+  "banking.transactions.last_export": {
+    "key": "banking.transactions.last_export",
+    "value": "transactions.csv",
+    "ts": "2025-11-16T10:00:14Z",
+    "source": "D1-2025-002",
+    "confidence": 1.0
+  }
+}

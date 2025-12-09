@@ -1,0 +1,5 @@
+{
+  "autopay.utility.id": {"key": "autopay.utility.id", "value": "AP-1001", "ts": "2025-11-21T10:00:11Z", "source": "D3-2025-006", "confidence": 1.0},
+  "autopay.utility.status": {"key": "autopay.utility.status", "value": "active", "ts": "2025-11-21T10:00:11Z", "source": "D3-2025-006", "confidence": 1.0},
+  "autopay.utility.next_date": {"key": "autopay.utility.next_date", "value": "2025-11-28", "ts": "2025-11-21T10:00:11Z", "source": "D3-2025-006", "confidence": 1.0}
+}

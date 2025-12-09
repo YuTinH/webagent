@@ -1,0 +1,37 @@
+{
+  "task_id": "D4-2025-008",
+  "error_type": "AssertionError",
+  "timestamp": "2025-11-30T04:56:38.771720Z",
+  "step_index": 2,
+  "error_message": "Element 'h1' text does not contain '\u5361\u7247'",
+  "context": {
+    "url": "http://localhost:8014/bank.local/cards",
+    "screenshot": "errors/D4-2025-008/error_step_2.png"
+  },
+  "step": {
+    "t": 3,
+    "act": "verify_state",
+    "checks": [
+      {
+        "type": "url",
+        "contains": "/cards"
+      },
+      {
+        "type": "dom",
+        "selector": ".container",
+        "exists": true
+      },
+      {
+        "type": "dom",
+        "selector": "h1",
+        "text_contains": "\u5361\u7247"
+      }
+    ],
+    "note": "Verify cards management page loaded"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "failed",
+  "metrics": {}
+}

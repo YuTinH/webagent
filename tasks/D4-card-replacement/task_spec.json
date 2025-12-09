@@ -1,0 +1,33 @@
+{
+  "task_id": "D4-2025-008",
+  "family": "D",
+  "episode_id": "ep-001",
+  "priority": 5,
+  "seed": 99,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {"risk_tolerance": "low", "automation_preference": "high"},
+  "goal": "Replace expiring credit card (last4: 1234) with new card (last4: 7777) and update all merchant bindings",
+  "inputs": {
+    "old_card_last4": "1234",
+    "new_card_last4": "7777",
+    "new_card_exp": "12/2029",
+    "update_bindings": true,
+    "merchants_priority": ["shop.local", "util.local", "travel.local"]
+  },
+  "allowed_domains": ["bank.local", "shop.local", "gov.local"],
+    "preconditions": [
+      "mem('payment.cards[0].last4') == '1234'",
+      "mem('payment.cards[0].status') == 'blocked'"
+    ],
+    "dependencies": [
+      "M1-2025-009"
+    ]
+  ,
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {"strategy": "exponential_backoff", "max_retries": 3, "retry_delay_ms": 1000, "backoff_multiplier": 2.0},
+    "on_element_not_found": {"strategy": "wait_and_retry", "wait_seconds": 15},
+    "on_assertion_fail": {"strategy": "save_trace_and_report", "capture_screenshot": true, "capture_dom": true, "capture_memory": true},
+    "on_precondition_fail": "abort_with_warning"
+  }
+}

@@ -1,0 +1,62 @@
+<script>window.RelRoot = "../../";</script>
+<!doctype html><meta charset="utf-8"><title>pay.local - 钱包</title>
+<link rel="stylesheet" href="../../static/skin.css"><script src="../../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula</div>
+    <div class="navlinks">
+      <a href="../../shop.local/index.html">商城</a>
+      <a href="../../pay.local/wallet/cards.html">钱包</a>
+      <a href="../../trip.local/manage/PNR9ZZ.html">行程</a>
+      <a href="../../permit.local/RP-2024-77.html">许可</a>
+      <a href="../../energy.local/plan.html">能源</a>
+      <a href="../../card.local/block.html">安全</a>
+    </div>
+    <div class="search"><input placeholder="搜索订单/行程/卡号…"></div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs"><a href="../../pay.local/wallet/cards.html">钱包</a> / <span>绑定与换卡</span></div>
+  <div class="grid cols-2">
+    <div class="card">
+      <div class="header"><div class="title">主卡</div><span class="badge ok">已验证</span></div>
+      <div class="kv">
+        <div class="key">当前卡</div><div id="active-card" class="badge">****1234</div>
+        <div class="key">新卡末四位</div><div><input id="new-card-last4" class="input" placeholder="7777"></div>
+      </div>
+      <div class="hr"></div>
+      <div class="row">
+        <button class="btn pri" onclick="openModal('#rebind-modal')">确认更换</button>
+        <button class="btn">添加副卡</button>
+        <button class="btn">风控设置</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="header"><div class="title">商户绑定</div><span class="muted">自动同步</span></div>
+      <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px">
+        <li class="badge" data-merchant="shop.local">shop.local - ****1234</li>
+        <li class="badge" data-merchant="ride.local">ride.local - ****1234</li>
+        <li class="badge" data-merchant="food.local">food.local - ****1234</li>
+        <li class="badge" data-merchant="stream.local">stream.local - ****1234</li>
+        <li class="badge" data-merchant="cloud.local">cloud.local - ****1234</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div id="rebind-modal" class="modal">
+  <div class="panel">
+    <div class="flex justify-between" style="margin-bottom:12px">
+      <div style="font-weight:700">更换绑定卡</div>
+      <button class="btn" onclick="closeModal('#rebind-modal')">×</button>
+    </div>
+    <div class="muted" style="margin-bottom:12px">将所有商户从 ****1234 更新为输入的新卡。</div>
+    <div class="row">
+      <button class="btn" onclick="closeModal('#rebind-modal')">取消</button>
+      <button class="btn ok" onclick="send('D4-0017','rebind_confirm',{newLast4: document.getElementById('new-card-last4').value||'7777'}); closeModal('#rebind-modal')">确认更换</button>
+    </div>
+  </div>
+</div>
+

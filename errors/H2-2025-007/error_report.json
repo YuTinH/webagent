@@ -1,0 +1,23 @@
+{
+  "task_id": "H2-2025-007",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-11-26T08:17:52.675861Z",
+  "step_index": 7,
+  "error_message": "Locator.inner_text: Timeout 45000ms exceeded.\nCall log:\n  - waiting for locator(\"#application-state\")\n",
+  "context": {
+    "url": "http://localhost:8014/gov.local/permits/parking.html",
+    "screenshot": "errors/H2-2025-007/error_step_7.png"
+  },
+  "step": {
+    "t": 18,
+    "act": "assert",
+    "selector": "#application-state",
+    "value": "submitted",
+    "screenshot_id": "app_submitted"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

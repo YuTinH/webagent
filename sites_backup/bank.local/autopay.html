@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - 自动扣款</title>
+  <link rel="stylesheet" href=window.RelRoot + "static/skin.css">
+<link rel="stylesheet" href=window.RelRoot + "static/components.css">
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+      <div class="navlinks">
+        <a href=window.RelRoot + "bank.local/dashboard">总览</a>
+        <a href=window.RelRoot + "bank.local/transactions">交易</a>
+        <a href=window.RelRoot + "bank.local/autopay" class="active">自动扣款</a>
+      </div>
+    </div>
+  </div>
+  <div id="__toast" class="toast"></div>
+  <div class="container">
+    <div class="breadcrumbs"><a href=window.RelRoot + "bank.local/dashboard">银行</a> / <span>自动扣款</span></div>
+    <div class="grid cols-2">
+      <div class="card">
+        <div class="header"><div class="title">新增自动扣款</div></div>
+        <div class="form">
+          <label>缴费对象</label>
+          <select id="payee" class="input">
+            <option value="utilities">City Utilities</option>
+            <option value="landlord">Landlord</option>
+            <option value="internet">Internet Provider</option>
+          </select>
+          <label>扣款账户</label>
+          <select id="account" class="input">
+            <option value="checking">Checking ****1234</option>
+            <option value="savings">Savings ****0001</option>
+          </select>
+          <label>金额 (USD)</label>
+          <input id="amount" type="number" class="input" placeholder="130.50" value="130.50">
+          <label>频率</label>
+          <select id="frequency" class="input">
+            <option value="monthly" selected>每月</option>
+            <option value="weekly">每周</option>
+            <option value="quarterly">每季度</option>
+          </select>
+          <label>开始日期</label>
+          <input id="start-date" type="date" class="input" value="2025-11-28">
+          <button class="btn pri add-autopay save-autopay" onclick="createAutopay()">保存设置</button>
+        </div>
+      </div>
+      <div class="card" id="autopay-card">
+        <div class="header"><div class="title">当前自动扣款</div></div>
+        <div id="autopay-list" class="kv" style="gap:12px"></div>
+        <div class="autopay-status badge" style="margin-top:12px">未设置</div>
+      </div>
+    </div>
+  </div>
+<script src=window.RelRoot + "static/common.js"></script>
+<script src=window.RelRoot + "static/components.js"></script>
+  <script>
+  async function fetchAutopay(){
+    const res = await fetch(window.RelRoot + 'api/autopay');
+    const data = await res.json();
+    const list = document.getElementById('autopay-list');
+    if (data.items.length === 0){
+      list.innerHTML = '<div class="muted">暂无自动扣款</div>';
+      return;
+    }
+    list.innerHTML = data.items.map(item => `
+      <div>
+        <div><strong>${item.payee}</strong> (${item.state})</div>
+        <div>账户：${item.account_type} · 频率：${item.frequency}</div>
+        <div>下次日期：${item.next_date}</div>
+      </div>
+    `).join('');
+    document.querySelector('.autopay-status').textContent = data.items[0].state;
+  }
+  async function createAutopay(){
+    const body = {
+      payee: document.getElementById('payee').value,
+      account_type: document.getElementById('account').value,
+      amount: parseFloat(document.getElementById('amount').value || '0'),
+      frequency: document.getElementById('frequency').value,
+      start_date: document.getElementById('start-date').value
+    };
+    const res = await fetch(window.RelRoot + 'api/autopay', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (data.success){
+      document.querySelector('.autopay-status').textContent = data.autopay.state;
+      document.querySelector('.autopay-status').classList.add('badge','ok');
+      toast('自动扣款已启用');
+      fetchAutopay();
+    } else {
+      toast('提交失败');
+    }
+  }
+  document.addEventListener('DOMContentLoaded', fetchAutopay);
+  </script>
+</body>
+</html>

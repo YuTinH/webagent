@@ -1,0 +1,73 @@
+{
+  "task_id": "K2-2025-010",
+  "family": "K",
+  "episode_id": "ep-001",
+  "priority": 4,
+  "seed": 123,
+  "time": "2025-11-30T18:00:00Z",
+  "persona": {
+    "roommate_count": 2,
+    "split_method": "equal"
+  },
+  "goal": "Review shared expenses (utilities, groceries) and split bills with roommate",
+  "inputs": {
+    "month": "2025-10",
+    "members": [
+      "testuser",
+      "roommate_bob"
+    ],
+    "rules": "equal",
+    "expense_tags": [
+      "shared"
+    ]
+  },
+  "allowed_domains": [
+    "shop.local",
+    "bank.local"
+  ],
+  "preconditions": [
+    "mem('orders.last.id') != ''",
+    "mem('banking.balance.checking') > 0"
+  ],
+  "memory_keys": [
+    "settlements.2025-10.amount",
+    "settlements.2025-10.state",
+    "settlements.2025-10.members"
+  ],
+  "success_criteria": [
+    "url().includes('/settlements')"
+  ],
+  "artifacts": [
+    "settlement_summary",
+    "payment_request"
+  ],
+  "rubrics": {
+    "SR": 1.0,
+    "LH-F1": 0.4
+  },
+  "timeout": 500,
+  "step_timeout": 45,
+  "dependencies": [
+    "B1-2025-001",
+    "D1-2025-002"
+  ],
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {
+      "strategy": "retry",
+      "max_retries": 3,
+      "retry_delay_ms": 1000
+    },
+    "on_element_not_found": {
+      "strategy": "wait_and_retry",
+      "wait_seconds": 10
+    },
+    "on_assertion_fail": {
+      "strategy": "save_trace_and_report",
+      "capture_screenshot": true,
+      "capture_dom": true,
+      "capture_memory": true
+    },
+    "on_precondition_fail": "abort_with_warning"
+  }
+}

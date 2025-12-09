@@ -1,0 +1,5 @@
+{
+  "settlements.2025-10.amount": {"key": "settlements.2025-10.amount", "value": 187.50, "ts": "2025-11-30T18:00:21Z", "source": "K2-2025-010", "confidence": 1.0},
+  "settlements.2025-10.state": {"key": "settlements.2025-10.state", "value": "sent", "ts": "2025-11-30T18:00:21Z", "source": "K2-2025-010", "confidence": 1.0},
+  "settlements.2025-10.members": {"key": "settlements.2025-10.members", "value": ["testuser", "roommate_bob"], "ts": "2025-11-30T18:00:21Z", "source": "K2-2025-010", "confidence": 1.0}
+}

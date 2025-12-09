@@ -1,0 +1,52 @@
+{
+  "task_id": "C2-2025-004",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 3,
+  "steps_total": 3,
+  "time_elapsed": 1.8627402782440186,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "url": "https://shop.local/returns/new.html",
+      "frame": "main",
+      "act": "open",
+      "note": "Navigate to return form"
+    },
+    {
+      "t": 2.0,
+      "url": "https://shop.local/returns/new.html",
+      "frame": "main",
+      "act": "wait",
+      "selector": ".return-form-container",
+      "note": "Wait for form to load"
+    },
+    {
+      "t": 3.0,
+      "url": "https://shop.local/returns/new.html",
+      "frame": "main",
+      "act": "verify_state",
+      "checks": [
+        {
+          "type": "url",
+          "contains": "/returns/new.html"
+        },
+        {
+          "type": "dom",
+          "selector": ".return-form-container",
+          "exists": true
+        },
+        {
+          "type": "dom",
+          "selector": "#order-summary",
+          "exists": true
+        }
+      ],
+      "note": "Verify return form page loaded successfully"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": []
+}

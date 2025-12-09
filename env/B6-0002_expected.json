@@ -1,0 +1,11 @@
+{
+  "orders": {
+    "O-98321": {
+      "claims": {
+        "price_protect": {
+          "state": "submitted"
+        }
+      }
+    }
+  }
+}

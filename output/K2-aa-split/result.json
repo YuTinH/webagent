@@ -1,0 +1,50 @@
+{
+  "task_id": "K2-2025-010",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 3,
+  "steps_total": 3,
+  "time_elapsed": 1.8215453624725342,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "url": "https://bank.local/settlements.html",
+      "act": "open"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": ".create-form"
+    },
+    {
+      "t": 3,
+      "act": "verify_state",
+      "checks": [
+        {
+          "type": "url",
+          "contains": "/settlements"
+        },
+        {
+          "type": "dom",
+          "selector": ".create-form",
+          "exists": true
+        },
+        {
+          "type": "dom",
+          "selector": ".create-form",
+          "exists": true
+        },
+        {
+          "type": "dom",
+          "selector": "#settlement-amount",
+          "exists": true
+        }
+      ],
+      "note": "Verify settlements/split payment page loaded"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": []
+}

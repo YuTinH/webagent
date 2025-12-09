@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - 登录</title>
+  <link rel="stylesheet" href=window.RelRoot + "static/skin.css">
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+    </div>
+  </div>
+  <div class="container" style="max-width:480px">
+    <h1 style="margin-bottom:24px">登录</h1>
+    <div class="card soft">
+      <div class="form">
+        <label>用户名</label>
+        <input id="username" class="input" placeholder="用户名">
+        <label>密码</label>
+        <input id="password" type="password" class="input" placeholder="密码">
+        <button class="btn pri" type="submit" style="margin-top:16px" onclick="login()">登录</button>
+      </div>
+    </div>
+  </div>
+  <script>
+  function login() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    localStorage.setItem('bank.user', u);
+    window.location.href = window.RelRoot + 'bank.local/dashboard';
+  }
+  </script>
+</body>
+</html>

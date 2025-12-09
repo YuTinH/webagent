@@ -1,0 +1,12 @@
+{
+  "orders": {
+    "O-98321": {
+      "current_price": 179,
+      "claims": {
+        "price_protect": {
+          "state": "none"
+        }
+      }
+    }
+  }
+}

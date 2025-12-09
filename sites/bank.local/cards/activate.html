@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../../";</script>
+<meta charset="utf-8">
+<title>激活新卡 - Nebula Bank</title>
+<link rel="stylesheet" href="../../static/skin.css">
+<style>
+.activate-container { max-width: 500px; margin: 40px auto; }
+.card-visual { background: linear-gradient(135deg, #1e40af, #7c3aed); border-radius: 16px; padding: 30px; color: white; margin-bottom: 24px; }
+.card-visual .chip { width: 50px; height: 36px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 6px; margin-bottom: 20px; }
+.card-visual .number { font-size: 20px; letter-spacing: 4px; font-family: monospace; margin-bottom: 20px; }
+.card-visual .label { font-size: 11px; opacity: 0.7; margin-bottom: 4px; }
+.card-visual .value { font-size: 14px; }
+.form-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+.form-field { margin-bottom: 20px; }
+.form-label { display: block; font-weight: 500; margin-bottom: 8px; }
+.form-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 15px; }
+.form-input:focus { outline: none; border-color: var(--pri); }
+.success-msg { text-align: center; padding: 40px; }
+.success-icon { font-size: 64px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Bank</div>
+    <div class="navlinks">
+      <a href="../../bank.local/dashboard.html">账户</a>
+      <a href="../../bank.local/transactions.html">交易</a>
+      <a href="../../bank.local/cards.html" class="active">卡片</a>
+      <a href="../../bank.local/autopay.html">自动付款</a>
+      <a href="../../bank.local/merchant-bindings.html">商户绑定</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+<div class="container">
+  <div class="breadcrumbs" style="margin:20px 0">
+    <a href="../../bank.local/cards.html">卡片管理</a> / <span>激活新卡</span>
+  </div>
+
+  <div class="activate-container">
+    <h1 style="margin-bottom:8px">激活新卡</h1>
+    <p style="color:var(--muted);margin-bottom:24px">请输入新卡信息以完成激活</p>
+
+    <div id="activate-form">
+      <div class="card-visual">
+        <div class="chip"></div>
+        <div class="number" id="card-preview">**** **** **** ****</div>
+        <div style="display:flex; gap:40px">
+          <div><div class="label">持卡人</div><div class="value">USER NAME</div></div>
+          <div><div class="label">有效期</div><div class="value" id="exp-preview">MM/YY</div></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-field">
+          <label class="form-label">卡号 (16位)</label>
+          <input type="text" id="card-number" class="form-input" placeholder="请输入卡号" maxlength="19" oninput="formatCardNumber(this)">
+        </div>
+        <div class="form-field">
+          <label class="form-label">有效期</label>
+          <input type="text" id="exp-date" class="form-input" placeholder="MM/YY" maxlength="5" oninput="formatExpDate(this)">
+        </div>
+        <div class="form-field">
+          <label class="form-label">CVV (卡背面3位数字)</label>
+          <input type="password" id="cvv" class="form-input" placeholder="***" maxlength="3">
+        </div>
+        <div class="form-field">
+          <label class="form-label">设置PIN码 (6位数字)</label>
+          <input type="password" id="pin" class="form-input" placeholder="请设置6位PIN码" maxlength="6">
+        </div>
+        <button class="btn pri" style="width:100%" onclick="activateCard()">激活卡片</button>
+      </div>
+    </div>
+
+    <div id="success-view" class="form-section" style="display:none">
+      <div class="success-msg">
+        <div class="success-icon">✅</div>
+        <h2 style="margin-bottom:8px">卡片激活成功！</h2>
+        <p style="color:var(--muted);margin-bottom:24px">您的新卡已可正常使用</p>
+        <a href="../../bank.local/cards.html" class="btn pri">返回卡片列表</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Nebula Bank</div>
+</div>
+<script src="../../static/common.js"></script>
+<script>
+function formatCardNumber(input) {
+  let value = input.value.replace(/\D/g, '');
+  value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+  input.value = value;
+  document.getElementById('card-preview').textContent = value || '**** **** **** ****';
+}
+function formatExpDate(input) {
+  let value = input.value.replace(/\D/g, '');
+  if (value.length >= 2) {
+    value = value.slice(0,2) + '/' + value.slice(2);
+  }
+  input.value = value;
+  document.getElementById('exp-preview').textContent = value || 'MM/YY';
+}
+async function activateCard() {
+  const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+  const expDate = document.getElementById('exp-date').value;
+  const cvv = document.getElementById('cvv').value;
+  const pin = document.getElementById('pin').value;
+
+  if (cardNumber.length !== 16) {
+    showToast('请输入正确的16位卡号');
+    return;
+  }
+  if (!/^\d{2}\/\d{2}$/.test(expDate)) {
+    showToast('请输入正确的有效期格式');
+    return;
+  }
+  if (cvv.length !== 3) {
+    showToast('请输入正确的CVV');
+    return;
+  }
+  if (pin.length !== 6 || !/^\d+$/.test(pin)) {
+    showToast('请输入6位数字PIN码');
+    return;
+  }
+
+  try {
+    const res = await fetch('../../api/cards/activate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        card_number: cardNumber,
+        exp_date: expDate,
+        cvv: cvv,
+        pin: pin,
+        user_id: 1
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      // Update memory
+      await fetch('/api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({key:'payment.cards.last_activated',value:cardNumber.slice(-4),source:'user'})
+      });
+      await fetch('/api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({key:'payment.cards.activation_time',value:new Date().toISOString(),source:'user'})
+      });
+
+      document.getElementById('activate-form').style.display = 'none';
+      document.getElementById('success-view').style.display = 'block';
+    } else {
+      showToast(data.error || '激活失败');
+    }
+  } catch(e) {
+    showToast('激活失败，请稍后重试');
+  }
+}
+function showToast(msg) {
+  const t = document.getElementById('__toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

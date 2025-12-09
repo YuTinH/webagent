@@ -1,0 +1,6 @@
+{
+  "payment.cards[0].state": {"key": "payment.cards[0].state", "value": "blocked", "ts": "2025-11-16T15:30:55Z", "source": "M1-2025-009", "confidence": 1.0},
+  "payment.cards.virtual.last4": {"key": "payment.cards.virtual.last4", "value": "8899", "ts": "2025-11-16T15:30:55Z", "source": "M1-2025-009", "confidence": 1.0},
+  "payment.crisis.last_block_time": {"key": "payment.crisis.last_block_time", "value": "2025-11-16T15:30:07Z", "ts": "2025-11-16T15:30:55Z", "source": "M1-2025-009", "confidence": 1.0},
+  "payment.bindings.temp_updated_count": {"key": "payment.bindings.temp_updated_count", "value": 5, "ts": "2025-11-16T15:30:55Z", "source": "M1-2025-009", "confidence": 1.0}
+}

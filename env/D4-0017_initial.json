@@ -1,0 +1,16 @@
+{
+  "payments": {
+    "cards": {
+      "active_last4": "1234"
+    },
+    "merchant_bindings": {
+      "map": {
+        "shop.local": "1234",
+        "ride.local": "1234",
+        "food.local": "1234",
+        "stream.local": "1234",
+        "cloud.local": "1234"
+      }
+    }
+  }
+}

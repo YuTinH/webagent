@@ -1,0 +1,39 @@
+{
+  "task_id": "C2-2025-004",
+  "error_type": "AssertionError",
+  "timestamp": "2025-11-30T04:28:21.884461Z",
+  "step_index": 2,
+  "error_message": "Element 'form.return-form' not found",
+  "context": {
+    "url": "http://localhost:8014/shop.local/returns/new.html",
+    "screenshot": "errors/C2-2025-004/error_step_2.png"
+  },
+  "step": {
+    "t": 3.0,
+    "url": "https://shop.local/returns/new.html",
+    "frame": "main",
+    "act": "verify_state",
+    "checks": [
+      {
+        "type": "url",
+        "contains": "/returns/new.html"
+      },
+      {
+        "type": "dom",
+        "selector": ".return-form-container",
+        "exists": true
+      },
+      {
+        "type": "dom",
+        "selector": "form.return-form",
+        "exists": true
+      }
+    ],
+    "note": "Verify return form page loaded successfully"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "failed",
+  "metrics": {}
+}

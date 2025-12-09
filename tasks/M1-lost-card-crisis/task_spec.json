@@ -1,0 +1,78 @@
+{
+  "task_id": "M1-2025-009",
+  "family": "M",
+  "episode_id": "ep-003",
+  "priority": 10,
+  "seed": 777,
+  "time": "2025-11-16T15:30:00Z",
+  "persona": {
+    "panic_level": "high",
+    "merchant_count": 8
+  },
+  "goal": "Block lost card 1234, order replacement, and update 5+ merchant bindings to temporary virtual card",
+  "inputs": {
+    "lost_card_last4": "1234",
+    "reissue": true,
+    "use_virtual_card": true,
+    "critical_merchants": [
+      "shop.local",
+      "util.local",
+      "food.local",
+      "transport.local",
+      "stream.local"
+    ]
+  },
+  "allowed_domains": [
+    "bank.local",
+    "shop.local",
+    "gov.local"
+  ],
+  "preconditions": [
+    "mem('payment.cards[0].last4') != ''",
+    "mem('payment.cards[0].status') == 'active'"
+  ],
+  "memory_keys": [
+    "payment.cards[0].state",
+    "payment.cards.virtual.last4",
+    "payment.crisis.last_block_time",
+    "payment.bindings.temp_updated_count"
+  ],
+  "success_criteria": [
+    "url().includes('/cards')"
+  ],
+  "artifacts": [
+    "block_confirmation",
+    "virtual_card_info",
+    "binding_update_report"
+  ],
+  "rubrics": {
+    "SR": 1.0,
+    "Bind-Update": 1.0,
+    "Crisis-Response-Time": 0.5
+  },
+  "timeout": 900,
+  "step_timeout": 60,
+  "dependencies": [
+    "D3-2025-006"
+  ],
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {
+      "strategy": "exponential_backoff",
+      "max_retries": 5,
+      "retry_delay_ms": 500,
+      "backoff_multiplier": 2.0
+    },
+    "on_element_not_found": {
+      "strategy": "wait_and_retry",
+      "wait_seconds": 15
+    },
+    "on_assertion_fail": {
+      "strategy": "save_trace_and_report",
+      "capture_screenshot": true,
+      "capture_dom": true,
+      "capture_memory": true
+    },
+    "on_precondition_fail": "abort_with_warning"
+  }
+}

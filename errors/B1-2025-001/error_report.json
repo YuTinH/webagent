@@ -1,0 +1,24 @@
+{
+  "task_id": "B1-2025-001",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-08T06:33:06.284891Z",
+  "step_index": 16,
+  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".cart-checkout-btn\")\n",
+  "context": {
+    "url": "http://localhost:8014/shop.local/cart.html",
+    "screenshot": "errors/B1-2025-001/error_step_16.png"
+  },
+  "step": {
+    "t": 15.0,
+    "url": "https://shop.local/cart",
+    "frame": "main",
+    "act": "click",
+    "selector": ".cart-checkout-btn",
+    "note": "Proceed to checkout"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

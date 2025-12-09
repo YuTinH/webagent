@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>购物车 - Nebula商城</title>
+<link rel="stylesheet" href=window.RelRoot + "static/skin.css">
+<link rel="stylesheet" href=window.RelRoot + "static/components.css">
+<style>
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: start;
+}
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.cart-item {
+  display: flex;
+  gap: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: .2s;
+}
+.cart-item:hover {
+  border-color: var(--pri);
+}
+.item-checkbox {
+  display: flex;
+  align-items: center;
+}
+.item-checkbox input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.item-image {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.item-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+.item-name:hover {
+  color: var(--pri);
+}
+.item-desc {
+  color: var(--muted);
+  font-size: 13px;
+}
+.item-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.item-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+  align-items: center;
+}
+.item-price-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  min-width: 140px;
+}
+.item-price {
+  font-size: 22px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+.item-original-price {
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2px;
+}
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: .2s;
+  font-size: 16px;
+}
+.qty-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.15);
+}
+.qty-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.qty-input {
+  width: 45px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+.remove-btn {
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: .2s;
+  background: none;
+  border: none;
+  padding: 4px 8px;
+}
+.remove-btn:hover {
+  color: var(--err);
+}
+.cart-summary {
+  position: sticky;
+  top: 80px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.summary-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  font-size: 15px;
+}
+.summary-row.total {
+  border-top: 2px solid var(--border);
+  margin-top: 12px;
+  padding-top: 20px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.summary-row .label {
+  color: var(--muted);
+}
+.summary-row.total .label {
+  color: var(--text);
+}
+.summary-row .value {
+  font-weight: 600;
+}
+.summary-row.total .value {
+  font-size: 28px;
+  color: #60a5fa;
+}
+.checkout-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+.empty-cart {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 24px;
+  opacity: 0.5;
+}
+.select-all {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+.select-all input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.batch-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-left: auto;
+}
+.savings-badge {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      Nebula商城
+    </div>
+    <div class="navlinks">
+      <a href=window.RelRoot + "shop.local/index.html">首页</a>
+      <a href=window.RelRoot + "shop.local/orders.html">订单</a>
+      <a href=window.RelRoot + "pay.local/wallet/cards.html">钱包</a>
+    </div>
+    <div class="search">
+      <input type="search" placeholder="搜索商品..." onkeypress="if(event.key==='Enter') window.location.href=window.RelRoot + 'shop.local/search.html?q='+encodeURIComponent(this.value)">
+    </div>
+    <div style="display:flex; gap:16px; margin-left:16px">
+      <a href=window.RelRoot + "shop.local/cart.html" class="active" style="color:var(--pri); text-decoration:none; font-size:20px">
+        🛒
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs" style="margin:20px 0">
+    <a href=window.RelRoot + "shop.local/index.html">首页</a> / <span>购物车</span>
+  </div>
+
+  <!-- Header -->
+  <div style="margin-bottom:24px">
+    <h1 style="font-size:28px; font-weight:700; margin:0 0 8px 0">购物车</h1>
+    <p style="color:var(--muted); margin:0">共 <span id="total-items">0</span> 件商品</p>
+  </div>
+
+  <!-- Cart Content -->
+  <div id="cart-content">
+    <div class="empty-cart">
+      <div class="empty-icon">🛒</div>
+      <div style="font-size:20px; font-weight:600; margin-bottom:12px">购物车是空的</div>
+      <div style="margin-bottom:32px">快去挑选心仪的商品吧！</div>
+      <a href=window.RelRoot + "shop.local/index.html" class="btn pri" style="display:inline-block">去逛逛</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Nebula商城 · Synthetic UI for Web Agent Research
+  </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src=window.RelRoot + "static/common.js"></script>
+<script src=window.RelRoot + "static/components.js"></script>
+<script>
+// State
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+let selectedItems = new Set();
+
+// Update total items
+function updateTotalItems() {
+  const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const elem = document.getElementById('total-items');
+  if (elem) elem.textContent = total;
+}
+
+// Load cart
+function loadCart() {
+  const content = document.getElementById('cart-content');
+
+  if (cart.length === 0) {
+    content.innerHTML = `
+      <div class="empty-cart">
+        <div class="empty-icon">🛒</div>
+        <div style="font-size:20px; font-weight:600; margin-bottom:12px">购物车是空的</div>
+        <div style="margin-bottom:32px">快去挑选心仪的商品吧！</div>
+        <a href=window.RelRoot + "shop.local/index.html" class="btn pri" style="display:inline-block">去逛逛</a>
+      </div>
+    `;
+    return;
+  }
+
+  // Initialize selected items
+  selectedItems = new Set(cart.map((item, index) => index));
+
+  content.innerHTML = `
+    <div class="cart-layout">
+      <!-- Cart Items -->
+      <div>
+        <!-- Select All -->
+        <div class="select-all">
+          <input type="checkbox" id="select-all" onchange="toggleSelectAll()" checked>
+          <label for="select-all" style="cursor:pointer; user-select:none">全选</label>
+          <div class="batch-actions">
+            <button class="btn" onclick="deleteSelected()">删除选中</button>
+            <span style="color:var(--muted); font-size:14px">已选 <span id="selected-count">0</span> 件</span>
+          </div>
+        </div>
+
+        <!-- Items List -->
+        <div class="cart-items" id="cart-items">
+          <!-- Items will be rendered here -->
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="cart-summary">
+        <div class="summary-title">订单摘要</div>
+        <div class="summary-row">
+          <span class="label">商品件数</span>
+          <span class="value" id="summary-items">0 件</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">商品总价</span>
+          <span class="value" id="summary-subtotal">¥0.00</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">优惠</span>
+          <span class="value" style="color:#34d399" id="summary-discount">-¥0.00</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">运费</span>
+          <span class="value" id="summary-shipping">免运费</span>
+        </div>
+        <div class="summary-row total">
+          <span class="label">合计</span>
+          <span class="value" id="summary-total">¥0.00</span>
+        </div>
+        <button class="btn ok checkout-btn checkout" onclick="checkout()">
+          去结算 (<span id="checkout-count">0</span>)
+        </button>
+        <div style="margin-top:16px; text-align:center">
+          <div class="savings-badge" id="savings-badge" style="display:none">
+            已节省 ¥<span id="savings-amount">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  renderCartItems();
+  updateSummary();
+}
+
+// Render cart items
+function renderCartItems() {
+  const container = document.getElementById('cart-items');
+
+  container.innerHTML = cart.map((item, index) => {
+    const isSelected = selectedItems.has(index);
+    const icon = getCategoryIcon(item.category || 'electronics');
+    const discount = item.original_price ? Math.round((1 - item.price / item.original_price) * 100) : 0;
+
+    return `
+      <div class="cart-item">
+        <div class="item-checkbox">
+          <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleItemSelect(${index})">
+        </div>
+        <div class="item-image">
+          <div style="font-size:48px">${icon}</div>
+        </div>
+        <div class="item-info">
+          <div class="item-name" onclick="window.location.href=window.RelRoot + 'shop.local/product.html?id=${item.product_id}'">${escapeHtml(item.name)}</div>
+          <div class="item-desc">优质商品，品质保证</div>
+          <div class="item-tags">
+            ${discount > 0 ? `<span class="badge warn">${discount}% OFF</span>` : ''}
+            <span class="badge ok">有货</span>
+          </div>
+          <div class="item-actions">
+            <div class="quantity-control">
+              <button class="qty-btn" onclick="updateQuantity(${index}, -1)" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+              <input type="number" class="qty-input" value="${item.quantity}" min="1" max="99" onchange="setQuantity(${index}, this.value)">
+              <button class="qty-btn" onclick="updateQuantity(${index}, 1)" ${item.quantity >= 99 ? 'disabled' : ''}>+</button>
+            </div>
+            <button class="remove-btn" onclick="removeItem(${index})">删除</button>
+          </div>
+        </div>
+        <div class="item-price-section">
+          <div class="item-price">¥${(item.price * item.quantity).toFixed(2)}</div>
+          ${item.original_price ? `<div class="item-original-price">¥${(item.original_price * item.quantity).toFixed(2)}</div>` : ''}
+          <div style="color:var(--muted); font-size:13px">单价: ¥${item.price.toFixed(2)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  updateSelectedCount();
+}
+
+// Toggle select all
+function toggleSelectAll() {
+  const checkbox = document.getElementById('select-all');
+  if (checkbox.checked) {
+    selectedItems = new Set(cart.map((_, index) => index));
+  } else {
+    selectedItems.clear();
+  }
+  renderCartItems();
+  updateSummary();
+}
+
+// Toggle item select
+function toggleItemSelect(index) {
+  if (selectedItems.has(index)) {
+    selectedItems.delete(index);
+  } else {
+    selectedItems.add(index);
+  }
+
+  // Update select all checkbox
+  const selectAllCheckbox = document.getElementById('select-all');
+  selectAllCheckbox.checked = selectedItems.size === cart.length;
+
+  updateSelectedCount();
+  updateSummary();
+}
+
+// Update selected count
+function updateSelectedCount() {
+  const elem = document.getElementById('selected-count');
+  if (elem) elem.textContent = selectedItems.size;
+}
+
+// Update quantity
+function updateQuantity(index, delta) {
+  cart[index].quantity = Math.max(1, Math.min(99, cart[index].quantity + delta));
+  saveCart();
+  renderCartItems();
+  updateSummary();
+}
+
+// Set quantity
+function setQuantity(index, value) {
+  cart[index].quantity = Math.max(1, Math.min(99, parseInt(value) || 1));
+  saveCart();
+  renderCartItems();
+  updateSummary();
+}
+
+// Remove item
+function removeItem(index) {
+  if (confirm('确定要删除该商品吗？')) {
+    cart.splice(index, 1);
+    selectedItems.delete(index);
+
+    // Adjust selected items indices
+    const newSelected = new Set();
+    selectedItems.forEach(i => {
+      if (i < index) newSelected.add(i);
+      else if (i > index) newSelected.add(i - 1);
+    });
+    selectedItems = newSelected;
+
+    saveCart();
+    loadCart();
+    updateTotalItems();
+  }
+}
+
+// Delete selected
+function deleteSelected() {
+  if (selectedItems.size === 0) {
+    showToast('请先选择要删除的商品');
+    return;
+  }
+
+  if (confirm(`确定要删除选中的 ${selectedItems.size} 件商品吗？`)) {
+    const indicesToRemove = Array.from(selectedItems).sort((a, b) => b - a);
+    indicesToRemove.forEach(index => {
+      cart.splice(index, 1);
+    });
+    selectedItems.clear();
+    saveCart();
+    loadCart();
+    updateTotalItems();
+  }
+}
+
+// Update summary
+function updateSummary() {
+  const selectedCount = selectedItems.size;
+  let itemsCount = 0;
+  let subtotal = 0;
+  let originalTotal = 0;
+
+  selectedItems.forEach(index => {
+    const item = cart[index];
+    itemsCount += item.quantity;
+    subtotal += item.price * item.quantity;
+    originalTotal += (item.original_price || item.price) * item.quantity;
+  });
+
+  const discount = originalTotal - subtotal;
+  const total = subtotal;
+
+  // Update UI
+  document.getElementById('summary-items').textContent = `${itemsCount} 件`;
+  document.getElementById('summary-subtotal').textContent = `¥${subtotal.toFixed(2)}`;
+  document.getElementById('summary-discount').textContent = discount > 0 ? `-¥${discount.toFixed(2)}` : '¥0.00';
+  document.getElementById('summary-total').textContent = `¥${total.toFixed(2)}`;
+  document.getElementById('checkout-count').textContent = itemsCount;
+
+  // Savings badge
+  if (discount > 0) {
+    document.getElementById('savings-badge').style.display = 'block';
+    document.getElementById('savings-amount').textContent = discount.toFixed(2);
+  } else {
+    document.getElementById('savings-badge').style.display = 'none';
+  }
+}
+
+// Save cart
+function saveCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// Checkout
+function checkout() {
+  if (selectedItems.size === 0) {
+    showToast('请先选择要结算的商品');
+    return;
+  }
+
+  // Filter selected items
+  const selectedCartItems = cart.filter((_, index) => selectedItems.has(index));
+  localStorage.setItem('checkout-items', JSON.stringify(selectedCartItems));
+
+  window.location.href = window.RelRoot + 'shop.local/checkout.html';
+}
+
+// Show toast
+function showToast(message) {
+  const toast = document.getElementById('__toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// Get category icon
+function getCategoryIcon(category) {
+  const icons = {
+    'electronics': '🖱️',
+    'home': '🏠',
+    'books': '📚',
+    'sports': '⚽',
+    'fashion': '👕',
+    'toys': '🧸',
+    'food': '🍜'
+  };
+  return icons[category] || '📦';
+}
+
+// Escape HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Initialize
+updateTotalItems();
+loadCart();
+</script>
+
+</body>
+</html>

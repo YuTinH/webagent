@@ -1,0 +1,45 @@
+{
+  "task_id": "M1-2025-009",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 3,
+  "steps_total": 3,
+  "time_elapsed": 1.799271821975708,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "url": "https://bank.local/cards.html",
+      "act": "open"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": ".card-item"
+    },
+    {
+      "t": 3,
+      "act": "verify_state",
+      "checks": [
+        {
+          "type": "url",
+          "contains": "/cards"
+        },
+        {
+          "type": "dom",
+          "selector": ".container",
+          "exists": true
+        },
+        {
+          "type": "dom",
+          "selector": "h1",
+          "exists": true
+        }
+      ],
+      "note": "Verify cards management page with card actions"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": []
+}

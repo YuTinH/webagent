@@ -1,0 +1,16 @@
+# Python dependencies for Web Agent Lifelong Learning Dataset
+
+# Core dependencies
+playwright>=1.40.0
+jsonschema>=4.19.0
+
+# Optional: for pandas analysis
+# pandas>=2.0.0
+
+# Optional: for backend API (if using Flask)
+# flask>=3.0.0
+# flask-cors>=4.0.0
+
+# Optional: for testing
+# pytest>=7.4.0
+# pytest-playwright>=0.4.0

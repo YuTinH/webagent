@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../../";</script>
+  <meta charset="utf-8">
+  <title>gov.local - 申请状态</title>
+  <link rel="stylesheet" href=window.RelRoot + "static/skin.css">
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Gov Services</div>
+    </div>
+  </div>
+  <div class="container">
+    <h1>申请状态</h1>
+    <p>编号：<span id="application-id"></span></p>
+    <p>当前状态：<span id="application-state">submitted</span></p>
+  </div>
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') || 'APP-0000';
+  document.getElementById('application-id').textContent = id;
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "task_id": "C2-2025-004",
+  "family": "C",
+  "episode_id": "ep-001",
+  "priority": 2,
+  "seed": 42,
+  "time": "2025-11-18T14:00:00Z",
+  "persona": {
+    "reason": "product_defective",
+    "preference": "refund_to_card"
+  },
+  "goal": "Return the wireless mouse from order O-10001 due to defect and get a refund",
+  "inputs": {
+    "order_id": "O-10001",
+    "item_sku": "WM-5521",
+    "reason": "defective",
+    "refund_method": "original_payment"
+  },
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "preconditions": [
+    "mem('orders.last.id') != ''",
+    "mem('orders.last.state') == 'confirmed'"
+  ],
+  "memory_keys": [
+    "returns.last.id",
+    "returns.last.order_id",
+    "returns.last.refund_amount",
+    "returns.last.state"
+  ],
+  "success_criteria": [
+    "url().includes('/returns/')"
+  ],
+  "artifacts": [
+    "return_label_pdf",
+    "refund_confirmation"
+  ],
+  "rubrics": {
+    "SR": 1.0,
+    "LH-F1": 0.5
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "dependencies": ["B1-2025-001"],
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {
+      "strategy": "retry",
+      "max_retries": 3,
+      "retry_delay_ms": 1000
+    },
+    "on_element_not_found": {
+      "strategy": "wait_and_retry",
+      "wait_seconds": 10
+    },
+    "on_assertion_fail": {
+      "strategy": "save_trace_and_report",
+      "capture_screenshot": true,
+      "capture_dom": true,
+      "capture_memory": true
+    },
+    "on_precondition_fail": "abort_with_warning"
+  }
+}

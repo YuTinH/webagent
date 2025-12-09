@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>退货确认 - Nebula商城</title>
+<link rel="stylesheet" href="../../static/skin.css">
+<style>
+.confirmation-container { max-width: 700px; margin: 0 auto; }
+.success-banner { background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(16,185,129,0.1)); border: 1px solid rgba(34,197,94,0.3); border-radius: var(--radius); padding: 40px; text-align: center; margin-bottom: 32px; }
+.success-icon { font-size: 80px; margin-bottom: 20px; }
+.success-title { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+.success-subtitle { color: var(--muted); font-size: 15px; }
+.info-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+.info-title { font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.info-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; font-size: 14px; }
+.info-key { color: var(--muted); }
+.info-value { font-weight: 500; }
+.timeline { position: relative; padding-left: 32px; margin-top: 20px; }
+.timeline-item { position: relative; padding-bottom: 24px; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot { position: absolute; left: -32px; width: 16px; height: 16px; border-radius: 50%; background: var(--ok); border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--ok); }
+.timeline-item.pending .timeline-dot { background: var(--muted); box-shadow: 0 0 0 2px var(--muted); }
+.timeline-line { position: absolute; left: -24px; top: 16px; bottom: -8px; width: 2px; background: var(--border); }
+.timeline-item:last-child .timeline-line { display: none; }
+.timeline-time { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.timeline-title { font-weight: 600; margin-bottom: 4px; }
+.timeline-desc { font-size: 13px; color: var(--muted); }
+.action-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 32px; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula商城</div>
+    <div class="navlinks">
+      <a href="../../shop.local/index.html">首页</a>
+      <a href="../../shop.local/orders.html">订单</a>
+      <a href="../../pay.local/wallet/cards.html">钱包</a>
+    </div>
+    <div class="search"><input placeholder="搜索商品..."></div>
+    <div style="display:flex; gap:16px; margin-left:16px">
+      <a href="../../shop.local/cart.html" style="color:var(--text); text-decoration:none; font-size:20px">🛒</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs" style="margin:20px 0">
+    <a href="../../shop.local/index.html">首页</a> /
+    <a href="../../shop.local/orders.html">订单</a> /
+    <span>退货确认</span>
+  </div>
+
+  <!-- Loading -->
+  <div id="loading" style="text-align:center; padding:60px 20px; color:var(--muted)">
+    <div style="font-size:48px; margin-bottom:20px">⏳</div>
+    <div>正在加载退货信息...</div>
+  </div>
+
+  <!-- Content -->
+  <div id="content" class="confirmation-container" style="display:none">
+    <div class="success-banner">
+      <div class="success-icon">✅</div>
+      <div class="success-title">退货申请已提交！</div>
+      <div class="success-subtitle">退货单号: <span id="return-id" class="badge ok"></span></div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-title">📋 退货信息</div>
+      <div class="info-grid">
+        <div class="info-key">退货单号:</div>
+        <div class="info-value" id="return-number">-</div>
+        <div class="info-key">原订单号:</div>
+        <div class="info-value" id="order-id">-</div>
+        <div class="info-key">申请时间:</div>
+        <div class="info-value" id="created-time">-</div>
+        <div class="info-key">退款金额:</div>
+        <div class="info-value" id="refund-amount" style="color:#60a5fa; font-weight:600">-</div>
+        <div class="info-key">退货状态:</div>
+        <div class="info-value"><span id="return-status" class="badge ok">已提交</span></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-title">🚚 处理流程</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+          <div class="timeline-time" id="step1-time">刚刚</div>
+          <div class="timeline-title">退货申请已提交</div>
+          <div class="timeline-desc">您的退货申请已成功提交，等待审核</div>
+        </div>
+        <div class="timeline-item pending">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+          <div class="timeline-time">待处理</div>
+          <div class="timeline-title">审核通过</div>
+          <div class="timeline-desc">我们将在1-2个工作日内完成审核</div>
+        </div>
+        <div class="timeline-item pending">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+          <div class="timeline-time">待处理</div>
+          <div class="timeline-title">退款处理</div>
+          <div class="timeline-desc">退款将在3-5个工作日内到账</div>
+        </div>
+        <div class="timeline-item pending">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">待处理</div>
+          <div class="timeline-title">退款完成</div>
+          <div class="timeline-desc">退款已到账</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <a href="../../shop.local/orders.html" class="btn">返回订单列表</a>
+      <a href="../../shop.local/index.html" class="btn pri">继续购物</a>
+    </div>
+  </div>
+
+  <div class="footer">Nebula商城 · Synthetic UI for Web Agent Research</div>
+</div>
+
+<script src="../../static/common.js"></script>
+<script>
+async function loadReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const returnId = params.get('id');
+
+  if (!returnId) {
+    showError('未指定退货单号');
+    return;
+  }
+
+  try {
+    // Note: The returns endpoint might need to be implemented
+    // For now, we'll use local data and memory
+    const memResponse = await fetch('../../api/memory?key=returns.last.id');
+    const memData = await memResponse.json();
+
+    if (!memData.success || memData.key !== 'returns.last.id' || memData.value !== returnId) {
+      // Fallback: show success with returnId
+      renderReturn({
+        id: returnId,
+        state: 'submitted',
+        refund_amount: 24.99,
+        created_at: new Date().toISOString()
+      });
+    } else {
+      // Load additional memory data
+      const orderIdMem = await fetch('/api/memory?key=returns.last.order_id');
+      const stateMem = await fetch('/api/memory?key=returns.last.state');
+      const amountMem = await fetch('/api/memory?key=returns.last.refund_amount');
+
+      const orderIdData = await orderIdMem.json();
+      const stateData = await stateMem.json();
+      const amountData = await amountMem.json();
+
+      renderReturn({
+        id: returnId,
+        order_id: orderIdData.success ? orderIdData.value : 'O-10001',
+        state: stateData.success ? stateData.value : 'submitted',
+        refund_amount: amountData.success ? parseFloat(amountData.value) : 24.99,
+        created_at: new Date().toISOString()
+      });
+    }
+  } catch (err) {
+    console.error('Failed to load return:', err);
+    // Show basic success page anyway
+    renderReturn({
+      id: returnId,
+      state: 'submitted',
+      refund_amount: 24.99,
+      created_at: new Date().toISOString()
+    });
+  }
+}
+
+function renderReturn(returnData) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+
+  document.getElementById('return-id').textContent = returnData.id;
+  document.getElementById('return-number').textContent = returnData.id;
+  document.getElementById('order-id').textContent = returnData.order_id || '-';
+  document.getElementById('created-time').textContent = new Date(returnData.created_at).toLocaleString('zh-CN');
+  document.getElementById('refund-amount').textContent = `¥${returnData.refund_amount.toFixed(2)}`;
+  document.getElementById('return-status').textContent = getStatusText(returnData.state);
+  document.getElementById('step1-time').textContent = formatTime(new Date(returnData.created_at));
+}
+
+function getStatusText(state) {
+  const texts = {
+    'submitted': '已提交',
+    'approved': '已批准',
+    'rejected': '已拒绝',
+    'refunded': '已退款'
+  };
+  return texts[state] || state;
+}
+
+function formatTime(date) {
+  const now = new Date();
+  const diff = (now - date) / 1000;
+  if (diff < 60) return '刚刚';
+  if (diff < 3600) return `${Math.floor(diff / 60)}分钟前`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}小时前`;
+  return date.toLocaleString('zh-CN');
+}
+
+function showError(msg) {
+  document.getElementById('loading').innerHTML = `
+    <div style="font-size:64px; margin-bottom:20px; opacity:0.5">❌</div>
+    <div style="font-size:18px; margin-bottom:24px">${msg}</div>
+    <a href="../../shop.local/orders.html" class="btn pri">返回订单列表</a>
+  `;
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('__toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+loadReturn();
+</script>
+
+</body>
+</html>

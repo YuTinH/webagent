@@ -1,0 +1,122 @@
+{
+  "task_id": "B1-2025-001",
+  "success": false,
+  "final_state": "failed",
+  "steps_completed": 10,
+  "steps_total": 23,
+  "time_elapsed": 44.75995182991028,
+  "error": {
+    "task_id": "B1-2025-001",
+    "error_type": "TimeoutError",
+    "timestamp": "2025-12-03T11:57:25.188528Z",
+    "step_index": 10,
+    "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#add-to-cart-btn\") to be visible\n",
+    "context": {
+      "url": "http://localhost:8014/shop.local/window.RelRoot",
+      "screenshot": "errors/B1-2025-001/error_step_10.png"
+    },
+    "step": {
+      "t": 10.0,
+      "url": "https://shop.local/product/WM-5521",
+      "frame": "main",
+      "act": "wait",
+      "selector": "#add-to-cart-btn",
+      "screenshot_id": "step_004_product_detail",
+      "note": "Wait for product detail page"
+    },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
+  "trace": [
+    {
+      "t": 0,
+      "url": "https://shop.local",
+      "frame": "main",
+      "act": "open",
+      "note": "Navigate to e-commerce homepage"
+    },
+    {
+      "t": 1.2,
+      "url": "https://shop.local",
+      "frame": "main",
+      "act": "click",
+      "selector": "#search-box",
+      "screenshot_id": "step_001_homepage",
+      "note": "Focus on search input"
+    },
+    {
+      "t": 1.5,
+      "url": "https://shop.local",
+      "frame": "main",
+      "act": "type",
+      "selector": "#search-box",
+      "value": "wireless mouse",
+      "note": "Enter search keywords"
+    },
+    {
+      "t": 2.0,
+      "url": "https://shop.local",
+      "frame": "main",
+      "act": "click",
+      "selector": "button[type='submit'][aria-label='Search']",
+      "note": "Submit search form"
+    },
+    {
+      "t": 3.5,
+      "url": "https://shop.local/search?q=wireless+mouse",
+      "frame": "main",
+      "act": "wait",
+      "selector": ".product-grid .product-item",
+      "screenshot_id": "step_002_search_results",
+      "note": "Wait for search results to load"
+    },
+    {
+      "t": 4.0,
+      "url": "https://shop.local/search?q=wireless+mouse",
+      "frame": "main",
+      "act": "click",
+      "selector": "#filter-price-max",
+      "note": "Open price filter"
+    },
+    {
+      "t": 4.5,
+      "url": "https://shop.local/search?q=wireless+mouse",
+      "frame": "main",
+      "act": "type",
+      "selector": "#filter-price-max",
+      "value": "30",
+      "note": "Set max price to $30"
+    },
+    {
+      "t": 5.0,
+      "url": "https://shop.local/search?q=wireless+mouse",
+      "frame": "main",
+      "act": "click",
+      "selector": "button.apply-filters",
+      "note": "Apply price filter"
+    },
+    {
+      "t": 6.5,
+      "url": "https://shop.local/search?q=wireless+mouse&price_max=30",
+      "frame": "main",
+      "act": "wait",
+      "selector": ".product-grid .product-item",
+      "screenshot_id": "step_003_filtered_results",
+      "note": "Wait for filtered results"
+    },
+    {
+      "t": 8.0,
+      "url": "https://shop.local/search?q=wireless+mouse&price_max=30",
+      "frame": "main",
+      "act": "click",
+      "selector": ".product-item:first-child .product-link",
+      "note": "Click first product matching criteria"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": []
+}

@@ -1,0 +1,47 @@
+<script>window.RelRoot = "../../";</script>
+<!doctype html><meta charset="utf-8"><title>trip.local - 行程管理</title>
+<link rel="stylesheet" href=window.RelRoot + "static/skin.css"><script src=window.RelRoot + "static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula</div>
+    <div class="navlinks">
+      <a href=window.RelRoot + "shop.local/index.html">商城</a>
+      <a href=window.RelRoot + "pay.local/wallet/cards.html">钱包</a>
+      <a href=window.RelRoot + "trip.local/manage/PNR9ZZ.html">行程</a>
+      <a href=window.RelRoot + "permit.local/RP-2024-77.html">许可</a>
+      <a href=window.RelRoot + "energy.local/plan.html">能源</a>
+      <a href=window.RelRoot + "card.local/block.html">安全</a>
+    </div>
+    <div class="search"><input placeholder="搜索订单/行程/卡号…"></div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs"><a href=window.RelRoot + "trip.local/manage/PNR9ZZ.html">行程</a> / <span>PNR9ZZ</span></div>
+  <div class="card">
+    <div class="header"><div class="title">预订记录</div><span id="ticket-status" class="badge warn">ticketed</span></div>
+    <table class="table">
+      <tr><th>航段</th><th>日期</th><th>时间</th><th>舱等</th><th>状态</th></tr>
+      <tr><td>SIN → PVG</td><td>2025-12-02</td><td>10:05</td><td>Economy</td><td>已出票</td></tr>
+    </table>
+    <div class="hr"></div>
+    <div class="row">
+      <button class="btn pri" onclick="openModal('#rebook-modal')">改签到明天</button>
+      <button class="btn">下载行程单</button>
+      <button class="btn">联系客服</button>
+    </div>
+  </div>
+</div>
+<div id="rebook-modal" class="modal">
+  <div class="panel">
+    <div class="flex justify-between" style="margin-bottom:12px"><div style="font-weight:700">改签确认</div><button class="btn" onclick="closeModal('#rebook-modal')">×</button></div>
+    <div class="muted" style="margin-bottom:12px">按最低成本策略改签到 <b>明天</b> 同航线。</div>
+    <div class="row">
+      <button class="btn" onclick="closeModal('#rebook-modal')">取消</button>
+      <button class="btn ok" onclick="send('E6-0031','rebook_ok',{}); closeModal('#rebook-modal')">确认改签</button>
+    </div>
+  </div>
+</div>
+

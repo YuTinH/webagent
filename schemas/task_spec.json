@@ -1,0 +1,234 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TaskSpec",
+  "description": "Specification for a single web agent task",
+  "type": "object",
+  "required": ["task_id", "family", "goal", "inputs", "preconditions", "success_criteria"],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Globally unique task ID, e.g., B6-2025-01-001",
+      "pattern": "^[A-M][0-9]+-[0-9]{4}-[0-9]+-[0-9]{3}$"
+    },
+    "family": {
+      "type": "string",
+      "enum": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"],
+      "description": "Task family: A=Housing, B=Shopping, C=Returns, D=Finance, E=Travel, F=Work, G=Health, H=Government, I=Utilities, J=Learning, K=Social, L=Privacy, M=Crisis"
+    },
+    "episode_id": {
+      "type": "string",
+      "description": "Episode/session ID for grouping related tasks"
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0,
+      "description": "Task priority (higher = more urgent)"
+    },
+    "seed": {
+      "type": "integer",
+      "description": "Random seed for DOM/data perturbation (for reproducibility)"
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Task creation timestamp"
+    },
+    "persona": {
+      "type": "object",
+      "description": "User persona attributes (budget, preferences, health goals, etc.)",
+      "additionalProperties": true
+    },
+    "goal": {
+      "type": "string",
+      "description": "Natural language task goal",
+      "minLength": 10
+    },
+    "inputs": {
+      "type": "object",
+      "description": "Structured inputs (address, order_id, contract_id, etc.)",
+      "additionalProperties": true
+    },
+    "allowed_domains": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "hostname"
+      },
+      "description": "Domains this task is allowed to access (MVP: synthetic sites)",
+      "minItems": 1
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Assertions that must be true before task execution (using Assertions DSL)"
+    },
+    "memory_keys": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Memory keys this task reads/writes"
+    },
+    "success_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Success assertions (using Assertions DSL)",
+      "minItems": 1
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Expected artifacts (PDFs, receipts, screenshots, etc.)"
+    },
+    "rubrics": {
+      "type": "object",
+      "description": "Evaluation metric weights",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "properties": {
+        "SR": {
+          "type": "number",
+          "description": "Success Rate weight"
+        },
+        "LH-F1": {
+          "type": "number",
+          "description": "Lifelong Hallucination F1 weight"
+        }
+      }
+    },
+    "timeout": {
+      "type": "integer",
+      "description": "Task-level timeout in seconds (default: 300)",
+      "default": 300,
+      "minimum": 10,
+      "maximum": 3600
+    },
+    "step_timeout": {
+      "type": "integer",
+      "description": "Per-step timeout in seconds (default: 30)",
+      "default": 30,
+      "minimum": 1,
+      "maximum": 300
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Task IDs that must complete before this task"
+    },
+    "error_recovery": {
+      "type": "object",
+      "description": "Error handling strategies",
+      "properties": {
+        "on_timeout": {
+          "type": "string",
+          "enum": ["abort", "capture_state_and_abort", "retry_from_checkpoint", "skip_step"],
+          "default": "capture_state_and_abort"
+        },
+        "on_network_error": {
+          "type": "object",
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "enum": ["retry", "exponential_backoff", "abort"],
+              "default": "retry"
+            },
+            "max_retries": {
+              "type": "integer",
+              "default": 3,
+              "minimum": 0,
+              "maximum": 10
+            },
+            "retry_delay_ms": {
+              "type": "integer",
+              "default": 1000,
+              "minimum": 100
+            },
+            "backoff_multiplier": {
+              "type": "number",
+              "default": 2.0,
+              "minimum": 1.0
+            }
+          }
+        },
+        "on_element_not_found": {
+          "type": "object",
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "enum": ["wait_and_retry", "try_fallback_selector", "abort"],
+              "default": "wait_and_retry"
+            },
+            "wait_seconds": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 60
+            },
+            "fallback_selectors": {
+              "type": "object",
+              "description": "Map of original_selector -> array of fallback selectors",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "on_assertion_fail": {
+          "type": "object",
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "enum": ["save_trace_and_report", "retry_after_wait", "abort_silent"],
+              "default": "save_trace_and_report"
+            },
+            "capture_screenshot": {
+              "type": "boolean",
+              "default": true
+            },
+            "capture_dom": {
+              "type": "boolean",
+              "default": true
+            },
+            "capture_memory": {
+              "type": "boolean",
+              "default": true
+            },
+            "wait_before_retry_seconds": {
+              "type": "integer",
+              "default": 5,
+              "minimum": 1
+            }
+          }
+        },
+        "on_precondition_fail": {
+          "type": "string",
+          "enum": ["abort_with_warning", "attempt_repair", "skip_task"],
+          "default": "abort_with_warning"
+        }
+      }
+    },
+    "checkpoints": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "description": "Step indices for creating checkpoints (for rollback)"
+    }
+  }
+}

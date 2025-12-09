@@ -1,0 +1,24 @@
+{
+  "task_id": "H1-2025-003",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-11-29T13:14:41.351744Z",
+  "step_index": 1,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".card\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/gov.local/billing/index.html",
+    "screenshot": "errors/H1-2025-003/error_step_1.png"
+  },
+  "step": {
+    "t": 2.0,
+    "url": "https://gov.local/billing/index.html",
+    "frame": "main",
+    "act": "wait",
+    "selector": ".card",
+    "note": "Wait for billing page to load"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

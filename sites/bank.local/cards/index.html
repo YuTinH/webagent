@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - 银行卡管理</title>
+  <link rel="stylesheet" href="../../static/skin.css">
+  <script src="../../static/common.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+      <div class="navlinks">
+        <a href="../../bank.local/dashboard">总览</a>
+        <a href="../../bank.local/transactions">交易</a>
+        <a href="../../bank.local/cards" class="active">银行卡</a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <h1>银行卡管理</h1>
+    <div class="card" id="card-1234">
+      <div class="header">
+        <div class="title">****1234</div>
+        <span id="card-status" class="badge ok">active</span>
+      </div>
+      <div class="kv">
+        <div class="key">到期日</div><div id="card-exp">12/2025</div>
+      </div>
+      <div class="hr"></div>
+      <div class="form">
+        <label>新卡末四位</label>
+        <input id="new-card-number" class="input" placeholder="7777">
+        <label>CVV</label>
+        <input id="new-card-cvv" class="input" placeholder="123">
+        <button class="btn pri activate-new-card activate-card" onclick="activateCard()">激活新卡</button>
+      </div>
+      <div style="margin-top:12px">
+        <div>商户绑定概览：</div>
+        <ul style="list-style:none;padding:0">
+          <li class="merchant-binding" data-merchant="shop.local">shop.local - ****1234</li>
+          <li class="merchant-binding" data-merchant="gov.local">gov.local - ****1234</li>
+          <li class="merchant-binding" data-merchant="util.local">util.local - ****1234</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script>
+  async function activateCard(){
+    const body = {
+      old_last4: '1234',
+      new_last4: document.getElementById('new-card-number').value || '7777',
+      cvv: document.getElementById('new-card-cvv').value
+    };
+    const res = await fetch('../../api/cards/activate', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (data.success){
+      const status = document.getElementById('card-status');
+      status.textContent = 'active';
+      status.classList.add('active');
+      status.classList.add('ok');
+      document.getElementById('card-exp').textContent = data.exp_date || '12/2029';
+      alert('新卡已激活');
+    } else {
+      alert('激活失败：'+data.error);
+    }
+  }
+  </script>
+</body>
+</html>

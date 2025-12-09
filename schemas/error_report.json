@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ErrorReport",
+  "description": "Detailed error report for failed or partially completed tasks",
+  "type": "object",
+  "required": ["task_id", "error_type", "timestamp", "step_index"],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Task ID where error occurred"
+    },
+    "error_type": {
+      "type": "string",
+      "enum": [
+        "timeout_task",
+        "timeout_step",
+        "network_dns_failure",
+        "network_connection_refused",
+        "network_timeout",
+        "element_not_found",
+        "selector_ambiguous",
+        "action_failed",
+        "assertion_failed",
+        "precondition_not_met",
+        "state_inconsistency",
+        "authentication_failed",
+        "budget_exceeded",
+        "unknown"
+      ],
+      "description": "Type of error that occurred"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the error occurred"
+    },
+    "step_index": {
+      "type": "integer",
+      "description": "Which step failed (0-indexed, -1 for pre-execution errors)",
+      "minimum": -1
+    },
+    "step": {
+      "type": "object",
+      "description": "The failed step from Trace (if applicable)"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Human-readable error message"
+    },
+    "stack_trace": {
+      "type": "string",
+      "description": "Stack trace (if available)"
+    },
+    "context": {
+      "type": "object",
+      "description": "Contextual information at time of error",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Current page URL"
+        },
+        "screenshot_id": {
+          "type": "string",
+          "description": "Screenshot filename"
+        },
+        "dom_snapshot_id": {
+          "type": "string",
+          "description": "DOM snapshot filename"
+        },
+        "memory_snapshot": {
+          "type": "object",
+          "description": "Memory state at time of error"
+        },
+        "env_snapshot": {
+          "type": "object",
+          "description": "Environment state at time of error"
+        },
+        "browser_console_logs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Browser console logs"
+        }
+      }
+    },
+    "recovery_attempted": {
+      "type": "boolean",
+      "description": "Whether recovery was attempted"
+    },
+    "recovery_strategy": {
+      "type": "string",
+      "description": "Which recovery strategy was used"
+    },
+    "recovery_success": {
+      "type": "boolean",
+      "description": "Whether recovery succeeded"
+    },
+    "final_state": {
+      "type": "string",
+      "enum": ["completed", "partial_success", "failed", "aborted"],
+      "description": "Final task state after error handling"
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Execution metrics",
+      "properties": {
+        "steps_completed": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of steps completed before error"
+        },
+        "steps_total": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total expected steps"
+        },
+        "time_elapsed_seconds": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Time elapsed before error"
+        },
+        "retries_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of retries attempted"
+        }
+      }
+    }
+  }
+}

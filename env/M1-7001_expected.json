@@ -1,0 +1,18 @@
+{
+  "payments": {
+    "cards": {
+      "1234": {
+        "state": "blocked"
+      }
+    }
+  },
+  "merchant_bindings": {
+    "updated": [
+      "shop.local",
+      "ride.local",
+      "food.local",
+      "stream.local",
+      "cloud.local"
+    ]
+  }
+}
