@@ -1,0 +1,37 @@
+127.0.0.1 - - [09/Dec/2025 03:12:16] "GET /shop.local/index.html HTTP/1.1" 304 -
+127.0.0.1 - - [09/Dec/2025 03:12:16] "GET /static/components.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Dec/2025 03:12:16] "GET /api/products?limit=12 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:16:21] "GET /shop.local/index.html HTTP/1.1" 304 -
+127.0.0.1 - - [09/Dec/2025 03:16:21] "GET /api/products?limit=12 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:16:24] code 404, message File not found
+127.0.0.1 - - [09/Dec/2025 03:16:24] "GET /shop.local/static/skin.css HTTP/1.1" 404 -
+127.0.0.1 - - [09/Dec/2025 03:16:24] code 404, message File not found
+127.0.0.1 - - [09/Dec/2025 03:16:24] code 404, message File not found
+127.0.0.1 - - [09/Dec/2025 03:16:24] "GET /shop.local/static/components.css HTTP/1.1" 404 -
+127.0.0.1 - - [09/Dec/2025 03:16:24] "GET /shop.local/static/common.js HTTP/1.1" 404 -
+127.0.0.1 - - [09/Dec/2025 03:16:24] code 404, message File not found
+127.0.0.1 - - [09/Dec/2025 03:16:24] "GET /shop.local/static/components.js HTTP/1.1" 404 -
+127.0.0.1 - - [09/Dec/2025 03:16:24] code 404, message File not found
+127.0.0.1 - - [09/Dec/2025 03:16:24] "GET /shop.local/shop.local/index.html HTTP/1.1" 404 -
+127.0.0.1 - - [09/Dec/2025 03:16:26] "GET /shop.local/index.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:16:26] "GET /static/skin.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:16:26] "GET /static/components.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:16:26] "GET /static/common.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:16:26] "GET /static/components.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:16:26] "GET /api/products?limit=12 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:28:17] "GET /shop.local/index.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:28:17] "GET /static/components.css HTTP/1.1" 304 -
+127.0.0.1 - - [09/Dec/2025 03:28:17] "GET /static/components.js HTTP/1.1" 304 -
+127.0.0.1 - - [09/Dec/2025 03:28:17] "GET /api/products?limit=12 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:28:23] "GET /api/products?limit=12 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:28:28] "GET /shop.local/index.html HTTP/1.1" 304 -
+127.0.0.1 - - [09/Dec/2025 03:28:28] "GET /api/products?limit=12 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:28:39] "GET /api/env HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:28:39] "GET /shop.local/index.html HTTP/1.1" 304 -
+127.0.0.1 - - [09/Dec/2025 03:28:39] "GET /api/products?limit=12 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:29:59] "GET /shop.local/index.html HTTP/1.1" 304 -
+127.0.0.1 - - [09/Dec/2025 03:29:59] "GET /api/products?limit=12 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:30:04] "GET /shop.local/orders.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:30:04] "GET /api/orders?user_id=1&limit=20 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:30:08] "GET /api/products?limit=12 HTTP/1.1" 200 -
+127.0.0.1 - - [09/Dec/2025 03:30:11] "GET /api/products?limit=12 HTTP/1.1" 200 -

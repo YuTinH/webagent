@@ -46,4 +46,51 @@ async function render(){
   const plan = env?.meters?.["M-321"]?.plan || 'standard';
   if (qs('#plan')) qs('#plan').textContent = plan;
 }
-document.addEventListener('DOMContentLoaded', render);
+
+
+
+// --- Distractor Engine (Added by AI) ---
+class DistractorEngine {
+    constructor() { this.init(); }
+    async init() {
+        try {
+            const res = await api('/api/marketing/promos');
+            if (res.success) {
+                if (res.cookie_consent_required) this.renderCookieBanner();
+                res.promos.forEach(promo => this.renderPromo(promo));
+            }
+            this.renderChatWidget();
+        } catch (e) { console.log('Marketing system offline'); }
+    }
+    renderTopBanner(content, color) {
+        const b = document.createElement('div');
+        b.className = 'promo-banner-top';
+        b.style.cssText = `background:${color};color:white;text-align:center;padding:10px;font-size:14px;position:relative;animation:slideDown 0.5s ease;z-index:1001;`;
+        b.innerHTML = `<span>${content}</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:white;float:right;cursor:pointer;font-weight:bold">✕</button>`;
+        document.body.prepend(b);
+    }
+    renderCookieBanner() {
+        const d = document.createElement('div');
+        d.className = 'cookie-consent-banner';
+        d.innerHTML = `<div style="flex:1">我们使用 Cookie 来提升体验。<a href="#">隐私政策</a></div><div style="display:flex;gap:10px"><button class="btn" onclick="this.parentElement.parentElement.remove()">拒绝</button><button class="btn pri" onclick="this.parentElement.parentElement.remove()">接受</button></div>`;
+        document.body.appendChild(d);
+    }
+    renderPopup(content, delay) {
+        setTimeout(() => {
+            const id = 'promo-' + Date.now();
+            document.body.insertAdjacentHTML('beforeend', `<div id="${id}" class="modal-overlay open" style="z-index:9999"><div class="modal-container" style="text-align:center"><h3>限时福利</h3><p>${content}</p><button class="btn pri" onclick="document.getElementById('${id}').remove()">领取</button></div></div>`);
+        }, delay);
+    }
+    renderChatWidget() {
+        const w = document.createElement('div');
+        w.className = 'chat-widget-floating';
+        w.innerHTML = '💬';
+        w.onclick = function() { this.classList.toggle('expanded'); if(this.classList.contains('expanded')) this.innerHTML='<div>客服在线</div><input placeholder="输入消息...">'; else this.innerHTML='💬'; };
+        document.body.appendChild(w);
+    }
+    renderPromo(p) {
+        if (p.type === 'banner_top') this.renderTopBanner(p.content, p.color);
+        if (p.type === 'popup_center') this.renderPopup(p.content, p.delay);
+    }
+}
+document.addEventListener('DOMContentLoaded', () => { window.distractorEngine = new DistractorEngine(); render(); });

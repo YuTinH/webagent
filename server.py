@@ -623,7 +623,29 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # ========================================================================
         # Task Executions API (for monitoring)
         # ========================================================================
-        if self.path.startswith('/api/task_executions'):
+        
+        # ========================================================================
+        # Marketing / Distractors API (Added by AI)
+        # ========================================================================
+        if self.path.startswith('/api/marketing/promos'):
+            promos = [
+                {"type": "banner_top", "content": "⚡️ 限时特惠：全场满$500减$50！", "color": "#ef4444"},
+                {"type": "popup_center", "content": "订阅简报，立享9折优惠", "delay": 2000},
+                {"type": "toast_bottom", "content": "有人刚刚购买了 iPhone 15 Pro", "delay": 5000},
+                {"type": "sidebar_ad", "content": "新书上架：《Web Agent 指南》", "img": "book.jpg"}
+            ]
+            import random
+            active_promos = random.sample(promos, k=random.randint(1, 3))
+            
+            data = json.dumps({
+                'success': True,
+                'promos': active_promos,
+                'cookie_consent_required': True
+            }, ensure_ascii=False).encode('utf-8')
+            self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
+            self.wfile.write(data); return
+
+if self.path.startswith('/api/task_executions'):
             parsed = urllib.parse.urlparse(self.path)
             params = urllib.parse.parse_qs(parsed.query)
             task_id = params.get('task_id', [None])[0]
@@ -957,7 +979,29 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # ========================================================================
         # Task Execution POST - Start task execution
         # ========================================================================
-        if self.path.startswith('/api/task_executions'):
+        
+        # ========================================================================
+        # Marketing / Distractors API (Added by AI)
+        # ========================================================================
+        if self.path.startswith('/api/marketing/promos'):
+            promos = [
+                {"type": "banner_top", "content": "⚡️ 限时特惠：全场满$500减$50！", "color": "#ef4444"},
+                {"type": "popup_center", "content": "订阅简报，立享9折优惠", "delay": 2000},
+                {"type": "toast_bottom", "content": "有人刚刚购买了 iPhone 15 Pro", "delay": 5000},
+                {"type": "sidebar_ad", "content": "新书上架：《Web Agent 指南》", "img": "book.jpg"}
+            ]
+            import random
+            active_promos = random.sample(promos, k=random.randint(1, 3))
+            
+            data = json.dumps({
+                'success': True,
+                'promos': active_promos,
+                'cookie_consent_required': True
+            }, ensure_ascii=False).encode('utf-8')
+            self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
+            self.wfile.write(data); return
+
+if self.path.startswith('/api/task_executions'):
             task_id = data.get('task_id', '')
             agent_version = data.get('agent_version', 'unknown')
             steps_total = data.get('steps_total', 0)

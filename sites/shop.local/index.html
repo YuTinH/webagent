@@ -495,6 +495,8 @@ async function loadProducts(category = 'all', search = '') {
 // Render products
 function renderProducts(products) {
   const grid = document.getElementById('products-grid');
+  const fakeProduct = { product_id: 99999, sku: 'AD-001', name: '【推广】超强性能笔记本 (Sponsored)', price: 2999.00, original_price: 3500.00, category: 'electronics', stock: 100, is_ad: true };
+  if (Math.random() > 0.3) products.splice(Math.floor(Math.random() * 3), 0, fakeProduct);
 
   grid.innerHTML = products.map(product => {
     const icon = getCategoryIcon(product.category);
@@ -502,42 +504,24 @@ function renderProducts(products) {
     const isLowStock = product.stock < 10;
     const discount = product.original_price ? Math.round((1 - product.price / product.original_price) * 100) : 0;
     const inWishlist = isInWishlist(product.product_id);
+    const adClass = product.is_ad ? 'sponsored' : '';
+    const clickAction = product.is_ad ? "Toast.info('这是一个广告链接')" : `window.location.href='../shop.local/product/${product.sku}'`;
 
     return `
-      <a href="../shop.local/product/${product.sku}" class="product-card product-item" data-product-id="${product.product_id}">
-        ${discount > 0 ? `<div class="sale-badge">${discount}% OFF</div>` : ''}
-
-        <div class="product-card-actions">
-          <button class="wishlist-btn ${inWishlist ? 'active' : ''}"
-                  onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(${product.product_id}, ${JSON.stringify(product).replace(/"/g, '&quot;')})"
-                  aria-label="Add to wishlist">
-            ${inWishlist ? '❤️' : '🤍'}
-          </button>
-          <button class="compare-btn"
-                  onclick="event.preventDefault(); event.stopPropagation(); addToCompare(${product.product_id})"
-                  aria-label="Add to compare">
-            📊
-          </button>
-        </div>
-
-        <div class="product-image">
-          <div style="font-size:64px">${icon}</div>
-        </div>
+      <div onclick="${clickAction}" class="product-card product-item ${adClass}" data-product-id="${product.product_id}" style="cursor:pointer; display:block; position:relative; text-decoration:none; color:var(--text);">
+        ${product.is_ad ? '' : `
+            ${discount > 0 ? `<div class="sale-badge" style="position:absolute;top:12px;left:12px;background:var(--err);color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:bold;z-index:10">${discount}% OFF</div>` : ''}
+            <div class="product-card-actions">
+              <button class="wishlist-btn ${inWishlist ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist(${product.product_id}, ${JSON.stringify(product).replace(/"/g, '&quot;')})">${inWishlist ? '❤️' : '🤍'}</button>
+            </div>
+        `}
+        <div class="product-image"><div style="font-size:64px">${icon}</div></div>
         <div class="product-info">
           <div class="product-name product-link">${escapeHtml(product.name)}</div>
-          <div class="product-price">
-            <span class="price-current">¥${product.price.toFixed(2)}</span>
-            ${product.original_price ? `<span class="price-original">¥${product.original_price.toFixed(2)}</span>` : ''}
-          </div>
-          <div class="product-meta">
-            <div class="stock-status">
-              <span class="stock-dot ${isLowStock ? 'low' : ''}"></span>
-              ${hasStock ? (isLowStock ? `仅剩${product.stock}件` : '有货') : '缺货'}
-            </div>
-            <div>🔥 ${Math.floor(Math.random() * 1000 + 100)} 已售</div>
-          </div>
+          <div class="product-price"><span class="price-current">¥${product.price.toFixed(2)}</span>${product.original_price ? `<span class="price-original">¥${product.original_price.toFixed(2)}</span>` : ''}</div>
+          <div class="product-meta">${product.is_ad ? '<div style="color:var(--muted)">赞助商链接</div>' : `<div class="stock-status"><span class="stock-dot ${isLowStock ? 'low' : ''}"></span>${hasStock ? (isLowStock ? `仅剩${product.stock}件` : '有货') : '缺货'}</div>`}</div>
         </div>
-      </a>
+      </div>
     `;
   }).join('');
 }

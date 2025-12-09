@@ -382,3 +382,13 @@ a:hover {
 .footer li { margin-bottom: 8px; }
 .footer a { color: var(--muted); }
 .footer a:hover { color: var(--pri); }
+
+/* --- Distractors & Noise Styles --- */
+.cookie-consent-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--panel-elevated); border-top: 1px solid var(--border); padding: 16px 24px; z-index: 9000; display: flex; align-items: center; gap: 24px; box-shadow: 0 -4px 20px rgba(0,0,0,0.2); animation: slideUp 0.5s ease; }
+.chat-widget-floating { position: fixed; bottom: 24px; right: 24px; width: 60px; height: 60px; background: var(--pri); border-radius: 30px; box-shadow: var(--shadow-lg); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 8000; transition: all 0.3s; color: white; font-size: 24px; }
+.chat-widget-floating:hover { transform: scale(1.1); }
+.chat-widget-floating.expanded { width: 300px; height: 300px; border-radius: 12px; flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px; background: var(--panel); border: 1px solid var(--border); cursor: default; font-size: 14px; }
+@keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.product-card.sponsored { border-color: var(--warn-bg); background: linear-gradient(to bottom right, var(--card), rgba(245, 158, 11, 0.05)); }
+.product-card.sponsored::after { content: '广告'; position: absolute; bottom: 8px; right: 8px; font-size: 10px; color: var(--muted); border: 1px solid var(--border); padding: 2px 4px; border-radius: 4px; }
