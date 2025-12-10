@@ -1,33 +1,44 @@
 {
-  "task_id": "G3-2025-GEN",
+  "task_id": "G3-2025-103",
   "family": "G",
-  "episode_id": "ep-gen",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T10:00:00Z",
+  "episode_id": "ep-medical",
+  "priority": 2,
+  "seed": 44,
+  "time": "2025-12-06T10:00:00Z",
   "persona": {
-    "automation_preference": "medium"
+    "automation_preference": "high"
   },
-  "goal": "File medical insurance claim",
-  "inputs": {},
+  "goal": "Submit an insurance claim for the recent doctor visit and prescription on health.local, then confirm status on gov.local.",
+  "inputs": {
+    "claim_id": "CLM-5501",
+    "appointment_id": "APT-9001",
+    "amount": 250
+  },
   "allowed_domains": [
-    "shop.local",
-    "bank.local",
+    "health.local",
     "gov.local"
   ],
   "preconditions": [
-    "mem('health.last_visit.bill_id') != ''"
+    "mem('health.appointment.last_id') == 'APT-9001'",
+    "mem('health.rx.last_id') == 'RX-1001'",
+    "mem('banking.balance.checking') > 0"
   ],
   "dependencies": [
-    "G1-doctor-appt"
+    "G1-2025-101",
+    "G2-2025-102",
+    "D1-2025-002"
   ],
-  "memory_keys": [],
+  "memory_keys": [
+    "insurance.claim.last.id",
+    "insurance.claim.last.status"
+  ],
   "success_criteria": [
-    "url().includes('/g3')"
+    "ALL[url().includes('applications/status'), mem('insurance.claim.last.id') == 'CLM-5501', mem('insurance.claim.last.status') == 'submitted']"
   ],
   "rubrics": {
-    "SR": 1.0
+    "SR": 1.0,
+    "cross_site": 0.4
   },
-  "timeout": 300,
+  "timeout": 240,
   "step_timeout": 30
 }

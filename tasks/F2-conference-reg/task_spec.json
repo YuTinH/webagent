@@ -1,33 +1,41 @@
 {
-  "task_id": "F2-2025-GEN",
+  "task_id": "F2-2025-301",
   "family": "F",
-  "episode_id": "ep-gen",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T10:00:00Z",
+  "episode_id": "ep-travel",
+  "priority": 2,
+  "seed": 61,
+  "time": "2025-12-05T16:00:00Z",
   "persona": {
-    "automation_preference": "medium"
+    "automation_preference": "high"
   },
-  "goal": "Register for tech conference",
-  "inputs": {},
+  "goal": "Register for the AI Summit Paris conference on event.local using attendee details.",
+  "inputs": {
+    "event": "AI Summit Paris",
+    "registration_id": "CONF-8801"
+  },
   "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
+    "event.local",
+    "trip.local"
   ],
   "preconditions": [
-    "mem('career.budget') > 0"
+    "mem('travel.hotel.last.id') != ''",
+    "mem('travel.flight.last.pnr') != ''"
   ],
   "dependencies": [
-    "F1-job-search"
+    "E1-2025-201",
+    "E2-2025-202"
   ],
-  "memory_keys": [],
+  "memory_keys": [
+    "work.conference.last.id",
+    "work.conference.last.event"
+  ],
   "success_criteria": [
-    "url().includes('/f2')"
+    "ALL[url().includes('/event.local/registration'), mem('work.conference.last.id') != '', mem('work.conference.last.event').includes('Summit')]"
   ],
   "rubrics": {
-    "SR": 1.0
+    "SR": 1.0,
+    "cross_site": 0.2
   },
-  "timeout": 300,
+  "timeout": 180,
   "step_timeout": 30
 }

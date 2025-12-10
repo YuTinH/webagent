@@ -1,34 +1,46 @@
 {
-  "task_id": "E5-2025-GEN",
+  "task_id": "E5-2025-205",
   "family": "E",
-  "episode_id": "ep-gen",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T10:00:00Z",
+  "episode_id": "ep-travel",
+  "priority": 3,
+  "seed": 57,
+  "time": "2025-12-05T17:00:00Z",
   "persona": {
-    "automation_preference": "medium"
+    "automation_preference": "high"
   },
-  "goal": "Submit travel expense report",
-  "inputs": {},
+  "goal": "Submit a travel expense report (flight, hotel, conference) on bank.local and capture the report ID.",
+  "inputs": {
+    "pnr": "PNR-8891",
+    "hotel_id": "HTL-77",
+    "conference_reg": "CONF-8801",
+    "total": 1200
+  },
   "allowed_domains": [
-    "shop.local",
     "bank.local",
-    "gov.local"
+    "event.local",
+    "trip.local"
   ],
   "preconditions": [
-    "mem('trips.last.status') == 'completed'"
+    "mem('travel.flight.last.pnr') == 'PNR-8891'",
+    "mem('travel.hotel.last.id') == 'HTL-77'",
+    "mem('work.conference.last.id') != ''"
   ],
   "dependencies": [
-    "E1-book-flight",
-    "E2-book-hotel"
+    "E1-2025-201",
+    "E2-2025-202",
+    "F2-2025-301"
   ],
-  "memory_keys": [],
+  "memory_keys": [
+    "expenses.last.id",
+    "expenses.last.total"
+  ],
   "success_criteria": [
-    "url().includes('/e5')"
+    "ALL[url().includes('expense-report'), mem('expenses.last.id') != '', mem('expenses.last.total') >= 1200]"
   ],
   "rubrics": {
-    "SR": 1.0
+    "SR": 1.0,
+    "data_entry": 0.3
   },
-  "timeout": 300,
+  "timeout": 220,
   "step_timeout": 30
 }

@@ -33,3 +33,21 @@ This session focused on significantly enhancing the frontend aesthetics of the W
 
 ### 🎯 Current Status
 The WebAgent Dynamic Suite v2 is now fully functional, visually enhanced, and all core task dependency logic has been verified through comprehensive testing. It is ready for advanced agent evaluation and further development.
+
+## 2025-12-09 - Medical/Travel Storylines & Env Wiring
+
+### 📝 Summary
+Implemented the two long dependency chains ("医疗与保险" and "差旅与报销") end-to-end across frontend, backend, env seeds, and task definitions to validate extended suite scalability.
+
+### ✨ Key Achievements
+
+1. **Backend state mutations:** Added `mutate_env` handlers for G1/G2/G3 (doctor booking, Rx refill, insurance claim) and E1/E2/F2/E5 (flight, hotel, conference, expense) with deterministic IDs and memory writes.
+2. **Env seeds:** Introduced `env/G-medical_initial.json` and `env/E-travel_initial.json` to preload insurance/prescription and travel/conference/expense scaffolding.
+3. **Frontend wiring:** Hooked health pages to send() (appointment, records refill CTA, new claim form), added hotel search, conference registration, expense report pages, and wired flight booking to mutate env.
+4. **Task definitions:** Authored task_spec/oracle_trace/expected_memory for G1, G2, G3, E1, E2, F2, E5 to anchor the new storylines and dependencies.
+
+### 📌 Files Touched (high level)
+- Backend: `server.py`
+- Env seeds: `env/G-medical_initial.json`, `env/E-travel_initial.json`
+- Frontend: `sites/health.local/*`, `sites/trip.local/*`, `sites/event.local/registration.html`, `sites/bank.local/expense-report.html`
+- Tasks: `tasks/{G1,G2,G3,E1,E2,F2,E5}/*`

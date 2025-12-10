@@ -1,0 +1,16 @@
+{
+  "travel.flight.last.pnr": {
+    "key": "travel.flight.last.pnr",
+    "value": "PNR-8891",
+    "ts": "2025-12-05T14:10:00Z",
+    "source": "E1-2025-201",
+    "confidence": 1.0
+  },
+  "travel.flight.last.destination": {
+    "key": "travel.flight.last.destination",
+    "value": "Paris",
+    "ts": "2025-12-05T14:10:00Z",
+    "source": "E1-2025-201",
+    "confidence": 1.0
+  }
+}

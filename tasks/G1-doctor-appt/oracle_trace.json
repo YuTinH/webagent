@@ -1,5 +1,13 @@
 {
-  "task_id": "G1-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "task_id": "G1-2025-101",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "url": "https://health.local/doctors.html", "frame": "main", "act": "open", "note": "Navigate to doctors directory"},
+    {"t": 1.5, "act": "wait", "selector": ".doctor-card button.btn.pri", "note": "Wait for doctor cards to load"},
+    {"t": 2.0, "act": "click", "selector": ".doctor-card:first-of-type button.btn.pri", "note": "Choose Dr. Alice Smith and open booking"},
+    {"t": 3.2, "act": "type", "selector": "#appt-date", "value": "2025-12-06", "note": "Set appointment date to tomorrow"},
+    {"t": 5.4, "act": "select", "selector": "#appt-time", "value": "09:00", "note": "Pick 09:00 slot"},
+    {"t": 6.8, "act": "click", "selector": "button.btn.pri", "note": "Confirm appointment and trigger send()"},
+    {"t": 8.0, "act": "wait", "selector": "#doctor-directory", "note": "Wait for redirect to home"}
+  ]
 }

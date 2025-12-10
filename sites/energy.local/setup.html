@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utility Setup - Energy Connect</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.service-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--panel);
+  transition: var(--transition);
+}
+.service-card:hover {
+  border-color: var(--pri);
+  background: var(--panel-elevated);
+}
+.service-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+}
+.checkbox-custom {
+  width: 20px; height: 20px;
+  border: 2px solid var(--muted);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.checkbox-custom.checked {
+  background: var(--pri);
+  border-color: var(--pri);
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #fbbf24, #d97706)"></div>
+      Energy Connect
+    </div>
+    <div class="navlinks">
+      <a href="setup.html" class="active">New Service</a>
+      <a href="plan.html">Manage Plan</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <h1 style="margin-bottom: 8px">Set Up New Services</h1>
+  <p class="muted" style="margin-bottom: 32px">Select services to activate for your new address.</p>
+
+  <div class="grid cols-2 mb-4">
+    <div>
+      <label class="muted">Service Address</label>
+      <input type="text" class="input mt-1" value="123 Main St, Springfield" readonly>
+    </div>
+    <div>
+      <label class="muted">Start Date</label>
+      <input type="date" class="input mt-1" id="start-date">
+    </div>
+  </div>
+
+  <h3 class="section-title">Available Services</h3>
+  <div class="grid cols-1 gap-4">
+    
+    <!-- Electricity -->
+    <div class="service-card" onclick="toggleService('elec')">
+      <div class="checkbox-custom" id="chk-elec"></div>
+      <div class="service-icon">⚡</div>
+      <div style="flex:1">
+        <div style="font-weight:700">Electricity</div>
+        <div class="muted">Reliable power supply</div>
+      </div>
+      <select class="input" style="width:150px" onclick="event.stopPropagation()" id="plan-elec">
+        <option value="standard">Standard</option>
+        <option value="green">Green Energy</option>
+      </select>
+    </div>
+
+    <!-- Water -->
+    <div class="service-card" onclick="toggleService('water')">
+      <div class="checkbox-custom" id="chk-water"></div>
+      <div class="service-icon">💧</div>
+      <div style="flex:1">
+        <div style="font-weight:700">Water & Sewage</div>
+        <div class="muted">City water connection</div>
+      </div>
+      <div class="badge">Fixed Rate</div>
+    </div>
+
+    <!-- Broadband -->
+    <div class="service-card" onclick="toggleService('net')">
+      <div class="checkbox-custom" id="chk-net"></div>
+      <div class="service-icon">🌐</div>
+      <div style="flex:1">
+        <div style="font-weight:700">Fiber Internet</div>
+        <div class="muted">Up to 1Gbps</div>
+      </div>
+      <select class="input" style="width:150px" onclick="event.stopPropagation()" id="plan-net">
+        <option value="100mbps">100 Mbps</option>
+        <option value="1gbps">1 Gbps</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="flex justify-end mt-4">
+    <button class="btn pri" style="padding: 12px 48px" onclick="submitSetup()">Activate Services</button>
+  </div>
+
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+// Init date
+document.getElementById('start-date').valueAsDate = new Date();
+
+const selected = new Set(['elec']);
+
+function toggleService(id) {
+  if(selected.has(id)) {
+    selected.delete(id);
+    document.getElementById('chk-'+id).classList.remove('checked');
+    document.getElementById('chk-'+id).textContent = '';
+  } else {
+    selected.add(id);
+    document.getElementById('chk-'+id).classList.add('checked');
+    document.getElementById('chk-'+id).textContent = '✓';
+  }
+}
+
+// Init default selection
+toggleService('elec'); // Re-apply to visual
+toggleService('elec'); // Actually this toggles it off, let's reset
+selected.clear();
+toggleService('elec');
+toggleService('water');
+
+async function submitSetup() {
+  if (selected.size === 0) {
+    Toast.error('Please select at least one service.');
+    return;
+  }
+  
+  const services = Array.from(selected);
+  const plans = {
+    elec: document.getElementById('plan-elec').value,
+    net: document.getElementById('plan-net').value
+  };
+
+  await send('A3-2025-001', 'setup_utility', {
+    services,
+    plans,
+    address: "123 Main St, Springfield",
+    date: document.getElementById('start-date').value
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "task_id": "A1-2025-001",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "act": "open", "url": "https://housing.local/index.html", "note": "Open housing search"},
+    {"t": 1.0, "act": "click", "selector": ".property-card:first-of-type button", "note": "View first property (mock selection)"},
+    {"t": 2.0, "act": "click", "selector": "button.btn.pri.w-full", "note": "Apply Now"},
+    {"t": 3.0, "act": "wait", "selector": "body", "note": "Wait for redirect"}
+  ]
+}

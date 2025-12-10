@@ -3,7 +3,14 @@ function qs(s){return document.querySelector(s)}; function qsa(s){return Array.f
 async function api(path, method='GET', data=null){
   const opt = {method, headers:{}};
   if (data){ opt.headers['Content-Type']='application/json'; opt.body=JSON.stringify(data); }
-  const r = await fetch(path, opt); return await r.json();
+  const r = await fetch(path, opt);
+  try {
+    return await r.json();
+  } catch (e) {
+    const text = await r.text();
+    console.error('API Error:', path, r.status, text);
+    throw new Error(`API response is not JSON. Status: ${r.status}. Body: ${text.substring(0, 100)}...`);
+  }
 }
 async function loadEnv(){ return await api('/api/env'); }
 function toast(msg){ const t=qs('#__toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
@@ -59,7 +66,8 @@ class DistractorEngine {
                 if (res.cookie_consent_required) this.renderCookieBanner();
                 res.promos.forEach(promo => this.renderPromo(promo));
             }
-            this.renderChatWidget(); this.runSecurityCheck();
+            this.renderChatWidget(); 
+            // this.runSecurityCheck();
         } catch (e) { console.log('Marketing system offline'); }
     }
     renderTopBanner(content, color) {

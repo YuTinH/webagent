@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manage Trip - SkyHigh Travel</title>
-<link rel="stylesheet" href="/static/skin.css">
-<link rel="stylesheet" href="/static/components.css">
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
 <style>
 .trip-summary-card {
   background: var(--panel);
@@ -40,9 +40,9 @@
       SkyHigh Travel
     </div>
     <div class="navlinks">
-      <a href="/trip.local/index.html">Flights</a>
-      <a href="/trip.local/hotels.html">Hotels</a>
-      <a href="/trip.local/manage.html" class="active">My Trips</a>
+      <a href="index.html">Flights</a>
+      <a href="hotels.html">Hotels</a>
+      <a href="manage.html" class="active">My Trips</a>
     </div>
   </div>
 </div>
@@ -63,7 +63,7 @@
 
   
   <div class="breadcrumbs">
-    <a href="/trip.local/index.html">Home</a> / <span>Manage Trip</span>
+    <a href="index.html">Home</a> / <span>Manage Trip</span>
   </div>
 
   <h1 style="margin-bottom: 24px;">Manage Your Trip</h1>
@@ -106,13 +106,13 @@
       <h3>Need a Hotel?</h3>
       <p>Book your perfect stay in Paris with 15% off.</p>
     </div>
-    <a href="/trip.local/hotels.html" class="btn" style="background:white; color:var(--pri)">Find Hotels</a>
+    <a href="hotels.html" class="btn" style="background:white; color:var(--pri)">Find Hotels</a>
   </div>
 
 </div>
 
-<script src="/static/common.js"></script>
-<script src="/static/components.js"></script>
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
 function getParams() {
   const p = new URLSearchParams(window.location.search);

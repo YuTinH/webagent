@@ -1,3 +1,67 @@
 {"task_id": "I5-6001", "action": "set_energy_plan", "payload": {"meterId": "M-321", "plan": "standard"}, "url": "/energy.local/plan.html", "ts": 1763448850542}
 {"task_id": "I5-6001", "action": "set_energy_plan", "payload": {"meterId": "M-321", "plan": "green_offpeak"}, "url": "/energy.local/plan.html", "ts": 1763448852703}
 {"task_id": "I5-6001", "action": "set_energy_plan", "payload": {"meterId": "M-321", "plan": "green_offpeak"}, "url": "/energy.local/plan.html", "ts": 1764158138215}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765334155218}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765334188583}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765334238598}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765334326545}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765334328278}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765334639399}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765334672381}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765338701236}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765338734102}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765338785816}
+{"task_id": "G2-2025-102", "action": "refill_rx", "payload": {"prescriptionId": "RX-1001", "medication": "Amoxicillin 250mg"}, "url": "/health.local/records.html", "ts": 1765338818617}
+{"task_id": "G3-2025-103", "action": "submit_claim", "payload": {"claimId": "CLM-5501", "appointmentId": "APT-9001", "amount": "250"}, "url": "/health.local/claim.html", "ts": 1765338821233}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765338823948}
+{"task_id": "E2-2025-202", "action": "book_hotel", "payload": {"bookingId": "HTL-77", "city": "Paris", "checkin": "2025-12-12", "nights": "3", "price": 220}, "url": "/trip.local/hotels.html", "ts": 1765338826698}
+{"task_id": "F2-2025-301", "action": "conference_register", "payload": {"event": "AI Summit Paris", "city": "Paris", "ticket": "standard", "registrationId": "CONF-8801"}, "url": "/event.local/registration.html", "ts": 1765338829483}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765338847497}
+{"task_id": "G2-2025-102", "action": "refill_rx", "payload": {"prescriptionId": "RX-1001", "medication": "Amoxicillin 250mg"}, "url": "/health.local/records.html", "ts": 1765338880481}
+{"task_id": "G3-2025-103", "action": "submit_claim", "payload": {"claimId": "CLM-5501", "appointmentId": "APT-9001", "amount": "250"}, "url": "/health.local/claim.html", "ts": 1765338883098}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765338935960}
+{"task_id": "G2-2025-102", "action": "refill_rx", "payload": {"prescriptionId": "RX-1001", "medication": "Amoxicillin 250mg"}, "url": "/health.local/records.html", "ts": 1765338968909}
+{"task_id": "G3-2025-103", "action": "submit_claim", "payload": {"claimId": "CLM-5501", "appointmentId": "APT-9001", "amount": "250"}, "url": "/health.local/claim.html", "ts": 1765338971627}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765338974359}
+{"task_id": "E2-2025-202", "action": "book_hotel", "payload": {"bookingId": "HTL-77", "city": "Paris", "checkin": "2025-12-12", "nights": "3", "price": 220}, "url": "/trip.local/hotels.html", "ts": 1765338977342}
+{"task_id": "F2-2025-301", "action": "conference_register", "payload": {"event": "AI Summit Paris", "city": "Paris", "ticket": "standard", "registrationId": "CONF-8801"}, "url": "/event.local/registration.html", "ts": 1765338979943}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765338997075}
+{"task_id": "G2-2025-102", "action": "refill_rx", "payload": {"prescriptionId": "RX-1001", "medication": "Amoxicillin 250mg"}, "url": "/health.local/records.html", "ts": 1765339029824}
+{"task_id": "G3-2025-103", "action": "submit_claim", "payload": {"claimId": "CLM-5501", "appointmentId": "APT-9001", "amount": "250"}, "url": "/health.local/claim.html", "ts": 1765339033475}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765339036406}
+{"task_id": "E2-2025-202", "action": "book_hotel", "payload": {"bookingId": "HTL-77", "city": "Paris", "checkin": "2025-12-12", "nights": "3", "price": 220}, "url": "/trip.local/hotels.html", "ts": 1765339039323}
+{"task_id": "F2-2025-301", "action": "conference_register", "payload": {"event": "AI Summit Paris", "city": "Paris", "ticket": "standard", "registrationId": "CONF-8801"}, "url": "/event.local/registration.html", "ts": 1765339041958}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765339175484}
+{"task_id": "G2-2025-102", "action": "refill_rx", "payload": {"prescriptionId": "RX-1001", "medication": "Amoxicillin 250mg"}, "url": "/health.local/records.html", "ts": 1765339208334}
+{"task_id": "G3-2025-103", "action": "submit_claim", "payload": {"claimId": "CLM-5501", "appointmentId": "APT-9001", "amount": "250"}, "url": "/health.local/claim.html", "ts": 1765339210951}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765339213699}
+{"task_id": "E2-2025-202", "action": "book_hotel", "payload": {"bookingId": "HTL-77", "city": "Paris", "checkin": "2025-12-12", "nights": "3", "price": 220}, "url": "/trip.local/hotels.html", "ts": 1765339216799}
+{"task_id": "F2-2025-301", "action": "conference_register", "payload": {"event": "AI Summit Paris", "city": "Paris", "ticket": "standard", "registrationId": "CONF-8801"}, "url": "/event.local/registration.html", "ts": 1765339219384}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765339310312}
+{"task_id": "G2-2025-102", "action": "refill_rx", "payload": {"prescriptionId": "RX-1001", "medication": "Amoxicillin 250mg"}, "url": "/health.local/records.html", "ts": 1765339343261}
+{"task_id": "G3-2025-103", "action": "submit_claim", "payload": {"claimId": "CLM-5501", "appointmentId": "APT-9001", "amount": "250"}, "url": "/health.local/claim.html", "ts": 1765339345996}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765339348744}
+{"task_id": "E2-2025-202", "action": "book_hotel", "payload": {"bookingId": "HTL-77", "city": "Paris", "checkin": "2025-12-12", "nights": "3", "price": 220}, "url": "/trip.local/hotels.html", "ts": 1765339351377}
+{"task_id": "F2-2025-301", "action": "conference_register", "payload": {"event": "AI Summit Paris", "city": "Paris", "ticket": "standard", "registrationId": "CONF-8801"}, "url": "/event.local/registration.html", "ts": 1765339353996}
+{"task_id": "E5-2025-205", "action": "submit_expense", "payload": {"pnr": "PNR-8891", "total": "1200", "reportId": "EXP-3344"}, "url": "/bank.local/expense-report.html", "ts": 1765339356578}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765339388326}
+{"task_id": "G2-2025-102", "action": "refill_rx", "payload": {"prescriptionId": "RX-1001", "medication": "Amoxicillin 250mg"}, "url": "/health.local/records.html", "ts": 1765339421075}
+{"task_id": "G3-2025-103", "action": "submit_claim", "payload": {"claimId": "CLM-5501", "appointmentId": "APT-9001", "amount": "250"}, "url": "/health.local/claim.html", "ts": 1765339423692}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765339426407}
+{"task_id": "E2-2025-202", "action": "book_hotel", "payload": {"bookingId": "HTL-77", "city": "Paris", "checkin": "2025-12-12", "nights": "3", "price": 220}, "url": "/trip.local/hotels.html", "ts": 1765339429024}
+{"task_id": "F2-2025-301", "action": "conference_register", "payload": {"event": "AI Summit Paris", "city": "Paris", "ticket": "standard", "registrationId": "CONF-8801"}, "url": "/event.local/registration.html", "ts": 1765339431592}
+{"task_id": "E5-2025-205", "action": "submit_expense", "payload": {"pnr": "PNR-8891", "total": "1200", "reportId": "EXP-3344"}, "url": "/bank.local/expense-report.html", "ts": 1765339434142}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765349777060}
+{"task_id": "G2-2025-102", "action": "refill_rx", "payload": {"prescriptionId": "RX-1001", "medication": "Amoxicillin 250mg"}, "url": "/health.local/records.html", "ts": 1765349810079}
+{"task_id": "G3-2025-103", "action": "submit_claim", "payload": {"claimId": "CLM-5501", "appointmentId": "APT-9001", "amount": "250"}, "url": "/health.local/claim.html", "ts": 1765349812810}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765349815575}
+{"task_id": "E2-2025-202", "action": "book_hotel", "payload": {"bookingId": "HTL-77", "city": "Paris", "checkin": "2025-12-12", "nights": "3", "price": 220}, "url": "/trip.local/hotels.html", "ts": 1765349818208}
+{"task_id": "F2-2025-301", "action": "conference_register", "payload": {"event": "AI Summit Paris", "city": "Paris", "ticket": "standard", "registrationId": "CONF-8801"}, "url": "/event.local/registration.html", "ts": 1765349820910}
+{"task_id": "E5-2025-205", "action": "submit_expense", "payload": {"pnr": "PNR-8891", "total": "1200", "reportId": "EXP-3344"}, "url": "/bank.local/expense-report.html", "ts": 1765349823610}
+{"task_id": "G1-2025-101", "action": "book_doctor", "payload": {"doctorId": "DR-001", "appointmentId": "APT-9001", "slot": "2025-12-06T09:00"}, "url": "/health.local/appointment.html", "ts": 1765353396082}
+{"task_id": "G2-2025-102", "action": "refill_rx", "payload": {"prescriptionId": "RX-1001", "medication": "Amoxicillin 250mg"}, "url": "/health.local/records.html", "ts": 1765353428831}
+{"task_id": "G3-2025-103", "action": "submit_claim", "payload": {"claimId": "CLM-5501", "appointmentId": "APT-9001", "amount": "250"}, "url": "/health.local/claim.html", "ts": 1765353431466}
+{"task_id": "E1-2025-201", "action": "book_flight", "payload": {"pnr": "PNR-8891", "destination": "Paris", "date": "2025-12-17", "price": 450}, "url": "/trip.local/book.html", "ts": 1765353434230}
+{"task_id": "E2-2025-202", "action": "book_hotel", "payload": {"bookingId": "HTL-77", "city": "Paris", "checkin": "2025-12-12", "nights": "3", "price": 220}, "url": "/trip.local/hotels.html", "ts": 1765353436947}
+{"task_id": "F2-2025-301", "action": "conference_register", "payload": {"event": "AI Summit Paris", "city": "Paris", "ticket": "standard", "registrationId": "CONF-8801"}, "url": "/event.local/registration.html", "ts": 1765353439532}
+{"task_id": "E5-2025-205", "action": "submit_expense", "payload": {"pnr": "PNR-8891", "total": "1200", "reportId": "EXP-3344"}, "url": "/bank.local/expense-report.html", "ts": 1765353442148}

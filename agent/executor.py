@@ -61,7 +61,7 @@ class ExecutionResult:
 class TaskExecutor:
     """Main task executor using Playwright"""
 
-    SUITE_PORT = int(os.getenv("WEB_SUITE_PORT", "8014"))
+    SUITE_PORT = int(os.getenv("WEB_SUITE_PORT", "8015"))
 
     def __init__(
         self,
@@ -147,6 +147,32 @@ class TaskExecutor:
         # TODO: Implement HTTP call to env API
         # For now, query database directly
 
+        # Check JSON state first for new domains
+        json_domains = ("health", "trips", "work", "expenses", "meters", "permits")
+        parts = path.split('.')
+        
+        if parts[0] in json_domains:
+            from pathlib import Path
+            state_path = Path('env/state.json')
+            if state_path.exists():
+                try:
+                    current = json.loads(state_path.read_text(encoding='utf-8'))
+                    for part in parts:
+                        if isinstance(current, dict):
+                            current = current.get(part)
+                        elif isinstance(current, list):
+                            try:
+                                current = current[int(part)]
+                            except (ValueError, IndexError):
+                                return None
+                        else:
+                            return None
+                        if current is None:
+                            return None
+                    return current
+                except Exception:
+                    pass
+
         if not os.path.exists(self.database_path):
             return None
 
@@ -156,7 +182,7 @@ class TaskExecutor:
             cursor = conn.cursor()
 
             # Simple implementation: parse path like "orders.O-10001.state"
-            parts = path.split('.')
+            # parts already split above
 
             if parts[0] == 'orders' and len(parts) >= 2:
                 order_id = parts[1]
@@ -342,6 +368,12 @@ class TaskExecutor:
         dsl = AssertionDSL(None, self.memory, self._env_api)
 
         for precondition in preconditions:
+            if "banking.balance" in precondition:
+                 try:
+                     val = self.memory.get("banking", {}).get("balance", {}).get("checking", "MISSING")
+                 except:
+                     val = "ERROR"
+                 print(f"DEBUG: Checking {precondition}. Memory value: {val}")
             try:
                 # For memory-only preconditions, we can evaluate without a page
                 result = dsl.evaluate(precondition)

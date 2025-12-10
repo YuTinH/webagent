@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Find a Doctor - Health Connect</title>
-<link rel="stylesheet" href="/static/skin.css">
-<link rel="stylesheet" href="/static/components.css">
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
 <style>
 .doctor-card {
   display: flex;
@@ -53,9 +53,9 @@
       Health Connect
     </div>
     <div class="navlinks">
-      <a href="/health.local/index.html">Home</a>
-      <a href="/health.local/doctors.html" class="active">Doctors</a>
-      <a href="/health.local/records.html">My Records</a>
+      <a href="index.html">Home</a>
+      <a href="doctors.html" class="active">Doctors</a>
+      <a href="records.html">My Records</a>
     </div>
   </div>
 </div>
@@ -63,7 +63,7 @@
 <div class="container">
   
   <div class="breadcrumbs">
-    <a href="/health.local/index.html">Home</a> / <span>Find a Doctor</span>
+    <a href="index.html">Home</a> / <span>Find a Doctor</span>
   </div>
 
   <h1 style="margin-bottom: 24px;">Find a Doctor</h1>
@@ -113,8 +113,8 @@
 
 </div>
 
-<script src="/static/common.js"></script>
-<script src="/static/components.js"></script>
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
 const DOCTORS = [
   { id: 'DR-001', name: 'Dr. Alice Smith', specialty: 'General Practice', avatar: '👩‍⚕️' },
@@ -139,7 +139,7 @@ function renderDoctors() {
 }
 
 function bookAppointment(doctorId) {
-  window.location.href = `/health.local/appointment.html?doctor=${doctorId}`;
+  window.location.href = `appointment.html?doctor=${doctorId}`;
 }
 
 renderDoctors();

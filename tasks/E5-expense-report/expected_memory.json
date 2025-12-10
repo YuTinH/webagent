@@ -1,0 +1,16 @@
+{
+  "expenses.last.id": {
+    "key": "expenses.last.id",
+    "value": "EXP-3344",
+    "ts": "2025-12-05T17:05:00Z",
+    "source": "E5-2025-205",
+    "confidence": 1.0
+  },
+  "expenses.last.total": {
+    "key": "expenses.last.total",
+    "value": "1200",
+    "ts": "2025-12-05T17:05:00Z",
+    "source": "E5-2025-205",
+    "confidence": 1.0
+  }
+}

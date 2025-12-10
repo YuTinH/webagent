@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotels - SkyHigh Travel</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.hotel-card { display:flex; gap:20px; background: var(--card); border:1px solid var(--border); border-radius: var(--radius); padding:20px; margin-bottom:16px; align-items:center; }
+.hotel-img { width:120px; height:120px; border-radius: var(--radius); background-size: cover; background-position: center; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #0ea5e9, #22d3ee)"></div>
+      SkyHigh Travel
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Flights</a>
+      <a href="hotels.html" class="active">Hotels</a>
+      <a href="manage.html">My Trips</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="breadcrumbs">
+    <a href="index.html">Home</a> / <span>Hotels</span>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="flex" style="gap:12px; align-items:flex-end; flex-wrap:wrap">
+      <div>
+        <label class="muted">Destination</label>
+        <input id="hotel-city" class="input mt-1" placeholder="City" value="Paris">
+      </div>
+      <div>
+        <label class="muted">Check-in</label>
+        <input id="hotel-checkin" type="date" class="input mt-1">
+      </div>
+      <div>
+        <label class="muted">Nights</label>
+        <select id="hotel-nights" class="input mt-1">
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+      <button class="btn pri" onclick="searchHotels()">Search</button>
+    </div>
+  </div>
+
+  <div id="hotel-list">
+    <div class="skeleton" style="height:140px; margin-bottom:12px"></div>
+    <div class="skeleton" style="height:140px; margin-bottom:12px"></div>
+  </div>
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const HOTELS = [
+  { id:'HTL-77', name:'Aurora Palace', price:220, rating:'4.7', img:'https://images.unsplash.com/photo-1501117716987-c8e1ecb210af?auto=format&fit=crop&w=800&q=80' },
+  { id:'HTL-88', name:'Riverfront Suites', price:180, rating:'4.5', img:'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
+  { id:'HTL-99', name:'Garden Luxe', price:260, rating:'4.8', img:'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80' }
+];
+
+function setDefaultDate() {
+  document.getElementById('hotel-checkin').value = "2025-12-12";
+}
+
+function renderHotels() {
+  const list = document.getElementById('hotel-list');
+  list.innerHTML = HOTELS.map(h => `
+    <div class="hotel-card">
+      <div class="hotel-img" style="background-image:url('${h.img}')"></div>
+      <div style="flex:1">
+        <h3 style="margin:0">${h.name}</h3>
+        <p class="muted" style="margin:4px 0">Rating ${h.rating} · Free breakfast · Near city center</p>
+        <div class="badge warn">Free cancellation</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:24px; font-weight:800; color:var(--pri)">$${h.price}/night</div>
+        <button class="btn pri mt-2" onclick="bookHotel('${h.id}', ${h.price})">Book</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function searchHotels() {
+  Toast.info('Showing best matches');
+  renderHotels();
+}
+
+async function bookHotel(id, price) {
+  const city = document.getElementById('hotel-city').value || 'Paris';
+  const checkin = document.getElementById('hotel-checkin').value;
+  const nights = document.getElementById('hotel-nights').value || 3;
+  await send('E2-2025-202','book_hotel',{bookingId: id, city, checkin, nights, price});
+}
+
+setDefaultDate();
+renderHotels();
+</script>
+
+</body>
+</html>

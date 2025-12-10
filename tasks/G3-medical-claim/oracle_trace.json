@@ -1,5 +1,11 @@
 {
-  "task_id": "G3-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "task_id": "G3-2025-103",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "url": "https://health.local/claim.html", "frame": "main", "act": "open", "note": "Open insurance claim form"},
+    {"t": 1.2, "act": "wait", "selector": ".claim-form", "note": "Wait for form"},
+    {"t": 1.6, "act": "type", "selector": "#claim-amount", "value": "250", "note": "Confirm claim amount"},
+    {"t": 2.0, "act": "click", "selector": "button.btn.pri", "note": "Submit claim via send()"},
+    {"t": 3.5, "act": "wait", "selector": "#application-id", "note": "Verify redirected status page is loaded"}
+  ]
 }

@@ -8,12 +8,12 @@
   "persona": {
     "automation_preference": "medium"
   },
-  "goal": "Enroll in online course",
-  "inputs": {},
+  "goal": "Enroll in 'Deep Learning 101' course on school.local.",
+  "inputs": {
+    "course_id": "DL101"
+  },
   "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
+    "school.local"
   ],
   "preconditions": [
     "mem('banking.balance.checking') > 200"
@@ -21,9 +21,11 @@
   "dependencies": [
     "D1-check-balance"
   ],
-  "memory_keys": [],
+  "memory_keys": [
+    "courses.DL101.state"
+  ],
   "success_criteria": [
-    "url().includes('/j1')"
+    "ALL[url().includes('/school.local/my-learning'), mem('courses.DL101.state') == 'enrolled', json('env','courses.DL101.state') == 'enrolled']"
   ],
   "rubrics": {
     "SR": 1.0

@@ -1,5 +1,14 @@
 {
-  "task_id": "E1-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "task_id": "E1-2025-201",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "url": "https://trip.local/index.html", "frame": "main", "act": "open", "note": "Open flights search"},
+    {"t": 1.0, "act": "type", "selector": "#destination", "value": "Paris", "note": "Enter destination"},
+    {"t": 1.6, "act": "click", "selector": ".form-grid button.btn.pri", "note": "Search flights"},
+    {"t": 3.0, "act": "wait", "selector": ".flight-card button.btn.pri", "note": "Wait for flight results"},
+    {"t": 3.4, "act": "click", "selector": ".flight-card:first-of-type button.btn.pri", "note": "Pick first flight"},
+    {"t": 4.8, "act": "type", "selector": "#passport", "value": "X12345678", "note": "Fill passport"},
+    {"t": 5.2, "act": "click", "selector": "button.btn.pri", "note": "Confirm booking and trigger send()"},
+    {"t": 6.5, "act": "wait", "selector": ".trip-summary-card", "note": "Wait for confirmation page"}
+  ]
 }

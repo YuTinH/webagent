@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Your Dream Home - HomeFinder</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.search-hero {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  padding: 60px 40px;
+  border-radius: var(--radius);
+  text-align: center;
+  margin-bottom: 40px;
+}
+.search-box {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 800px;
+  margin: 24px auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.property-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: var(--transition);
+  background: var(--card);
+}
+.property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.property-img {
+  height: 200px;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+.property-info { padding: 20px; }
+.price { font-size: 24px; font-weight: 700; color: var(--pri); }
+.meta { display: flex; gap: 16px; color: var(--muted); margin-bottom: 16px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #3b82f6, #60a5fa)"></div>
+      HomeFinder
+    </div>
+    <div class="navlinks">
+      <a href="index.html" class="active">Rent</a>
+      <a href="#">Buy</a>
+      <a href="#">Sell</a>
+    </div>
+    <div class="search">
+      <button class="btn">Log In</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="search-hero">
+    <h1 style="margin:0; font-size:42px">Discover Your New Home</h1>
+    <p style="opacity:0.9; margin-top:8px">Search thousands of apartments and houses for rent.</p>
+    
+    <div class="search-box">
+      <input type="text" id="filter-city" class="input" placeholder="City, Zip, or Neighborhood" value="Springfield" style="border:1px solid #e2e8f0">
+      <select id="filter-price" class="input" style="border:1px solid #e2e8f0">
+        <option value="any">Price (Any)</option>
+        <option value="0-1000">< $1000</option>
+        <option value="1000-2000">$1000 - $2000</option>
+        <option value="2000+">$2000+</option>
+      </select>
+      <select id="filter-beds" class="input" style="border:1px solid #e2e8f0">
+        <option value="any">Beds (Any)</option>
+        <option value="1">1+ Bed</option>
+        <option value="2">2+ Beds</option>
+        <option value="3">3+ Beds</option>
+      </select>
+      <button class="btn pri" onclick="searchProperties()">Search</button>
+    </div>
+  </div>
+
+  <h2 style="margin-bottom:24px">Featured Rentals in Springfield</h2>
+  
+  <div class="grid cols-3 gap-6" id="property-list">
+    <!-- Properties will be rendered here -->
+  </div>
+
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const PROPERTIES = [
+  { id: 'PROP-101', title: 'Modern Downtown Apt', price: 1800, beds: 2, baths: 2, sqft: 1100, img: '🏢' },
+  { id: 'PROP-102', title: 'Cozy Suburban House', price: 2200, beds: 3, baths: 2.5, sqft: 1800, img: '🏡' },
+  { id: 'PROP-103', title: 'Studio Near Park', price: 950, beds: 1, baths: 1, sqft: 600, img: '🏬' },
+  { id: 'PROP-104', title: 'Luxury Loft', price: 2800, beds: 2, baths: 2, sqft: 1400, img: '🏙️' },
+  { id: 'PROP-105', title: 'Garden Apartment', price: 1500, beds: 2, baths: 1, sqft: 950, img: '🌳' },
+  { id: 'PROP-106', title: 'Historic Townhouse', price: 3200, beds: 4, baths: 3, sqft: 2400, img: '🏘️' },
+];
+
+function renderProperties(list = PROPERTIES) {
+  const container = document.getElementById('property-list');
+  if (list.length === 0) {
+    container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted)">No properties found matching your criteria.</div>';
+    return;
+  }
+  container.innerHTML = list.map(p => `
+    <div class="property-card" onclick="location.href='property.html?id=${p.id}'" style="cursor:pointer">
+      <div class="property-img">${p.img}</div>
+      <div class="property-info">
+        <div class="price">$${p.price}/mo</div>
+        <h3 style="margin:4px 0 8px">${p.title}</h3>
+        <div class="meta">
+          <span>${p.beds} Beds</span>
+          <span>${p.baths} Baths</span>
+          <span>${p.sqft} sqft</span>
+        </div>
+        <button class="btn pri w-full">View Details</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function searchProperties() {
+  console.log('Search clicked');
+  try { Toast.info('Searching...'); } catch(e) {}
+  
+  const priceVal = document.getElementById('filter-price').value;
+  const bedsVal = document.getElementById('filter-beds').value;
+  const cityVal = document.getElementById('filter-city').value.toLowerCase();
+
+  const filtered = PROPERTIES.filter(p => {
+    // Filter by Price
+    if (priceVal !== 'any') {
+      if (priceVal === '0-1000' && p.price >= 1000) return false;
+      if (priceVal === '1000-2000' && (p.price < 1000 || p.price > 2000)) return false;
+      if (priceVal === '2000+' && p.price <= 2000) return false;
+    }
+    // Filter by Beds
+    if (bedsVal !== 'any' && p.beds < parseInt(bedsVal)) return false;
+    
+    // Simple mock filter for city (always match unless empty)
+    if (cityVal && !'springfield'.includes(cityVal) && !p.title.toLowerCase().includes(cityVal)) return false;
+
+    return true;
+  });
+
+  setTimeout(() => renderProperties(filtered), 300);
+}
+
+renderProperties();
+</script>
+
+</body>
+</html>

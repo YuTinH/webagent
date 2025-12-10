@@ -75,6 +75,10 @@ class StatePropagationEngine:
 
     def get_memory(self, key: str, default=None) -> Any:
         """Get value from memory using dot notation"""
+        # Try direct match first (for flat keys from server/executor)
+        if key in self.memory_cache:
+            return self.memory_cache[key]
+
         parts = key.split('.')
         current = self.memory_cache
 
@@ -112,13 +116,18 @@ class StatePropagationEngine:
 
     def get_env_state(self, path: str) -> Any:
         """
-        Get state from database (environment state)
+        Get state from database (environment state) or JSON state file
 
         Examples:
         - banking.balance.checking → SELECT balance FROM accounts WHERE type='checking'
         - products.WM-5521.stock → SELECT stock FROM products WHERE sku='WM-5521'
-        - orders.O-10001.state → SELECT state FROM orders WHERE id='O-10001'
+        - health.prescriptions.RX-1001.refills_left → JSON lookup in env/state.json
         """
+        # Check JSON state first for new domains
+        json_domains = ("health.", "trips.", "work.", "expenses.", "meters.", "payments.", "permits.")
+        if path.startswith(json_domains):
+            return self._get_json_state(path)
+
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
 
@@ -170,6 +179,37 @@ class StatePropagationEngine:
                     result = cursor.fetchone()
                     return result[0] if result else None
 
+            return None
+
+    def _get_json_state(self, path: str) -> Any:
+        """Helper to read from env/state.json"""
+        state_path = Path(__file__).parent.parent / "env" / "state.json"
+        if not state_path.exists():
+            return None
+        
+        try:
+            with open(state_path, 'r') as f:
+                data = json.load(f)
+            
+            parts = path.split('.')
+            current = data
+            for part in parts:
+                if isinstance(current, dict):
+                    current = current.get(part)
+                elif isinstance(current, list):
+                    try:
+                        idx = int(part)
+                        current = current[idx]
+                    except (ValueError, IndexError):
+                        return None
+                else:
+                    return None
+                
+                if current is None:
+                    return None
+            
+            return current
+        except Exception:
             return None
 
     def set_env_state(self, path: str, value: Any):
@@ -301,6 +341,9 @@ class StatePropagationEngine:
                     'int': int,
                     'str': str,
                     'len': len,
+                    'true': True,
+                    'false': False,
+                    'null': None,
                 }
 
                 # Evaluate condition

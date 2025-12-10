@@ -1,0 +1,16 @@
+{
+  "health.rx.last_id": {
+    "key": "health.rx.last_id",
+    "value": "RX-1001",
+    "ts": "2025-12-06T09:35:00Z",
+    "source": "G2-2025-102",
+    "confidence": 1.0
+  },
+  "health.rx.last_refill": {
+    "key": "health.rx.last_refill",
+    "value": "2025-12-06T09:35:00Z",
+    "ts": "2025-12-06T09:35:00Z",
+    "source": "G2-2025-102",
+    "confidence": 1.0
+  }
+}

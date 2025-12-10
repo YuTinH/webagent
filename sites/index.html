@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WebAgent Simulation Hub</title>
 <link rel="stylesheet" href="static/skin.css">
+<link rel="stylesheet" href="static/components.css">
 <style>
     body { background: #0f172a; color: #cbd5e1; font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; }
     .sidebar { width: 260px; background: #1e293b; padding: 20px; display: flex; flex-direction: column; border-right: 1px solid #334155; }
@@ -82,9 +83,41 @@
             <h2>Gov.local</h2>
             <p>Public services & utilities. <br><span style="color:#6366f1">Status: Online</span></p>
         </a>
+        <a href="health.local/index.html" class="service-link">
+            <div style="font-size:32px; margin-bottom:15px">🩺</div>
+            <h2>Health.local</h2>
+            <p>Medical appointments & records. <br><span style="color:#6366f1">Status: Online</span></p>
+        </a>
+        <a href="trip.local/index.html" class="service-link">
+            <div style="font-size:32px; margin-bottom:15px">✈️</div>
+            <h2>Trip.local</h2>
+            <p>Flights, hotels, itineraries. <br><span style="color:#6366f1">Status: Online</span></p>
+        </a>
+        <a href="school.local/index.html" class="service-link">
+            <div style="font-size:32px; margin-bottom:15px">🎓</div>
+            <h2>School.local</h2>
+            <p>Online courses & enrollment. <br><span style="color:#6366f1">Status: Online</span></p>
+        </a>
+        <a href="energy.local/plan.html" class="service-link">
+            <div style="font-size:32px; margin-bottom:15px">⚡</div>
+            <h2>Energy.local</h2>
+            <p>Utilities & service plans. <br><span style="color:#6366f1">Status: Online</span></p>
+        </a>
+        <a href="housing.local/index.html" class="service-link">
+            <div style="font-size:32px; margin-bottom:15px">🏠</div>
+            <h2>Housing.local</h2>
+            <p>Rentals & real estate. <br><span style="color:#6366f1">Status: Online</span></p>
+        </a>
+        <a href="food.local/index.html" class="service-link">
+            <div style="font-size:32px; margin-bottom:15px">🍔</div>
+            <h2>Food.local</h2>
+            <p>Food delivery & restaurants. <br><span style="color:#6366f1">Status: Online</span></p>
+        </a>
     </div>
 </div>
 
+<script src="static/common.js"></script>
+<script src="static/components.js"></script>
 <script>
 // Dynamic noise: Update numbers randomly
 setInterval(() => {

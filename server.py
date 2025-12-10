@@ -101,6 +101,121 @@ def query_env_path(env, path):
     return current
 
 def mutate_env(task_id, action, payload, env):
+    # G1 - Doctor appointment booking
+    if task_id.startswith('G1') and action == 'book_doctor':
+        appt_id = payload.get('appointmentId', 'APT-9001')
+        doctor_id = payload.get('doctorId', 'DR-001')
+        slot = payload.get('slot', '2025-12-02T09:00')
+        env = deep_merge(env, {"health": {"appointments": {"last": {"id": appt_id, "doctor": doctor_id, "slot": slot}}}})
+        ts = datetime.now().isoformat()
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['health.appointment.last_id', appt_id, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['health.appointment.slot', slot, ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": "/health.local/index.html"}
+
+    # G2 - Prescription refill
+    if task_id.startswith('G2') and action == 'refill_rx':
+        rx_id = payload.get('prescriptionId', 'RX-1001')
+        medication = payload.get('medication', 'Amoxicillin 250mg')
+        prev_refills = env.get('health', {}).get('prescriptions', {}).get(rx_id, {}).get('refills_left', 2)
+        refills_left = max(prev_refills - 1, 0)
+        refill_ts = datetime.now().isoformat()
+        env = deep_merge(env, {"health": {"prescriptions": {rx_id: {"medication": medication, "refills_left": refills_left, "last_refill": refill_ts}}}})
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['health.rx.last_id', rx_id, refill_ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['health.rx.last_refill', refill_ts, refill_ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": "/health.local/records.html"}
+
+    # G3 - Medical insurance claim
+    if task_id.startswith('G3') and action == 'submit_claim':
+        claim_id = payload.get('claimId', 'CLM-5501')
+        appt_id = payload.get('appointmentId', 'APT-9001')
+        amount = float(payload.get('amount', 250))
+        env = deep_merge(env, {"health": {"claims": {claim_id: {"status": "submitted", "appointment_id": appt_id, "amount": amount}}}})
+        ts = datetime.now().isoformat()
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['insurance.claim.last.id', claim_id, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['insurance.claim.last.status', 'submitted', ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": f"/gov.local/applications/status.html?id={claim_id}"}
+
+    # E1 - Flight booking
+    if task_id.startswith('E1') and action == 'book_flight':
+        pnr = payload.get('pnr', f"PNR-{random.randint(8000, 8999)}")
+        destination = payload.get('destination', 'Paris')
+        date = payload.get('date', datetime.now().strftime('%Y-%m-%d'))
+        price = float(payload.get('price', 450))
+        env = deep_merge(env, {"trips": {"flight": {"pnr": pnr, "destination": destination, "date": date, "price": price}}})
+        ts = datetime.now().isoformat()
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['travel.flight.last.pnr', pnr, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['travel.flight.last.destination', destination, ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": f"/trip.local/manage.html?pnr={pnr}&status=confirmed&date={date}"}
+
+    # E2 - Hotel booking
+    if task_id.startswith('E2') and action == 'book_hotel':
+        booking_id = payload.get('bookingId', f"HTL-{random.randint(700,999)}")
+        city = payload.get('city', 'Paris')
+        checkin = payload.get('checkin', datetime.now().strftime('%Y-%m-%d'))
+        nights = int(payload.get('nights', 3))
+        env = deep_merge(env, {"trips": {"hotel": {"id": booking_id, "city": city, "checkin": checkin, "nights": nights}}})
+        ts = datetime.now().isoformat()
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['travel.hotel.last.id', booking_id, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['travel.hotel.last.checkin', checkin, ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": "/trip.local/manage.html?status=confirmed"}
+
+    # F2 - Conference registration
+    if task_id.startswith('F2') and action == 'conference_register':
+        reg_id = payload.get('registrationId', "CONF-8801")
+        event_name = payload.get('event', 'AI Summit Paris')
+        city = payload.get('city', 'Paris')
+        env = deep_merge(env, {"work": {"conference": {"last": {"id": reg_id, "event": event_name, "city": city, "status": "confirmed"}}}})
+        ts = datetime.now().isoformat()
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['work.conference.last.id', reg_id, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['work.conference.last.event', event_name, ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": "/event.local/registration.html?state=confirmed"}
+
+    # E5 - Expense report
+    if task_id.startswith('E5') and action == 'submit_expense':
+        report_id = payload.get('reportId', "EXP-3344")
+        total = float(payload.get('total', 1200))
+        linked_pnr = payload.get('pnr', env.get('trips', {}).get('flight', {}).get('pnr', 'PNR-UNKNOWN'))
+        env = deep_merge(env, {"expenses": {"reports": {report_id: {"state": "submitted", "total": total, "pnr": linked_pnr}}}})
+        ts = datetime.now().isoformat()
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['expenses.last.id', report_id, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['expenses.last.total', str(total), ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": f"/bank.local/expense-report.html?report={report_id}"}
+
     if task_id.startswith('B6') and action == 'submit_price_protect':
         oid = payload.get('orderId', 'O-98321')
         patch = {"orders": {oid: {"claims": {"price_protect": {"state":"submitted"}}}}}
@@ -129,6 +244,79 @@ def mutate_env(task_id, action, payload, env):
         env = deep_merge(env, {"payments":{"cards":{last4:{"state":"blocked"}}}})
         env = deep_merge(env, {"merchant_bindings":{"updated":["shop.local","ride.local","food.local","stream.local","cloud.local"]}})
         return env, {"redirect": "/card.local/block.html"}
+
+    # A3 - Utility Setup
+    if task_id.startswith('A3') and action == 'setup_utility':
+        services = payload.get('services', [])
+        plans = payload.get('plans', {})
+        addr = payload.get('address', '')
+        ts = datetime.now().isoformat()
+        
+        # Update contracts in env
+        contracts = {}
+        for svc in services:
+            contracts[svc] = {"status": "active", "plan": plans.get(svc, "standard"), "address": addr, "start_date": payload.get('date')}
+            # Write to memory
+            try:
+                execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                           [f'contracts.{svc}.id', f'CTR-{svc.upper()}-{random.randint(1000,9999)}', ts, task_id, 1.0])
+                execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                           [f'contracts.{svc}.status', 'active', ts, task_id, 1.0])
+            except Exception:
+                pass
+        
+        env = deep_merge(env, {"contracts": contracts})
+        return env, {"redirect": "/energy.local/plan.html"}
+
+    # J1 - Course Enrollment
+    if task_id.startswith('J1') and action == 'enroll_course':
+        course_id = payload.get('courseId', 'DL101')
+        ts = datetime.now().isoformat()
+        
+        env = deep_merge(env, {"courses": {course_id: {"state": "enrolled", "enrolled_at": ts}}})
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'courses.{course_id}.state', 'enrolled', ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": "/school.local/my-learning.html"}
+
+    # A1 - Find Home
+    if task_id.startswith('A1') and action == 'rent_property':
+        prop_id = payload.get('propertyId', 'PROP-101')
+        term = payload.get('leaseTerm', '12 months')
+        ts = datetime.now().isoformat()
+        
+        env = deep_merge(env, {"housing": {"leases": {prop_id: {"status": "signed", "term": term}}}})
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['housing.lease.last.id', prop_id, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['housing.lease.last.status', 'signed', ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": "/housing.local/index.html"}
+
+    # B4 - Food Delivery
+    if task_id.startswith('B4') and action == 'order_food':
+        order_id = f"ODR-{random.randint(10000, 99999)}"
+        restaurant = payload.get('restaurant', 'Unknown')
+        items = payload.get('items', [])
+        total = payload.get('total', 0.0)
+        ts = datetime.now().isoformat()
+
+        env = deep_merge(env, {"food": {"orders": {order_id: {"restaurant": restaurant, "items": items, "total": total, "status": "pending", "ordered_at": ts}}}})
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['food.order.last.id', order_id, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['food.order.last.status', 'pending', ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['food.order.last.total', total, ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": "/food.local/orders.html"}
+
     return env, {}
 
 # Database helpers
@@ -203,6 +391,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return full
 
     def do_GET(self):
+        print(f"DEBUG: GET {self.path}")
+        try:
+            with open("server_debug.log", "a") as f:
+                f.write(f"GET {self.path}\n")
+        except: pass
+
         # Serve static CSV with attachment header
         if self.path.startswith('/static/transactions.csv'):
             fp = os.path.join(ROOT, 'static', 'transactions.csv')
@@ -674,7 +868,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
-        length = int(self.headers.get('Content-Length','0'))
+        print(f"DEBUG: POST {self.path}")
+        try:
+            with open("server_debug.log", "a") as f:
+                f.write(f"POST {self.path}\n")
+        except: pass
+
+        length = int(self.headers.get('content-length', 0))
         body = self.rfile.read(length) if length>0 else b'{}'
         try:
             data = json.loads(body.decode('utf-8'))
@@ -1166,9 +1366,8 @@ def main(port=8000):
         reset_env()
     class ThreadingHTTPServer(socketserver.ThreadingTCPServer):
         allow_reuse_address = True
-    with ThreadingHTTPServer(('', port), Handler) as httpd:
-        print(f"Serving skinned dynamic suite on http://localhost:{port}")
-        print("Open: /shop.local/index.html, /pay.local/wallet/cards.html, /trip.local/manage/PNR9ZZ.html, /permit.local/RP-2024-77.html, /energy.local/plan.html, /card.local/block.html")
+    print(f"Serving HTTP on port {port}...")
+    with socketserver.TCPServer(('', port), Handler) as httpd:
         httpd.serve_forever()
 
 if __name__ == '__main__':

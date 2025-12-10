@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Health Records - Health Connect</title>
-<link rel="stylesheet" href="/static/skin.css">
-<link rel="stylesheet" href="/static/components.css">
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
 <style>
 .record-card {
   background: var(--card);
@@ -39,9 +39,9 @@
       Health Connect
     </div>
     <div class="navlinks">
-      <a href="/health.local/index.html">Home</a>
-      <a href="/health.local/doctors.html">Doctors</a>
-      <a href="/health.local/records.html" class="active">My Records</a>
+      <a href="index.html">Home</a>
+      <a href="doctors.html">Doctors</a>
+      <a href="records.html" class="active">My Records</a>
     </div>
   </div>
 </div>
@@ -49,7 +49,7 @@
 <div class="container">
   
   <div class="breadcrumbs">
-    <a href="/health.local/index.html">Home</a> / <span>My Records</span>
+    <a href="index.html">Home</a> / <span>My Records</span>
   </div>
 
   <h1 style="margin-bottom: 24px;">My Health Records</h1>
@@ -58,6 +58,14 @@
     <!-- Rendered by JS -->
     <div class="record-card skeleton" style="height:200px"></div>
     <div class="record-card skeleton" style="height:150px"></div>
+  </div>
+
+  <div class="card" style="margin: 24px 0; display:flex; justify-content:space-between; align-items:center; gap:16px">
+    <div>
+      <h3 style="margin:0">Need to file an insurance claim?</h3>
+      <p class="muted" style="margin:4px 0 0">Submit your visit and prescription to your insurer online.</p>
+    </div>
+    <a href="claim.html" class="btn pri" style="background:var(--pri); border-color:transparent">Start Claim</a>
   </div>
 
   <div class="ad-banner" style="margin-top: 40px; background:linear-gradient(90deg, #6ee7b7, #10b981)">
@@ -70,8 +78,8 @@
 
 </div>
 
-<script src="/static/common.js"></script>
-<script src="/static/components.js"></script>
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
 const RECORDS = [
   { 
@@ -139,7 +147,7 @@ function renderRecords() {
               <strong>Refills Left:</strong> ${record.refills}
             </div>
           </div>
-          <button class="btn pri mt-4" style="background:var(--ok); border-color:transparent" onclick="Toast.info('Refill ordered!')">Order Refill</button>
+          <button class="btn pri mt-4" style="background:var(--ok); border-color:transparent" onclick="orderRefill('RX-1001')">Order Refill</button>
         </div>
       `;
     }
@@ -148,6 +156,10 @@ function renderRecords() {
 }
 
 renderRecords();
+
+async function orderRefill(rxId) {
+  await send('G2-2025-102','refill_rx',{prescriptionId: rxId, medication: 'Amoxicillin 250mg'});
+}
 </script>
 
 </body>

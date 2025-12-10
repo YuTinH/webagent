@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkyHigh Travel - Book Your Next Adventure</title>
-<link rel="stylesheet" href="/static/skin.css">
-<link rel="stylesheet" href="/static/components.css">
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
 <style>
 .hero-trip {
   background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(56, 189, 248, 0.1));
@@ -81,9 +81,9 @@
       SkyHigh Travel
     </div>
     <div class="navlinks">
-      <a href="/trip.local/index.html" class="active">Flights</a>
-      <a href="/trip.local/hotels.html">Hotels</a>
-      <a href="/trip.local/manage.html">My Trips</a>
+      <a href="index.html" class="active">Flights</a>
+      <a href="hotels.html">Hotels</a>
+      <a href="manage.html">My Trips</a>
     </div>
     <div class="search">
       <button class="btn" onclick="Toast.info('Login feature coming soon')">Sign In</button>
@@ -160,8 +160,8 @@
 
 </div>
 
-<script src="/static/common.js"></script>
-<script src="/static/components.js"></script>
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
 function searchFlights() {
   const dest = document.getElementById('destination').value;
@@ -173,7 +173,7 @@ function searchFlights() {
   }
   
   // Navigate to results
-  window.location.href = `/trip.local/flights.html?to=${encodeURIComponent(dest)}&date=${date}`;
+  window.location.href = `flights.html?to=${encodeURIComponent(dest)}&date=${date}`;
 }
 
 // Set default date to tomorrow

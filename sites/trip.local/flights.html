@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flight Results - SkyHigh Travel</title>
-<link rel="stylesheet" href="/static/skin.css">
-<link rel="stylesheet" href="/static/components.css">
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
 <style>
 .flight-card {
   display: grid;
@@ -77,9 +77,9 @@
       SkyHigh Travel
     </div>
     <div class="navlinks">
-      <a href="/trip.local/index.html">Flights</a>
-      <a href="/trip.local/hotels.html">Hotels</a>
-      <a href="/trip.local/manage.html">My Trips</a>
+      <a href="index.html">Flights</a>
+      <a href="hotels.html">Hotels</a>
+      <a href="manage.html">My Trips</a>
     </div>
   </div>
 </div>
@@ -88,7 +88,7 @@
   
   <div class="flex justify-between items-center mb-4">
     <div class="breadcrumbs">
-      <a href="/trip.local/index.html">Home</a> / <span>Flight Results</span>
+      <a href="index.html">Home</a> / <span>Flight Results</span>
     </div>
     <button class="btn" onclick="toggleFilterPanel()">Filter & Sort</button>
   </div>
@@ -114,8 +114,8 @@
 
 </div>
 
-<script src="/static/common.js"></script>
-<script src="/static/components.js"></script>
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
 // Mock Data
 const FLIGHTS = [
@@ -188,7 +188,7 @@ function renderFlights() {
 }
 
 function bookFlight(id) {
-  window.location.href = `/trip.local/book.html?id=${id}`;
+  window.location.href = `book.html?id=${id}`;
 }
 
 init();

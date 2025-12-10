@@ -1,127 +1,65 @@
 {
-  "permits": {
-    "RP-2024-77": {
-      "next_appointment": null
+  "health": {
+    "insurance": {
+      "active": true,
+      "provider": "Nebula Health",
+      "policy": "NH-44521"
     },
-    "parking": {
-      "application_id": "APP-6241",
-      "state": "submitted"
-    }
+    "prescriptions": {
+      "RX-1001": {
+        "medication": "Amoxicillin 250mg",
+        "refills_left": 2,
+        "last_refill": null
+      }
+    },
+    "appointments": {},
+    "claims": {}
   },
   "trips": {
-    "PNR9ZZ": {
-      "status": "ticketed",
-      "history": []
+    "flight": {
+      "pnr": "PNR-8891",
+      "destination": "Paris",
+      "date": "2025-12-17",
+      "price": 450.0
+    },
+    "hotel": {
+      "id": "HTL-77",
+      "city": "Paris",
+      "checkin": "2025-12-12",
+      "nights": 3
     }
   },
-  "payments": {
-    "cards": {
-      "active_last4": "****7777",
-      "1234": {
-        "state": "inactive",
-        "exp_date": "2025-12-15"
-      },
-      "7777": {
-        "state": "active",
-        "exp_date": "12/2029"
-      },
-      "****7777": {
-        "state": "active",
-        "exp_date": "12/2029"
-      }
-    },
-    "merchant_bindings": {
-      "map": {
-        "shop.local": "7777",
-        "ride.local": "1234",
-        "food.local": "1234",
-        "stream.local": "1234",
-        "cloud.local": "1234",
-        "util.local": "****7777",
-        "gov.local": "****7777"
+  "work": {
+    "conference": {
+      "last": {
+        "id": "CONF-8801",
+        "event": "AI Summit Paris",
+        "city": "Paris",
+        "status": "confirmed"
       }
     }
   },
-  "meters": {
-    "M-321": {
-      "plan": "green_offpeak"
-    }
-  },
-  "orders": {
-    "O-98321": {
-      "current_price": 179,
-      "claims": {
-        "price_protect": {
-          "state": "none"
-        }
+  "expenses": {
+    "reports": {
+      "EXP-3344": {
+        "state": "submitted",
+        "total": 1200.0,
+        "pnr": "PNR-8891"
       }
     }
   },
-  "merchant_bindings": {
-    "updated": []
-  },
-  "accounts": {
-    "checking": {
-      "balance": 1523.45,
-      "currency": "USD"
-    }
-  },
-  "autopay": {
-    "AP-7564": {
-      "payee": "utilities",
-      "account_type": "checking",
-      "amount": 130.5,
-      "frequency": "monthly",
-      "next_date": "2025-11-28",
-      "state": "active"
-    },
-    "AP-5928": {
-      "payee": "utilities",
-      "account_type": "checking",
-      "amount": 130.5,
-      "frequency": "monthly",
-      "next_date": "2025-11-28",
-      "state": "active"
-    },
-    "AP-6547": {
-      "payee": "utilities",
-      "account_type": "checking",
-      "amount": 130.5,
-      "frequency": "monthly",
-      "next_date": "2025-11-28",
-      "state": "active"
-    },
-    "AP-2247": {
-      "payee": "utilities",
-      "account_type": "checking",
-      "amount": 130.5,
-      "frequency": "monthly",
-      "next_date": "2025-11-28",
-      "state": "active"
-    },
-    "AP-5628": {
-      "payee": "utilities",
-      "account_type": "checking",
-      "amount": 130.5,
-      "frequency": "monthly",
-      "next_date": "2025-11-28",
-      "state": "active"
-    },
-    "AP-4537": {
-      "payee": "utilities",
-      "account_type": "checking",
-      "amount": 130.5,
-      "frequency": "monthly",
-      "next_date": "2025-11-28",
-      "state": "active"
-    },
-    "AP-6802": {
-      "payee": "City Utilities",
-      "account_type": "checking",
-      "amount": 130.5,
-      "frequency": "monthly",
-      "next_date": "2025-12-01",
-      "state": "active"
+  "food": {
+    "orders": {
+      "ODR-18606": {
+        "restaurant": "Test Burger",
+        "items": [
+          "Burger",
+          "Fries"
+        ],
+        "total": 12.99,
+        "status": "pending",
+        "ordered_at": "2025-12-10T11:26:12.357683"
+      }
     }
   }
 }

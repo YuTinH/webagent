@@ -1,0 +1,12 @@
+{
+  "task_id": "B4-2025-001",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "act": "open", "url": "https://food.local/index.html", "note": "Open food delivery app"},
+    {"t": 1.0, "act": "click", "selector": ".pill:nth-child(6)", "note": "Filter for Healthy"},
+    {"t": 2.0, "act": "click", "selector": ".restaurant-card:nth-child(1)", "note": "Select Green Bowl"},
+    {"t": 3.0, "act": "click", "selector": ".menu-item:first-of-type button", "note": "Add Quinoa Salad to cart"},
+    {"t": 4.0, "act": "click", "selector": "button.btn.pri.w-full", "note": "Checkout"},
+    {"t": 5.0, "act": "wait", "selector": "body", "note": "Wait for redirect to orders page"}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "travel.hotel.last.id": {
+    "key": "travel.hotel.last.id",
+    "value": "HTL-77",
+    "ts": "2025-12-05T15:05:00Z",
+    "source": "E2-2025-202",
+    "confidence": 1.0
+  },
+  "travel.hotel.last.checkin": {
+    "key": "travel.hotel.last.checkin",
+    "value": "2025-12-12",
+    "ts": "2025-12-05T15:05:00Z",
+    "source": "E2-2025-202",
+    "confidence": 1.0
+  }
+}

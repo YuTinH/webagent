@@ -1,5 +1,11 @@
 {
-  "task_id": "G2-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "task_id": "G2-2025-102",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "url": "https://health.local/records.html", "frame": "main", "act": "open", "note": "Open records to view prescriptions"},
+    {"t": 1.5, "act": "wait", "selector": "#records-list .record-card", "note": "Ensure records are rendered"},
+    {"t": 2.0, "act": "scroll", "value": 600, "note": "Scroll to prescription card"},
+    {"t": 2.5, "act": "click", "selector": "button.btn.pri", "note": "Click Order Refill on RX-1001 card"},
+    {"t": 3.0, "act": "wait", "selector": "body", "note": "Allow send() to post mutation and redirect"}
+  ]
 }

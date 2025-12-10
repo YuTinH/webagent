@@ -1,33 +1,40 @@
 {
-  "task_id": "E2-2025-GEN",
+  "task_id": "E2-2025-202",
   "family": "E",
-  "episode_id": "ep-gen",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T10:00:00Z",
+  "episode_id": "ep-travel",
+  "priority": 2,
+  "seed": 53,
+  "time": "2025-12-05T15:00:00Z",
   "persona": {
-    "automation_preference": "medium"
+    "automation_preference": "high"
   },
-  "goal": "Book hotel for vacation",
-  "inputs": {},
+  "goal": "Book a hotel in Paris for the same dates as the booked flight and store the confirmation.",
+  "inputs": {
+    "city": "Paris",
+    "checkin_offset_days": 7,
+    "nights": 3,
+    "hotel_id": "HTL-77"
+  },
   "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
+    "trip.local"
   ],
   "preconditions": [
-    "mem('trips.last.flight_id') != ''"
+    "mem('travel.flight.last.pnr') == 'PNR-8891'"
   ],
   "dependencies": [
-    "E1-book-flight"
+    "E1-2025-201"
   ],
-  "memory_keys": [],
+  "memory_keys": [
+    "travel.hotel.last.id",
+    "travel.hotel.last.checkin"
+  ],
   "success_criteria": [
-    "url().includes('/e2')"
+    "ALL[url().includes('/trip.local/manage'), mem('travel.hotel.last.id') == 'HTL-77']"
   ],
   "rubrics": {
-    "SR": 1.0
+    "SR": 1.0,
+    "state_persistence": 0.3
   },
-  "timeout": 300,
+  "timeout": 200,
   "step_timeout": 30
 }

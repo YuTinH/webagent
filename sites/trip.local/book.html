@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Book Flight - SkyHigh Travel</title>
-<link rel="stylesheet" href="/static/skin.css">
-<link rel="stylesheet" href="/static/components.css">
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
 <style>
 .booking-form {
   max-width: 800px;
@@ -31,16 +31,16 @@
       SkyHigh Travel
     </div>
     <div class="navlinks">
-      <a href="/trip.local/index.html">Flights</a>
-      <a href="/trip.local/hotels.html">Hotels</a>
-      <a href="/trip.local/manage.html">My Trips</a>
+      <a href="index.html">Flights</a>
+      <a href="hotels.html">Hotels</a>
+      <a href="manage.html">My Trips</a>
     </div>
   </div>
 </div>
 
 <div class="container">
   <div class="breadcrumbs">
-    <a href="/trip.local/index.html">Home</a> / <a href="#" onclick="history.back()">Results</a> / <span>Booking</span>
+    <a href="index.html">Home</a> / <a href="#" onclick="history.back()">Results</a> / <span>Booking</span>
   </div>
 
   <div class="booking-form">
@@ -80,20 +80,15 @@
 
 </div>
 
-<script src="/static/common.js"></script>
-<script src="/static/components.js"></script>
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
-function confirmBooking() {
-  const pnr = 'PNR' + Math.floor(Math.random()*10000);
-  
-  // Simulate API call
-  // fetch('/api/trips/book', ...)
-  
-  Toast.success('Booking Confirmed! PNR: ' + pnr);
-  
-  setTimeout(() => {
-    window.location.href = `/trip.local/manage.html?pnr=${pnr}`;
-  }, 1500);
+async function confirmBooking() {
+  const pnr = 'PNR-8891';
+  const date = new Date();
+  date.setDate(date.getDate() + 7);
+  const depDate = date.toISOString().slice(0,10);
+  await send('E1-2025-201','book_flight',{pnr, destination:'Paris', date: depDate, price: 450});
 }
 </script>
 

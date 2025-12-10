@@ -1,5 +1,14 @@
 {
-  "task_id": "E5-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "task_id": "E5-2025-205",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "url": "https://bank.local/expense-report.html", "frame": "main", "act": "open", "note": "Open expense report form"},
+    {"t": 1.0, "act": "wait", "selector": ".report-card", "note": "Wait for form"},
+    {"t": 1.4, "act": "type", "selector": "#report-pnr", "value": "PNR-8891", "note": "Confirm PNR"},
+    {"t": 1.8, "act": "type", "selector": "#report-hotel", "value": "HTL-77", "note": "Confirm hotel"},
+    {"t": 2.2, "act": "type", "selector": "#report-conf", "value": "CONF-8801", "note": "Confirm conference reg"},
+    {"t": 2.6, "act": "type", "selector": "#report-total", "value": "1200", "note": "Enter total"},
+    {"t": 3.0, "act": "click", "selector": ".report-card .btn.pri", "note": "Submit expense via send()"},
+    {"t": 4.5, "act": "wait", "selector": "body", "note": "Allow mutation to complete"}
+  ]
 }

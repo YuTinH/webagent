@@ -1,5 +1,12 @@
 {
-  "task_id": "E2-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "task_id": "E2-2025-202",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "url": "https://trip.local/hotels.html", "frame": "main", "act": "open", "note": "Open hotels search"},
+    {"t": 1.0, "act": "type", "selector": "#hotel-city", "value": "Paris", "note": "Confirm destination city"},
+    {"t": 1.4, "act": "click", "selector": "button.btn.pri", "note": "Search hotels"},
+    {"t": 2.6, "act": "wait", "selector": ".hotel-card button.btn.pri", "note": "Wait for hotel cards"},
+    {"t": 3.0, "act": "click", "selector": ".hotel-card:first-of-type button.btn.pri", "note": "Book Aurora Palace"},
+    {"t": 4.5, "act": "wait", "selector": "body", "note": "Allow mutation/redirect to finish"}
+  ]
 }

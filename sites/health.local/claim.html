@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Insurance Claim - Health Connect</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.claim-form { max-width: 840px; margin: 0 auto; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px; }
+.section-title { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 24px; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #10b981, #6ee7b7)"></div>
+      Health Connect
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="doctors.html">Doctors</a>
+      <a href="records.html" class="active">My Records</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumbs">
+    <a href="index.html">Home</a> / <a href="records.html">My Records</a> / <span>Insurance Claim</span>
+  </div>
+
+  <div class="claim-form">
+    <h2 class="section-title">Insurance Claim</h2>
+
+    <div class="grid cols-2 mb-4">
+      <div>
+        <label class="muted">Appointment ID</label>
+        <input type="text" class="input mt-1" id="claim-appt" value="APT-9001">
+      </div>
+      <div>
+        <label class="muted">Claim ID</label>
+        <input type="text" class="input mt-1" id="claim-id" value="CLM-5501">
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="muted">Treatment Summary</label>
+      <textarea class="input mt-1" id="claim-notes" rows="3" placeholder="E.g., Consultation with Dr. Alice, prescribed Amoxicillin"></textarea>
+    </div>
+
+    <div class="grid cols-2 mb-4">
+      <div>
+        <label class="muted">Amount</label>
+        <input type="number" class="input mt-1" id="claim-amount" value="250">
+      </div>
+      <div>
+        <label class="muted">Upload Receipt</label>
+        <input type="file" class="input mt-1">
+      </div>
+    </div>
+
+    <div class="flex" style="justify-content:flex-end; gap:16px; margin-top:16px">
+      <button class="btn" onclick="history.back()">Cancel</button>
+      <button class="btn pri" onclick="submitClaim()">Submit Claim</button>
+    </div>
+  </div>
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function submitClaim() {
+  const claimId = document.getElementById('claim-id').value || 'CLM-5501';
+  const apptId = document.getElementById('claim-appt').value || 'APT-9001';
+  const amount = document.getElementById('claim-amount').value || 250;
+  await send('G3-2025-103','submit_claim',{claimId, appointmentId: apptId, amount});
+}
+</script>
+
+</body>
+</html>

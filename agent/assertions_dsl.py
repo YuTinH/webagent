@@ -147,14 +147,17 @@ class AssertionDSL:
             return path in self.page.url
 
         # mem("<key>") == "<expected>"
-        match = re.match(r'mem\([\'"](.+?)[\'"]\)\s*(==|!=|>=|<=|>|<)\s*[\'"]?(.+?)[\'"]?$', assertion)
+        match = re.match(r'mem\([\'"](.+?)[\'"]\)\s*(==|!=|>=|<=|>|<|includes)\s*[\'"]?(.+?)[\'"]?$', assertion)
         if match:
             key, op, expected = match.groups()
             actual = self._get_memory(key)
+            print(f"DEBUG: AssertionDSL mem check: key='{key}', op='{op}', expected='{expected}', actual='{actual}'")
             if op == '==':
                 return str(actual) == expected
             elif op == '!=':
                 return str(actual) != expected
+            elif op == 'includes':
+                return expected in str(actual)
             elif op == '>=':
                 return float(actual) >= float(expected)
             elif op == '<=':
@@ -171,12 +174,21 @@ class AssertionDSL:
             actual = self._get_memory(key)
             return actual is not None and str(actual) != ""
 
+        # mem("<key>").includes("<value>")
+        match = re.match(r'mem\([\'"](.+?)[\'"]\)\.includes\([\'"](.+?)[\'"]\)', assertion)
+        if match:
+            key, expected = match.groups()
+            actual = self._get_memory(key)
+            print(f"DEBUG: AssertionDSL mem includes check: key='{key}', expected='{expected}', actual='{actual}'")
+            return expected in str(actual)
+
         # json("<channel>", "<path>") == <value>
         match = re.match(r'json\([\'"](.+?)[\'"]\s*,\s*[\'"](.+?)[\'"]\)\s*(==|!=|>=|<=|>|<)\s*[\'"]?(.+?)[\'"]?$', assertion)
         if match:
             channel, path, op, expected = match.groups()
             try:
                 actual = self.env_api_fn(channel, path)
+                print(f"DEBUG: AssertionDSL json check: channel='{channel}', path='{path}', op='{op}', expected='{expected}', actual='{actual}'")
                 # Try to parse expected as JSON
                 try:
                     expected_val = json.loads(expected.replace("'", '"'))

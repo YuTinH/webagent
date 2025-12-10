@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Details - EduNet</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #8b5cf6, #d946ef)"></div>
+      EduNet
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Courses</a>
+      <a href="my-learning.html">My Learning</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumbs">
+    <a href="index.html">Courses</a> / <span>Deep Learning 101</span>
+  </div>
+
+  <div class="grid cols-3 gap-8">
+    
+    <div style="grid-column: span 2">
+      <h1 style="font-size:36px; margin-bottom:16px">Deep Learning 101</h1>
+      <p class="muted" style="font-size:18px; margin-bottom:24px">Master the fundamentals of deep learning and build your own neural networks.</p>
+      
+      <div class="panel p-6 mb-4">
+        <h3>What you'll learn</h3>
+        <ul style="padding-left:20px; color:var(--muted)">
+          <li>Understand neural network architecture</li>
+          <li>Build models with PyTorch</li>
+          <li>Train and evaluate on real datasets</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel p-6" style="height:fit-content; border:1px solid var(--border)">
+      <div style="font-size:32px; font-weight:800; margin-bottom:8px">$199</div>
+      <p class="muted mb-4">One-time payment</p>
+      <button class="btn pri w-full" style="font-size:18px; padding:16px" onclick="enroll()">Enroll Now</button>
+      <div class="text-center mt-4 muted text-sm">30-day money-back guarantee</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function enroll() {
+  await send('J1-2025-GEN', 'enroll_course', {
+    courseId: 'DL101',
+    price: 199
+  });
+}
+</script>
+
+</body>
+</html>

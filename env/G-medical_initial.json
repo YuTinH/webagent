@@ -1,0 +1,18 @@
+{
+  "health": {
+    "insurance": {
+      "active": true,
+      "provider": "Nebula Health",
+      "policy": "NH-44521"
+    },
+    "prescriptions": {
+      "RX-1001": {
+        "medication": "Amoxicillin 250mg",
+        "refills_left": 2,
+        "last_refill": null
+      }
+    },
+    "appointments": {},
+    "claims": {}
+  }
+}

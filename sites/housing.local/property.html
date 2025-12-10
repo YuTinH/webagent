@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Property Details - HomeFinder</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #3b82f6, #60a5fa)"></div>
+      HomeFinder
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Rent</a>
+      <a href="#">Buy</a>
+      <a href="#">Sell</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumbs">
+    <a href="index.html">Rent</a> / <span id="prop-breadcrumb">Property</span>
+  </div>
+
+  <div class="grid cols-2 gap-8 mt-4">
+    
+    <!-- Left: Images -->
+    <div>
+      <div style="height:400px; background:#e2e8f0; border-radius:var(--radius); display:flex; align-items:center; justify-content:center; font-size:96px" id="prop-img">
+        🏢
+      </div>
+      <div class="grid cols-3 gap-2 mt-2">
+        <div style="height:100px; background:#f1f5f9; border-radius:8px"></div>
+        <div style="height:100px; background:#f1f5f9; border-radius:8px"></div>
+        <div style="height:100px; background:#f1f5f9; border-radius:8px"></div>
+      </div>
+    </div>
+
+    <!-- Right: Info -->
+    <div>
+      <h1 style="margin:0 0 8px" id="prop-title">Loading...</h1>
+      <div style="font-size:32px; font-weight:700; color:var(--pri); margin-bottom:16px" id="prop-price">...</div>
+      
+      <div class="flex gap-4 mb-6 text-lg">
+        <div class="badge"><span id="prop-beds"></span> Beds</div>
+        <div class="badge"><span id="prop-baths"></span> Baths</div>
+        <div class="badge"><span id="prop-sqft"></span> Sqft</div>
+      </div>
+
+      <p class="muted" style="line-height:1.6; margin-bottom:32px">
+        Beautiful apartment located in the heart of the city. Close to public transport, shopping centers, and parks. Newly renovated kitchen with modern appliances.
+      </p>
+
+      <div class="panel p-6 border">
+        <h3>Interested in this property?</h3>
+        <p class="muted mb-4">Schedule a tour or submit an application today.</p>
+        <div class="flex gap-4">
+          <button class="btn w-full" onclick="scheduleTour()">Schedule Tour</button>
+          <button class="btn pri w-full" onclick="applyNow()">Apply Now</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const PROPERTIES = {
+  'PROP-101': { title: 'Modern Downtown Apt', price: 1800, beds: 2, baths: 2, sqft: 1100, img: '🏢' },
+  'PROP-102': { title: 'Cozy Suburban House', price: 2200, beds: 3, baths: 2.5, sqft: 1800, img: '🏡' },
+  'PROP-103': { title: 'Studio Near Park', price: 950, beds: 1, baths: 1, sqft: 600, img: '🏬' },
+  'PROP-104': { title: 'Luxury Loft', price: 2800, beds: 2, baths: 2, sqft: 1400, img: '🏙️' },
+  'PROP-105': { title: 'Garden Apartment', price: 1500, beds: 2, baths: 1, sqft: 950, img: '🌳' },
+  'PROP-106': { title: 'Historic Townhouse', price: 3200, beds: 4, baths: 3, sqft: 2400, img: '🏘️' },
+};
+
+function getParams() {
+  const p = new URLSearchParams(window.location.search);
+  return { id: p.get('id') || 'PROP-101' };
+}
+
+function init() {
+  const { id } = getParams();
+  const p = PROPERTIES[id];
+  if(p) {
+    document.title = p.title + " - HomeFinder";
+    document.getElementById('prop-breadcrumb').textContent = p.title;
+    document.getElementById('prop-title').textContent = p.title;
+    document.getElementById('prop-price').textContent = `$${p.price}/mo`;
+    document.getElementById('prop-beds').textContent = p.beds;
+    document.getElementById('prop-baths').textContent = p.baths;
+    document.getElementById('prop-sqft').textContent = p.sqft;
+    document.getElementById('prop-img').textContent = p.img;
+  }
+}
+
+async function applyNow() {
+  const { id } = getParams();
+  await send('A1-2025-001', 'rent_property', { propertyId: id, leaseTerm: '12 months' });
+}
+
+function scheduleTour() {
+  const { id } = getParams();
+  // Simplified for now
+  Toast.success('Tour request sent to agent!');
+}
+
+init();
+</script>
+
+</body>
+</html>

@@ -1,5 +1,12 @@
 {
-  "task_id": "F2-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "task_id": "F2-2025-301",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "url": "https://event.local/registration.html", "frame": "main", "act": "open", "note": "Open conference registration"},
+    {"t": 1.0, "act": "wait", "selector": ".reg-card", "note": "Wait for form"},
+    {"t": 1.4, "act": "type", "selector": "#reg-name", "value": "John Doe", "note": "Confirm attendee name"},
+    {"t": 4.8, "act": "select", "selector": "#reg-ticket", "value": "standard", "note": "Choose standard ticket"},
+    {"t": 5.2, "act": "click", "selector": ".reg-card .btn.pri", "note": "Submit registration via send()"},
+    {"t": 6.5, "act": "wait", "selector": "body", "note": "Wait for redirect"}
+  ]
 }

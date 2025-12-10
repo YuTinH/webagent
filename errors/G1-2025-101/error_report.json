@@ -1,0 +1,22 @@
+{
+  "task_id": "G1-2025-101",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-10T07:57:07.086577Z",
+  "step_index": 6,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#doctor-directory\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8015/health.local/index.html",
+    "screenshot": "errors/G1-2025-101/error_step_6.png"
+  },
+  "step": {
+    "t": 8.0,
+    "act": "wait",
+    "selector": "#doctor-directory",
+    "note": "Wait for redirect to home"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

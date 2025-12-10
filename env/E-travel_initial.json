@@ -1,0 +1,24 @@
+{
+  "trips": {
+    "flight": {
+      "pnr": "PNR-0000",
+      "destination": "Paris",
+      "date": "2025-12-04",
+      "price": 450
+    },
+    "hotel": {
+      "id": null,
+      "city": "Paris",
+      "checkin": "2025-12-04",
+      "nights": 3
+    }
+  },
+  "work": {
+    "conference": {
+      "last": null
+    }
+  },
+  "expenses": {
+    "reports": {}
+  }
+}

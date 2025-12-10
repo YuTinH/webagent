@@ -1,0 +1,16 @@
+{
+  "work.conference.last.id": {
+    "key": "work.conference.last.id",
+    "value": "CONF-8801",
+    "ts": "2025-12-05T16:05:00Z",
+    "source": "F2-2025-301",
+    "confidence": 1.0
+  },
+  "work.conference.last.event": {
+    "key": "work.conference.last.event",
+    "value": "AI Summit Paris",
+    "ts": "2025-12-05T16:05:00Z",
+    "source": "F2-2025-301",
+    "confidence": 1.0
+  }
+}

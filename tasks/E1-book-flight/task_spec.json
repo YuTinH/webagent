@@ -1,33 +1,40 @@
 {
-  "task_id": "E1-2025-GEN",
+  "task_id": "E1-2025-201",
   "family": "E",
-  "episode_id": "ep-gen",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T10:00:00Z",
+  "episode_id": "ep-travel",
+  "priority": 2,
+  "seed": 52,
+  "time": "2025-12-05T14:00:00Z",
   "persona": {
-    "automation_preference": "medium"
+    "automation_preference": "high",
+    "destination": "Paris"
   },
-  "goal": "Book flight for vacation",
-  "inputs": {},
+  "goal": "Book a flight to Paris next week on trip.local and obtain the PNR for itinerary management.",
+  "inputs": {
+    "destination": "Paris",
+    "date_offset_days": 7,
+    "pnr": "PNR-8891"
+  },
   "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
+    "trip.local"
   ],
   "preconditions": [
     "mem('banking.balance.checking') > 500"
   ],
   "dependencies": [
-    "D1-check-balance"
+    "D1-2025-002"
   ],
-  "memory_keys": [],
+  "memory_keys": [
+    "travel.flight.last.pnr",
+    "travel.flight.last.destination"
+  ],
   "success_criteria": [
-    "url().includes('/e1')"
+    "ALL[url().includes('/trip.local/manage'), mem('travel.flight.last.pnr') == 'PNR-8891', json('env','trips.flight.destination') == 'Paris']"
   ],
   "rubrics": {
-    "SR": 1.0
+    "SR": 1.0,
+    "cross_site": 0.2
   },
-  "timeout": 300,
+  "timeout": 240,
   "step_timeout": 30
 }
