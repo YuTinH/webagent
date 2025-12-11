@@ -417,7 +417,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # Serve the product detail HTML while keeping the pretty URL
             self.path = '/shop.local/product.html'
 
-        if self.path.startswith('/api/env'):
+        if '/api/env' in self.path:
             env = load_env()
             # merge latest account balances from DB
             accounts = query_db("SELECT type, balance, currency FROM accounts WHERE user_id = ?", [1])
@@ -881,7 +881,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except Exception:
             data = {}
 
-        if self.path.startswith('/api/trace'):
+        if '/api/trace' in self.path:
             with open(TRACE_PATH, 'a', encoding='utf-8') as f:
                 f.write(json.dumps(data, ensure_ascii=False) + "\n")
             self.send_response(200); self.send_header('Content-Type','application/json'); self.send_cors_headers(); self.end_headers()
@@ -894,7 +894,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(json.dumps({"ok": True, "ts": ts}).encode('utf-8')); return
 
-        if self.path.startswith('/api/mutate'):
+        if '/api/mutate' in self.path:
             env = load_env()
             env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
             save_env(env)

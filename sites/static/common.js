@@ -4,10 +4,10 @@ async function api(path, method='GET', data=null){
   const opt = {method, headers:{}};
   if (data){ opt.headers['Content-Type']='application/json'; opt.body=JSON.stringify(data); }
   const r = await fetch(path, opt);
+  const text = await r.text();
   try {
-    return await r.json();
+    return JSON.parse(text);
   } catch (e) {
-    const text = await r.text();
     console.error('API Error:', path, r.status, text);
     throw new Error(`API response is not JSON. Status: ${r.status}. Body: ${text.substring(0, 100)}...`);
   }
@@ -18,8 +18,9 @@ function openModal(id){ qs(id).classList.add('open'); }
 function closeModal(id){ qs(id).classList.remove('open'); }
 
 async function send(taskId, action, payload){
-  try { await api('/api/trace','POST',{task_id:taskId, action, payload, url:location.pathname, ts:Date.now()}); } catch(e){}
-  const data = await api('/api/mutate','POST',{task_id:taskId, action, payload});
+  const root = window.RelRoot || '../';
+  try { await api(root + 'api/trace','POST',{task_id:taskId, action, payload, url:location.pathname, ts:Date.now()}); } catch(e){}
+  const data = await api(root + 'api/mutate','POST',{task_id:taskId, action, payload});
   await render(); if (data.redirect) location.href = data.redirect; else toast('已提交操作：'+action);
 }
 
