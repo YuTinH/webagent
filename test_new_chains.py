@@ -152,21 +152,57 @@ class TestRunner:
             ["E1-book-flight", "E2-book-hotel", "F2-conference-reg", "E5-expense-report"]
         )
 
+    def scenario_housing(self):
+        self.reset_state()
+        return self.run_test_scenario(
+            "Housing: A1 (Find Home)",
+            ["A1-find-home"]
+        )
+
+    def scenario_utility(self):
+        self.reset_state()
+        return self.run_test_scenario(
+            "Utility: A3 (Setup Services)",
+            ["A3-utility-setup"]
+        )
+
+    def scenario_education(self):
+        self.reset_state()
+        return self.run_test_scenario(
+            "Education: J1 (Course Enroll)",
+            ["J1-course-enroll"]
+        )
+
+    def scenario_food(self):
+        self.reset_state()
+        return self.run_test_scenario(
+            "Food: B4 (Delivery)",
+            ["B4-food-delivery"]
+        )
+
 def main():
     runner = TestRunner(perturbation_level=1) # Use level 1 for functional verification
     
-    print("🚀 Starting Verification for New Chains")
+    print("🚀 Starting Verification for All Chains")
     
-    med_pass = runner.scenario_medical()
-    travel_pass = runner.scenario_travel()
+    res = {}
+    res['Medical'] = runner.scenario_medical()
+    res['Travel'] = runner.scenario_travel()
+    res['Housing'] = runner.scenario_housing()
+    res['Utility'] = runner.scenario_utility()
+    res['Education'] = runner.scenario_education()
+    res['Food'] = runner.scenario_food()
     
     print("\n" + "="*80)
     print("FINAL RESULTS")
-    print(f"Medical Chain: {'✅ PASS' if med_pass else '❌ FAIL'}")
-    print(f"Travel Chain:  {'✅ PASS' if travel_pass else '❌ FAIL'}")
+    all_pass = True
+    for name, passed in res.items():
+        status = '✅ PASS' if passed else '❌ FAIL'
+        print(f"{name:15s}: {status}")
+        if not passed: all_pass = False
     print("="*80)
     
-    sys.exit(0 if (med_pass and travel_pass) else 1)
+    sys.exit(0 if all_pass else 1)
 
 if __name__ == "__main__":
     main()

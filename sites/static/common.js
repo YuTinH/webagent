@@ -1,75 +1,118 @@
 
 function qs(s){return document.querySelector(s)}; function qsa(s){return Array.from(document.querySelectorAll(s))};
-async function api(path, method='GET', data=null){
-  const opt = {method, headers:{}};
-  if (data){ opt.headers['Content-Type']='application/json'; opt.body=JSON.stringify(data); }
-  const r = await fetch(path, opt);
-  const text = await r.text();
-  try {
-    return JSON.parse(text);
-  } catch (e) {
-    console.error('API Error:', path, r.status, text);
-    throw new Error(`API response is not JSON. Status: ${r.status}. Body: ${text.substring(0, 100)}...`);
-  }
+
+// 使用 XMLHttpRequest 替代 fetch，解决 "body stream already read"
+function api(path, method='GET', data=null){
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, path);
+    if (data) xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+                const text = xhr.responseText;
+                resolve(text ? JSON.parse(text) : {});
+            } catch (e) {
+                console.error('JSON Parse Error', e);
+                resolve({});
+            }
+        } else {
+            console.error('API Error', path, xhr.status);
+            reject(new Error(`API Error ${xhr.status}`));
+        }
+    };
+    xhr.onerror = () => reject(new Error('Network Error'));
+    xhr.send(data ? JSON.stringify(data) : null);
+  });
 }
-async function loadEnv(){ return await api('/api/env'); }
-function toast(msg){ const t=qs('#__toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+
+// 获取相对根路径 (兼容代理环境)
+function getApiRoot() {
+    return window.RelRoot || '../';
+}
+
+async function loadEnv(){ 
+    return await api(getApiRoot() + 'api/env'); 
+}
+
+function toast(msg){ 
+    const t=qs('#__toast'); 
+    if(t) {
+        t.textContent=msg; 
+        t.classList.add('show'); 
+        setTimeout(()=>t.classList.remove('show'),1800); 
+    }
+}
+
 function openModal(id){ qs(id).classList.add('open'); }
 function closeModal(id){ qs(id).classList.remove('open'); }
 
 async function send(taskId, action, payload){
-  const root = window.RelRoot || '../';
-  try { await api(root + 'api/trace','POST',{task_id:taskId, action, payload, url:location.pathname, ts:Date.now()}); } catch(e){}
-  const data = await api(root + 'api/mutate','POST',{task_id:taskId, action, payload});
-  await render(); if (data.redirect) location.href = data.redirect; else toast('已提交操作：'+action);
+  const root = getApiRoot();
+  try { 
+      await api(root + 'api/trace','POST',{task_id:taskId, action, payload, url:location.pathname, ts:Date.now()}); 
+  } catch(e){}
+  
+  try {
+      const data = await api(root + 'api/mutate','POST',{task_id:taskId, action, payload});
+      await render(); 
+      
+      if (data.redirect) {
+          // 关键修复：处理代理环境下的重定向
+          // 如果服务器返回绝对路径 (e.g. /food.local/orders.html)
+          // 我们将其转换为相对路径 (e.g. ../food.local/orders.html)
+          if (data.redirect.startsWith('/')) {
+              // 去掉开头的 '/'，然后拼接到相对根路径后
+              location.href = root + data.redirect.substring(1);
+          } else {
+              location.href = data.redirect;
+          }
+      } else {
+          toast('已提交操作：'+action);
+      }
+  } catch (e) {
+      console.error('Mutation failed', e);
+      toast('操作失败: ' + e.message);
+  }
 }
 
 async function render(){
-  const env = await loadEnv();
-  // Shop B6
-  const pp = env?.orders?.["O-98321"]?.claims?.price_protect?.state || 'none';
-  if (qs('#pp-state')) { qs('#pp-state').textContent = pp; }
-  // Wallet D4
-  const last4 = env?.payments?.cards?.active_last4 || '1234';
-  if (qs('#active-card')) qs('#active-card').textContent = '****'+last4;
-  if (qs('#default-card .last4')) qs('#default-card .last4').textContent = last4;
-  qsa('[data-merchant]').forEach(li => {
-    const m = li.dataset.merchant; const map = env?.payments?.merchant_bindings?.map || {};
-    const bound = map[m] || last4;
-    li.textContent = m + ' - ****' + bound;
-    li.classList.add('merchant-binding');
-    if (bound === last4) {
-      li.classList.add('updated');
-    } else {
-      li.classList.remove('updated');
-    }
-  });
-  // Trip E6
-  const st = env?.trips?.PNR9ZZ?.status || 'ticketed';
-  if (qs('#ticket-status')) qs('#ticket-status').textContent = st;
-  // Permit H3
-  const appt = env?.permits?.["RP-2024-77"]?.next_appointment || '未预约';
-  if (qs('#appointment')) qs('#appointment').textContent = appt;
-  // Energy I5
-  const plan = env?.meters?.["M-321"]?.plan || 'standard';
-  if (qs('#plan')) qs('#plan').textContent = plan;
+  try {
+      const env = await loadEnv();
+      const pp = env?.orders?.["O-98321"]?.claims?.price_protect?.state || 'none';
+      if (qs('#pp-state')) { qs('#pp-state').textContent = pp; }
+      const last4 = env?.payments?.cards?.active_last4 || '1234';
+      if (qs('#active-card')) qs('#active-card').textContent = '****'+last4;
+      if (qs('#default-card .last4')) qs('#default-card .last4').textContent = last4;
+      qsa('[data-merchant]').forEach(li => {
+        const m = li.dataset.merchant; const map = env?.payments?.merchant_bindings?.map || {};
+        const bound = map[m] || last4;
+        li.textContent = m + ' - ****' + bound;
+        li.classList.add('merchant-binding');
+        if (bound === last4) li.classList.add('updated'); else li.classList.remove('updated');
+      });
+      const st = env?.trips?.PNR9ZZ?.status || 'ticketed';
+      if (qs('#ticket-status')) qs('#ticket-status').textContent = st;
+      const appt = env?.permits?.["RP-2024-77"]?.next_appointment || '未预约';
+      if (qs('#appointment')) qs('#appointment').textContent = appt;
+      const plan = env?.meters?.["M-321"]?.plan || 'standard';
+      if (qs('#plan')) qs('#plan').textContent = plan;
+  } catch(e) {}
 }
 
-
-
-// --- Distractor Engine (Added by AI) ---
+// --- Distractor Engine ---
 class DistractorEngine {
     constructor() { this.init(); }
     async init() {
         try {
-            const res = await api('/api/marketing/promos');
+            const root = getApiRoot();
+            const res = await api(root + 'api/marketing/promos');
             if (res.success) {
                 if (res.cookie_consent_required) this.renderCookieBanner();
                 res.promos.forEach(promo => this.renderPromo(promo));
             }
             this.renderChatWidget(); 
-            // this.runSecurityCheck();
-        } catch (e) { console.log('Marketing system offline'); }
+        } catch (e) {}
     }
     renderTopBanner(content, color) {
         const b = document.createElement('div');
@@ -90,34 +133,6 @@ class DistractorEngine {
             document.body.insertAdjacentHTML('beforeend', `<div id="${id}" class="modal-overlay open" style="z-index:9999"><div class="modal-container" style="text-align:center"><h3>限时福利</h3><p>${content}</p><button class="btn pri" onclick="document.getElementById('${id}').remove()">领取</button></div></div>`);
         }, delay);
     }
-    
-    // --- Simulated Security Check (Cloudflare style) ---
-    async runSecurityCheck() {
-        // 10% chance to trigger full page block on load
-        if (Math.random() > 0.1) return; 
-        
-        const overlay = document.createElement('div');
-        overlay.id = 'security-check-overlay';
-        overlay.style.cssText = 'position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;font-family:sans-serif';
-        overlay.innerHTML = `
-            <div style="font-size:40px;margin-bottom:20px">🛡️</div>
-            <h2 style="margin-bottom:10px">Verifying you are human...</h2>
-            <p style="color:#888">This process is automatic. Please wait.</p>
-            <div style="width:200px;height:4px;background:#333;margin-top:20px;border-radius:2px;overflow:hidden">
-                <div style="width:0%;height:100%;background:#10b981;transition:width 2s ease" id="sec-progress"></div>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-        
-        // Fake loading process
-        setTimeout(() => document.getElementById('sec-progress').style.width = '70%', 500);
-        setTimeout(() => document.getElementById('sec-progress').style.width = '100%', 1500);
-        setTimeout(() => {
-            overlay.remove();
-            Toast.success('Verification Complete');
-        }, 2000);
-    }
-
     renderChatWidget() {
         const w = document.createElement('div');
         w.className = 'chat-widget-floating';

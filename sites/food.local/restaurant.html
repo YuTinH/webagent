@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Restaurant - YumYum</title>
@@ -15,16 +16,19 @@
   border-bottom: 1px solid var(--border);
 }
 .menu-item:last-child { border-bottom: none; }
-.item-info h4 { margin: 0 0 4px 0; }
+.item-info h4 { margin: 0 0 4px 0; color: var(--text-heading, #fff); }
 .cart-drawer {
   position: fixed; top: 0; right: -400px; width: 350px; bottom: 0;
-  background: var(--panel); border-left: 1px solid var(--border);
+  background: #131726; /* Force dark background */
+  border-left: 1px solid #334155;
   transition: right 0.3s ease; z-index: 1000;
   display: flex; flex-direction: column;
+  box-shadow: -5px 0 15px rgba(0,0,0,0.5);
 }
 .cart-drawer.open { right: 0; }
-.cart-items { flex: 1; overflow-y: auto; padding: 20px; }
-.cart-footer { padding: 20px; border-top: 1px solid var(--border); background: var(--surface); }
+.cart-items { flex: 1; overflow-y: auto; padding: 20px; color: #f1f5f9; }
+.cart-footer { padding: 20px; border-top: 1px solid #334155; background: #1e293b; }
+.cart-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
 </style>
 </head>
 <body>
@@ -61,28 +65,28 @@
 
   <h2 style="margin-bottom:16px">Menu</h2>
   <div class="panel" id="menu-list">
-    <!-- Menu items -->
-  </div>
+    </div>
 
 </div>
 
-<!-- Cart Drawer -->
 <div class="cart-drawer" id="cart-drawer">
-  <div class="flex justify-between items-center p-4 border-b">
-    <h3 style="margin:0">Your Order</h3>
+  <div class="flex justify-between items-center p-4 border-b" style="border-bottom:1px solid #334155">
+    <h3 style="margin:0; color:white">Your Order</h3>
     <button class="btn" onclick="toggleCart()">✕</button>
   </div>
   <div class="cart-items" id="cart-items">
     <div class="text-center muted mt-8">Cart is empty</div>
   </div>
   <div class="cart-footer">
-    <div class="flex justify-between mb-4 font-bold">
+    <div class="flex justify-between mb-4 font-bold" style="color:white">
       <span>Total</span>
       <span id="cart-total">$0.00</span>
     </div>
     <button class="btn pri w-full" onclick="checkout()">Checkout</button>
   </div>
 </div>
+
+<div id="__toast" class="toast"></div>
 
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
@@ -123,6 +127,17 @@ const MENUS = {
 let cart = [];
 let currentRes = null;
 
+// Safer toast function that falls back if Toast class is missing
+function safeToast(msg, type='success') {
+    if (typeof Toast !== 'undefined' && Toast[type]) {
+        Toast[type](msg);
+    } else if (typeof toast === 'function') {
+        toast(msg); // fallback to common.js function
+    } else {
+        console.log('Toast:', msg);
+    }
+}
+
 function init() {
   const p = new URLSearchParams(location.search);
   const id = p.get('id') || 'RES-001';
@@ -149,27 +164,40 @@ function init() {
 }
 
 function addToCart(itemId) {
-  const item = currentRes.items.find(i => i.id === itemId);
-  cart.push(item);
-  updateCart();
-  Toast.success('Added to cart');
-  // Open drawer automatically on first add
-  if (cart.length === 1) document.getElementById('cart-drawer').classList.add('open');
+  try {
+      const item = currentRes.items.find(i => i.id === itemId);
+      if (!item) return;
+      cart.push(item);
+      updateCart();
+      safeToast('Added to cart');
+      // Open drawer automatically on first add
+      if (cart.length === 1) {
+          const drawer = document.getElementById('cart-drawer');
+          if(drawer) drawer.classList.add('open');
+      }
+  } catch(e) {
+      console.error('Add to cart error:', e);
+  }
 }
 
 function updateCart() {
-  document.getElementById('cart-count').textContent = cart.length;
+  const countEl = document.getElementById('cart-count');
+  if(countEl) countEl.textContent = cart.length;
+  
   const total = cart.reduce((sum, i) => sum + i.price, 0);
-  document.getElementById('cart-total').textContent = '$' + total.toFixed(2);
+  const totalEl = document.getElementById('cart-total');
+  if(totalEl) totalEl.textContent = '$' + total.toFixed(2);
   
   const list = document.getElementById('cart-items');
+  if (!list) return;
+
   if(cart.length === 0) {
     list.innerHTML = '<div class="text-center muted mt-8">Cart is empty</div>';
   } else {
     list.innerHTML = cart.map((item, idx) => `
-      <div class="flex justify-between items-center mb-3">
+      <div class="cart-item-row">
         <div>${item.name}</div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 items-center">
           <span>$${item.price}</span>
           <button class="btn sm" onclick="cart.splice(${idx},1); updateCart()">×</button>
         </div>
@@ -185,27 +213,21 @@ function toggleCart() {
 async function checkout() {
   console.log('Checkout clicked');
   if(cart.length === 0) {
-    console.warn('Cart is empty');
-    try {
-      Toast.error('Your cart is empty!');
-    } catch(e) {
-      alert('Your cart is empty!');
-    }
+    safeToast('Your cart is empty!', 'error');
     return;
   }
   
   const total = cart.reduce((sum, i) => sum + i.price, 0);
   try {
-    console.log('Sending order:', { restaurant: currentRes.name, items: cart.map(i => i.name), total });
+    console.log('Sending order...');
     await send('B4-2025-001', 'order_food', { 
       restaurant: currentRes.name,
       items: cart.map(i => i.name),
       total: total
     });
-    console.log('Order sent successfully');
   } catch (error) {
     console.error('Checkout failed:', error);
-    alert('Checkout failed: ' + error.message);
+    alert('Checkout error: ' + error.message);
   }
 }
 

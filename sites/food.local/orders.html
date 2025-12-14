@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Orders - YumYum</title>
@@ -23,10 +24,25 @@
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
+  display: inline-block;
+  margin-left: 10px;
 }
 .status-pending { background: var(--warn-bg); color: var(--warn); }
-.status-delivered { background: var(--ok-bg); color: var(--ok); }
+.status-paid { background: var(--ok-bg); color: var(--ok); }
 .order-items { font-size: 14px; color: var(--muted); margin-top: 8px; }
+.btn-pay {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+    transition: transform 0.1s;
+}
+.btn-pay:hover { transform: scale(1.05); }
+.btn-pay:active { transform: scale(0.95); }
 </style>
 </head>
 <body>
@@ -45,47 +61,67 @@
 </div>
 
 <div class="container">
-  
+  <div id="__toast" class="toast"></div>
   <h1 style="margin-bottom: 24px">My Orders</h1>
-
   <div id="order-list">
     <div class="text-center muted p-8">Loading orders...</div>
   </div>
-
 </div>
 
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
 async function loadOrders() {
-  const env = await api('/api/env');
-  const orders = env.food?.orders || {};
-  const list = document.getElementById('order-list');
-  
-  const entries = Object.entries(orders).reverse(); // Newest first
-  
-  if (entries.length === 0) {
-    list.innerHTML = '<div class="text-center muted p-8">No orders yet.</div>';
-    return;
-  }
+  try {
+      const env = await loadEnv();
+      const orders = env.food?.orders || {};
+      const list = document.getElementById('order-list');
+      const entries = Object.entries(orders).reverse(); 
+      
+      if (entries.length === 0) {
+        list.innerHTML = '<div class="text-center muted p-8">No orders yet.</div>';
+        return;
+      }
 
-  list.innerHTML = entries.map(([id, order]) => `
-    <div class="order-card">
-      <div>
-        <div style="font-weight:700; font-size:18px">${order.restaurant}</div>
-        <div class="order-items">${order.items.join(', ')}</div>
-        <div class="muted text-sm mt-2">${new Date(order.ordered_at).toLocaleString()} • ${id}</div>
-      </div>
-      <div style="text-align:right">
-        <div class="font-bold text-lg mb-2">$${order.total.toFixed(2)}</div>
-        <span class="order-status status-${order.status}">${order.status}</span>
-      </div>
-    </div>
-  `).join('');
+      list.innerHTML = entries.map(([id, order]) => {
+        const isPending = (order.status || 'pending') === 'pending';
+        return `
+        <div class="order-card">
+          <div>
+            <div style="font-weight:700; font-size:18px">${order.restaurant || 'Unknown Restaurant'}</div>
+            <div class="order-items">${(order.items || []).join(', ')}</div>
+            <div class="muted text-sm mt-2">${new Date(order.ordered_at || Date.now()).toLocaleString()} • ${id}</div>
+          </div>
+          <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:8px">
+            <div class="font-bold text-lg">$${(order.total || 0).toFixed(2)}</div>
+            <div>
+                ${isPending ? `<button class="btn-pay" onclick="payOrder('${id}')">💳 Pay Now</button>` : ''}
+                <span class="order-status status-${order.status || 'pending'}">${order.status || 'pending'}</span>
+            </div>
+          </div>
+        </div>
+      `}).join('');
+  } catch (e) {
+      console.error('Failed to load orders:', e);
+      document.getElementById('order-list').innerHTML = '<div class="text-center p-8" style="color:var(--err)">Failed to load orders.</div>';
+  }
+}
+
+async function payOrder(id) {
+    if(!confirm('Confirm payment for order ' + id + '?')) return;
+    
+    // Call the backend action we just added
+    try {
+        await send('B4-PAY', 'pay_order', { order_id: id });
+        // The send function calls render(), but we need to reload the list to see status change
+        // Or we can manually reload:
+        setTimeout(loadOrders, 500); 
+    } catch(e) {
+        alert('Payment failed: ' + e.message);
+    }
 }
 
 loadOrders();
 </script>
-
 </body>
 </html>

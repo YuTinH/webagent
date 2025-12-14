@@ -317,6 +317,41 @@ def mutate_env(task_id, action, payload, env):
             pass
         return env, {"redirect": "/food.local/orders.html"}
 
+    # B4 - Food Order Payment (Added by AI)
+    # B4 - Food Order Payment (Updated with DB Transaction)
+    if task_id.startswith('B4') and action == 'pay_order':
+        order_id = payload.get('order_id')
+        orders = env.get('food', {}).get('orders', {})
+        order = orders.get(order_id)
+        
+        if order and order.get('status') != 'paid':
+            amount = float(order.get('total', 0))
+            restaurant = order.get('restaurant', 'Food Order')
+            
+            # 1. Update Env State
+            env = deep_merge(env, {"food": {"orders": {order_id: {"status": "paid"}}}})
+            
+            # 2. Database Transaction (Deduct Money)
+            try:
+                # 默认使用 Checking Account (ID=1)
+                execute_db(
+                    "INSERT INTO transactions (account_id, amount, type, description, created_at) VALUES (?, ?, ?, ?, ?)",
+                    [1, -amount, 'debit', f"Food: {restaurant} ({order_id})", datetime.now().isoformat()]
+                )
+                execute_db("UPDATE accounts SET balance = balance - ? WHERE id = ?", [amount, 1])
+            except Exception as e:
+                print(f"Payment DB Error: {e}")
+
+            # 3. Memory Update
+            ts = datetime.now().isoformat()
+            try:
+                execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                           ['food.order.last.status', 'paid', ts, task_id, 1.0])
+            except: pass
+            
+        return env, {}
+
+
     return env, {}
 
 # Database helpers
