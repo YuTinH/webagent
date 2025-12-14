@@ -1,18 +1,19 @@
 {
   "task_id": "E1-2025-201",
   "error_type": "TimeoutError",
-  "timestamp": "2025-12-10T03:55:18.247038Z",
-  "step_index": 4,
-  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".flight-card:first-of-type button.btn.pri\")\n    - locator resolved to <button class=\"btn pri\" onclick=\"bookFlight('FL-101')\">Select</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div id=\"security-check-overlay\">\u2026</div> intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div id=\"security-check-overlay\">\u2026</div> intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div id=\"security-check-overlay\">\u2026</div> intercepts pointer events\n    - retrying click action\n      - waiting 500ms\n    56 \u00d7 waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <div id=\"promo-1765338889236\" class=\"modal-overlay open\">\u2026</div> intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n",
+  "timestamp": "2025-12-14T03:16:54.554630Z",
+  "step_index": 1,
+  "error_message": "Page.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#destination\")\n",
   "context": {
-    "url": "http://localhost:8015/trip.local/flights.html?to=Paris&date=2025-12-11",
-    "screenshot": "errors/E1-2025-201/error_step_4.png"
+    "url": "chrome-error://chromewebdata/",
+    "screenshot": "errors/E1-2025-201/error_step_1.png"
   },
   "step": {
-    "t": 3.4,
-    "act": "click",
-    "selector": ".flight-card:first-of-type button.btn.pri",
-    "note": "Pick first flight"
+    "t": 1.0,
+    "act": "type",
+    "selector": "#destination",
+    "value": "Paris",
+    "note": "Enter destination"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",

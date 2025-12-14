@@ -1,0 +1,12 @@
+{
+  "task_id": "C1-2025-001",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "act": "open", "url": "https://shop.local/help.html", "note": "Open Help Center"},
+    {"t": 1.0, "act": "click", "selector": "#recent-orders-list .btn", "note": "Report issue for recent order"},
+    {"t": 2.0, "act": "select", "selector": "#issue-type", "value": "delayed", "note": "Select delayed type"},
+    {"t": 3.0, "act": "type", "selector": "#issue-desc", "value": "Package not received.", "note": "Enter description"},
+    {"t": 4.0, "act": "click", "selector": "button.btn.pri", "note": "Submit request"},
+    {"t": 5.0, "act": "wait", "selector": "body", "note": "Wait for redirect"}
+  ]
+}

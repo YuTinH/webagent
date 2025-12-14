@@ -37,17 +37,26 @@
   "expenses": {
     "reports": {}
   },
-  "food": {
-    "orders": {
-      "ODR-89378": {
-        "restaurant": "Sushi Zen",
-        "items": [
-          "Salmon Roll"
-        ],
-        "total": 6.99,
-        "status": "pending",
-        "ordered_at": "2025-12-11T10:56:56.225514"
+  "contracts": {},
+  "courses": {},
+  "food": {},
+  "housing": {},
+  "support": {
+    "tickets": {
+      "TKT-4240": {
+        "order_id": "O-98321",
+        "type": "delayed",
+        "status": "open",
+        "created_at": "2025-12-14T04:29:51.552980"
       }
+    }
+  },
+  "payments": {},
+  "permits": {},
+  "meters": {},
+  "orders": {
+    "O-98321": {
+      "state": "investigating"
     }
   }
 }

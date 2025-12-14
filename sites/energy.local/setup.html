@@ -156,10 +156,11 @@ async function submitSetup() {
     return;
   }
   
-  const services = Array.from(selected);
+  const idMap = { 'elec': 'electricity', 'net': 'broadband', 'water': 'water' };
+  const services = Array.from(selected).map(id => idMap[id]);
   const plans = {
-    elec: document.getElementById('plan-elec').value,
-    net: document.getElementById('plan-net').value
+    electricity: document.getElementById('plan-elec').value,
+    broadband: document.getElementById('plan-net').value
   };
 
   await send('A3-2025-001', 'setup_utility', {

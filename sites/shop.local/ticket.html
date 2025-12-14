@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Request - Nebula Shop</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      Nebula Shop
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="orders.html">Orders</a>
+      <a href="help.html" class="active">Help</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumbs">
+    <a href="help.html">Help Center</a> / <span>Submit Request</span>
+  </div>
+
+  <div class="panel p-8 mt-4" style="max-width:600px; margin-left:auto; margin-right:auto">
+    <h2 style="margin-top:0">Report an Issue</h2>
+    
+    <div class="mb-4">
+      <label class="muted">Order Number</label>
+      <input type="text" id="order-id" class="input mt-1" readonly>
+    </div>
+
+    <div class="mb-4">
+      <label class="muted">Issue Type</label>
+      <select id="issue-type" class="input mt-1">
+        <option value="delayed">Package Delayed / Not Received</option>
+        <option value="damaged">Item Damaged</option>
+        <option value="wrong">Wrong Item Sent</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label class="muted">Description</label>
+      <textarea id="issue-desc" class="input mt-1" rows="4" placeholder="Please describe the issue..."></textarea>
+    </div>
+
+    <div class="flex justify-end gap-4">
+      <button class="btn" onclick="history.back()">Cancel</button>
+      <button class="btn pri" onclick="submitTicket()">Submit Request</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+function init() {
+  const p = new URLSearchParams(location.search);
+  const oid = p.get('order') || 'O-98321';
+  document.getElementById('order-id').value = oid;
+}
+
+async function submitTicket() {
+  const oid = document.getElementById('order-id').value;
+  const type = document.getElementById('issue-type').value;
+  const desc = document.getElementById('issue-desc').value;
+
+  if(!desc) {
+    Toast.error('Please provide a description.');
+    return;
+  }
+
+  await send('C1-2025-001', 'submit_ticket', {
+    orderId: oid,
+    type: type,
+    description: desc
+  });
+}
+
+init();
+</script>
+
+</body>
+</html>

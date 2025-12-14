@@ -26,7 +26,7 @@
     "contracts.broadband.id"
   ],
   "success_criteria": [
-    "ALL[url().includes('/energy.local/plan'), json('env','contracts.elec.status') == 'active', mem('contracts.elec.status') == 'active']"
+    "WITHIN(10, ALL[url().includes('/energy.local/plan'), json('env','contracts.electricity.status') == 'active', mem('contracts.electricity.status') == 'active'])"
   ],
   "rubrics": {
     "SR": 1.0

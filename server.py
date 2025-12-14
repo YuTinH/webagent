@@ -101,6 +101,11 @@ def query_env_path(env, path):
     return current
 
 def mutate_env(task_id, action, payload, env):
+    try:
+        with open("server_debug.log", "a") as f:
+            f.write(f"MUTATE: {task_id} {action} {json.dumps(payload)}\n")
+    except: pass
+
     # G1 - Doctor appointment booking
     if task_id.startswith('G1') and action == 'book_doctor':
         appt_id = payload.get('appointmentId', 'APT-9001')
@@ -266,6 +271,10 @@ def mutate_env(task_id, action, payload, env):
                 pass
         
         env = deep_merge(env, {"contracts": contracts})
+        try:
+            with open("server_debug.log", "a") as f:
+                f.write(f"DEBUG_A3: Final ENV for A3: {json.dumps(env)}\n")
+        except: pass
         return env, {"redirect": "/energy.local/plan.html"}
 
     # J1 - Course Enrollment
@@ -279,6 +288,10 @@ def mutate_env(task_id, action, payload, env):
                        [f'courses.{course_id}.state', 'enrolled', ts, task_id, 1.0])
         except Exception:
             pass
+        try:
+            with open("server_debug.log", "a") as f:
+                f.write(f"DEBUG_J1: Final ENV for J1: {json.dumps(env)}\n")
+        except: pass
         return env, {"redirect": "/school.local/my-learning.html"}
 
     # A1 - Find Home
@@ -317,40 +330,27 @@ def mutate_env(task_id, action, payload, env):
             pass
         return env, {"redirect": "/food.local/orders.html"}
 
-    # B4 - Food Order Payment (Added by AI)
-    # B4 - Food Order Payment (Updated with DB Transaction)
-    if task_id.startswith('B4') and action == 'pay_order':
-        order_id = payload.get('order_id')
-        orders = env.get('food', {}).get('orders', {})
-        order = orders.get(order_id)
+    # C1 - Logistics Fix
+    if task_id.startswith('C1') and action == 'submit_ticket':
+        ticket_id = f"TKT-{random.randint(1000, 9999)}"
+        oid = payload.get('orderId', 'O-98321')
+        issue_type = payload.get('type', 'delayed')
+        ts = datetime.now().isoformat()
+
+        # Create ticket
+        env = deep_merge(env, {"support": {"tickets": {ticket_id: {"order_id": oid, "type": issue_type, "status": "open", "created_at": ts}}}})
         
-        if order and order.get('status') != 'paid':
-            amount = float(order.get('total', 0))
-            restaurant = order.get('restaurant', 'Food Order')
-            
-            # 1. Update Env State
-            env = deep_merge(env, {"food": {"orders": {order_id: {"status": "paid"}}}})
-            
-            # 2. Database Transaction (Deduct Money)
-            try:
-                # 默认使用 Checking Account (ID=1)
-                execute_db(
-                    "INSERT INTO transactions (account_id, amount, type, description, created_at) VALUES (?, ?, ?, ?, ?)",
-                    [1, -amount, 'debit', f"Food: {restaurant} ({order_id})", datetime.now().isoformat()]
-                )
-                execute_db("UPDATE accounts SET balance = balance - ? WHERE id = ?", [amount, 1])
-            except Exception as e:
-                print(f"Payment DB Error: {e}")
+        # Update order status (simulating agent intervention)
+        env = deep_merge(env, {"orders": {oid: {"state": "investigating"}}})
 
-            # 3. Memory Update
-            ts = datetime.now().isoformat()
-            try:
-                execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                           ['food.order.last.status', 'paid', ts, task_id, 1.0])
-            except: pass
-            
-        return env, {}
-
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['support.ticket.last.id', ticket_id, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['support.ticket.last.status', 'open', ts, task_id, 1.0])
+        except Exception:
+            pass
+        return env, {"redirect": "/shop.local/help.html?status=ticket_created"}
 
     return env, {}
 

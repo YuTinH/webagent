@@ -1,0 +1,22 @@
+{
+  "task_id": "A1-2025-001",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-14T03:17:25.770658Z",
+  "step_index": 1,
+  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".property-card:first-of-type button\")\n",
+  "context": {
+    "url": "chrome-error://chromewebdata/",
+    "screenshot": "errors/A1-2025-001/error_step_1.png"
+  },
+  "step": {
+    "t": 1.0,
+    "act": "click",
+    "selector": ".property-card:first-of-type button",
+    "note": "View first property (mock selection)"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

@@ -76,8 +76,20 @@ class TestRunner:
         engine.save_memory()
 
         # 2. Reset JSON Env State (Medical, Travel, etc.)
-        # Load initial seeds
+        
+        # Ensure clean slate for state.json
+        # The TestRunner will now explicitly print the state_path it is using.
+        print(f"DEBUG: TestRunner using state.json at: {self.state_path}")
+        if self.state_path.exists():
+            self.state_path.unlink()
+
         initial_state = {}
+        # Ensure all top-level keys are present as empty dicts for robustness with deep_merge
+        initial_state = deep_merge(initial_state, {
+            "health": {}, "trips": {}, "work": {}, "expenses": {}, 
+            "contracts": {}, "courses": {}, "food": {}, "housing": {}, 
+            "support": {}, "payments": {}, "permits": {}, "meters": {}
+        })
         
         # Load G-medical
         medical_seed = self.env_dir / "G-medical_initial.json"
@@ -180,6 +192,13 @@ class TestRunner:
             ["B4-food-delivery"]
         )
 
+    def scenario_support(self):
+        self.reset_state()
+        return self.run_test_scenario(
+            "Support: C1 (Logistics Fix)",
+            ["C1-logistics-fix"]
+        )
+
 def main():
     runner = TestRunner(perturbation_level=1) # Use level 1 for functional verification
     
@@ -192,6 +211,7 @@ def main():
     res['Utility'] = runner.scenario_utility()
     res['Education'] = runner.scenario_education()
     res['Food'] = runner.scenario_food()
+    res['Support'] = runner.scenario_support()
     
     print("\n" + "="*80)
     print("FINAL RESULTS")

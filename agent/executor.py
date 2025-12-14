@@ -153,7 +153,9 @@ class TaskExecutor:
         
         if parts[0] in json_domains:
             from pathlib import Path
-            state_path = Path('env/state.json')
+            print(f"DEBUG: TaskExecutor._env_api reading from: {Path(__file__).parent.parent / 'env' / 'state.json'}")
+            state_path = Path(__file__).parent.parent / 'env' / 'state.json' # Explicitly target webagent_dynamic_suite_v2_skin/env/state.json
+            
             if state_path.exists():
                 try:
                     current = json.loads(state_path.read_text(encoding='utf-8'))

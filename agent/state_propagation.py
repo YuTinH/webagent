@@ -124,7 +124,7 @@ class StatePropagationEngine:
         - health.prescriptions.RX-1001.refills_left → JSON lookup in env/state.json
         """
         # Check JSON state first for new domains
-        json_domains = ("health.", "trips.", "work.", "expenses.", "meters.", "payments.", "permits.")
+        json_domains = ("health.", "trips.", "work.", "expenses.", "meters.", "payments.", "permits.", "contracts.", "courses.", "food.", "housing.", "support.")
         if path.startswith(json_domains):
             return self._get_json_state(path)
 
@@ -184,14 +184,23 @@ class StatePropagationEngine:
     def _get_json_state(self, path: str) -> Any:
         """Helper to read from env/state.json"""
         state_path = Path(__file__).parent.parent / "env" / "state.json"
+        print(f"DEBUG: StatePropagationEngine reading from: {state_path}")
+        
         if not state_path.exists():
+            print(f"DEBUG: StatePropagationEngine: {state_path} does NOT exist.")
             return None
         
         try:
             with open(state_path, 'r') as f:
                 data = json.load(f)
+            # DEBUG: Print the loaded data to confirm its content
+            import os
+            try:
+                with open(os.path.join(str(Path(__file__).parent.parent), "server_debug.log"), "a") as f_debug:
+                    f_debug.write(f"DEBUG_GET_JSON_STATE: Loaded Data (for {path}): {json.dumps(data)}\n")
+            except: pass
             
-            parts = path.split('.')
+            # ... traverse data ...
             current = data
             for part in parts:
                 if isinstance(current, dict):
