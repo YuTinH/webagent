@@ -4,31 +4,66 @@ function qs(s){return document.querySelector(s)}; function qsa(s){return Array.f
 function api(path, method='GET', data=null){
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
+    let completed = false; // Flag to ensure resolve/reject is called only once
+
     xhr.open(method, path);
     if (data) xhr.setRequestHeader('Content-Type', 'application/json');
+
     xhr.onload = () => {
+        if (completed) return; // Prevent double handling
+        completed = true;
+
         if (xhr.status >= 200 && xhr.status < 300) {
             try {
                 const text = xhr.responseText;
+                console.log('DEBUG: API onload success:', xhr.status, text);
                 resolve(text ? JSON.parse(text) : {});
             } catch (e) {
-                console.error('JSON Parse Error', e);
-                resolve({});
+                console.error('JSON Parse Error', e, xhr.responseText);
+                reject(new Error(`JSON Parse Error: ${e.message}`));
             }
         } else {
-            console.error('API Error', path, xhr.status);
-            reject(new Error(`API Error ${xhr.status}`));
+            console.error('API Error', path, xhr.status, xhr.responseText);
+            reject(new Error(`API Error ${xhr.status}: ${xhr.responseText || 'Unknown error'}`));
         }
     };
-    xhr.onerror = () => reject(new Error('Network Error'));
+
+    xhr.onerror = () => {
+        if (completed) return; // Prevent double handling
+        completed = true;
+        console.error('Network Error during API call to', path, 'Status:', xhr.status, 'Response:', xhr.responseText);
+        reject(new Error('Network Error: Could not connect to server or empty response.'));
+    };
+
+    xhr.onabort = () => { // Handle request aborts
+        if (completed) return;
+        completed = true;
+        console.warn('API call aborted for', path);
+        reject(new Error('Request aborted.'));
+    };
+
     xhr.send(data ? JSON.stringify(data) : null);
   });
 }
 
-// 获取相对根路径 (兼容代理环境)
+// 获取 API 根路径 (兼容代理环境)
 function getApiRoot() {
     return window.RelRoot || '../';
 }
+
+// 获取完整的基路径，包括可能的代理前缀
+function getBaseUrl() {
+    const pathParts = window.location.pathname.split('/');
+    const proxyIndex = pathParts.indexOf('proxy');
+    if (proxyIndex > -1 && pathParts.length > proxyIndex + 1) {
+        // Assume format like /ws-xxx/project-yyy/user-zzz/vscode-hash/proxy/8014/
+        // We need to capture up to '8014/' or similar pattern after 'proxy'
+        const base = pathParts.slice(0, proxyIndex + 2).join('/'); // Includes 'proxy' and the port part
+        return `${window.location.origin}${base}/`;
+    }
+    return window.location.origin + '/';
+}
+
 
 async function loadEnv(){ 
     return await api(getApiRoot() + 'api/env'); 
@@ -58,21 +93,21 @@ async function send(taskId, action, payload){
       await render(); 
       
       if (data.redirect) {
-          // 关键修复：处理代理环境下的重定向
-          // 如果服务器返回绝对路径 (e.g. /food.local/orders.html)
-          // 我们将其转换为相对路径 (e.g. ../food.local/orders.html)
+          const baseUrl = getBaseUrl();
+          // 如果服务器返回的是绝对路径 (e.g., /shop.local/order.html), 我们需要加上代理前缀
           if (data.redirect.startsWith('/')) {
-              // 去掉开头的 '/'，然后拼接到相对根路径后
-              location.href = root + data.redirect.substring(1);
+              location.href = baseUrl + data.redirect.substring(1);
           } else {
-              location.href = data.redirect;
+              location.href = data.redirect; // 否则按原样跳转 (相对路径)
           }
       } else {
           toast('已提交操作：'+action);
       }
+      return data;
   } catch (e) {
       console.error('Mutation failed', e);
       toast('操作失败: ' + e.message);
+      throw e;
   }
 }
 

@@ -4,11 +4,11 @@
   "final_state": "failed",
   "steps_completed": 14,
   "steps_total": 15,
-  "time_elapsed": 35.78794026374817,
+  "time_elapsed": 36.01179385185242,
   "error": {
     "task_id": "B1-2025-001",
     "error_type": "TimeoutError",
-    "timestamp": "2025-12-23T09:07:29.169175Z",
+    "timestamp": "2025-12-24T05:53:28.786552Z",
     "step_index": 14,
     "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#order-id\") to be visible\n",
     "context": {
@@ -106,13 +106,13 @@
     {
       "t": 24,
       "act": "wait",
-      "selector": ".cart-summary",
+      "selector": "h1",
       "note": "Wait for cart page to load"
     },
     {
       "t": 26,
       "act": "click",
-      "selector": "button.btn-checkout",
+      "selector": "#checkout-btn",
       "note": "Proceed to checkout from cart page"
     }
   ],

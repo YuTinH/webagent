@@ -79,13 +79,13 @@
     {
       "t": 24,
       "act": "wait",
-      "selector": ".cart-summary",
+      "selector": "h1",
       "note": "Wait for cart page to load"
     },
     {
       "t": 26,
       "act": "click",
-      "selector": "button.btn-checkout",
+      "selector": "#checkout-btn",
       "note": "Proceed to checkout from cart page"
     },
     {

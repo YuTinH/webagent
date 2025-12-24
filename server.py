@@ -101,7 +101,38 @@ def query_env_path(env, path):
     return current
 
 def mutate_env(task_id, action, payload, env):
+    # B1 - Shopping Checkout Logic
+    if task_id.startswith('B1') and action == 'checkout':
+        # 局部导入，防止全局未导入导致报错
+        import time
+        from datetime import datetime
+        
+        # 1. 创建订单
+        items = payload.get('items', [])
+        total = sum([float(i.get('price', 0)) * int(i.get('qty', 1)) for i in items])
+        order_id = "ORD-" + str(int(time.time()))[-6:]
+        
+        new_order = {
+            "id": order_id,
+            "items": items,
+            "total": total,
+            "status": "confirmed",
+            "date": datetime.now().isoformat()
+        }
+        
+        # 2. 更新环境：清空购物车，添加订单
+        shop_state = env.get('shop', {})
+        shop_state['cart'] = [] # Clear cart
+        if 'orders' not in shop_state: shop_state['orders'] = {}
+        shop_state['orders'][order_id] = new_order
+        env['shop'] = shop_state
+        
+        # 3. 关键：返回 redirect 字段，指示前端跳转
+        return env, {"redirect": "/shop.local/order.html"}
+
+    # 原有的日志逻辑 (保持与 if 同级缩进)
     try:
+        import json
         with open("server_debug.log", "a") as f:
             f.write(f"MUTATE: {task_id} {action} {json.dumps(payload)}\n")
     except: pass
@@ -632,8 +663,7 @@ def mutate_env(task_id, action, payload, env):
             return env, {"error": "No items in order"}
 
         # Generate order ID
-        order_number = random.randint(10001, 99999)
-        order_id = f'O-{order_number:05d}'
+        order_id = payload.get('order_id', f'O-{random.randint(10001, 99999):05d}')
         ts = datetime.now().isoformat()
 
         # Create order in DB
@@ -656,7 +686,9 @@ def mutate_env(task_id, action, payload, env):
         env = deep_merge(env, {"orders": {order_id: {"state": "confirmed", "total": total}}})
         env = deep_merge(env, {"orders": {"last": {"id": order_id, "total": total}}})
         
-        return env, {"redirect": f"/shop.local/order.html?order_id={order_id}&total={total}"}
+        result_payload = {"redirect": f"/shop.local/order.html?order_id={order_id}&total={total}"}
+        print(f"DEBUG: mutate_env B1 returns: {result_payload}")
+        return env, result_payload
     
     return env, {} # Final return for mutate_env
 

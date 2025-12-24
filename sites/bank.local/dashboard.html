@@ -325,7 +325,6 @@
 
   <div class="footer">Nebula Bank</div>
 </div>
-<script>window.RelRoot = '../';</script>
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
@@ -362,12 +361,10 @@ async function loadAccounts() {
 
       // Update checking balance for D1 check
       const checkingAccount = data.accounts.find(acc => acc.type === 'checking');
-      const checkingBalanceElement = document.getElementById('checking-balance');
-      if (checkingAccount && checkingBalanceElement) {
-        checkingBalanceElement.textContent = `¥${checkingAccount.balance.toFixed(2)}`;
-      }
-
-
+      // Removed: const checkingBalanceElement = document.getElementById('checking-balance');
+      // The element is created dynamically above with id="${acc.type}-balance"
+      // So checking account will have id="checking-balance"
+      
       // Update memory (This part is not needed for D1 but helpful for other tasks)
       for (const acc of data.accounts) {
         await fetch(window.RelRoot + 'api/memory', {

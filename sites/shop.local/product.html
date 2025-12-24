@@ -754,6 +754,7 @@ function updateQuantity(value) {
 
 // Add to cart
 function addToCart() {
+  console.log('DEBUG: Adding to cart, product:', product, 'quantity:', quantity);
   const existingItem = cart.find(item => item.product_id === product.product_id);
 
   if (existingItem) {
@@ -770,6 +771,7 @@ function addToCart() {
   }
 
   localStorage.setItem('cart', JSON.stringify(cart));
+  console.log('DEBUG: localStorage cart after add:', localStorage.getItem('cart'));
   updateCartCount();
 
   Toast.success(`已添加 ${quantity} 件商品到购物车`);
