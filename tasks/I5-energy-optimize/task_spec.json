@@ -1,33 +1,14 @@
 {
-  "task_id": "I5-2025-GEN",
+  "task_id": "I5-2025-ENERGY",
   "family": "I",
-  "episode_id": "ep-gen",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T10:00:00Z",
-  "persona": {
-    "automation_preference": "medium"
+  "goal": "Change the energy plan for meter M-321 to 'green_offpeak'.",
+  "inputs": {
+    "plan": "green_offpeak",
+    "meter_id": "M-321"
   },
-  "goal": "Optimize energy plan based on usage",
-  "inputs": {},
-  "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
-  ],
-  "preconditions": [
-    "mem('bills.electricity.history') != ''"
-  ],
-  "dependencies": [
-    "H1-check-bill"
-  ],
-  "memory_keys": [],
+  "preconditions": [],
   "success_criteria": [
-    "url().includes('/i5')"
-  ],
-  "rubrics": {
-    "SR": 1.0
-  },
-  "timeout": 300,
-  "step_timeout": 30
+    "text(\"#plan\") == \"green_offpeak\"",
+    "json(\"env\",\"meters.M-321.plan\") == \"green_offpeak\""
+  ]
 }

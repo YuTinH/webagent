@@ -61,7 +61,7 @@ class ExecutionResult:
 class TaskExecutor:
     """Main task executor using Playwright"""
 
-    SUITE_PORT = int(os.getenv("WEB_SUITE_PORT", "8015"))
+    SUITE_PORT = int(os.getenv("WEB_SUITE_PORT", "8014"))
 
     def __init__(
         self,
@@ -106,6 +106,8 @@ class TaskExecutor:
 
             for row in cursor.fetchall():
                 key, value = row
+                if 'courses.DL101.state' in key:
+                    print(f"DEBUG: Loaded key {key} = {value}")
                 try:
                     self.memory[key] = json.loads(value)
                 except:
@@ -148,7 +150,7 @@ class TaskExecutor:
         # For now, query database directly
 
         # Check JSON state first for new domains
-        json_domains = ("health", "trips", "work", "expenses", "meters", "permits")
+        json_domains = ("health", "trips", "work", "expenses", "meters", "permits", "security", "payments", "contracts", "warranty", "courses", "invoices", "settlements", "autopay", "accounts", "finance", "food")
         parts = path.split('.')
         
         if parts[0] in json_domains:
@@ -169,8 +171,11 @@ class TaskExecutor:
                                 return None
                         else:
                             return None
+                        
                         if current is None:
+                            print(f"DEBUG: _env_api traversal failed at part '{part}' for path '{path}'")
                             return None
+                    print(f"DEBUG: _env_api found value: {current}")
                     return current
                 except Exception:
                     pass
@@ -259,6 +264,7 @@ class TaskExecutor:
         Returns:
             ExecutionResult with execution details
         """
+        print(f"DEBUG: Loading task spec from: {task_spec_path}")
         # Load task spec
         with open(task_spec_path) as f:
             task_spec = json.load(f)
@@ -274,6 +280,7 @@ class TaskExecutor:
         try:
             # Check preconditions
             print("\n📋 Checking preconditions...")
+            print(f"DEBUG: Loaded preconditions: {task_spec.get('preconditions', [])}")
             self._check_preconditions(task_spec)
             print("✅ All preconditions met")
 
@@ -362,6 +369,7 @@ class TaskExecutor:
     def _check_preconditions(self, task_spec: Dict[str, Any]):
         """Check task preconditions"""
         preconditions = task_spec.get('preconditions', [])
+        print(f"DEBUG: TaskExecutor memory in preconditions check: health.insurance.active = {self.memory.get('health.insurance.active')}")
 
         if not preconditions:
             return
@@ -399,6 +407,7 @@ class TaskExecutor:
         )
 
         self.page = self.context.new_page()
+        self.page.on("console", lambda msg: print(f"PAGE CONSOLE: {msg.text}"))
 
         # Set default timeout
         timeout = task_spec.get('step_timeout', 30) * 1000  # Convert to milliseconds
@@ -439,8 +448,9 @@ class TaskExecutor:
 
         elif action == 'click':
             selector = step['selector']
-            print(f"    → Clicking {selector}")
-            self.page.click(selector)
+            force = step.get('force', False)
+            print(f"    → Clicking {selector} (force={force})")
+            self.page.click(selector, force=force)
 
         elif action == 'type':
             selector = step['selector']
@@ -659,37 +669,35 @@ class TaskExecutor:
             print(f"    → Downloaded {filename}")
 
         elif action == 'extract':
-            selector = step['selector']
             variable_name = step['variable']
-            
-            # Get text content
-            try:
-                text = self.page.locator(selector).inner_text().strip()
-                # Try to convert to number if possible (basic heuristic)
-                import re
-                # Remove currency symbols and commas
-                clean_text = re.sub(r'[^\d.-]', '', text)
+            value = step.get('value')
+
+            if value is None:
+                selector = step['selector']
                 try:
-                    value = float(clean_text) if '.' in clean_text else int(clean_text)
-                except ValueError:
-                    value = text
-                
-                print(f"    → Extracted '{variable_name}' = {value} from {selector}")
-                
-                # Update memory
-                self._save_memory(variable_name, value, 'extraction')
-                
-                # Update execution result (accessed via a hack since _execute_step doesn't have access to result)
-                # We'll rely on memory for now, but to be clean we should pass result to _execute_step.
-                # However, for minimum diff, we can just save to memory.
-                # But wait, we need it in result.extracted_data for state_propagation.
-                # Let's attach it to self so run() can retrieve it.
-                if not hasattr(self, '_extracted_data'):
-                    self._extracted_data = {}
-                self._extracted_data[variable_name] = value
-                
-            except Exception as e:
-                print(f"    ⚠️  Failed to extract from {selector}: {e}")
+                    text = self.page.locator(selector).inner_text().strip()
+                    # Try to convert to number if possible (basic heuristic)
+                    import re
+                    # Remove currency symbols and commas
+                    clean_text = re.sub(r'[^\d.-]', '', text)
+                    try:
+                        value = float(clean_text) if '.' in clean_text else int(clean_text)
+                    except ValueError:
+                        value = text
+                    print(f"    → Extracted '{variable_name}' = {value} from {selector}")
+                except Exception as e:
+                    print(f"    ⚠️  Failed to extract from {selector}: {e}")
+                    return
+            else:
+                print(f"    → Using provided value for '{variable_name}' = {value}")
+            
+            # Update memory
+            self._save_memory(variable_name, value, 'extraction')
+            
+            # Update extracted data
+            if not hasattr(self, '_extracted_data'):
+                self._extracted_data = {}
+            self._extracted_data[variable_name] = value
 
         else:
             print(f"    ⚠️  Unknown action: {action}")

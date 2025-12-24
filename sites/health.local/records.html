@@ -78,87 +78,48 @@
 
 </div>
 
+<script>window.RelRoot = '../';</script>
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
-const RECORDS = [
-  { 
-    id: 'REC-001', 
-    type: 'Visit', 
-    date: '2025-11-15', 
-    doctor: 'Dr. Alice Smith', 
-    reason: 'Routine check-up', 
-    diagnosis: 'Healthy',
-    meds: []
-  },
-  { 
-    id: 'REC-002', 
-    type: 'Prescription', 
-    date: '2025-11-15', 
-    doctor: 'Dr. Alice Smith', 
-    medication: 'Amoxicillin', 
-    dosage: '250mg', 
-    quantity: '30 tablets', 
-    refills: 2
-  },
-];
-
-function renderRecords() {
+async function loadRecords() {
   const list = document.getElementById('records-list');
-  list.innerHTML = RECORDS.map(record => {
-    if (record.type === 'Visit') {
-      return `
-        <div class="record-card">
-          <div class="record-header">
-            <h3>Visit Record - ${record.date}</h3>
-            <span class="badge ok">Completed</span>
-          </div>
-          <p class="muted">Doctor: ${record.doctor}</p>
-          <p class="muted">Reason: ${record.reason}</p>
-          <div class="record-details">
-            <div>
-              <strong>Diagnosis:</strong> ${record.diagnosis}
-            </div>
-            <div>
-              <strong>Notes:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </div>
-          </div>
+  list.innerHTML = '<div class="text-center muted p-8">Loading records...</div>';
+
+  const env = await loadEnv();
+  const prescriptions = env?.health?.prescriptions || {};
+  const entries = Object.entries(prescriptions);
+  
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="text-center muted p-8">No prescriptions found.</div>';
+    return;
+  }
+
+  list.innerHTML = entries.map(([id, rx]) => `
+    <div class="record-card">
+      <div class="record-header">
+        <h3>Prescription - ${id}</h3>
+        <span class="badge ok">Status: ${rx.state || 'active'}</span>
+      </div>
+      <p class="muted">Medication: ${rx.medication}</p>
+      <div class="record-details">
+        <div>
+          <strong>Refills Left:</strong> <span id="refills-${id}">${rx.refills_left}</span>
         </div>
-      `;
-    } else if (record.type === 'Prescription') {
-      return `
-        <div class="record-card">
-          <div class="record-header">
-            <h3>Prescription - ${record.date}</h3>
-            <span class="badge ok">Active</span>
-          </div>
-          <p class="muted">Doctor: ${record.doctor}</p>
-          <div class="record-details">
-            <div>
-              <strong>Medication:</strong> ${record.medication}
-            </div>
-            <div>
-              <strong>Dosage:</strong> ${record.dosage}
-            </div>
-            <div>
-              <strong>Quantity:</strong> ${record.quantity}
-            </div>
-            <div>
-              <strong>Refills Left:</strong> ${record.refills}
-            </div>
-          </div>
-          <button class="btn pri mt-4" style="background:var(--ok); border-color:transparent" onclick="orderRefill('RX-1001')">Order Refill</button>
+        <div>
+          <strong>Last Refill:</strong> ${rx.last_refill ? new Date(rx.last_refill).toLocaleDateString() : 'N/A'}
         </div>
-      `;
-    }
-    return '';
-  }).join('');
+      </div>
+      <button class="btn pri mt-4" onclick="orderRefill('${id}', '${rx.medication}')">Order Refill</button>
+    </div>
+  `).join('');
 }
 
-renderRecords();
+loadRecords();
 
-async function orderRefill(rxId) {
-  await send('G2-2025-102','refill_rx',{prescriptionId: rxId, medication: 'Amoxicillin 250mg'});
+async function orderRefill(rxId, medication) {
+  // Redirect to refill page with pre-filled data
+  location.href = `refill.html?prescriptionId=${rxId}&medication=${encodeURIComponent(medication)}`;
 }
 </script>
 

@@ -1,41 +1,19 @@
 {
-  "task_id": "D3-2025-006",
+  "task_id": "D3-2025-AUTOPAY",
   "family": "D",
-  "episode_id": "ep-001",
-  "priority": 3,
-  "seed": 66,
-  "time": "2025-11-21T10:00:00Z",
-  "persona": {"automation_preference": "high"},
-  "goal": "Set up auto-pay for utility bill from checking account",
+  "goal": "Set up a monthly autopay of $150 for utilities from checking account, starting 2025-12-20.",
   "inputs": {
-    "payee": "City Utilities",
+    "payee": "Utilities",
+    "amount": 150,
+    "frequency": "monthly",
     "account_type": "checking",
-    "frequency": "monthly"
+    "start_date": "2025-12-20"
   },
-  "allowed_domains": ["bank.local"],
-  "preconditions": [
-    "mem('banking.balance.checking') > 0",
-    "mem('bills.electricity.amount') > 0",
-    "mem('bills.electricity.id') != ''"
-  ],
-  "memory_keys": [
-    "autopay.utility.id",
-    "autopay.utility.status",
-    "autopay.utility.next_date"
-  ],
+  "preconditions": [],
   "success_criteria": [
-    "ALL[url().includes('/autopay'), json('env','autopay.*.payee') == 'utilities', mem('autopay.utility.status') == 'active']"
-  ],
-  "artifacts": ["autopay_confirmation"],
-  "rubrics": {"SR": 1.0, "LH-F1": 0.4},
-  "timeout": 300,
-  "step_timeout": 30,
-  "dependencies": ["H1-2025-003"],
-  "error_recovery": {
-    "on_timeout": "capture_state_and_abort",
-    "on_network_error": {"strategy": "retry", "max_retries": 3, "retry_delay_ms": 1000},
-    "on_element_not_found": {"strategy": "wait_and_retry", "wait_seconds": 10},
-    "on_assertion_fail": {"strategy": "save_trace_and_report", "capture_screenshot": true, "capture_dom": true, "capture_memory": true},
-    "on_precondition_fail": "abort_with_warning"
-  }
+    "text(\"#autopay-status\") == \"active\"",
+    "json(\"env\",\"autopay.utility.status\") == \"active\"",
+    "json(\"env\",\"autopay.utility.amount\") == 150",
+    "json(\"env\",\"autopay.utility.next_date\") == \"2025-12-20\""
+  ]
 }

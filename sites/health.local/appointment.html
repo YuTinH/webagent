@@ -113,6 +113,12 @@ async function confirmAppointment() {
 
   const slot = `${date}T${time}`;
   await send('G1-2025-101','book_doctor',{doctorId: doctor, appointmentId: 'APT-9001', slot});
+  
+  // Wait for effect
+  Toast.success('Appointment Confirmed!');
+  setTimeout(() => {
+    window.location.href = 'index.html?msg=Appointment+Confirmed';
+  }, 1000);
 }
 
 init();

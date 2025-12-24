@@ -8,22 +8,23 @@
   "persona": {
     "automation_preference": "medium"
   },
-  "goal": "Upgrade internet plan",
-  "inputs": {},
+  "goal": "Subscribe to the Unlimited mobile plan on mobile.local",
+  "inputs": {
+    "plan": "unlimited",
+    "user_name": "Test User",
+    "address": "123 Main St"
+  },
   "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
+    "mobile.local"
   ],
-  "preconditions": [
-    "mem('contracts.internet.id') != ''"
+  "preconditions": [],
+  "dependencies": [],
+  "memory_keys": [
+    "mobile.subscription.status",
+    "mobile.subscription.phone"
   ],
-  "dependencies": [
-    "A3-utility-setup"
-  ],
-  "memory_keys": [],
   "success_criteria": [
-    "url().includes('/a4')"
+    "ALL[url().includes('/mobile.local/account.html'), mem('mobile.subscription.status') == 'active']"
   ],
   "rubrics": {
     "SR": 1.0

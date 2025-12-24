@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Learning - EduNet</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #8b5cf6, #d946ef)"></div>
+      EduNet
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Courses</a>
+      <a href="my-learning.html" class="active">My Learning</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <h1 style="margin-bottom: 24px">My Enrolled Courses</h1>
+
+  <div id="enrolled-courses-list">
+    <div class="text-center muted p-8">Loading courses...</div>
+  </div>
+
+</div>
+
+<script>window.RelRoot = '../';</script>
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function loadEnrolledCourses() {
+  const env = await api(getApiRoot() + 'api/env');
+  const courses = env.courses || {};
+  const list = document.getElementById('enrolled-courses-list');
+  
+  const entries = Object.entries(courses);
+  
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="text-center muted p-8">You are not enrolled in any courses yet.</div>';
+    return;
+  }
+
+  list.innerHTML = entries.map(([id, course]) => `
+    <div class="card p-4 flex justify-between items-center mb-2">
+      <div>
+        <div style="font-weight:700; font-size:18px">${id} - Deep Learning 101</div>
+        <div class="text-sm muted">Status: ${course.state}</div>
+      </div>
+      <span class="badge pri">Enrolled</span>
+    </div>
+  `).join('');
+}
+
+loadEnrolledCourses();
+</script>
+
+</body>
+</html>

@@ -1,115 +1,17 @@
 {
-  "task_id": "D1-2025-002",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "D1-2025-FINANCE",
   "steps": [
     {
       "t": 0,
-      "url": "https://bank.local/index.html",
-      "frame": "main",
       "act": "open",
-      "note": "Navigate to bank homepage"
+      "url": "http://localhost:8014/bank.local/dashboard.html",
+      "note": "Open bank dashboard"
     },
     {
-      "t": 1.5,
-      "url": "https://bank.local/login",
-      "frame": "main",
-      "act": "click",
-      "selector": "a.login-button",
-      "screenshot_id": "step_001_homepage",
-      "note": "Click login button"
-    },
-    {
-      "t": 3.0,
-      "url": "https://bank.local/login",
-      "frame": "main",
-      "act": "type",
-      "selector": "#username",
-      "value": "testuser",
-      "note": "Enter username"
-    },
-    {
-      "t": 3.5,
-      "url": "https://bank.local/login",
-      "frame": "main",
-      "act": "type",
-      "selector": "#password",
-      "value": "password123",
-      "note": "Enter password"
-    },
-    {
-      "t": 4.0,
-      "url": "https://bank.local/login",
-      "frame": "main",
-      "act": "click",
-      "selector": "button[type='submit']",
-      "note": "Submit login form"
-    },
-    {
-      "t": 6.0,
-      "url": "https://bank.local/dashboard",
-      "frame": "main",
+      "t": 2,
       "act": "wait",
-      "selector": "#accounts-grid",
-      "screenshot_id": "step_002_dashboard",
-      "note": "Wait for dashboard to load"
-    },
-    {
-      "t": 7.0,
-      "url": "https://bank.local/dashboard",
-      "frame": "main",
-      "act": "verify_state",
-      "checks": [
-        {"type": "url", "contains": "/dashboard"},
-        {"type": "dom", "selector": "#accounts-grid", "exists": true},
-        {"type": "dom", "selector": ".account-balance", "exists": true},
-        {"type": "dom", "selector": ".stats-grid", "exists": true}
-      ],
-      "note": "Verify dashboard with balance loaded"
-    },
-    {
-      "t": 7.5,
-      "url": "https://bank.local/dashboard",
-      "frame": "main",
-      "act": "extract",
-      "selector": ".account-card:first-child .account-balance",
-      "variable": "balance",
-      "note": "Extract account balance"
-    },
-    {
-      "t": 8.0,
-      "url": "https://bank.local/transactions",
-      "frame": "main",
-      "act": "open",
-      "note": "Navigate to transactions page"
-    },
-    {
-      "t": 10.0,
-      "url": "https://bank.local/transactions",
-      "frame": "main",
-      "act": "wait",
-      "selector": "#transactions-list",
-      "screenshot_id": "step_003_transactions",
-      "note": "Wait for transactions page"
-    },
-    {
-      "t": 11.0,
-      "url": "https://bank.local/transactions",
-      "frame": "main",
-      "act": "click",
-      "selector": "#export-csv-btn",
-      "note": "Click export to CSV button"
-    },
-    {
-      "t": 12.0,
-      "url": "https://bank.local/transactions",
-      "frame": "main",
-      "act": "verify_state",
-      "checks": [
-        {"type": "url", "contains": "/transactions"},
-        {"type": "dom", "selector": "#transactions-list", "exists": true},
-        {"type": "dom", "selector": "#export-csv-btn", "exists": true}
-      ],
-      "note": "Verify transactions page and export functionality"
+      "selector": "#checking-balance",
+      "note": "Wait for checking balance to appear"
     }
   ]
 }

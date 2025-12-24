@@ -1,5 +1,20 @@
 {
   "task_id": "J2-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "act": "open", "url": "https://shop.local/index.html", "note": "Open Shop"},
+    {"t": 1.0, "act": "type", "selector": "#search-box", "value": "Deep Learning Basics", "note": "Search for book"},
+    {"t": 2.0, "act": "click", "selector": "button[type='submit']", "note": "Submit search"},
+    {"t": 3.0, "act": "wait", "selector": ".product-card", "note": "Wait for results"},
+    {"t": 4.0, "act": "click", "selector": ".product-card[data-product-id]", "note": "Click on book"},
+    {"t": 5.0, "act": "wait", "selector": "#add-to-cart-btn", "note": "Wait for details"},
+    {"t": 7.0, "act": "click", "selector": "#add-to-cart-btn", "note": "Add to cart"},
+    {"t": 8.0, "act": "wait", "selector": ".cart-drawer.open", "note": "Wait for drawer"},
+    {"t": 9.0, "act": "click", "selector": ".cart-checkout-btn", "force": true, "note": "Checkout from drawer"},
+    {"t": 10.0, "act": "wait", "selector": "#shipping-address", "note": "Wait for checkout"},
+    {"t": 9.0, "act": "click", "selector": "button.place-order", "note": "Place order"},
+    {"t": 9.5, "act": "click", "selector": ".modal-confirm", "note": "Confirm success modal"},
+    {"t": 10.0, "act": "wait", "selector": ".order-items-list", "note": "Wait for confirmation page"},
+    {"t": 11.0, "act": "extract", "selector": "#order-number", "variable": "orders.last.id", "note": "Extract Order ID"}
+  ]
 }

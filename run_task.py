@@ -27,7 +27,7 @@ def find_task(task_name: str) -> tuple:
 
     # Find matching directory
     for task_dir in tasks_dir.iterdir():
-        if task_dir.is_dir() and task_name.lower() in task_dir.name.lower():
+        if task_dir.is_dir() and task_name.lower() == task_dir.name.lower():
             task_spec = task_dir / 'task_spec.json'
             oracle_trace = task_dir / 'oracle_trace.json'
 

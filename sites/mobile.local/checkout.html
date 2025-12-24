@@ -1,0 +1,105 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Nebula Mobile - Checkout</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Mobile</div>
+    <div class="navlinks">
+      <a href="index.html">Plans</a>
+      <a href="account.html">My Account</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs"><a href="index.html">Plans</a> / <span>Checkout</span></div>
+  
+  <h1 style="margin-bottom: 24px">Checkout</h1>
+  
+  <div class="grid cols-2" style="align-items:start">
+    
+    <!-- Form -->
+    <div class="card">
+      <h3 style="margin-top:0">Personal Information</h3>
+      <div class="mb-4">
+        <label class="muted">Full Name</label>
+        <input type="text" id="name" class="input mt-1" placeholder="John Doe">
+      </div>
+      <div class="mb-4">
+        <label class="muted">Address</label>
+        <input type="text" id="address" class="input mt-1" placeholder="123 Main St">
+      </div>
+      <div class="mb-4">
+        <label class="muted">Email</label>
+        <input type="email" id="email" class="input mt-1" placeholder="john@example.com">
+      </div>
+
+      <h3 style="margin-top:24px">Payment</h3>
+      <div class="mb-4">
+        <label class="muted">Card Number</label>
+        <input type="text" id="card" class="input mt-1" value="**** **** **** 1234" disabled>
+      </div>
+      
+      <div class="hr"></div>
+      <button class="btn pri" style="width:100%" onclick="submitOrder()">Place Order</button>
+    </div>
+
+    <!-- Summary -->
+    <div class="card">
+      <h3 style="margin-top:0">Order Summary</h3>
+      <div class="kv">
+        <div class="key">Plan</div><div id="summary-plan">Loading...</div>
+        <div class="key">Monthly</div><div id="summary-price">$0.00</div>
+        <div class="key">SIM Card Fee</div><div>$10.00</div>
+        <div class="key">Shipping</div><div>Free</div>
+      </div>
+      <div class="hr"></div>
+      <div class="flex justify-between" style="font-weight:bold; font-size:18px">
+        <span>Total Due Today</span>
+        <span id="summary-total">$0.00</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const PLANS = {
+  'starter': { name: 'Starter Plan', price: 20 },
+  'unlimited': { name: 'Unlimited Plan', price: 45 },
+  'pro': { name: 'Pro Plan', price: 60 }
+};
+
+const params = new URLSearchParams(window.location.search);
+const planId = params.get('plan') || 'starter';
+const plan = PLANS[planId];
+
+document.getElementById('summary-plan').textContent = plan.name;
+document.getElementById('summary-price').textContent = `$${plan.price.toFixed(2)}`;
+document.getElementById('summary-total').textContent = `$${(plan.price + 10).toFixed(2)}`;
+
+async function submitOrder() {
+  const name = document.getElementById('name').value;
+  const address = document.getElementById('address').value;
+  
+  if(!name || !address) {
+    Toast.error('Please fill in all fields');
+    return;
+  }
+
+  await send('A4-2025-GEN', 'mobile_subscribe', {
+    planId: planId,
+    name: name,
+    address: address
+  });
+  
+  Toast.success('Order Placed!');
+  setTimeout(() => {
+    window.location.href = 'account.html?status=active';
+  }, 1000);
+}
+</script>

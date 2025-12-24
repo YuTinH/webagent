@@ -1,62 +1,92 @@
-<script>window.RelRoot = "../../";</script>
-<!doctype html><meta charset="utf-8"><title>pay.local - 钱包</title>
-<link rel="stylesheet" href="../../static/skin.css"><script src="../../static/common.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Wallet - My Cards</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #333; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: center; max-width: 600px; width: 90%; margin-top: 50px; }
+        h1 { color: #34495e; margin-bottom: 25px; font-size: 2.2em; }
+        .card-display { background-color: #3498db; color: white; padding: 25px; border-radius: 10px; margin-bottom: 30px; }
+        .card-display p { margin: 5px 0; font-size: 1.1em; }
+        .card-display .card-number { font-size: 1.8em; font-weight: bold; letter-spacing: 2px; }
+        .card-display .card-holder { font-size: 0.9em; text-transform: uppercase; margin-top: 15px; }
+        .btn-replace { background-color: #28a745; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; text-decoration: none; display: inline-block; margin-top: 20px; }
+        .btn-replace:hover { background-color: #218838; }
+        .message { margin-top: 20px; font-weight: bold; }
+        .success { color: #28a745; }
+        .merchant-bindings { border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px; text-align: left; }
+        .merchant-bindings h2 { font-size: 1.4em; color: #34495e; margin-bottom: 15px; }
+        .merchant-bindings ul { list-style: none; padding: 0; }
+        .merchant-bindings li { background-color: #f8f9fa; margin-bottom: 8px; padding: 10px 15px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; font-size: 0.95em; }
+        .merchant-bindings li.updated .status { color: #28a745; font-weight: bold; }
+        .merchant-bindings li.error .status { color: #dc3545; font-weight: bold; }
+        .merchant-binding { display: none; } /* Used for DSL count */
+    </style>
+    <script>window.RelRoot = '../../';</script>
+    <script src="/static/common.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>My Digital Cards</h1>
+        
+        <div class="card-display">
+            <p>Active Card</p>
+            <p class="card-number" id="active-card-last4">**** **** **** 1234</p>
+            <p>Expires 12/29</p>
+            <p class="card-holder">John Doe</p>
+        </div>
 
-<div class="navbar">
-  <div class="inner">
-    <div class="brand"><div class="logo"></div> Nebula</div>
-    <div class="navlinks">
-      <a href="../../shop.local/index.html">商城</a>
-      <a href="../../pay.local/wallet/cards.html">钱包</a>
-      <a href="../../trip.local/manage/PNR9ZZ.html">行程</a>
-      <a href="../../permit.local/RP-2024-77.html">许可</a>
-      <a href="../../energy.local/plan.html">能源</a>
-      <a href="../../card.local/block.html">安全</a>
-    </div>
-    <div class="search"><input placeholder="搜索订单/行程/卡号…"></div>
-  </div>
-</div>
-<div id="__toast" class="toast"></div>
+        <button class="btn-replace" onclick="rebindConfirm()">Replace Expired Card</button>
 
-<div class="container">
-  <div class="breadcrumbs"><a href="../../pay.local/wallet/cards.html">钱包</a> / <span>绑定与换卡</span></div>
-  <div class="grid cols-2">
-    <div class="card">
-      <div class="header"><div class="title">主卡</div><span class="badge ok">已验证</span></div>
-      <div class="kv">
-        <div class="key">当前卡</div><div id="active-card" class="badge">****1234</div>
-        <div class="key">新卡末四位</div><div><input id="new-card-last4" class="input" placeholder="7777"></div>
-      </div>
-      <div class="hr"></div>
-      <div class="row">
-        <button class="btn pri" onclick="openModal('#rebind-modal')">确认更换</button>
-        <button class="btn">添加副卡</button>
-        <button class="btn">风控设置</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="header"><div class="title">商户绑定</div><span class="muted">自动同步</span></div>
-      <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px">
-        <li class="badge" data-merchant="shop.local">shop.local - ****1234</li>
-        <li class="badge" data-merchant="ride.local">ride.local - ****1234</li>
-        <li class="badge" data-merchant="food.local">food.local - ****1234</li>
-        <li class="badge" data-merchant="stream.local">stream.local - ****1234</li>
-        <li class="badge" data-merchant="cloud.local">cloud.local - ****1234</li>
-      </ul>
-    </div>
-  </div>
-</div>
-<div id="rebind-modal" class="modal">
-  <div class="panel">
-    <div class="flex justify-between" style="margin-bottom:12px">
-      <div style="font-weight:700">更换绑定卡</div>
-      <button class="btn" onclick="closeModal('#rebind-modal')">×</button>
-    </div>
-    <div class="muted" style="margin-bottom:12px">将所有商户从 ****1234 更新为输入的新卡。</div>
-    <div class="row">
-      <button class="btn" onclick="closeModal('#rebind-modal')">取消</button>
-      <button class="btn ok" onclick="send('D4-0017','rebind_confirm',{newLast4: document.getElementById('new-card-last4').value||'7777'}); closeModal('#rebind-modal')">确认更换</button>
-    </div>
-  </div>
-</div>
+        <p class="message" id="status-message"></p>
 
+        <div class="merchant-bindings" id="merchant-bindings">
+            <h2>Merchant Bindings Status</h2>
+            <ul>
+                <li id="binding-shop">Shop.local <span class="status">Updating...</span></li>
+                <li id="binding-ride">Ride.local <span class="status">Updating...</span></li>
+                <li id="binding-food">Food.local <span class="status">Updating...</span></li>
+                <li id="binding-stream">Stream.local <span class="status">Updating...</span></li>
+                <li id="binding-cloud">Cloud.local <span class="status">Updating...</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const newLast4 = urlParams.get('newLast4') || '7777';
+        const oldLast4 = urlParams.get('oldLast4') || '1234';
+        const rebindTriggered = urlParams.has('rebind');
+
+        document.getElementById('active-card-last4').textContent = `**** **** **** ${oldLast4}`;
+
+        if (rebindTriggered) {
+            document.getElementById('active-card-last4').textContent = `**** **** **** ${newLast4}`;
+            document.getElementById('status-message').className = 'message success';
+            document.getElementById('status-message').textContent = 'Card successfully replaced! Updating merchant bindings.';
+            
+            // Simulate bindings update (actual update is backend)
+            ['shop', 'ride', 'food', 'stream', 'cloud'].forEach(merchant => {
+                const li = document.getElementById(`binding-${merchant}`);
+                if (li) {
+                    li.querySelector('.status').textContent = 'Updated';
+                    li.querySelector('.status').className = 'status updated';
+                    // Add a hidden marker for DSL
+                    const marker = document.createElement('div');
+                    marker.className = 'merchant-binding updated hidden';
+                    li.appendChild(marker);
+                }
+            });
+        }
+
+        function rebindConfirm() {
+            send('D4-2025-CARD', 'rebind_confirm', {
+                oldLast4: oldLast4,
+                newLast4: newLast4
+            });
+        }
+    </script>
+</body>
+</html>

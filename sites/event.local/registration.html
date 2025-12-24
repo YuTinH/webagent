@@ -1,79 +1,90 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conference Registration - EventHub</title>
-<link rel="stylesheet" href="../static/skin.css">
-<link rel="stylesheet" href="../static/components.css">
-<style>
-.reg-card { max-width: 760px; margin: 0 auto; background: var(--panel); border:1px solid var(--border); border-radius: var(--radius); padding:32px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Registration - Event.local</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #333; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: center; max-width: 600px; width: 90%; margin-top: 50px; }
+        h1 { color: #2c3e50; margin-bottom: 25px; font-size: 2.2em; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input[type="text"], input[type="email"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .btn-submit { background-color: #3498db; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; text-decoration: none; display: inline-block; margin-top: 20px; }
+        .btn-submit:hover { background-color: #2980b9; }
+        .message { margin-top: 20px; font-weight: bold; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .confirmation-card { background-color: #e8f5e9; border: 1px solid #28a745; color: #28a745; padding: 20px; border-radius: 8px; margin-top: 30px; }
+        .confirmation-card h2 { color: #28a745; margin-top: 0; }
+        .confirmation-card .status-badge { background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold; }
+    </style>
+    <script src="/static/common.js"></script>
 </head>
 <body>
+    <div class="container">
+        <h1 id="page-title">Register for Conference</h1>
+        
+        <form id="registration-form">
+            <div class="form-group">
+                <label for="conferenceId">Conference ID</label>
+                <input type="text" id="conferenceId" value="CL-2026" readonly>
+            </div>
+            <div class="form-group">
+                <label for="invoiceTitle">Invoice Title</label>
+                <input type="text" id="invoiceTitle" value="Your Lab" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" value="user@example.com" required>
+            </div>
 
-<div class="navbar">
-  <div class="inner">
-    <div class="brand">
-      <div class="logo" style="background: linear-gradient(135deg, #f59e0b, #f97316)"></div>
-      EventHub
-    </div>
-    <div class="navlinks">
-      <a href="../trip.local/manage.html">Trips</a>
-      <a href="../event.local/registration.html" class="active">Conference</a>
-      <a href="../bank.local/expense-report.html">Expenses</a>
-    </div>
-  </div>
-</div>
+            <button type="button" class="btn-submit" onclick="registerConference()">Confirm Registration</button>
+        </form>
 
-<div class="container">
-  <div class="breadcrumbs">
-    <a href="../trip.local/manage.html">My Trips</a> / <span>Conference Registration</span>
-  </div>
+        <div id="confirmation-section" class="confirmation-card" style="display:none;">
+            <h2>Registration Successful!</h2>
+            <p>Your registration for <span id="conf-name">CL-2026</span> is complete.</p>
+            <p>Status: <span id="registration-status" class="status-badge">paid</span></p>
+            <p>Invoice Title: <span id="conf-invoice"></span></p>
+            <p>Registration ID: <span id="conf-regid"></span></p>
+        </div>
 
-  <div class="reg-card">
-    <h2 style="margin-top:0">AI Summit Paris</h2>
-    <p class="muted">Dec 10-12 · Paris Expo Center</p>
-
-    <div class="grid cols-2 mb-4">
-      <div>
-        <label class="muted">Full Name</label>
-        <input id="reg-name" class="input mt-1" value="John Doe">
-      </div>
-      <div>
-        <label class="muted">Company</label>
-        <input id="reg-company" class="input mt-1" value="Nebula Labs">
-      </div>
+        <p class="message" id="status-message"></p>
     </div>
 
-    <div class="grid cols-2 mb-4">
-      <div>
-        <label class="muted">Ticket Type</label>
-        <select id="reg-ticket" class="input mt-1">
-          <option value="standard" selected>Standard - $399</option>
-          <option value="vip">VIP - $699</option>
-        </select>
-      </div>
-      <div>
-        <label class="muted">Email</label>
-        <input id="reg-email" class="input mt-1" value="john@example.com">
-      </div>
-    </div>
+    <script>
+        window.RelRoot = '../'; // Assuming registration.html is directly under event.local
 
-    <div class="flex" style="justify-content:flex-end; gap:12px">
-      <button class="btn" onclick="Toast.info('Saved as draft')">Save Draft</button>
-      <button class="btn pri" onclick="submitRegistration()">Submit Registration</button>
-    </div>
-  </div>
-</div>
+        const urlParams = new URLSearchParams(window.location.search);
+        const state = urlParams.get('state');
+        const regId = urlParams.get('regId');
+        const eventName = urlParams.get('eventName');
+        const invoiceTitle = urlParams.get('invoiceTitle');
 
-<script src="../static/common.js"></script>
-<script src="../static/components.js"></script>
-<script>
-async function submitRegistration() {
-  await send('F2-2025-301','conference_register',{event:'AI Summit Paris', city:'Paris', ticket: document.getElementById('reg-ticket').value, registrationId:'CONF-8801'});
-}
-</script>
+        if (state === 'confirmed') {
+            document.getElementById('page-title').textContent = 'Conference Registration Status';
+            document.getElementById('registration-form').style.display = 'none';
+            document.getElementById('confirmation-section').style.display = 'block';
 
+            document.getElementById('conf-name').textContent = eventName || 'CL-2026';
+            document.getElementById('conf-invoice').textContent = invoiceTitle || 'Your Lab';
+            document.getElementById('conf-regid').textContent = regId || 'CONF-XXXX';
+            document.getElementById('registration-status').textContent = 'paid'; // Based on success criteria
+        }
+
+        function registerConference() {
+            const conferenceId = document.getElementById('conferenceId').value;
+            const invoiceTitle = document.getElementById('invoiceTitle').value;
+            const email = document.getElementById('email').value;
+
+            send('F2-2026-EVENT', 'conference_register', {
+                conferenceId: conferenceId,
+                invoiceTitle: invoiceTitle,
+                email: email
+            });
+        }
+    </script>
 </body>
 </html>

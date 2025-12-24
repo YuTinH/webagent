@@ -1,0 +1,15 @@
+{
+  "task_id": "E6-2025-TRAVEL",
+  "family": "E",
+  "goal": "Rebook flight PNR9ZZ and confirm its status is 'rebooked'.",
+  "inputs": {
+    "pnr": "PNR9ZZ",
+    "policy": "min-cost"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "text(\"#pnr\") == \"PNR9ZZ\"",
+    "text(\"#ticket-status\") == \"rebooked\"",
+    "json(\"env\",\"trips.PNR9ZZ.status\") == \"rebooked\""
+  ]
+}

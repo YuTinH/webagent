@@ -1,4 +1,0 @@
-  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 674
-    return super().do_GET()
-                           ^
-IndentationError: unindent does not match any outer indentation level

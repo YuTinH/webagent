@@ -72,10 +72,13 @@ class AssertionDSL:
             return self._eval_stable(assertion)
 
         # Atoms
-        return self._eval_atom(assertion)
+        res = self._eval_atom(assertion)
+        # print(f"DEBUG: DSL eval '{assertion}' -> {res}")
+        return res
 
     def _eval_atom(self, assertion: str) -> bool:
         """Evaluate atomic assertion"""
+        print(f"DEBUG: Eval Atom: '{assertion}'")
 
         # exists("<selector>")
         match = re.match(r'exists\("(.+?)"\)', assertion)
@@ -90,6 +93,8 @@ class AssertionDSL:
             try:
                 actual = self.page.locator(selector).inner_text()
                 if op == '==':
+                    if actual != expected:
+                        print(f"DEBUG: Text mismatch. Actual: '{actual}', Expected: '{expected}'")
                     return actual == expected
                 elif op == '!=':
                     return actual != expected
@@ -151,9 +156,21 @@ class AssertionDSL:
         if match:
             key, op, expected = match.groups()
             actual = self._get_memory(key)
-            print(f"DEBUG: AssertionDSL mem check: key='{key}', op='{op}', expected='{expected}', actual='{actual}'")
+            print(f"DEBUG: DSL mem check: key='{key}', op='{op}', expected='{expected}', actual='{actual}' (type: {type(actual)})")
+            # ...
+            # Convert expected string to boolean if applicable
+            if isinstance(actual, bool) and isinstance(expected, str):
+                if expected.lower() == 'true': expected = True
+                elif expected.lower() == 'false': expected = False
+            
             if op == '==':
-                return str(actual) == expected
+                # Try loose equality for numbers
+                try:
+                    if float(actual) == float(expected):
+                        return True
+                except (ValueError, TypeError):
+                    pass
+                return str(actual) == str(expected)
             elif op == '!=':
                 return str(actual) != expected
             elif op == 'includes':
@@ -183,7 +200,7 @@ class AssertionDSL:
             return expected in str(actual)
 
         # json("<channel>", "<path>") == <value>
-        match = re.match(r'json\([\'"](.+?)[\'"]\s*,\s*[\'"](.+?)[\'"]\)\s*(==|!=|>=|<=|>|<)\s*[\'"]?(.+?)[\'"]?$', assertion)
+        match = re.match(r'json\([\'"](.+?)[\'"]\s*,\s*[\'"](.+?)[\'"]\)\s*(==|!=|>=|<=|>|<|includes)\s*[\'"]?(.+?)[\'"]?$', assertion)
         if match:
             channel, path, op, expected = match.groups()
             try:
@@ -199,6 +216,8 @@ class AssertionDSL:
                     return actual == expected_val
                 elif op == '!=':
                     return actual != expected_val
+                elif op == 'includes':
+                    return expected_val in actual # Assuming actual is a list or string.
                 elif op in ('>=','<=','>','<'):
                     try:
                         a_val = float(actual)
@@ -227,6 +246,7 @@ class AssertionDSL:
 
         for sub in sub_assertions:
             if not self.evaluate(sub):
+                print(f"DEBUG: ALL check failed on: {sub}")
                 return False
         return True
 
@@ -328,10 +348,30 @@ class AssertionDSL:
         current = self.memory
         
         for i, part in enumerate(parts):
-            if isinstance(current, dict) and part in current:
-                current = current[part]
+            # Handle array access like orders[0]
+            if '[' in part and ']' in part:
+                try:
+                    base = part[:part.index('[')]
+                    index = int(part[part.index('[')+1:part.index(']')])
+                    
+                    # Access base
+                    if isinstance(current, dict):
+                        current = current.get(base)
+                    else:
+                        return None
+                        
+                    # Access index
+                    if isinstance(current, list) and len(current) > index:
+                        current = current[index]
+                    else:
+                        return None
+                except (ValueError, IndexError):
+                    return None
             else:
-                return None
+                if isinstance(current, dict) and part in current:
+                    current = current[part]
+                else:
+                    return None
         
         # Handle wrapped value if applicable
         if isinstance(current, dict) and 'value' in current and len(current) == 1:

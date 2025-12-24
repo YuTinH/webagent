@@ -1,0 +1,45 @@
+{
+  "task_id": "B4-2025-FOOD",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 5,
+  "steps_total": 5,
+  "time_elapsed": 1.9438223838806152,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/food.local/restaurant.html?id=RES-001",
+      "note": "Open Burger Kingpin menu"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "div.menu-item:has(h3:has-text('Classic Burger')) button.btn-add",
+      "note": "Add Classic Burger to cart"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "div.menu-item:has(h3:has-text('Cheese Deluxe')) button.btn-add",
+      "note": "Add Cheese Deluxe to cart"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "button.btn-checkout",
+      "note": "Click Checkout button"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#order-list",
+      "note": "Wait for orders page to load"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

@@ -1,39 +1,17 @@
 {
-  "task_id": "B4-2025-001",
+  "task_id": "B4-2025-FOOD",
   "family": "B",
-  "episode_id": "ep-local-life",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T12:00:00Z",
-  "persona": {
-    "automation_preference": "high",
-    "food_preference": "healthy",
-    "max_budget": 15.00
-  },
-  "goal": "Order a healthy meal under $15 from Green Bowl on YumYum.",
+  "goal": "Order a 'Classic Burger' and 'Cheese Deluxe' from 'Burger Kingpin' for a total of $19.98.",
   "inputs": {
-    "restaurant_name": "Green Bowl",
-    "item_name": "Quinoa Salad",
-    "max_price": 15.00
+    "restaurant": "Burger Kingpin",
+    "items": ["Classic Burger", "Cheese Deluxe"],
+    "total": 19.98
   },
-  "allowed_domains": [
-    "food.local"
-  ],
-  "preconditions": [
-    "mem('banking.balance.checking') > 15"
-  ],
-  "dependencies": [],
-  "memory_keys": [
-    "food.order.last.id",
-    "food.order.last.status",
-    "food.order.last.total"
-  ],
+  "preconditions": [],
   "success_criteria": [
-    "ALL[url().includes('/food.local/orders'), mem('food.order.last.status') == 'pending', mem('food.order.last.total') <= 15]"
-  ],
-  "rubrics": {
-    "SR": 1.0
-  },
-  "timeout": 180,
-  "step_timeout": 30
+    "url().includes(\"/food.local/orders.html\")",
+    "json(\"env\",\"food.orders.last.restaurant\") == \"Burger Kingpin\"",
+    "json(\"env\",\"food.orders.last.items\") includes \"Classic Burger\"",
+    "json(\"env\",\"food.orders.last.total\") == 19.98"
+  ]
 }

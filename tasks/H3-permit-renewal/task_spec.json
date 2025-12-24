@@ -1,0 +1,15 @@
+{
+  "task_id": "H3-2025-PERMIT",
+  "family": "H",
+  "goal": "Book a renewal appointment for parking permit RP-2024-77 for 2025-12-01T10:00.",
+  "inputs": {
+    "permit_id": "RP-2024-77",
+    "slot": "2025-12-01T10:00"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "text(\"#appointment-state\") == \"Appointment booked for Dec 1, 2025, 10:00 AM\"",
+    "json(\"env\",\"permits.RP-2024-77.next_appointment\") == \"2025-12-01T10:00\"",
+    "url().includes(\"next_appointment=2025-12-01T10:00\")"
+  ]
+}

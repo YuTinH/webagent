@@ -1,0 +1,61 @@
+{
+  "task_id": "G3-2025-HEALTH",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 1.5585546493530273,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/claims.html",
+      "note": "Open medical claims submission page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#claimId",
+      "value": "CLM-5501",
+      "note": "Enter Claim ID"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#appointmentId",
+      "value": "APT-9001",
+      "note": "Enter Appointment ID"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#amount",
+      "value": "250",
+      "note": "Enter Claim Amount"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#policyId",
+      "value": "P-9001",
+      "note": "Enter Policy ID"
+    },
+    {
+      "t": 10,
+      "act": "click",
+      "selector": "button.btn-submit",
+      "note": "Submit Claim"
+    },
+    {
+      "t": 12,
+      "act": "wait",
+      "selector": "#claim-state",
+      "note": "Wait for claim status to appear"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

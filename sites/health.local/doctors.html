@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Find a Doctor - Health Connect</title>
@@ -69,7 +70,6 @@
   <h1 style="margin-bottom: 24px;">Find a Doctor</h1>
 
   <div class="grid cols-4" style="align-items:start">
-    <!-- Filters Sidebar -->
     <div class="card" style="grid-column: span 1">
       <h3 style="margin-top:0; margin-bottom: 24px;">Filters</h3>
       <div class="mb-4">
@@ -89,17 +89,8 @@
       <button class="btn pri" style="width:100%" onclick="Toast.info('Filtering doctors (mock)')">Apply Filters</button>
     </div>
 
-    <!-- Doctor List -->
     <div style="grid-column: span 3">
-      <div id="doctor-list">
-        <!-- Rendered by JS -->
-        <div class="doctor-card skeleton">
-          <div class="doctor-avatar"></div>
-          <div style="flex:1">
-            <h3 class="skeleton" style="width:70%; height:28px; margin-bottom:8px"></h3>
-            <div class="skeleton" style="width:40%; height:20px"></div>
-          </div>
-        </div>
+      <div id="doctor-directory">
         <div class="doctor-card skeleton">
           <div class="doctor-avatar"></div>
           <div style="flex:1">
@@ -124,9 +115,12 @@ const DOCTORS = [
 ];
 
 function renderDoctors() {
-  const list = document.getElementById('doctor-list');
+  // Update selector to match new ID
+  const list = document.getElementById('doctor-directory');
+  if (!list) return;
+  
   list.innerHTML = DOCTORS.map(doc => `
-    <div class="doctor-card">
+    <div class="doctor-card" data-doctor-id="${doc.id}">
       <div class="doctor-avatar">${doc.avatar}</div>
       <div class="doctor-info">
         <h3>${doc.name}</h3>

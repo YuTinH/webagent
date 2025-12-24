@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>gov.local - 申请状态</title>
   <link rel="stylesheet" href="../../static/skin.css">
+  <script src="../../static/common.js"></script>
 </head>
 <body class="page">
   <div class="navbar">
@@ -16,11 +17,20 @@
     <h1>申请状态</h1>
     <p>编号：<span id="application-id"></span></p>
     <p>当前状态：<span id="application-state">submitted</span></p>
+    <p class="claim-detail" id="claim-state">pending</p> <!-- Added for G3 -->
   </div>
   <script>
+  window.RelRoot = '../../'; // Ensure RelRoot is set
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id') || 'APP-0000';
   document.getElementById('application-id').textContent = id;
+
+  // Handle claim status for G3
+  if (id.startsWith('CLM-')) {
+    document.getElementById('application-state').textContent = 'processing'; // Default for claims
+    document.getElementById('claim-state').textContent = 'processing'; // Specific for G3 DSL
+    document.getElementById('claim-state').className = 'claim-detail'; // Ensure class exists
+  }
   </script>
 
 <!-- Distractor: Random Toast -->

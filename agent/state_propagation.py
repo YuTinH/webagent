@@ -566,6 +566,84 @@ class TaskStateManager:
                 StateUpdate("mem.settlements.last.status", "set", "completed"),
             ]
 
+        # K1-join-community
+        elif family == "K1":
+            updates = [
+                StateUpdate("mem.social.groups.GRP-001.status", "set", "joined"),
+            ]
+
+        # G1-doctor-appt: Book doctor appointment
+        elif family == "G1":
+            # Extract appointment ID
+            extracted = task_result.get("extracted_data", {})
+            appointment_id = extracted.get("appointment_id", "APT-9001")
+            
+            updates = [
+                StateUpdate("mem.health.appointment.last.id", "set", appointment_id),
+                StateUpdate("env.health.appointments.last.id", "set", appointment_id),
+            ]
+
+        # D2-budget-report: Update budget
+        elif family == "D2":
+            # ... existing D2 logic ...
+            # If not extracted, check inputs/result direct
+            if limit is None:
+                limit = task_result.get("limit", 600)
+                
+            updates = [
+                StateUpdate(f"mem.budget.{category}.limit", "set", limit),
+                StateUpdate(f"env.budget.{category}.limit", "set", limit),
+            ]
+
+        # B6-price-protection
+        elif family == "B6":
+            claim_id = task_result.get("claim_id", "PP-1001")
+            updates = [
+                StateUpdate("mem.claims.price_protection.last.id", "set", claim_id),
+            ]
+
+        # A4-mobile-plan
+        elif family == "A4":
+            phone = task_result.get("phone", "555-000-0000")
+            updates = [
+                StateUpdate("mem.mobile.subscription.status", "set", "active"),
+                StateUpdate("mem.mobile.subscription.phone", "set", phone),
+            ]
+
+        # A6-address-proof
+        elif family == "A6":
+            updates = [
+                StateUpdate("mem.identity.address_verified", "set", True),
+            ]
+
+        # B7-second-hand-sale
+        elif family == "B7":
+            item_id = task_result.get("item_id", f"2H-{random.randint(1000, 9999)}")
+            updates = [
+                StateUpdate(f"mem.market.listed_items.{item_id}.status", "set", "listed"),
+            ]
+
+        # F5-receipt-archive
+        elif family == "F5":
+            doc_id = task_result.get("doc_id", f"DOC-{random.randint(10000, 99999)}")
+            updates = [
+                StateUpdate(f"mem.cloud.documents.{doc_id}.status", "set", "archived"),
+            ]
+
+        # G5-health-plan
+        elif family == "G5":
+            updates = [
+                StateUpdate("mem.health.plan.status", "set", "active"),
+                StateUpdate("mem.health.plan.name", "set", task_result.get("plan_name", "Standard Wellness")),
+            ]
+
+        # G6-vaccine-mgmt
+        elif family == "G6":
+            vaccine_id = task_result.get("vaccine_id", f"VC-{random.randint(10000, 99999)}")
+            updates = [
+                StateUpdate(f"mem.health.vaccines.{vaccine_id}.status", "set", "booked"),
+            ]
+
         return updates
 
 

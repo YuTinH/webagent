@@ -1,0 +1,57 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Nebula Mobile - My Account</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Mobile</div>
+    <div class="navlinks">
+      <a href="index.html">Plans</a>
+      <a href="account.html" class="active">My Account</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <h1 style="margin-bottom: 24px">My Account</h1>
+  
+  <div id="account-view">
+    <div class="card" style="text-align:center; padding:60px">
+      <div style="font-size:48px; margin-bottom:16px">📱</div>
+      <div style="color:var(--muted)">No active plan found.</div>
+      <a href="index.html" class="btn pri mt-4">Browse Plans</a>
+    </div>
+  </div>
+</div>
+
+<script>
+async function init() {
+  try {
+    const env = await api('../api/env');
+    const mobile = env.mobile?.subscription;
+    
+    if (mobile && mobile.status === 'active') {
+      document.getElementById('account-view').innerHTML = `
+        <div class="card">
+          <div class="header">
+            <div class="title">Current Plan</div>
+            <span class="badge ok">Active</span>
+          </div>
+          <div class="kv">
+            <div class="key">Plan Name</div><div>${mobile.plan_name}</div>
+            <div class="key">Phone Number</div><div>${mobile.phone_number}</div>
+            <div class="key">Data Usage</div><div>0.5 GB / ${mobile.data_limit}</div>
+            <div class="key">Next Bill</div><div>${mobile.next_bill_date}</div>
+          </div>
+          <div class="hr"></div>
+          <button class="btn">Manage Plan</button>
+        </div>
+      `;
+    }
+  } catch(e) {}
+}
+init();
+</script>

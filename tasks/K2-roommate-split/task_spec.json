@@ -1,0 +1,16 @@
+{
+  "task_id": "K2-2025-SPLIT",
+  "family": "K",
+  "goal": "Split household expenses for October 2025 equally between Alice and Bob.",
+  "inputs": {
+    "month": "2025-10",
+    "members": ["Alice", "Bob"],
+    "rules": "equal"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "text(\"#split-state\") == \"settled\"",
+    "json(\"env\",\"settlements.2025-10.state\") == \"settled\"",
+    "url().includes(\"month=2025-10\")"
+  ]
+}

@@ -1,0 +1,92 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Warranty Claim - Shop.local</title>
+<link rel="stylesheet" href="../static/skin.css"><script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">Shop.local</div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="orders.html">Orders</a>
+      <a href="help.html">Help</a>
+    </div>
+    <div class="right">
+      <a href="cart.html" class="cart-btn">Cart (0)</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="breadcrumbs"><a href="index.html">Home</a> / <a href="help.html">Help Center</a> / <span>Warranty Claim</span></div>
+  
+  <div class="card">
+    <div class="header">
+      <div class="title">Submit a Warranty Claim</div>
+    </div>
+    <div class="content">
+      <p>If your product is defective and within the warranty period, please submit a claim below.</p>
+      
+      <div class="form-group">
+        <label>Product Serial Number</label>
+        <input type="text" id="serial" class="input" placeholder="e.g. TV-42-2025-XY9">
+      </div>
+      
+      <div class="form-group">
+        <label>Associated Order ID</label>
+        <input type="text" id="orderId" class="input" placeholder="e.g. O-10123">
+      </div>
+      
+      <div class="form-group">
+        <label>Issue Description</label>
+        <textarea id="issue" class="input" rows="3" placeholder="Describe the defect..."></textarea>
+      </div>
+
+      <div class="hr"></div>
+      
+      <button class="btn pri" onclick="submitClaim()">Submit Claim</button>
+    </div>
+  </div>
+
+  <div id="result-card" class="card" style="display:none; margin-top: 20px; border-color: #28a745;">
+    <div class="header">
+      <div class="title" style="color:#28a745">Claim Submitted</div>
+      <span class="badge ok" id="claim-status">Accepted</span>
+    </div>
+    <div class="content">
+      <p>Your warranty claim has been received. A Return Merchandise Authorization (RMA) has been issued.</p>
+      <div class="kv">
+        <div class="key">Serial Number</div><div id="res-serial"></div>
+        <div class="key">RMA Number</div><div id="res-rma">RMA-2025-001</div>
+        <div class="key">Status</div><div>RMA Issued</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function submitClaim() {
+    const serial = qs('#serial').value;
+    const orderId = qs('#orderId').value;
+    const issue = qs('#issue').value;
+    
+    if(!serial || !orderId) {
+        toast('Please fill in all fields');
+        return;
+    }
+
+    send('C4-2025-WARRANTY', 'submit_warranty_claim', {
+        serial: serial,
+        orderId: orderId,
+        issue: issue
+    });
+  }
+
+  // Handle redirect result
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('status') === 'accepted') {
+      qs('#result-card').style.display = 'block';
+      qs('#res-serial').textContent = urlParams.get('serial') || 'Unknown';
+      // Simulate backend generation
+      qs('#res-rma').textContent = 'RMA-' + Math.floor(Math.random() * 10000); 
+  }
+</script>

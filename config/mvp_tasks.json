@@ -3,19 +3,69 @@
   "description": "MVP task list: 3 sites × 10 tasks",
   "sites": [
     {
-      "domain": "shop.local",
-      "name": "E-commerce Platform",
-      "port": 3001
-    },
-    {
       "domain": "bank.local",
       "name": "Banking & Finance",
       "port": 3002
     },
     {
+      "domain": "card.local",
+      "name": "Card Service",
+      "port": 8000
+    },
+    {
+      "domain": "energy.local",
+      "name": "Energy Service",
+      "port": 8000
+    },
+    {
+      "domain": "event.local",
+      "name": "Event Service",
+      "port": 8000
+    },
+    {
+      "domain": "food.local",
+      "name": "Food Service",
+      "port": 8000
+    },
+    {
       "domain": "gov.local",
       "name": "Government Services",
       "port": 3003
+    },
+    {
+      "domain": "health.local",
+      "name": "Health Service",
+      "port": 8000
+    },
+    {
+      "domain": "housing.local",
+      "name": "Housing Service",
+      "port": 8000
+    },
+    {
+      "domain": "pay.local",
+      "name": "Pay Service",
+      "port": 8000
+    },
+    {
+      "domain": "permit.local",
+      "name": "Permit Service",
+      "port": 8000
+    },
+    {
+      "domain": "school.local",
+      "name": "School Service",
+      "port": 8000
+    },
+    {
+      "domain": "shop.local",
+      "name": "E-commerce Platform",
+      "port": 3001
+    },
+    {
+      "domain": "trip.local",
+      "name": "Trip Service",
+      "port": 8000
     }
   ],
   "tasks": [
@@ -25,7 +75,9 @@
       "name": "Basic E-commerce Shopping",
       "family": "B",
       "difficulty": "easy",
-      "sites": ["shop.local"],
+      "sites": [
+        "shop.local"
+      ],
       "estimated_steps": 23,
       "dependencies": [],
       "description": "Search and purchase a product under budget with same-day delivery"
@@ -36,7 +88,9 @@
       "name": "Check Account Balance & Transactions",
       "family": "D",
       "difficulty": "easy",
-      "sites": ["bank.local"],
+      "sites": [
+        "bank.local"
+      ],
       "estimated_steps": 12,
       "dependencies": [],
       "description": "Login, verify balance, export transactions CSV"
@@ -47,7 +101,9 @@
       "name": "Check Utility Bill",
       "family": "H",
       "difficulty": "easy",
-      "sites": ["gov.local"],
+      "sites": [
+        "gov.local"
+      ],
       "estimated_steps": 10,
       "dependencies": [],
       "description": "Login to utility portal, check current bill amount and due date"
@@ -58,9 +114,13 @@
       "name": "Return & Refund",
       "family": "C",
       "difficulty": "medium",
-      "sites": ["shop.local"],
+      "sites": [
+        "shop.local"
+      ],
       "estimated_steps": 10,
-      "dependencies": ["B1-2025-001"],
+      "dependencies": [
+        "B1-2025-001"
+      ],
       "description": "Return a product from recent order and get refund"
     },
     {
@@ -69,9 +129,13 @@
       "name": "Track Multiple Orders & Handle Delivery Issue",
       "family": "B",
       "difficulty": "medium",
-      "sites": ["shop.local"],
+      "sites": [
+        "shop.local"
+      ],
       "estimated_steps": 25,
-      "dependencies": ["B1-2025-001"],
+      "dependencies": [
+        "B1-2025-001"
+      ],
       "description": "Check status of 3 recent orders, report delay if any order is overdue"
     },
     {
@@ -80,9 +144,13 @@
       "name": "Schedule Automatic Payment",
       "family": "D",
       "difficulty": "medium",
-      "sites": ["bank.local"],
+      "sites": [
+        "bank.local"
+      ],
       "estimated_steps": 18,
-      "dependencies": ["H1-2025-003"],
+      "dependencies": [
+        "H1-2025-003"
+      ],
       "description": "Set up auto-pay for utility bill from checking account"
     },
     {
@@ -91,7 +159,9 @@
       "name": "Submit Permit Application with Documents",
       "family": "H",
       "difficulty": "medium",
-      "sites": ["gov.local"],
+      "sites": [
+        "gov.local"
+      ],
       "estimated_steps": 20,
       "dependencies": [],
       "description": "Apply for parking permit by filling form and uploading documents"
@@ -102,9 +172,15 @@
       "name": "Credit Card Replacement & Binding Update",
       "family": "D",
       "difficulty": "hard",
-      "sites": ["bank.local", "shop.local", "gov.local"],
+      "sites": [
+        "bank.local",
+        "shop.local",
+        "gov.local"
+      ],
       "estimated_steps": 50,
-      "dependencies": ["D1-2025-002"],
+      "dependencies": [
+        "D1-2025-002"
+      ],
       "description": "Replace expiring card and update all merchant bindings"
     },
     {
@@ -113,9 +189,15 @@
       "name": "Lost Bank Card Crisis Handling",
       "family": "M",
       "difficulty": "hard",
-      "sites": ["bank.local", "shop.local", "gov.local"],
+      "sites": [
+        "bank.local",
+        "shop.local",
+        "gov.local"
+      ],
       "estimated_steps": 62,
-      "dependencies": ["D4-2025-008"],
+      "dependencies": [
+        "D4-2025-008"
+      ],
       "description": "Block lost card, issue virtual card, update 5+ merchants"
     },
     {
@@ -124,9 +206,15 @@
       "name": "Roommate Expense Sharing (AA Split)",
       "family": "K",
       "difficulty": "hard",
-      "sites": ["shop.local", "bank.local"],
+      "sites": [
+        "shop.local",
+        "bank.local"
+      ],
       "estimated_steps": 40,
-      "dependencies": ["B1-2025-001", "D1-2025-002"],
+      "dependencies": [
+        "B1-2025-001",
+        "D1-2025-002"
+      ],
       "description": "Review shared expenses and split bills with roommate"
     }
   ],
@@ -144,31 +232,52 @@
       "phase": 1,
       "name": "Foundation",
       "weeks": 2,
-      "tasks": ["Infrastructure setup", "UI components", "Database schema"]
+      "tasks": [
+        "Infrastructure setup",
+        "UI components",
+        "Database schema"
+      ]
     },
     {
       "phase": 2,
       "name": "Easy Tasks",
       "weeks": 2,
-      "tasks": ["T1", "T2", "T3"]
+      "tasks": [
+        "T1",
+        "T2",
+        "T3"
+      ]
     },
     {
       "phase": 3,
       "name": "Medium Tasks",
       "weeks": 3,
-      "tasks": ["T4", "T5", "T6", "T7"]
+      "tasks": [
+        "T4",
+        "T5",
+        "T6",
+        "T7"
+      ]
     },
     {
       "phase": 4,
       "name": "Hard Tasks",
       "weeks": 3,
-      "tasks": ["T8", "T9", "T10"]
+      "tasks": [
+        "T8",
+        "T9",
+        "T10"
+      ]
     },
     {
       "phase": 5,
       "name": "Testing & Refinement",
       "weeks": 2,
-      "tasks": ["Perturbations", "Baseline evaluation", "Bug fixes"]
+      "tasks": [
+        "Perturbations",
+        "Baseline evaluation",
+        "Bug fixes"
+      ]
     }
   ]
 }

@@ -1,62 +1,11 @@
 {
-  "task_id": "D1-2025-002",
+  "task_id": "D1-2025-FINANCE",
   "family": "D",
-  "episode_id": "ep-001",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-11-16T10:00:00Z",
-  "persona": {
-    "financial_awareness": "high",
-    "budget_tracking": true
-  },
-  "goal": "Login to bank account, verify balance is at least $1000, and export last 30 days transactions to CSV",
-  "inputs": {
-    "min_balance": 1000,
-    "export_days": 30,
-    "account_type": "checking"
-  },
-  "allowed_domains": [
-    "bank.local"
-  ],
-  "preconditions": [
-    "mem('banking.username') != ''",
-    "mem('banking.password') != ''"
-  ],
-  "memory_keys": [
-    "banking.balance.checking",
-    "banking.balance.last_check",
-    "banking.transactions.last_export"
-  ],
+  "goal": "Check the balance of the checking account.",
+  "inputs": {},
+  "preconditions": [],
   "success_criteria": [
-    "url().includes('/transactions')"
-  ],
-  "artifacts": [
-    "transactions.csv",
-    "balance_screenshot"
-  ],
-  "rubrics": {
-    "SR": 1.0,
-    "LH-F1": 0.2
-  },
-  "timeout": 180,
-  "step_timeout": 30,
-  "error_recovery": {
-    "on_timeout": "capture_state_and_abort",
-    "on_network_error": {
-      "strategy": "retry",
-      "max_retries": 3,
-      "retry_delay_ms": 1000
-    },
-    "on_element_not_found": {
-      "strategy": "wait_and_retry",
-      "wait_seconds": 10
-    },
-    "on_assertion_fail": {
-      "strategy": "save_trace_and_report",
-      "capture_screenshot": true,
-      "capture_dom": true,
-      "capture_memory": true
-    },
-    "on_precondition_fail": "abort_with_warning"
-  }
+    "text(\"#checking-balance\") == \"¥10.00\"",
+    "json(\"env\",\"accounts.checking.balance\") >= 10"
+  ]
 }

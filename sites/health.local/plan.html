@@ -1,0 +1,93 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Health Plan - Health Connect</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #10b981, #6ee7b7)"></div>
+      Health Connect
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="doctors.html">Doctors</a>
+      <a href="records.html">My Records</a>
+      <a href="plan.html" class="active">Health Plan</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs"><a href="index.html">Home</a> / <span>Health Plan</span></div>
+  
+  <h1 style="margin-bottom: 24px">My Health Plan</h1>
+  
+  <div id="plan-details" class="card mb-4">
+    <div class="header">
+      <div class="title">Current Plan</div>
+      <span id="plan-status" class="badge warn">Inactive</span>
+    </div>
+    <div class="kv">
+      <div class="key">Plan Name</div><div id="plan-name">No active plan</div>
+      <div class="key">Focus</div><div id="plan-focus">N/A</div>
+      <div class="key">Daily Calories</div><div id="plan-calories">N/A</div>
+      <div class="key">Weekly Exercise</div><div id="plan-exercise">N/A</div>
+    </div>
+    <div class="hr"></div>
+    <button class="btn pri" id="activate-plan-btn" onclick="activatePlan()">Activate Plan</button>
+  </div>
+
+  <div id="food-recommendations" class="card" style="display:none;">
+    <div class="header">
+      <div class="title">Food Recommendations (based on your food orders)</div>
+    </div>
+    <p class="muted">Based on your recent food delivery history, here are some suggestions to align with your health goals.</p>
+    <ul id="recommendations-list" style="list-style:none; padding:0;">
+      <li class="mb-2">🥗 Try a salad from Green Bites (less than 400 kcal)</li>
+      <li class="mb-2">🍲 Opt for a clear soup from Asian Delights</li>
+      <li class="mb-2">🍎 Snack on fruits instead of desserts</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+async function init() {
+  try {
+    const env = await api('../api/env');
+    const healthPlan = env.health?.plan;
+    
+    if (healthPlan && healthPlan.status === 'active') {
+      document.getElementById('plan-status').textContent = 'Active';
+      document.getElementById('plan-status').classList.remove('warn');
+      document.getElementById('plan-status').classList.add('ok');
+      document.getElementById('plan-name').textContent = healthPlan.name;
+      document.getElementById('plan-focus').textContent = healthPlan.focus;
+      document.getElementById('plan-calories').textContent = healthPlan.calories + ' kcal';
+      document.getElementById('plan-exercise').textContent = healthPlan.exercise;
+      document.getElementById('activate-plan-btn').style.display = 'none';
+      document.getElementById('food-recommendations').style.display = 'block';
+    } else {
+      document.getElementById('plan-status').textContent = 'Inactive';
+      document.getElementById('plan-status').classList.add('warn');
+      document.getElementById('plan-status').classList.remove('ok');
+      document.getElementById('activate-plan-btn').style.display = 'block';
+      document.getElementById('food-recommendations').style.display = 'none';
+    }
+  } catch(e) {}
+}
+
+async function activatePlan() {
+  await send('G5-2025-GEN', 'activate_health_plan', {
+    planName: 'Standard Wellness',
+    focus: 'Weight Management',
+    calories: 1800,
+    exercise: '30min daily'
+  });
+  setTimeout(() => window.location.reload(), 1000);
+}
+
+init();
+</script>

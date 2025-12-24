@@ -1,50 +1,68 @@
 {
-  "task_id": "D3-2025-006",
+  "task_id": "D3-2025-AUTOPAY",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 3,
-  "steps_total": 3,
-  "time_elapsed": 2.353966236114502,
+  "steps_completed": 8,
+  "steps_total": 8,
+  "time_elapsed": 1.5392606258392334,
   "error": null,
   "trace": [
     {
       "t": 0,
-      "url": "https://bank.local/autopay.html",
-      "act": "open"
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/autopay.html",
+      "note": "Open autopay setup page"
     },
     {
       "t": 2,
-      "act": "wait",
-      "selector": ".card"
+      "act": "type",
+      "selector": "#payee",
+      "value": "Utilities",
+      "note": "Enter payee"
     },
     {
-      "t": 3,
-      "act": "verify_state",
-      "checks": [
-        {
-          "type": "url",
-          "contains": "/autopay"
-        },
-        {
-          "type": "dom",
-          "selector": ".card",
-          "exists": true
-        },
-        {
-          "type": "dom",
-          "selector": "#payee",
-          "exists": true
-        },
-        {
-          "type": "dom",
-          "selector": ".save-autopay",
-          "exists": true
-        }
-      ],
-      "note": "Verify autopay settings page loaded"
+      "t": 4,
+      "act": "type",
+      "selector": "#amount",
+      "value": "150",
+      "note": "Enter amount"
+    },
+    {
+      "t": 6,
+      "act": "select",
+      "selector": "#frequency",
+      "value": "monthly",
+      "note": "Select frequency"
+    },
+    {
+      "t": 8,
+      "act": "select",
+      "selector": "#accountType",
+      "value": "checking",
+      "note": "Select account type"
+    },
+    {
+      "t": 10,
+      "act": "type",
+      "selector": "#startDate",
+      "value": "2025-12-20",
+      "note": "Enter start date"
+    },
+    {
+      "t": 12,
+      "act": "click",
+      "selector": "button.btn-submit",
+      "note": "Confirm Autopay"
+    },
+    {
+      "t": 15,
+      "act": "wait",
+      "selector": "#confirmation-section",
+      "note": "Wait for confirmation message"
     }
   ],
   "memory_updates": {},
   "artifacts": [],
-  "warnings": []
+  "warnings": [],
+  "extracted_data": {}
 }

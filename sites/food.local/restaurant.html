@@ -1,238 +1,125 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<script>window.RelRoot = "../";</script>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Restaurant - YumYum</title>
-<link rel="stylesheet" href="../static/skin.css">
-<link rel="stylesheet" href="../static/components.css">
-<style>
-.menu-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid var(--border);
-}
-.menu-item:last-child { border-bottom: none; }
-.item-info h4 { margin: 0 0 4px 0; color: var(--text-heading, #fff); }
-.cart-drawer {
-  position: fixed; top: 0; right: -400px; width: 350px; bottom: 0;
-  background: #131726; /* Force dark background */
-  border-left: 1px solid #334155;
-  transition: right 0.3s ease; z-index: 1000;
-  display: flex; flex-direction: column;
-  box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-}
-.cart-drawer.open { right: 0; }
-.cart-items { flex: 1; overflow-y: auto; padding: 20px; color: #f1f5f9; }
-.cart-footer { padding: 20px; border-top: 1px solid #334155; background: #1e293b; }
-.cart-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant - Food.local</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #ff6b6b; color: white; padding: 20px; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        .menu-section { background: white; padding: 20px; border-radius: 8px; margin-top: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 15px 0; }
+        .menu-item:last-child { border-bottom: none; }
+        .item-details h3 { margin: 0 0 5px 0; }
+        .item-price { font-weight: bold; color: #555; }
+        .btn-add { background-color: #ff6b6b; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #333; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; transform: translateY(100%); transition: transform 0.3s; }
+        .cart-bar.visible { transform: translateY(0); }
+        .btn-checkout { background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+    </style>
+    <script src="/static/common.js"></script>
 </head>
 <body>
-
-<div class="navbar">
-  <div class="inner">
-    <div class="brand">
-      <div class="logo" style="background: linear-gradient(135deg, #ef4444, #f97316)"></div>
-      YumYum
-    </div>
-    <div class="navlinks">
-      <a href="index.html">Restaurants</a>
-    </div>
-    <div class="search">
-      <button class="btn pri" onclick="toggleCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="breadcrumbs">
-    <a href="index.html">Restaurants</a> / <span id="res-crumb">...</span>
-  </div>
-
-  <div class="panel p-6 mb-6 mt-4">
-    <div class="flex justify-between items-center">
-      <div>
-        <h1 style="margin:0 0 8px" id="res-name">Loading...</h1>
-        <div class="text-sm muted" id="res-desc">...</div>
-      </div>
-      <div class="badge" id="res-rating">★ 4.8</div>
-    </div>
-  </div>
-
-  <h2 style="margin-bottom:16px">Menu</h2>
-  <div class="panel" id="menu-list">
-    </div>
-
-</div>
-
-<div class="cart-drawer" id="cart-drawer">
-  <div class="flex justify-between items-center p-4 border-b" style="border-bottom:1px solid #334155">
-    <h3 style="margin:0; color:white">Your Order</h3>
-    <button class="btn" onclick="toggleCart()">✕</button>
-  </div>
-  <div class="cart-items" id="cart-items">
-    <div class="text-center muted mt-8">Cart is empty</div>
-  </div>
-  <div class="cart-footer">
-    <div class="flex justify-between mb-4 font-bold" style="color:white">
-      <span>Total</span>
-      <span id="cart-total">$0.00</span>
-    </div>
-    <button class="btn pri w-full" onclick="checkout()">Checkout</button>
-  </div>
-</div>
-
-<div id="__toast" class="toast"></div>
-
-<script src="../static/common.js"></script>
-<script src="../static/components.js"></script>
-<script>
-const MENUS = {
-  'RES-001': { name: 'Burger Kingpin', items: [
-    { id: 'm1', name: 'Classic Burger', price: 8.99, desc: 'Beef patty, lettuce, tomato' },
-    { id: 'm2', name: 'Cheese Deluxe', price: 10.99, desc: 'Double cheese, bacon' },
-    { id: 'm3', name: 'Fries', price: 3.99, desc: 'Crispy golden fries' }
-  ]},
-  'RES-002': { name: 'Sushi Zen', items: [
-    { id: 'm4', name: 'Salmon Roll', price: 6.99, desc: 'Fresh salmon, avocado' },
-    { id: 'm5', name: 'Dragon Roll', price: 12.99, desc: 'Eel, cucumber, avocado' },
-    { id: 'm6', name: 'Miso Soup', price: 2.99, desc: 'Traditional soybean soup' }
-  ]},
-  'RES-003': { name: 'Pizza Paradise', items: [
-    { id: 'm7', name: 'Pepperoni', price: 14.99, desc: 'Classic pepperoni pizza' },
-    { id: 'm8', name: 'Margherita', price: 12.99, desc: 'Tomato, basil, mozzarella' },
-    { id: 'm9', name: 'Garlic Knots', price: 4.99, desc: 'Baked dough with garlic butter' }
-  ]},
-  'RES-004': { name: 'Green Bowl', items: [
-    { id: 'm10', name: 'Quinoa Salad', price: 12.99, desc: 'Quinoa, kale, avocado' },
-    { id: 'm11', name: 'Berry Smoothie', price: 6.99, desc: 'Mixed berries, yogurt' },
-    { id: 'm12', name: 'Avocado Toast', price: 8.99, desc: 'Sourdough, smashed avocado' }
-  ]},
-  'RES-005': { name: 'Taco Fiesta', items: [
-    { id: 'm13', name: 'Street Tacos (3)', price: 9.99, desc: 'Carne asada, onion, cilantro' },
-    { id: 'm14', name: 'Burrito Supreme', price: 11.99, desc: 'Rice, beans, meat, cheese' },
-    { id: 'm15', name: 'Chips & Guac', price: 5.99, desc: 'Fresh made guacamole' }
-  ]},
-  'RES-006': { name: 'Noodle House', items: [
-    { id: 'm16', name: 'Beef Ramen', price: 13.99, desc: 'Rich broth, tender beef' },
-    { id: 'm17', name: 'Pad Thai', price: 12.99, desc: 'Stir-fried rice noodles' },
-    { id: 'm18', name: 'Spring Rolls', price: 4.99, desc: 'Crispy vegetable rolls' }
-  ]}
-};
-
-let cart = [];
-let currentRes = null;
-
-// Safer toast function that falls back if Toast class is missing
-function safeToast(msg, type='success') {
-    if (typeof Toast !== 'undefined' && Toast[type]) {
-        Toast[type](msg);
-    } else if (typeof toast === 'function') {
-        toast(msg); // fallback to common.js function
-    } else {
-        console.log('Toast:', msg);
-    }
-}
-
-function init() {
-  const p = new URLSearchParams(location.search);
-  const id = p.get('id') || 'RES-001';
-  const data = MENUS[id] || MENUS['RES-001'];
-  currentRes = data;
-
-  document.getElementById('res-name').textContent = data.name;
-  document.getElementById('res-crumb').textContent = data.name;
-  document.getElementById('res-desc').textContent = 'Delicious food delivered fast.';
-
-  const list = document.getElementById('menu-list');
-  list.innerHTML = data.items.map(item => `
-    <div class="menu-item">
-      <div class="item-info">
-        <h4>${item.name}</h4>
-        <div class="muted text-sm">${item.desc}</div>
-      </div>
-      <div class="flex items-center gap-4">
-        <span class="font-bold">$${item.price}</span>
-        <button class="btn" onclick="addToCart('${item.id}')">+</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function addToCart(itemId) {
-  try {
-      const item = currentRes.items.find(i => i.id === itemId);
-      if (!item) return;
-      cart.push(item);
-      updateCart();
-      safeToast('Added to cart');
-      // Open drawer automatically on first add
-      if (cart.length === 1) {
-          const drawer = document.getElementById('cart-drawer');
-          if(drawer) drawer.classList.add('open');
-      }
-  } catch(e) {
-      console.error('Add to cart error:', e);
-  }
-}
-
-function updateCart() {
-  const countEl = document.getElementById('cart-count');
-  if(countEl) countEl.textContent = cart.length;
-  
-  const total = cart.reduce((sum, i) => sum + i.price, 0);
-  const totalEl = document.getElementById('cart-total');
-  if(totalEl) totalEl.textContent = '$' + total.toFixed(2);
-  
-  const list = document.getElementById('cart-items');
-  if (!list) return;
-
-  if(cart.length === 0) {
-    list.innerHTML = '<div class="text-center muted mt-8">Cart is empty</div>';
-  } else {
-    list.innerHTML = cart.map((item, idx) => `
-      <div class="cart-item-row">
-        <div>${item.name}</div>
-        <div class="flex gap-2 items-center">
-          <span>$${item.price}</span>
-          <button class="btn sm" onclick="cart.splice(${idx},1); updateCart()">×</button>
+    <div class="header">
+        <div class="container" style="display:flex; justify-content:space-between; width:100%; padding:0; align-items:center">
+            <h1><a href="index.html" style="color:white; text-decoration:none">Food.local</a></h1>
+            <div class="nav-links">
+                <a href="index.html">Restaurants</a>
+                <a href="orders.html">My Orders</a>
+            </div>
         </div>
-      </div>
-    `).join('');
-  }
-}
+    </div>
 
-function toggleCart() {
-  document.getElementById('cart-drawer').classList.toggle('open');
-}
+    <div class="container">
+        <h2 id="restaurant-name">Loading...</h2>
+        
+        <div class="menu-section" id="menu-list">
+            <!-- Menu items injected here -->
+        </div>
+    </div>
 
-async function checkout() {
-  console.log('Checkout clicked');
-  if(cart.length === 0) {
-    safeToast('Your cart is empty!', 'error');
-    return;
-  }
-  
-  const total = cart.reduce((sum, i) => sum + i.price, 0);
-  try {
-    console.log('Sending order...');
-    await send('B4-2025-001', 'order_food', { 
-      restaurant: currentRes.name,
-      items: cart.map(i => i.name),
-      total: total
-    });
-  } catch (error) {
-    console.error('Checkout failed:', error);
-    alert('Checkout error: ' + error.message);
-  }
-}
+    <div class="cart-bar" id="cart-bar">
+        <div>
+            <span id="cart-count">0</span> items | Total: $<span id="cart-total">0.00</span>
+        </div>
+        <button class="btn-checkout" onclick="placeOrder()">Checkout</button>
+    </div>
 
-init();
-</script>
+    <script>
+        window.RelRoot = '../';
+        
+        const restaurants = {
+            'RES-001': { name: 'Burger Kingpin', menu: [
+                { id: 'm1', name: 'Classic Burger', price: 8.99 },
+                { id: 'm2', name: 'Cheese Deluxe', price: 10.99 },
+                { id: 'm3', name: 'Fries', price: 3.99 },
+                { id: 'm4', name: 'Soda', price: 2.50 }
+            ]},
+            'RES-002': { name: 'Pizza Palace', menu: [
+                { id: 'p1', name: 'Margherita', price: 12.99 },
+                { id: 'p2', name: 'Pepperoni', price: 14.99 },
+                { id: 'p3', name: 'Garlic Knots', price: 5.99 }
+            ]},
+            'RES-006': { name: 'Noodle House', menu: [
+                { id: 'n1', name: 'Beef Ramen', price: 13.99 },
+                { id: 'n2', name: 'Pad Thai', price: 12.99 },
+                { id: 'n3', name: 'Spring Rolls', price: 6.99 }
+            ]}
+        };
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const resId = urlParams.get('id') || 'RES-001';
+        const restaurant = restaurants[resId] || restaurants['RES-001'];
+
+        document.getElementById('restaurant-name').textContent = restaurant.name;
+        
+        const menuContainer = document.getElementById('menu-list');
+        restaurant.menu.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'menu-item';
+            div.innerHTML = `
+                <div class="item-details">
+                    <h3>${item.name}</h3>
+                    <div class="item-price">$${item.price.toFixed(2)}</div>
+                </div>
+                <button class="btn-add" onclick="addToCart('${item.name}', ${item.price})">Add</button>
+            `;
+            menuContainer.appendChild(div);
+        });
+
+        let cart = [];
+        
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCart();
+        }
+
+        function updateCart() {
+            const count = cart.length;
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            
+            document.getElementById('cart-count').textContent = count;
+            document.getElementById('cart-total').textContent = total.toFixed(2);
+            
+            const cartBar = document.getElementById('cart-bar');
+            if (count > 0) cartBar.classList.add('visible');
+            else cartBar.classList.remove('visible');
+        }
+
+        function placeOrder() {
+            if (cart.length === 0) return;
+            
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const items = cart.map(i => i.name);
+            
+            send('B4-2025-001', 'order_food', {
+                restaurant: restaurant.name,
+                items: items,
+                total: parseFloat(total.toFixed(2))
+            });
+        }
+    </script>
 </body>
 </html>

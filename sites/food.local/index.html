@@ -1,136 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Food Delivery - YumYum</title>
-<link rel="stylesheet" href="../static/skin.css">
-<link rel="stylesheet" href="../static/components.css">
-<style>
-.category-pills {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  margin-bottom: 24px;
-}
-.pill {
-  padding: 8px 16px;
-  background: var(--surface);
-  border-radius: 99px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: var(--transition);
-  border: 1px solid transparent;
-}
-.pill:hover, .pill.active {
-  background: var(--pri);
-  color: white;
-}
-.restaurant-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: var(--transition);
-  display: flex;
-  flex-direction: column;
-}
-.restaurant-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--pri);
-  box-shadow: var(--shadow-lg);
-}
-.res-img {
-  height: 160px;
-  background: #f1f5f9;
-  display: grid; place-items: center;
-  font-size: 48px;
-}
-.res-info { padding: 16px; flex: 1; }
-.res-meta { font-size: 13px; color: var(--muted); margin-top: 8px; display: flex; gap: 12px; }
-.rating { color: #f59e0b; font-weight: 700; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food.local - Order Food Online</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #ff6b6b; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { margin: 0; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        .restaurant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 30px; }
+        .restaurant-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .restaurant-card:hover { transform: translateY(-5px); }
+        .restaurant-img { height: 150px; background-color: #ddd; display: flex; align-items: center; justify-content: center; font-size: 3em; color: #888; }
+        .restaurant-info { padding: 15px; }
+        .restaurant-title { font-size: 1.2em; font-weight: bold; margin-bottom: 5px; }
+        .restaurant-meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+        .btn-order { display: block; width: 100%; padding: 10px; background-color: #ff6b6b; color: white; text-align: center; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .btn-order:hover { background-color: #ee5253; }
+    </style>
+    <script src="/static/common.js"></script>
 </head>
 <body>
-
-<div class="navbar">
-  <div class="inner">
-    <div class="brand">
-      <div class="logo" style="background: linear-gradient(135deg, #ef4444, #f97316)"></div>
-      YumYum
-    </div>
-    <div class="navlinks">
-      <a href="index.html" class="active">Restaurants</a>
-      <a href="orders.html">Orders</a>
-    </div>
-    <div class="search">
-      <input type="text" placeholder="Search for food...">
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  
-  <div class="category-pills">
-    <div class="pill active" onclick="filter('all')">All</div>
-    <div class="pill" onclick="filter('burger')">🍔 Burgers</div>
-    <div class="pill" onclick="filter('pizza')">🍕 Pizza</div>
-    <div class="pill" onclick="filter('asian')">🍜 Asian</div>
-    <div class="pill" onclick="filter('mexican')">🌮 Mexican</div>
-    <div class="pill" onclick="filter('healthy')">🥗 Healthy</div>
-  </div>
-
-  <h2 style="margin-bottom:24px">Nearby Favorites</h2>
-  
-  <div class="grid cols-3 gap-6" id="res-list">
-    <!-- Rendered by JS -->
-  </div>
-
-</div>
-
-<script src="../static/common.js"></script>
-<script src="../static/components.js"></script>
-<script>
-const RESTAURANTS = [
-  { id: 'RES-001', name: 'Burger Kingpin', tags: ['burger', 'fast'], rating: 4.5, time: '20-30 min', delivery: 2.99, img: '🍔' },
-  { id: 'RES-002', name: 'Sushi Zen', tags: ['asian', 'healthy'], rating: 4.8, time: '30-45 min', delivery: 3.99, img: '🍣' },
-  { id: 'RES-003', name: 'Pizza Paradise', tags: ['pizza'], rating: 4.2, time: '25-40 min', delivery: 1.99, img: '🍕' },
-  { id: 'RES-004', name: 'Green Bowl', tags: ['healthy', 'vegan'], rating: 4.9, time: '15-25 min', delivery: 0, img: '🥗' },
-  { id: 'RES-005', name: 'Taco Fiesta', tags: ['mexican'], rating: 4.4, time: '20-35 min', delivery: 2.49, img: '🌮' },
-  { id: 'RES-006', name: 'Noodle House', tags: ['asian'], rating: 4.6, time: '30-40 min', delivery: 3.49, img: '🍜' },
-];
-
-function render(filterTag = 'all') {
-  const list = document.getElementById('res-list');
-  const filtered = filterTag === 'all' ? RESTAURANTS : RESTAURANTS.filter(r => r.tags.includes(filterTag));
-  
-  list.innerHTML = filtered.map(r => `
-    <div class="restaurant-card" onclick="location.href='restaurant.html?id=${r.id}'" style="cursor:pointer">
-      <div class="res-img">${r.img}</div>
-      <div class="res-info">
-        <div style="display:flex; justify-content:space-between">
-          <h3 style="margin:0">${r.name}</h3>
-          <span class="rating">★ ${r.rating}</span>
+    <div class="header">
+        <div class="container" style="display:flex; justify-content:space-between; width:100%; padding:0">
+            <h1>Food.local</h1>
+            <div class="nav-links">
+                <a href="index.html">Restaurants</a>
+                <a href="orders.html">My Orders</a>
+            </div>
         </div>
-        <div class="res-meta">
-          <span>${r.time}</span>
-          <span>•</span>
-          <span>${r.delivery === 0 ? 'Free Delivery' : '$' + r.delivery + ' Delivery'}</span>
-        </div>
-      </div>
     </div>
-  `).join('');
-}
 
-function filter(tag) {
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-  event.target.classList.add('active');
-  render(tag);
-}
-
-render();
-</script>
-
+    <div class="container">
+        <h2>Popular Restaurants</h2>
+        <div class="restaurant-grid">
+            <div class="restaurant-card">
+                <div class="restaurant-img">🍔</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Burger Kingpin</div>
+                    <div class="restaurant-meta">American • 15-25 min • $</div>
+                    <a href="restaurant.html?id=RES-001" class="btn-order">View Menu</a>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <div class="restaurant-img">🍕</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Pizza Palace</div>
+                    <div class="restaurant-meta">Italian • 30-45 min • $$</div>
+                    <a href="restaurant.html?id=RES-002" class="btn-order">View Menu</a>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <div class="restaurant-img">🍣</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Sushi Sensation</div>
+                    <div class="restaurant-meta">Japanese • 20-35 min • $$$</div>
+                    <a href="restaurant.html?id=RES-003" class="btn-order">View Menu</a>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <div class="restaurant-img">🌮</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Taco Town</div>
+                    <div class="restaurant-meta">Mexican • 10-20 min • $</div>
+                    <a href="restaurant.html?id=RES-004" class="btn-order">View Menu</a>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <div class="restaurant-img">🍜</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Noodle House</div>
+                    <div class="restaurant-meta">Asian • 20-30 min • $$</div>
+                    <a href="restaurant.html?id=RES-006" class="btn-order">View Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>window.RelRoot = '../';</script>
 </body>
 </html>

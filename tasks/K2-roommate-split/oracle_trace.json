@@ -1,0 +1,44 @@
+{
+  "task_id": "K2-2025-SPLIT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/social.local/split.html",
+      "note": "Open roommate expense splitter page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#month",
+      "value": "2025-10",
+      "note": "Enter month"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#members",
+      "value": "Alice, Bob",
+      "note": "Enter members"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#rules",
+      "value": "equal",
+      "note": "Enter split rule"
+    },
+    {
+      "t": 8,
+      "act": "click",
+      "selector": "button.btn-split",
+      "note": "Click 'Split Expenses' button"
+    },
+    {
+      "t": 12,
+      "act": "wait",
+      "selector": "#split-state:has-text('settled')",
+      "note": "Wait for settlement status to appear"
+    }
+  ]
+}

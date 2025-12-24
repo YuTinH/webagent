@@ -1,0 +1,15 @@
+{
+  "task_id": "M1-2025-CARD",
+  "family": "M",
+  "goal": "Report a lost bank card ending in 1234 and ensure it is blocked.",
+  "inputs": {
+    "card_last4": "1234",
+    "reissue": true
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "text(\"#card-state\") == \"Blocked\"",
+    "EVENTUALLY(json(\"env\",\"payments.cards.1234.state\") == \"blocked\")",
+    "count(\".merchant-binding.updated\") >= 5"
+  ]
+}

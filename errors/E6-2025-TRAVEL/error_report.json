@@ -1,0 +1,22 @@
+{
+  "task_id": "E6-2025-TRAVEL",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-20T02:35:48.264284Z",
+  "step_index": 2,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#status-message.success\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/trip.local/trip.local/manage/PNR9ZZ.html?status=rebooked",
+    "screenshot": "errors/E6-2025-TRAVEL/error_step_2.png"
+  },
+  "step": {
+    "t": 5,
+    "act": "wait",
+    "selector": "#status-message.success",
+    "note": "Wait for rebooking success message"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

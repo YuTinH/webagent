@@ -1,5 +1,30 @@
 {
-  "task_id": "I5-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "task_id": "I5-2025-ENERGY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/energy.local/plan.html",
+      "note": "Open energy plan page"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#planSel",
+      "value": "green_offpeak",
+      "note": "Select 'green_offpeak' plan"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Click '切换' (Switch) button"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#plan:has-text('green_offpeak')",
+      "note": "Wait for plan to update on page"
+    }
+  ]
 }

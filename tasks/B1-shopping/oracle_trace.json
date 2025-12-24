@@ -1,201 +1,98 @@
 {
   "task_id": "B1-2025-001",
-  "agent_version": "oracle-v1.0.0",
   "steps": [
     {
       "t": 0,
-      "url": "https://shop.local/index.html",
-      "frame": "main",
       "act": "open",
+      "url": "http://localhost:8014/shop.local/index.html",
       "note": "Navigate to e-commerce homepage"
     },
     {
-      "t": 1.2,
-      "url": "https://shop.local",
-      "frame": "main",
-      "act": "click",
-      "selector": "#search-box",
-      "screenshot_id": "step_001_homepage",
-      "note": "Focus on search input"
-    },
-    {
-      "t": 1.5,
-      "url": "https://shop.local",
-      "frame": "main",
+      "t": 2,
       "act": "type",
-      "selector": "#search-box",
+      "selector": "#quick-search",
       "value": "wireless mouse",
-      "note": "Enter search keywords"
+      "note": "Enter search keywords in quick search"
     },
     {
-      "t": 2.0,
-      "url": "https://shop.local",
-      "frame": "main",
+      "t": 4,
       "act": "click",
-      "selector": "button[type='submit'][aria-label='Search']",
-      "note": "Submit search form"
+      "selector": "#quick-search + button",
+      "note": "Click quick search button"
     },
     {
-      "t": 3.5,
-      "url": "https://shop.local/search?q=wireless+mouse",
-      "frame": "main",
+      "t": 6,
       "act": "wait",
-      "selector": ".product-grid .product-item",
-      "screenshot_id": "step_002_search_results",
-      "note": "Wait for search results to load"
-    },
-    {
-      "t": 4.0,
-      "url": "https://shop.local/search?q=wireless+mouse",
-      "frame": "main",
-      "act": "click",
       "selector": "#filter-price-max",
-      "note": "Open price filter"
+      "note": "Wait for search results page with filters"
     },
     {
-      "t": 4.5,
-      "url": "https://shop.local/search?q=wireless+mouse",
-      "frame": "main",
+      "t": 8,
       "act": "type",
       "selector": "#filter-price-max",
       "value": "30",
       "note": "Set max price to $30"
     },
     {
-      "t": 5.0,
-      "url": "https://shop.local/search?q=wireless+mouse",
-      "frame": "main",
+      "t": 10,
       "act": "click",
       "selector": "button.apply-filters",
       "note": "Apply price filter"
     },
     {
-      "t": 6.5,
-      "url": "https://shop.local/search?q=wireless+mouse&price_max=30",
-      "frame": "main",
+      "t": 12,
       "act": "wait",
       "selector": ".product-grid .product-item",
-      "screenshot_id": "step_003_filtered_results",
       "note": "Wait for filtered results"
     },
     {
-      "t": 8.0,
-      "url": "https://shop.local/search?q=wireless+mouse&price_max=30",
-      "frame": "main",
+      "t": 14,
       "act": "click",
-      "selector": ".product-item:first-child .product-link",
+      "selector": ".product-item:first-child",
       "note": "Click first product matching criteria"
     },
     {
-      "t": 10.0,
-      "url": "https://shop.local/product/WM-5521",
-      "frame": "main",
+      "t": 16,
       "act": "wait",
       "selector": "#add-to-cart-btn",
-      "screenshot_id": "step_004_product_detail",
       "note": "Wait for product detail page"
     },
     {
-      "t": 11.0,
-      "url": "https://shop.local/product/WM-5521",
-      "frame": "main",
+      "t": 18,
       "act": "assert",
       "selector": ".price-current",
       "value": "<=30",
       "note": "Verify price is within budget"
     },
     {
-      "t": 12.0,
-      "url": "https://shop.local/product/WM-5521",
-      "frame": "main",
+      "t": 20,
       "act": "click",
-      "selector": "#shipping-option-same-day",
-      "note": "Select same-day shipping"
+      "selector": "#add-to-cart-btn",
+      "note": "Add to cart"
     },
     {
-      "t": 13.0,
-      "url": "https://shop.local/product/WM-5521",
-      "frame": "main",
-      "act": "click",
-      "selector": "#buy-now-btn",
-      "note": "Click Buy Now to proceed to checkout"
+      "t": 22,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/cart.html",
+      "note": "Open cart page"
     },
     {
-      "t": 14.5,
-      "url": "https://shop.local/cart",
-      "frame": "main",
+      "t": 24,
       "act": "wait",
-      "selector": ".cart-item",
-      "screenshot_id": "step_005_cart",
-      "note": "Wait for cart page"
+      "selector": ".cart-summary",
+      "note": "Wait for cart page to load"
     },
     {
-      "t": 15.0,
-      "url": "https://shop.local/cart",
-      "frame": "main",
+      "t": 26,
       "act": "click",
-      "selector": ".checkout-btn",
-      "note": "Proceed to checkout"
+      "selector": "button.btn-checkout",
+      "note": "Proceed to checkout from cart page"
     },
     {
-      "t": 17.0,
-      "url": "https://shop.local/checkout",
-      "frame": "main",
-      "act": "wait",
-      "selector": "#shipping-address",
-      "screenshot_id": "step_006_checkout",
-      "note": "Wait for checkout page"
-    },
-    {
-      "t": 18.0,
-      "url": "https://shop.local/checkout",
-      "frame": "main",
-      "act": "assert",
-      "selector": "#shipping-address .address-display",
-      "value": "mem('address.primary')",
-      "note": "Verify shipping address matches memory"
-    },
-    {
-      "t": 19.0,
-      "url": "https://shop.local/checkout",
-      "frame": "main",
-      "act": "click",
-      "selector": "#payment-card-1234",
-      "note": "Select payment method from memory"
-    },
-    {
-      "t": 20.0,
-      "url": "https://shop.local/checkout",
-      "frame": "main",
-      "act": "click",
-      "selector": "button.place-order",
-      "note": "Place order"
-    },
-    {
-      "t": 21.0,
-      "url": "https://shop.local/checkout",
-      "frame": "main",
-      "act": "click",
-      "selector": ".modal-confirm",
-      "note": "Click confirm on success modal"
-    },
-    {
-      "t": 22.5,
-      "url": "https://shop.local/order/confirmation/O-10001",
-      "frame": "main",
+      "t": 28,
       "act": "wait",
       "selector": "#order-id",
-      "screenshot_id": "step_007_confirmation",
-      "note": "Wait for confirmation page"
-    },
-    {
-      "t": 23.0,
-      "url": "https://shop.local/order/confirmation/O-10001",
-      "frame": "main",
-      "act": "assert",
-      "selector": "#order-status",
-      "value": "confirmed",
-      "note": "Final assertion: order confirmed"
+      "note": "Wait for order confirmation page"
     }
   ]
 }

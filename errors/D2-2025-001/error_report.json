@@ -1,0 +1,22 @@
+{
+  "task_id": "D2-2025-001",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-15T07:55:13.062683Z",
+  "step_index": 1,
+  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#edit-food-btn\")\n",
+  "context": {
+    "url": "chrome-error://chromewebdata/",
+    "screenshot": "errors/D2-2025-001/error_step_1.png"
+  },
+  "step": {
+    "t": 1.0,
+    "act": "click",
+    "selector": "#edit-food-btn",
+    "note": "Click edit on Food category"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

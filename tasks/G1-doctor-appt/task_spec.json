@@ -1,38 +1,17 @@
 {
-  "task_id": "G1-2025-101",
+  "task_id": "G1-2025-HEALTH",
   "family": "G",
-  "episode_id": "ep-medical",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-05T09:00:00Z",
-  "persona": {
-    "automation_preference": "high",
-    "primary_doctor": "Dr. Alice Smith"
-  },
-  "goal": "Book a consultation with Dr. Alice Smith for tomorrow at 09:00 on health.local.",
+  "goal": "Book a doctor appointment with ID APT-9001, Doctor DR-001 for 2025-12-02T09:00.",
   "inputs": {
-    "doctor_id": "DR-001",
-    "appointment_id": "APT-9001",
-    "slot": "09:00"
+    "appointmentId": "APT-9001",
+    "doctorId": "DR-001",
+    "slot": "2025-12-02T09:00"
   },
-  "allowed_domains": [
-    "health.local"
-  ],
-  "preconditions": [
-    "json('env','health.insurance.active') == true"
-  ],
-  "dependencies": [],
-  "memory_keys": [
-    "health.appointment.last_id",
-    "health.appointment.slot"
-  ],
+  "preconditions": [],
   "success_criteria": [
-    "ALL[url().includes('/health.local/index'), json('env','health.appointments.last.id') == 'APT-9001', mem('health.appointment.last_id') == 'APT-9001']"
-  ],
-  "rubrics": {
-    "SR": 1.0,
-    "UX": 0.2
-  },
-  "timeout": 240,
-  "step_timeout": 30
+    "url().includes(\"/health.local/index.html\")",
+    "json(\"env\",\"health.appointments.last.id\") == \"APT-9001\"",
+    "json(\"env\",\"health.appointments.last.doctor\") == \"DR-001\"",
+    "json(\"env\",\"health.appointments.last.slot\") == \"2025-12-02T09:00\""
+  ]
 }

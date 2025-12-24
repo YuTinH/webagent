@@ -1,0 +1,48 @@
+{
+  "task_id": "J1-2025-COURSE",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 5,
+  "steps_total": 5,
+  "time_elapsed": 1.5270261764526367,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/course.html",
+      "note": "Open Deep Learning 101 course page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Click 'Enroll Now' button"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "h1:has-text('My Enrolled Courses')",
+      "note": "Wait for 'My Enrolled Courses' page to load"
+    },
+    {
+      "t": 7,
+      "act": "assert",
+      "selector": "div.text-sm.muted:has-text('Status: enrolled')",
+      "note": "Check enrollment status is 'enrolled'"
+    },
+    {
+      "t": 9,
+      "act": "extract",
+      "variable": "enroll-state",
+      "selector": "div.text-sm.muted",
+      "note": "Extract enrolled status for assertion"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {
+    "enroll-state": "Status: enrolled"
+  }
+}

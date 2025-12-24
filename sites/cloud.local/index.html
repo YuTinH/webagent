@@ -1,0 +1,109 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Nebula Cloud - Document Archive</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Cloud</div>
+    <div class="navlinks">
+      <a href="index.html" class="active">Documents</a>
+      <a href="settings.html">Settings</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <h1 style="margin-bottom: 24px">My Archived Documents</h1>
+  
+  <div class="card mb-4">
+    <div class="header">
+      <div class="title">Upload New Document</div>
+    </div>
+    <div class="mb-4">
+      <label class="muted">Document Type</label>
+      <select id="doc-type" class="input mt-1">
+        <option value="receipt">Receipt</option>
+        <option value="invoice">Invoice</option>
+        <option value="contract">Contract</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="muted">Upload File (PDF/Image)</label>
+      <input type="file" id="file-upload" class="input mt-1">
+    </div>
+    <button class="btn pri" onclick="uploadDocument()">Upload & Archive</button>
+  </div>
+  
+  <h2 style="margin-top: 40px; margin-bottom: 24px">Archived Files</h2>
+  <div id="archived-files-list">
+    <!-- Rendered by JS -->
+  </div>
+</div>
+
+<script>
+const ARCHIVED_FILES = [];
+
+async function init() {
+  try {
+    const env = await api('../api/env');
+    const docs = env.cloud?.documents || {};
+    for (const id in docs) {
+        ARCHIVED_FILES.push(docs[id]);
+    }
+  } catch(e) {
+    console.warn("Could not load archived files from env.");
+  }
+  renderFiles();
+}
+
+function renderFiles() {
+  const list = document.getElementById('archived-files-list');
+  if (ARCHIVED_FILES.length === 0) {
+    list.innerHTML = `
+      <div style="text-align:center; padding:40px; color:var(--muted)">
+        No documents archived yet.
+      </div>
+    `;
+    return;
+  }
+  
+  list.innerHTML = ARCHIVED_FILES.map(doc => `
+    <div class="card mb-3">
+      <div class="flex justify-between items-center">
+        <div>
+          <div class="title">${doc.name}</div>
+          <p class="muted text-sm">Type: ${doc.type} | Uploaded: ${new Date(doc.uploaded_at).toLocaleDateString()}</p>
+        </div>
+        <button class="btn sm">View</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function uploadDocument() {
+  const fileInput = document.getElementById('file-upload');
+  const file = fileInput.files[0];
+  const type = document.getElementById('doc-type').value;
+  
+  if (!file) {
+    Toast.error('Please select a file to upload.');
+    return;
+  }
+  
+  await send('F5-2025-GEN', 'archive_document', {
+    docType: type,
+    fileName: file.name,
+    fileSize: file.size
+  });
+  
+  Toast.success('Document archived successfully!');
+  fileInput.value = ''; // Clear file input
+  setTimeout(() => window.location.reload(), 1000); // Reload to show new file
+}
+
+init();
+</script>

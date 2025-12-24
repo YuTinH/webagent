@@ -72,41 +72,21 @@ class TestRunner:
             "name": "John Doe",
             "dob": "1985-06-15"
         })
+        # Manually set for G1 precondition
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    "INSERT OR REPLACE INTO memory_kv (key, value, ts, source, confidence) VALUES (?, ?, ?, ?, ?)",
+                    ['health.insurance.active', json.dumps(True), datetime.now().isoformat(), 'system', 1.0]
+                )
+                conn.commit()
+            import time
+            time.sleep(0.5) # Allow DB write to sync
+        except Exception as e:
+            print(f"DEBUG: Error writing health.insurance.active directly to DB: {e}")
         
         engine.save_memory()
-
-        # 2. Reset JSON Env State (Medical, Travel, etc.)
-        
-        # Ensure clean slate for state.json
-        # The TestRunner will now explicitly print the state_path it is using.
-        print(f"DEBUG: TestRunner using state.json at: {self.state_path}")
-        if self.state_path.exists():
-            self.state_path.unlink()
-
-        initial_state = {}
-        # Ensure all top-level keys are present as empty dicts for robustness with deep_merge
-        initial_state = deep_merge(initial_state, {
-            "health": {}, "trips": {}, "work": {}, "expenses": {}, 
-            "contracts": {}, "courses": {}, "food": {}, "housing": {}, 
-            "support": {}, "payments": {}, "permits": {}, "meters": {}
-        })
-        
-        # Load G-medical
-        medical_seed = self.env_dir / "G-medical_initial.json"
-        if medical_seed.exists():
-            with open(medical_seed) as f:
-                initial_state = deep_merge(initial_state, json.load(f))
-                
-        # Load E-travel
-        travel_seed = self.env_dir / "E-travel_initial.json"
-        if travel_seed.exists():
-            with open(travel_seed) as f:
-                initial_state = deep_merge(initial_state, json.load(f))
-        
-        # Write to state.json
-        with open(self.state_path, 'w') as f:
-            json.dump(initial_state, f, indent=2)
-
         print("✅ State reset complete")
 
     def run_test_scenario(self, name: str, tasks: list):
@@ -199,6 +179,13 @@ class TestRunner:
             ["C1-logistics-fix"]
         )
 
+    def scenario_finance(self):
+        self.reset_state()
+        return self.run_test_scenario(
+            "Finance: D2 (Budget Report)",
+            ["D2-budget-report"]
+        )
+
 def main():
     runner = TestRunner(perturbation_level=1) # Use level 1 for functional verification
     
@@ -212,6 +199,7 @@ def main():
     res['Education'] = runner.scenario_education()
     res['Food'] = runner.scenario_food()
     res['Support'] = runner.scenario_support()
+    res['Finance'] = runner.scenario_finance()
     
     print("\n" + "="*80)
     print("FINAL RESULTS")

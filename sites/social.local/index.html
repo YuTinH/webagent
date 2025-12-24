@@ -1,0 +1,91 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Nebula Social - Communities</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Social</div>
+    <div class="navlinks">
+      <a href="index.html" class="active">Groups</a>
+      <a href="my-groups.html">My Groups</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <h1 style="margin-bottom: 24px">Discover Communities</h1>
+  
+  <div class="grid cols-3" id="groups-list">
+    <!-- Rendered by JS -->
+  </div>
+</div>
+
+<!-- Join Modal -->
+<div id="join-modal" class="modal-overlay">
+  <div class="modal-container">
+    <h3>Join Group: <span id="modal-group-name"></span></h3>
+    <div class="mb-4 p-4" style="background:var(--surface); border-radius:8px">
+      <h4 style="margin-top:0">Community Rules</h4>
+      <ul style="padding-left:20px; color:var(--muted)">
+        <li>Be respectful to others.</li>
+        <li>No spam or self-promotion.</li>
+        <li>Keep discussions relevant.</li>
+      </ul>
+    </div>
+    <label class="kv" style="cursor:pointer; gap:8px">
+      <input type="checkbox" id="rules-check">
+      <span>I agree to the rules</span>
+    </label>
+    <div class="flex justify-end gap-2 mt-4">
+      <button class="btn" onclick="closeModal('#join-modal')">Cancel</button>
+      <button class="btn pri" onclick="confirmJoin()">Join Group</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const GROUPS = [
+  { id: 'GRP-001', name: 'Springfield Neighborhood', members: 1240, desc: 'Official group for Springfield residents.' },
+  { id: 'GRP-002', name: 'Tech Enthusiasts', members: 5600, desc: 'Discuss latest tech trends.' },
+  { id: 'GRP-003', name: 'Local Foodies', members: 890, desc: 'Best places to eat in town.' }
+];
+
+let selectedGroup = null;
+
+function renderGroups() {
+  const list = document.getElementById('groups-list');
+  list.innerHTML = GROUPS.map(g => `
+    <div class="card">
+      <div class="header">
+        <div class="title">${g.name}</div>
+      </div>
+      <p class="muted">${g.desc}</p>
+      <div class="flex justify-between items-center mt-4">
+        <span class="muted text-sm">👥 ${g.members} members</span>
+        <button class="btn pri" onclick="openJoin('${g.id}')">Join</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openJoin(id) {
+  selectedGroup = GROUPS.find(g => g.id === id);
+  document.getElementById('modal-group-name').textContent = selectedGroup.name;
+  openModal('#join-modal');
+}
+
+async function confirmJoin() {
+  if(!document.getElementById('rules-check').checked) {
+    Toast.error('Please agree to the rules');
+    return;
+  }
+  
+  await send('K1-2025-GEN', 'join_group', { groupId: selectedGroup.id, groupName: selectedGroup.name });
+  window.location.href = 'my-groups.html?joined=true';
+}
+
+renderGroups();
+</script>

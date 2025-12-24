@@ -202,6 +202,7 @@ function selectOrder(orderId) {
       <button class="btn report-issue" onclick="openIssue()">报告问题</button>
       <button class="btn" onclick="contactService()">联系客服</button>
       ${order.state === 'delivered' ? `<button class="btn" onclick="initiateReturn('${order.id}')">申请退货</button>` : ''}
+      <a href="price-protection.html" class="btn">价格保护</a>
     </div>
 
     <div class="issue-form" id="issue-form">
@@ -375,9 +376,9 @@ loadOrders();
 </div>
 <script>
 setTimeout(() => {
-  const popup = document.getElementById('promo-popup');
-  if(popup) popup.classList.add('active');
-}, 2000);
+  // const popup = document.getElementById('promo-popup');
+  // if(popup) popup.classList.add('active');
+}, 200000);
 </script>
 
 </body>

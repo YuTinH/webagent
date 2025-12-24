@@ -1,12 +1,35 @@
 {
-  "task_id": "B4-2025-001",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "B4-2025-FOOD",
   "steps": [
-    {"t": 0, "act": "open", "url": "https://food.local/index.html", "note": "Open food delivery app"},
-    {"t": 1.0, "act": "click", "selector": ".pill:nth-child(6)", "note": "Filter for Healthy"},
-    {"t": 2.0, "act": "click", "selector": ".restaurant-card:nth-child(1)", "note": "Select Green Bowl"},
-    {"t": 3.0, "act": "click", "selector": ".menu-item:first-of-type button", "note": "Add Quinoa Salad to cart"},
-    {"t": 4.0, "act": "click", "selector": "button.btn.pri.w-full", "note": "Checkout"},
-    {"t": 5.0, "act": "wait", "selector": "body", "note": "Wait for redirect to orders page"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/food.local/restaurant.html?id=RES-001",
+      "note": "Open Burger Kingpin menu"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "div.menu-item:has(h3:has-text('Classic Burger')) button.btn-add",
+      "note": "Add Classic Burger to cart"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "div.menu-item:has(h3:has-text('Cheese Deluxe')) button.btn-add",
+      "note": "Add Cheese Deluxe to cart"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "button.btn-checkout",
+      "note": "Click Checkout button"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#order-list",
+      "note": "Wait for orders page to load"
+    }
   ]
 }

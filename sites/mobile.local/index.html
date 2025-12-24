@@ -1,0 +1,79 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Nebula Mobile - Plans</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Mobile</div>
+    <div class="navlinks">
+      <a href="index.html" class="active">Plans</a>
+      <a href="account.html">My Account</a>
+      <a href="../shop.local/index.html">Shop</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs"><a href="index.html">Home</a> / <span>Mobile Plans</span></div>
+  
+  <h1 style="margin-bottom: 24px">Choose Your Plan</h1>
+  
+  <div class="grid cols-3" style="gap: 24px;">
+    
+    <!-- Plan 1 -->
+    <div class="card" style="display:flex; flex-direction:column;">
+      <div class="header" style="justify-content:center; text-align:center; padding-bottom:0;">
+        <div class="title" style="font-size:24px">Starter</div>
+      </div>
+      <div style="text-align:center; font-size:32px; font-weight:bold; margin:16px 0; color:var(--pri)">$20<span style="font-size:16px; font-weight:normal; color:var(--muted)">/mo</span></div>
+      <ul style="list-style:none; padding:0; margin:0 0 24px 0; flex:1; text-align:center; line-height:2;">
+        <li>5GB 5G Data</li>
+        <li>Unlimited Talk & Text</li>
+        <li>SD Streaming</li>
+      </ul>
+      <button class="btn" style="width:100%" onclick="selectPlan('starter')">Select</button>
+    </div>
+
+    <!-- Plan 2 -->
+    <div class="card" style="display:flex; flex-direction:column; border-color:var(--pri); box-shadow:var(--shadow-lg)">
+      <div style="background:var(--pri); color:white; text-align:center; padding:4px; font-size:12px; font-weight:bold; border-radius:4px 4px 0 0; margin:-24px -24px 16px -24px;">POPULAR</div>
+      <div class="header" style="justify-content:center; text-align:center; padding-bottom:0;">
+        <div class="title" style="font-size:24px">Unlimited</div>
+      </div>
+      <div style="text-align:center; font-size:32px; font-weight:bold; margin:16px 0; color:var(--pri)">$45<span style="font-size:16px; font-weight:normal; color:var(--muted)">/mo</span></div>
+      <ul style="list-style:none; padding:0; margin:0 0 24px 0; flex:1; text-align:center; line-height:2;">
+        <li>Unlimited 5G Data</li>
+        <li>Unlimited Talk & Text</li>
+        <li>HD Streaming</li>
+        <li>10GB Hotspot</li>
+      </ul>
+      <button class="btn pri" style="width:100%" onclick="selectPlan('unlimited')">Select</button>
+    </div>
+
+    <!-- Plan 3 -->
+    <div class="card" style="display:flex; flex-direction:column;">
+      <div class="header" style="justify-content:center; text-align:center; padding-bottom:0;">
+        <div class="title" style="font-size:24px">Pro</div>
+      </div>
+      <div style="text-align:center; font-size:32px; font-weight:bold; margin:16px 0; color:var(--pri)">$60<span style="font-size:16px; font-weight:normal; color:var(--muted)">/mo</span></div>
+      <ul style="list-style:none; padding:0; margin:0 0 24px 0; flex:1; text-align:center; line-height:2;">
+        <li>Unlimited Premium Data</li>
+        <li>Unlimited Talk & Text</li>
+        <li>4K Streaming</li>
+        <li>30GB Hotspot</li>
+        <li>Global Roaming</li>
+      </ul>
+      <button class="btn" style="width:100%" onclick="selectPlan('pro')">Select</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function selectPlan(planId) {
+  window.location.href = `checkout.html?plan=${planId}`;
+}
+</script>

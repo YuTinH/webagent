@@ -106,6 +106,7 @@ def mutate_env(task_id, action, payload, env):
             f.write(f"MUTATE: {task_id} {action} {json.dumps(payload)}\n")
     except: pass
 
+
     # G1 - Doctor appointment booking
     if task_id.startswith('G1') and action == 'book_doctor':
         appt_id = payload.get('appointmentId', 'APT-9001')
@@ -144,13 +145,13 @@ def mutate_env(task_id, action, payload, env):
         claim_id = payload.get('claimId', 'CLM-5501')
         appt_id = payload.get('appointmentId', 'APT-9001')
         amount = float(payload.get('amount', 250))
-        env = deep_merge(env, {"health": {"claims": {claim_id: {"status": "submitted", "appointment_id": appt_id, "amount": amount}}}})
+        env = deep_merge(env, {"health": {"claims": {claim_id: {"state": "processing", "appointment_id": appt_id, "amount": amount}}}})
         ts = datetime.now().isoformat()
         try:
             execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        ['insurance.claim.last.id', claim_id, ts, task_id, 1.0])
             execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['insurance.claim.last.status', 'submitted', ts, task_id, 1.0])
+                       ['insurance.claim.last.status', 'processing', ts, task_id, 1.0])
         except Exception:
             pass
         return env, {"redirect": f"/gov.local/applications/status.html?id={claim_id}"}
@@ -191,19 +192,22 @@ def mutate_env(task_id, action, payload, env):
 
     # F2 - Conference registration
     if task_id.startswith('F2') and action == 'conference_register':
-        reg_id = payload.get('registrationId', "CONF-8801")
-        event_name = payload.get('event', 'AI Summit Paris')
-        city = payload.get('city', 'Paris')
-        env = deep_merge(env, {"work": {"conference": {"last": {"id": reg_id, "event": event_name, "city": city, "status": "confirmed"}}}})
+        conference_id = payload.get('conferenceId', 'CL-2026')
+        invoice_title = payload.get('invoiceTitle', 'Your Lab')
+        reg_id = f"CONF-{random.randint(1000, 9999)}"
         ts = datetime.now().isoformat()
+        
+        env = deep_merge(env, {"invoices": {"last": {"conference": conference_id, "invoice_title": invoice_title, "status": "paid", "reg_id": reg_id}}})
+        
         try:
             execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['work.conference.last.id', reg_id, ts, task_id, 1.0])
+                       ['invoices.last.conference', conference_id, ts, task_id, 1.0])
             execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['work.conference.last.event', event_name, ts, task_id, 1.0])
+                       ['invoices.last.status', 'paid', ts, task_id, 1.0])
         except Exception:
             pass
-        return env, {"redirect": "/event.local/registration.html?state=confirmed"}
+        
+        return env, {"redirect": f"/event.local/registration.html?state=confirmed&regId={reg_id}&eventName={conference_id}&invoiceTitle={invoice_title}"}
 
     # E5 - Expense report
     if task_id.startswith('E5') and action == 'submit_expense':
@@ -230,24 +234,37 @@ def mutate_env(task_id, action, payload, env):
         env = deep_merge(env, {"payments":{"cards":{"active_last4": last4}}})
         for m in ["shop.local","ride.local","food.local","stream.local","cloud.local"]:
             env = deep_merge(env, {"payments":{"merchant_bindings":{"map":{m:last4}}}})
-        return env, {"redirect": "/pay.local/wallet/cards.html"}
+        return env, {"redirect": "/pay.local/wallet/cards.html?rebind=true"}
     if task_id.startswith('E6') and action == 'rebook_ok':
         hist = {"action":"rebook","ts":time.time()}
         env = deep_merge(env, {"trips":{"PNR9ZZ":{"status":"rebooked","history":[hist]}}})
-        return env, {"redirect": "/trip.local/manage/PNR9ZZ.html"}
+        return env, {"redirect": "/trip.local/manage/PNR9ZZ.html?status=rebooked"}
     if task_id.startswith('H3') and action == 'book_permit':
         slot = payload.get('slot', '2025-12-01T10:00')
         env = deep_merge(env, {"permits":{"RP-2024-77":{"next_appointment":slot}}})
-        return env, {"redirect": "/permit.local/RP-2024-77.html"}
+        return env, {"redirect": f"/permit.local/RP-2024-77.html?next_appointment={slot}"}
     if task_id.startswith('I5') and action == 'set_energy_plan':
         plan = payload.get('plan','green_offpeak')
         meter = payload.get('meterId','M-321')
         env = deep_merge(env, {"meters":{meter:{"plan":plan}}})
         return env, {"redirect": "/energy.local/plan.html"}
+    # M1 - Lost Bank Card
     if task_id.startswith('M1') and action == 'block_card':
         last4 = payload.get('last4','1234')
         env = deep_merge(env, {"payments":{"cards":{last4:{"state":"blocked"}}}})
-        env = deep_merge(env, {"merchant_bindings":{"updated":["shop.local","ride.local","food.local","stream.local","cloud.local"]}})
+        env = deep_merge(env, {"merchant_bindings":{"updated":["shop.local","ride.local","food.local","stream.local","cloud.local"]}}) 
+        
+        # Sync to SQLite DB for consistency with _env_api queries
+        try:
+            execute_db("UPDATE cards SET state = 'blocked' WHERE last4 = ?", (last4,))
+        except Exception: pass
+
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'payments.cards.{last4}.state', 'blocked', ts, task_id, 1.0])
+        except Exception:
+            pass 
+
         return env, {"redirect": "/card.local/block.html"}
 
     # A3 - Utility Setup
@@ -275,7 +292,7 @@ def mutate_env(task_id, action, payload, env):
             with open("server_debug.log", "a") as f:
                 f.write(f"DEBUG_A3: Final ENV for A3: {json.dumps(env)}\n")
         except: pass
-        return env, {"redirect": "/energy.local/plan.html"}
+        return env, {"redirect": "/energy.local/plan.html?setup_success=true"}
 
     # J1 - Course Enrollment
     if task_id.startswith('J1') and action == 'enroll_course':
@@ -319,6 +336,7 @@ def mutate_env(task_id, action, payload, env):
         ts = datetime.now().isoformat()
 
         env = deep_merge(env, {"food": {"orders": {order_id: {"restaurant": restaurant, "items": items, "total": total, "status": "pending", "ordered_at": ts}}}})
+        env = deep_merge(env, {"food": {"orders": {"last": {"id": order_id, "restaurant": restaurant, "items": items, "total": total, "status": "pending", "ordered_at": ts}}}})
         try:
             execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        ['food.order.last.id', order_id, ts, task_id, 1.0])
@@ -352,7 +370,295 @@ def mutate_env(task_id, action, payload, env):
             pass
         return env, {"redirect": "/shop.local/help.html?status=ticket_created"}
 
-    return env, {}
+    # D2 - Budget Report
+    if task_id.startswith('D2') and action == 'adjust_budget':
+        cat = payload.get('category', 'food')
+        limit = payload.get('limit', 500)
+        ts = datetime.now().isoformat()
+        
+        # Update env state for frontend persistence
+        env = deep_merge(env, {"finance": {"budgets": {cat: {"limit": limit}}}})
+        
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'budget.{cat}.limit', limit, ts, task_id, 1.0])
+        except: pass
+        return env, {"redirect": "/bank.local/budget.html"}
+
+    # A4 - Mobile Plan
+    if task_id.startswith('A4') and action == 'mobile_subscribe':
+        plan_id = payload.get('planId', 'starter')
+        plan_name = {'starter': 'Starter Plan', 'unlimited': 'Unlimited Plan', 'pro': 'Pro Plan'}.get(plan_id, 'Unknown Plan')
+        data_limit = {'starter': '5GB', 'unlimited': 'Unlimited', 'pro': 'Unlimited'}.get(plan_id, '5GB')
+        
+        phone_number = f"555-{random.randint(100,999)}-{random.randint(1000,9999)}"
+        next_bill = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+        ts = datetime.now().isoformat()
+        
+        env = deep_merge(env, {"mobile": {"subscription": {
+            "status": "active",
+            "plan_id": plan_id,
+            "plan_name": plan_name,
+            "phone_number": phone_number,
+            "data_limit": data_limit,
+            "next_bill_date": next_bill
+        }}})
+        
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['mobile.subscription.status', 'active', ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['mobile.subscription.phone', phone_number, ts, task_id, 1.0])
+        except: pass
+        
+        return env, {"redirect": "/mobile.local/account.html"}
+
+    # K1 - Join Community
+    if task_id.startswith('K1') and action == 'join_group':
+        gid = payload.get('groupId')
+        gname = payload.get('groupName')
+        ts = datetime.now().isoformat()
+        
+        env = deep_merge(env, {"social": {"groups": {gid: {"name": gname, "joined_at": ts}}}})
+        
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'social.groups.{gid}.status', 'joined', ts, task_id, 1.0])
+        except: pass
+        
+        return env, {"redirect": "/social.local/my-groups.html"}
+
+    # A6 - Address Proof
+    if task_id.startswith('A6') and action == 'verify_address':
+        doc_type = payload.get('docType')
+        fn = payload.get('fileName')
+        ts = datetime.now().isoformat()
+        
+        env = deep_merge(env, {"identity": {"address_verified": True, "proof_doc": {"type": doc_type, "file": fn, "uploaded_at": ts}}})
+        
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['identity.address_verified', 'true', ts, task_id, 1.0])
+        except: pass
+        
+        return env, {"redirect": "/gov.local/profile.html?verified=true"} # Redirect to show update
+
+    # B7 - Second Hand Item Listing
+    if task_id.startswith('B7') and action == 'list_second_hand_item':
+        item_id = f"2H-{random.randint(1000, 9999)}"
+        name = payload.get('name')
+        desc = payload.get('description')
+        price = payload.get('price')
+        category = payload.get('category')
+        photo_name = payload.get('photo_name', '')
+        ts = datetime.now().isoformat()
+
+        env = deep_merge(env, {"market": {"listings": {item_id: {
+            "name": name, "description": desc, "price": price, "category": category,
+            "seller": "current_user", "status": "listed", "listed_at": ts, "photo": photo_name
+        }}}})
+        
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'market.listed_items.{item_id}.status', 'listed', ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'market.listed_items.{item_id}.name', name, ts, task_id, 1.0])
+        except: pass
+
+        return env, {"redirect": "/market.local/index.html?listed=true"}
+
+    # F5 - Receipt Archiving
+    if task_id.startswith('F5') and action == 'archive_document':
+        doc_id = f"DOC-{random.randint(10000, 99999)}"
+        name = payload.get('fileName', 'document.pdf')
+        doc_type = payload.get('docType', 'receipt')
+        size = payload.get('fileSize', 1024)
+        ts = datetime.now().isoformat()
+
+        env = deep_merge(env, {"cloud": {"documents": {doc_id: {
+            "name": name, "type": doc_type, "size": size,
+            "uploaded_at": ts, "tags": [doc_type]
+        }}}})
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'cloud.documents.{doc_id}.status', 'archived', ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'cloud.documents.{doc_id}.name', name, ts, task_id, 1.0])
+        except: pass
+        
+        return env, {"redirect": "/cloud.local/index.html?uploaded=true"}
+
+    # G5 - Health Plan Activation
+    if task_id.startswith('G5') and action == 'activate_health_plan':
+        plan_name = payload.get('planName', 'Standard Wellness')
+        focus = payload.get('focus', 'Weight Management')
+        calories = payload.get('calories', 1800)
+        exercise = payload.get('exercise', '30min daily')
+        ts = datetime.now().isoformat()
+
+        env = deep_merge(env, {"health": {"plan": {
+            "status": "active",
+            "name": plan_name,
+            "focus": focus,
+            "calories": calories,
+            "exercise": exercise,
+            "activated_at": ts
+        }}})
+        
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['health.plan.status', 'active', ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['health.plan.name', plan_name, ts, task_id, 1.0])
+        except: pass
+        
+        return env, {"redirect": "/health.local/plan.html?status=active"}
+
+    # G6 - Book Vaccination
+    if task_id.startswith('G6') and action == 'book_vaccine':
+        vaccine_type = payload.get('type')
+        appt_date = payload.get('date')
+        appt_time = payload.get('time')
+        clinic = payload.get('clinic', 'City Health Clinic')
+        ts = datetime.now().isoformat()
+        
+        vaccine_id = f"VC-{random.randint(10000, 99999)}"
+        env = deep_merge(env, {"health": {"vaccines": {vaccine_id: {
+            "type": vaccine_type, "date": appt_date, "time": appt_time,
+            "clinic": clinic, "status": "booked", "booked_at": ts
+        }}}})
+        
+        execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                   [f'health.vaccines.{vaccine_id}.status', 'booked', ts, task_id, 1.0])
+        execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                   [f'health.vaccines.{vaccine_id}.type', vaccine_type, ts, task_id, 1.0])
+        execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                   ['health.vaccines.last.status', 'booked', ts, task_id, 1.0])
+        execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                   ['health.vaccines.last.id', vaccine_id, ts, task_id, 1.0])
+        
+        return env, {"redirect": "/health.local/vaccine.html?booked=true"}
+
+    # L3 - Security Key Rotation
+    if task_id.startswith('L3') and action == 'rotate_keys':
+        providers = payload.get('providers', [])
+        ts = datetime.now().isoformat()
+        
+        env = deep_merge(env, {"security": {"last_rotation": {
+            "providers": providers,
+            "timestamp": ts,
+            "status": "complete"
+        }}})
+        
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['security.rotation.status', 'complete', ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['security.rotation.providers', json.dumps(providers), ts, task_id, 1.0])
+        except: pass
+        
+        return env, {"redirect": "/security.local/dashboard.html?rotated=true"}
+
+    # C4 - Warranty Claim
+    if task_id.startswith('C4') and action == 'submit_warranty_claim':
+        serial = payload.get('serial')
+        order_id = payload.get('orderId')
+        ts = datetime.now().isoformat()
+        
+        env = deep_merge(env, {"warranty": {serial: {"state": "RMA_issued", "order_id": order_id, "claimed_at": ts}}})
+        
+        return env, {"redirect": f"/shop.local/warranty.html?status=accepted&serial={serial}"}
+
+    # K2 - Roommate Split
+    if task_id.startswith('K2') and action == 'split_expenses':
+        month = payload.get('month')
+        members = payload.get('members', [])
+        rules = payload.get('rules')
+        ts = datetime.now().isoformat()
+        
+        # In a real app, this would calculate actual splits. Here we just set state.
+        settlement_id = f"{month}-{hashlib.md5(str(members).encode()).hexdigest()[:4]}"
+        env = deep_merge(env, {"settlements": {month: {"state": "settled", "members": members, "rules": rules, "settled_at": ts}}})
+        
+        try:
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'settlements.{month}.state', 'settled', ts, task_id, 1.0])
+        except Exception:
+            pass
+        
+        return env, {"redirect": f"/social.local/split.html?month={month}&state=settled"}
+
+    # D3 - Autopay Setup
+    if task_id.startswith('D3') and action == 'setup_autopay':
+        payee = payload.get('payee','Utilities')
+        account_type = payload.get('account_type','checking')
+        amount = float(payload.get('amount',0))
+        frequency = payload.get('frequency','monthly')
+        start_date = payload.get('start_date', datetime.now().strftime('%Y-%m-%d'))
+        # ap_id = f"AP-{random.randint(1000,9999)}" # Removed random ID
+        ts = datetime.now().isoformat()
+
+        env = deep_merge(env, {"autopay": {"utility": { # Use "utility" as fixed key
+            'payee': payee,
+            'account_type': account_type,
+            'amount': amount,
+            'frequency': frequency,
+            'next_date': start_date,
+            'status': 'active'
+        }}})
+        
+        try:
+            # Removed ap_id from memory_kv store as it's now fixed key
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['autopay.utility.status', 'active', ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['autopay.utility.amount', amount, ts, task_id, 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['autopay.utility.next_date', start_date, ts, task_id, 1.0])
+        except Exception:
+            pass
+
+        return env, {"redirect": f"/bank.local/autopay.html?state=active&payee={payee}&amount={amount}&frequency={frequency}&next_date={start_date}"}
+    
+    # B1 - Create Order
+    if task_id.startswith('B1') and action == 'create_order':
+        user_id = 1 # Hardcoded for now
+        items = payload.get('items', [])
+        shipping_address = payload.get('shipping_address', '123 Main St')
+        shipping_speed = payload.get('shipping_speed', 'standard')
+        total = payload.get('total', 0.0)
+
+        if not items:
+            return env, {"error": "No items in order"}
+
+        # Generate order ID
+        order_number = random.randint(10001, 99999)
+        order_id = f'O-{order_number:05d}'
+        ts = datetime.now().isoformat()
+
+        # Create order in DB
+        execute_db(
+            "INSERT INTO orders (id, user_id, total, state, shipping_speed, shipping_address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            [order_id, user_id, round(total, 2), 'confirmed', shipping_speed, shipping_address, ts]
+        )
+
+        # Create order items in DB
+        for item in items:
+            # Need to get SKU from product_id
+            product = query_db("SELECT id, sku, price FROM products WHERE id = ?", [item['product_id']], one=True)
+            if product:
+                execute_db(
+                    "INSERT INTO order_items (order_id, sku, quantity, price) VALUES (?, ?, ?, ?)",
+                    [order_id, product['sku'], item['quantity'], product['price']]
+                )
+
+        # Update env state
+        env = deep_merge(env, {"orders": {order_id: {"state": "confirmed", "total": total}}})
+        env = deep_merge(env, {"orders": {"last": {"id": order_id, "total": total}}})
+        
+        return env, {"redirect": f"/shop.local/order.html?order_id={order_id}&total={total}"}
+    
+    return env, {} # Final return for mutate_env
 
 # Database helpers
 def get_db():
@@ -439,7 +745,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 data = open(fp, 'rb').read()
                 self.send_response(200)
                 self.send_header('Content-Type','text/csv')
-                self.send_header('Content-Disposition','attachment; filename=\"transactions.csv\"')
+                self.send_header('Content-Disposition','attachment; filename="transactions.csv"')
                 self.send_header('Content-Length', str(len(data)))
                 self.end_headers()
                 self.wfile.write(data)
@@ -452,7 +758,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # Serve the product detail HTML while keeping the pretty URL
             self.path = '/shop.local/product.html'
 
-        if '/api/env' in self.path:
+        if self.path == '/api/env' or self.path.startswith('/api/env?'):
             env = load_env()
             # merge latest account balances from DB
             accounts = query_db("SELECT type, balance, currency FROM accounts WHERE user_id = ?", [1])
@@ -464,7 +770,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 }
             env['accounts'] = env_accounts
             data = json.dumps(env, ensure_ascii=False).encode('utf-8')
-            self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.end_headers()
+            self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
         if self.path.startswith('/api/reset'):
             reset_env()
@@ -857,19 +1163,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Marketing / Distractors API (Added by AI)
         # ========================================================================
         if self.path.startswith('/api/marketing/promos'):
-            promos = [
-                {"type": "banner_top", "content": "⚡️ 限时特惠：全场满$500减$50！", "color": "#ef4444"},
-                {"type": "popup_center", "content": "订阅简报，立享9折优惠", "delay": 2000},
-                {"type": "toast_bottom", "content": "有人刚刚购买了 iPhone 15 Pro", "delay": 5000},
-                {"type": "sidebar_ad", "content": "新书上架：《Web Agent 指南》", "img": "book.jpg"}
-            ]
-            import random
-            active_promos = random.sample(promos, k=random.randint(1, 3))
-            
+            # Disabled by user request
             data = json.dumps({
                 'success': True,
-                'promos': active_promos,
-                'cookie_consent_required': True
+                'promos': [],
+                'cookie_consent_required': False
             }, ensure_ascii=False).encode('utf-8')
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
@@ -932,40 +1230,17 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if '/api/mutate' in self.path:
             env = load_env()
             env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+            try:
+                with open("server_debug.log", "a") as f:
+                    f.write(f"DEBUG_POST_ENV: Final env before save: {json.dumps(env, indent=2)}\n")
+            except Exception: pass # Using pass for consistency
             save_env(env)
             resp = {"ok": True}; resp.update(extra)
             out = json.dumps(resp, ensure_ascii=False).encode('utf-8')
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(out); return
 
-        if self.path.startswith('/api/autopay'):
-            payee = data.get('payee','utilities')
-            account_type = data.get('account_type','checking')
-            amount = float(data.get('amount',0))
-            frequency = data.get('frequency','monthly')
-            start_date = data.get('start_date', datetime.now().strftime('%Y-%m-%d'))
-            ap_id = f"AP-{random.randint(1000,9999)}"
-            env = load_env()
-            env.setdefault('autopay', {})[ap_id] = {
-                'payee': payee,
-                'account_type': account_type,
-                'amount': amount,
-                'frequency': frequency,
-                'next_date': start_date,
-                'state': 'active'
-            }
-            save_env(env)
-            ts = datetime.now().isoformat()
-            for key, value in [
-                ('autopay.utility.id', ap_id),
-                ('autopay.utility.status', 'active'),
-                ('autopay.utility.next_date', start_date)
-            ]:
-                execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                           [key, value, ts, 'server', 1.0])
-            resp = {'success': True, 'autopay': {'id': ap_id, 'state': 'active', 'payee': payee}}
-            self.send_response(200); self.send_header('Content-Type','application/json'); self.send_cors_headers(); self.end_headers()
-            self.wfile.write(json.dumps(resp, ensure_ascii=False).encode('utf-8')); return
+
 
         if self.path.startswith('/api/permits/apply'):
             application_id = f"APP-{random.randint(1000,9999)}"
@@ -1016,58 +1291,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(b'{"success":true}'); return
 
-        # Create order
-        if self.path.startswith('/api/orders'):
-            user_id = data.get('user_id', 1)
-            items = data.get('items', [])
-            shipping_address = data.get('shipping_address', '')
-            shipping_speed = data.get('shipping_speed', 'standard')
 
-            if not items:
-                self.send_response(400); self.send_header('Content-Type','application/json'); self.end_headers()
-                self.wfile.write(json.dumps({'success': False, 'error': 'No items'}).encode('utf-8')); return
-
-            # Calculate total and get SKUs
-            total = 0
-            items_with_sku = []
-            for item in items:
-                # Get product by id to find sku and price
-                product = query_db("SELECT id, sku, price FROM products WHERE id = ?", [item['product_id']], one=True)
-                if product:
-                    total += product['price'] * item['quantity']
-                    items_with_sku.append({
-                        'sku': product['sku'],
-                        'quantity': item['quantity'],
-                        'price': product['price']
-                    })
-
-            # Generate order ID
-            order_number = random.randint(10001, 99999)
-            order_id = f'O-{order_number:05d}'
-
-            # Create order
-            execute_db(
-                "INSERT INTO orders (id, user_id, total, state, shipping_speed, shipping_address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                [order_id, user_id, round(total, 2), 'confirmed', shipping_speed, shipping_address, datetime.now().isoformat()]
-            )
-
-            # Create order items
-            for item in items_with_sku:
-                execute_db(
-                    "INSERT INTO order_items (order_id, sku, quantity, price) VALUES (?, ?, ?, ?)",
-                    [order_id, item['sku'], item['quantity'], item['price']]
-                )
-
-            # Update memory
-            ts = datetime.now().isoformat()
-            execute_db("INSERT OR REPLACE INTO memory_kv (key, value, ts, source, confidence) VALUES (?, ?, ?, ?, ?)",
-                      ['orders.last.id', order_id, ts, 'server', 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key, value, ts, source, confidence) VALUES (?, ?, ?, ?, ?)",
-                      ['orders.last.total', str(round(total, 2)), ts, 'server', 1.0])
-
-            result = {'success': True, 'order_id': order_id, 'order_number': order_id, 'total': round(total, 2)}
-            self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
-            self.wfile.write(json.dumps(result, ensure_ascii=False).encode('utf-8')); return
 
         # Create return
         if self.path.startswith('/api/returns'):
@@ -1219,19 +1443,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Marketing / Distractors API (Added by AI)
         # ========================================================================
         if self.path.startswith('/api/marketing/promos'):
-            promos = [
-                {"type": "banner_top", "content": "⚡️ 限时特惠：全场满$500减$50！", "color": "#ef4444"},
-                {"type": "popup_center", "content": "订阅简报，立享9折优惠", "delay": 2000},
-                {"type": "toast_bottom", "content": "有人刚刚购买了 iPhone 15 Pro", "delay": 5000},
-                {"type": "sidebar_ad", "content": "新书上架：《Web Agent 指南》", "img": "book.jpg"}
-            ]
-            import random
-            active_promos = random.sample(promos, k=random.randint(1, 3))
-            
+            # Disabled by user request
             data = json.dumps({
                 'success': True,
-                'promos': active_promos,
-                'cookie_consent_required': True
+                'promos': [],
+                'cookie_consent_required': False
             }, ensure_ascii=False).encode('utf-8')
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return

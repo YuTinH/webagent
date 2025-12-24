@@ -1,54 +1,27 @@
 {
-  "task_id": "D1-2025-002",
-  "success": false,
-  "final_state": "failed",
+  "task_id": "D1-2025-FINANCE",
+  "success": true,
+  "final_state": "completed",
   "steps_completed": 2,
-  "steps_total": 11,
-  "time_elapsed": 32.064270973205566,
-  "error": {
-    "task_id": "D1-2025-002",
-    "error_type": "TimeoutError",
-    "timestamp": "2025-12-03T12:38:27.893385Z",
-    "step_index": 2,
-    "error_message": "Page.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#username\")\n",
-    "context": {
-      "url": "http://localhost:8014/login.html",
-      "screenshot": "errors/D1-2025-002/error_step_2.png"
-    },
-    "step": {
-      "t": 3.0,
-      "url": "https://bank.local/login",
-      "frame": "main",
-      "act": "type",
-      "selector": "#username",
-      "value": "testuser",
-      "note": "Enter username"
-    },
-    "recovery_attempted": false,
-    "recovery_strategy": "",
-    "recovery_success": false,
-    "final_state": "aborted",
-    "metrics": {}
-  },
+  "steps_total": 2,
+  "time_elapsed": 1.4592721462249756,
+  "error": null,
   "trace": [
     {
       "t": 0,
-      "url": "https://bank.local",
-      "frame": "main",
       "act": "open",
-      "note": "Navigate to bank homepage"
+      "url": "http://localhost:8014/bank.local/dashboard.html",
+      "note": "Open bank dashboard"
     },
     {
-      "t": 1.5,
-      "url": "https://bank.local/login",
-      "frame": "main",
-      "act": "click",
-      "selector": "a.login-button",
-      "screenshot_id": "step_001_homepage",
-      "note": "Click login button"
+      "t": 2,
+      "act": "wait",
+      "selector": "#checking-balance",
+      "note": "Wait for checking balance to appear"
     }
   ],
   "memory_updates": {},
   "artifacts": [],
-  "warnings": []
+  "warnings": [],
+  "extracted_data": {}
 }

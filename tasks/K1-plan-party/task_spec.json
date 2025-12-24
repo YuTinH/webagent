@@ -8,22 +8,22 @@
   "persona": {
     "automation_preference": "medium"
   },
-  "goal": "Plan party event",
-  "inputs": {},
+  "goal": "Join the 'Springfield Neighborhood' community group on social.local.",
+  "inputs": {
+    "group_name": "Springfield Neighborhood"
+  },
   "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
+    "social.local"
   ],
   "preconditions": [
     "mem('identity.address') != ''"
   ],
-  "dependencies": [
-    "A1-rent-payment"
+  "dependencies": [],
+  "memory_keys": [
+    "social.groups.GRP-001.status"
   ],
-  "memory_keys": [],
   "success_criteria": [
-    "url().includes('/k1')"
+    "ALL[url().includes('/social.local/my-groups.html'), mem('social.groups.GRP-001.status') == 'joined']"
   ],
   "rubrics": {
     "SR": 1.0

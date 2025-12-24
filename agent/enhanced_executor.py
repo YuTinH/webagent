@@ -327,6 +327,36 @@ class EnhancedTaskExecutor(TaskExecutor):
             result['old_card_last4'] = memory_updates.get('banking.cards.old', '1234')
             result['new_card_last4'] = memory_updates.get('banking.cards.new', '5678')
 
+        elif family == 'G1':
+            # Doctor appointment
+            result['appointment_id'] = memory_updates.get('health.appointment.last.id', 'APT-9001')
+
+        elif family == 'D2':
+            # Budget report
+            result['category'] = memory_updates.get('budget.category', 'food')
+            result['limit'] = memory_updates.get('budget.limit', 600)
+
+        elif family == 'B6':
+            result['claim_id'] = memory_updates.get('claims.price_protection.last.id', 'PP-1001')
+
+        elif family == 'A4':
+            result['phone'] = memory_updates.get('mobile.subscription.phone', '555-000-0000')
+
+        elif family == 'A6':
+            result['verified'] = memory_updates.get('identity.address_verified', True)
+
+        elif family == 'B7':
+            result['item_id'] = memory_updates.get('market.listed_items.last.id', f"2H-{random.randint(1000, 9999)}")
+
+        elif family == 'F5':
+            result['doc_id'] = memory_updates.get('cloud.documents.last.id', f"DOC-{random.randint(10000, 99999)}")
+        
+        elif family == 'G5':
+            result['plan_name'] = memory_updates.get('health.plan.name', 'Standard Wellness')
+        
+        elif family == 'G6':
+            result['vaccine_id'] = memory_updates.get('health.vaccines.last.id', f"VC-{random.randint(10000, 99999)}")
+
         return result
 
     def apply_page_perturbations(self, html: str, page_type: str = 'product') -> str:

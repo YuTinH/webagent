@@ -1,11 +1,35 @@
 {
-  "task_id": "G2-2025-102",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "G2-2025-HEALTH",
   "steps": [
-    {"t": 0, "url": "https://health.local/records.html", "frame": "main", "act": "open", "note": "Open records to view prescriptions"},
-    {"t": 1.5, "act": "wait", "selector": "#records-list .record-card", "note": "Ensure records are rendered"},
-    {"t": 2.0, "act": "scroll", "value": 600, "note": "Scroll to prescription card"},
-    {"t": 2.5, "act": "click", "selector": "button.btn.pri", "note": "Click Order Refill on RX-1001 card"},
-    {"t": 3.0, "act": "wait", "selector": "body", "note": "Allow send() to post mutation and redirect"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/records.html",
+      "note": "Open health records page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('Order Refill')",
+      "note": "Click 'Order Refill' button for RX-1001"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#refill-form",
+      "note": "Wait for refill form to load"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": "button.btn-submit",
+      "note": "Request Refill"
+    },
+    {
+      "t": 10,
+      "act": "wait",
+      "selector": "#records-list",
+      "note": "Wait for records page to reload/update"
+    }
   ]
 }

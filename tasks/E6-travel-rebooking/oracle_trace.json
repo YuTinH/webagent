@@ -1,0 +1,23 @@
+{
+  "task_id": "E6-2025-TRAVEL",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/manage/PNR9ZZ.html",
+      "note": "Open trip management page for PNR9ZZ"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button.btn-rebook",
+      "note": "Click 'Rebook Flight' button"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#status-message.success",
+      "note": "Wait for rebooking success message"
+    }
+  ]
+}

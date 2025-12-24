@@ -1,0 +1,48 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Nebula Social - My Groups</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Social</div>
+    <div class="navlinks">
+      <a href="index.html">Groups</a>
+      <a href="my-groups.html" class="active">My Groups</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h1 style="margin-bottom: 24px">My Groups</h1>
+  
+  <div id="my-groups-list">
+    <div style="text-align:center; padding:60px; color:var(--muted)">
+      You haven't joined any groups yet.
+    </div>
+  </div>
+</div>
+
+<script>
+async function init() {
+  try {
+    const env = await api('../api/env');
+    const groups = env.social?.groups || {};
+    const list = document.getElementById('my-groups-list');
+    
+    if (Object.keys(groups).length > 0) {
+      list.innerHTML = Object.values(groups).map(g => `
+        <div class="card mb-4">
+          <div class="header">
+            <div class="title">${g.name}</div>
+            <span class="badge ok">Member</span>
+          </div>
+          <p class="muted">Joined on ${new Date(g.joined_at).toLocaleDateString()}</p>
+        </div>
+      `).join('');
+    }
+  } catch(e) {}
+}
+init();
+</script>

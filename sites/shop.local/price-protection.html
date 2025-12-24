@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price Protection - Nebula Shop</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.order-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.order-info h3 { margin: 0 0 8px 0; font-size: 16px; }
+.order-meta { color: var(--muted); font-size: 14px; }
+.status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px; }
+.status-badge.eligible { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+.status-badge.ineligible { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Shop</div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="orders.html">Orders</a>
+      <a href="price-protection.html" class="active">Price Protection</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumbs">
+    <a href="index.html">Home</a> / <span>Price Protection</span>
+  </div>
+
+  <h1>Price Protection</h1>
+  <p class="muted">If an item you purchased drops in price within 30 days, we'll refund the difference.</p>
+
+  <div id="orders-list">
+    <!-- Rendered by JS -->
+  </div>
+
+</div>
+
+<!-- Application Modal -->
+<div id="apply-modal" class="modal-overlay">
+  <div class="modal-container">
+    <h3>Apply for Price Protection</h3>
+    <div class="mb-4">
+      <label class="muted">Order ID</label>
+      <div id="modal-order-id" style="font-weight:bold"></div>
+    </div>
+    <div class="mb-4">
+      <label class="muted">Current Lower Price Found ($)</label>
+      <input type="number" id="lower-price" class="input mt-1" placeholder="e.g. 29.99">
+    </div>
+    <div class="mb-4">
+      <label class="muted">Proof URL (Optional)</label>
+      <input type="text" class="input mt-1" placeholder="http://...">
+    </div>
+    
+    <div class="flex justify-end gap-2">
+      <button class="btn" onclick="closeModal('apply-modal')">Cancel</button>
+      <button class="btn pri" onclick="submitApplication()">Submit Application</button>
+    </div>
+  </div>
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+let selectedOrder = null;
+
+async function loadOrders() {
+  const list = document.getElementById('orders-list');
+  try {
+    const response = await fetch('../api/orders?user_id=1&limit=20');
+    const data = await response.json();
+
+    if (data.success && data.orders) {
+      list.innerHTML = data.orders.map(order => {
+        // Mock eligibility logic: delivered or confirmed orders are eligible
+        const isEligible = order.state === 'delivered' || order.state === 'confirmed';
+        return `
+          <div class="order-card">
+            <div class="order-info">
+              <h3>Order #${order.id} <span class="status-badge ${isEligible ? 'eligible' : 'ineligible'}">${isEligible ? 'Eligible' : 'Not Eligible'}</span></h3>
+              <div class="order-meta">Date: ${new Date(order.created_at).toLocaleDateString()}</div>
+              <div class="order-meta">Total: $${order.total.toFixed(2)}</div>
+            </div>
+            ${isEligible ? `<button class="btn pri" onclick="openApply('${order.id}')">Apply</button>` : '<button class="btn" disabled>Unavailable</button>'}
+          </div>
+        `;
+      }).join('');
+    }
+  } catch(e) {
+    list.innerHTML = '<div class="muted">Failed to load orders.</div>';
+  }
+}
+
+function openApply(orderId) {
+  selectedOrder = orderId;
+  document.getElementById('modal-order-id').textContent = orderId;
+  openModal('#apply-modal');
+}
+
+async function submitApplication() {
+  const price = document.getElementById('lower-price').value;
+  if(!price) {
+    Toast.error('Please enter the lower price found.');
+    return;
+  }
+  
+  await send('B6-2025-GEN', 'price_protection_claim', {
+    order_id: selectedOrder,
+    lower_price: parseFloat(price)
+  });
+
+  closeModal('#apply-modal');
+  Toast.success('Application Submitted!');
+  
+  // Simulate redirect or update
+  setTimeout(() => {
+    window.location.reload();
+  }, 1500);
+}
+
+loadOrders();
+</script>
+
+</body>
+</html>

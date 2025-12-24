@@ -1,0 +1,37 @@
+{
+  "task_id": "F2-2026-EVENT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/event.local/registration.html",
+      "note": "Open conference registration page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#invoiceTitle",
+      "value": "Your Lab",
+      "note": "Enter Invoice Title"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#email",
+      "value": "user@example.com",
+      "note": "Enter Email"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "button.btn-submit",
+      "note": "Confirm Registration"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#confirmation-section",
+      "note": "Wait for confirmation message"
+    }
+  ]
+}

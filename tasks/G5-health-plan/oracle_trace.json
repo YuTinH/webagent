@@ -1,0 +1,10 @@
+{
+  "task_id": "G5-2025-GEN",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "act": "open", "url": "https://health.local/plan.html", "note": "Open Health Plan page"},
+    {"t": 1.0, "act": "click", "selector": "#activate-plan-btn", "note": "Click Activate Plan"},
+    {"t": 2.0, "act": "wait", "selector": ".badge.ok", "note": "Wait for active badge"},
+    {"t": 3.0, "act": "extract", "selector": "#plan-status", "variable": "health.plan.status", "note": "Extract plan status"}
+  ]
+}

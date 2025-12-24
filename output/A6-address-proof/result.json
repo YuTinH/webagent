@@ -1,0 +1,47 @@
+{
+  "task_id": "A6-2025-GEN",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 5,
+  "steps_total": 5,
+  "time_elapsed": 1.8380792140960693,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "https://gov.local/profile.html",
+      "note": "Open Profile"
+    },
+    {
+      "t": 1.0,
+      "act": "select",
+      "selector": "#doc-type",
+      "value": "utility",
+      "note": "Select Utility Bill"
+    },
+    {
+      "t": 2.0,
+      "act": "upload",
+      "selector": "#file-upload",
+      "value": "proof_of_address.pdf",
+      "note": "Upload file"
+    },
+    {
+      "t": 3.0,
+      "act": "click",
+      "selector": "button.pri",
+      "note": "Submit"
+    },
+    {
+      "t": 4.0,
+      "act": "wait",
+      "selector": ".badge.ok",
+      "note": "Wait for verified badge"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

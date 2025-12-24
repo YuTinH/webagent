@@ -239,7 +239,7 @@ class CartDrawer {
             <span>总计:</span>
             <span id="cart-total-price" class="cart-total-price">¥0.00</span>
           </div>
-          <button class="btn pri cart-checkout-btn" onclick="cartDrawer.checkout()">
+          <button class="btn pri cart-checkout-btn">
             去结算
           </button>
         </div>
@@ -252,6 +252,7 @@ class CartDrawer {
     // Event listeners
     drawer.querySelector('.cart-drawer-close').addEventListener('click', () => this.close());
     drawer.querySelector('.cart-overlay').addEventListener('click', () => this.close());
+    drawer.querySelector('.cart-checkout-btn').addEventListener('click', () => this.checkout());
 
     return this;
   }
@@ -275,8 +276,10 @@ class CartDrawer {
   }
 
   checkout() {
+    console.log('Checkout clicked');
     const cartData = localStorage.getItem('cart') || '[]';
     localStorage.setItem('checkout-items', cartData);
+    console.log('Navigating to checkout...');
     // Use absolute path
     window.location.href = '/shop.local/checkout.html';
   }

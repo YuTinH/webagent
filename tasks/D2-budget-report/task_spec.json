@@ -1,0 +1,15 @@
+{
+  "task_id": "D2-2025-BUDGET",
+  "family": "D",
+  "goal": "Update the food budget limit to $600.",
+  "inputs": {
+    "category": "food",
+    "limit": 600
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "text(\"#limit-food\") == \"$600.00\"",
+    "json(\"env\",\"finance.budgets.food.limit\") == 600",
+    "mem(\"budget.food.limit\") == \"600.0\""
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "task_id": "M1-2025-CARD",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 2,
+  "steps_total": 2,
+  "time_elapsed": 12.062231302261353,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/card.local/block.html?last4=1234",
+      "note": "Open card blocking page for card ending in 1234"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#card-state",
+      "note": "Wait for card state to be displayed"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

@@ -1,0 +1,40 @@
+{
+  "task_id": "H3-2025-PERMIT",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 4,
+  "steps_total": 4,
+  "time_elapsed": 1.7266743183135986,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/permit.local/RP-2024-77.html",
+      "note": "Open permit details page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#appointment-slot",
+      "value": "2025-12-01T10:00",
+      "note": "Enter appointment slot"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button.btn-book",
+      "note": "Book Appointment"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#appointment-state",
+      "note": "Wait for appointment status to update"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

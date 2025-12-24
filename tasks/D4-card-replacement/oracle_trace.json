@@ -1,18 +1,23 @@
 {
-  "task_id": "D4-2025-008",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "D4-2025-CARD",
   "steps": [
-    {"t": 0, "url": "https://bank.local/cards", "act": "open", "note": "Navigate to cards page"},
-    {"t": 2, "act": "wait", "selector": ".card", "note": "Wait for cards page"},
     {
-      "t": 3,
-      "act": "verify_state",
-      "checks": [
-        {"type": "url", "contains": "/cards"},
-        {"type": "dom", "selector": ".container", "exists": true},
-        {"type": "dom", "selector": "h1", "exists": true}
-      ],
-      "note": "Verify cards management page loaded"
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/pay.local/wallet/cards.html?oldLast4=1234&newLast4=7777",
+      "note": "Open wallet page to replace card"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button.btn-replace",
+      "note": "Click 'Replace Expired Card' button"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#status-message.success",
+      "note": "Wait for success message"
     }
   ]
 }

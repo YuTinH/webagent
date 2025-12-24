@@ -1,0 +1,13 @@
+{
+  "task_id": "G6-2025-GEN",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "act": "open", "url": "https://health.local/vaccine.html", "note": "Open Vaccine page"},
+    {"t": 1.0, "act": "select", "selector": "#vaccine-type", "value": "flu", "note": "Select Flu Shot"},
+    {"t": 2.0, "act": "type", "selector": "#appt-date", "value": "2025-12-17", "note": "Set appointment date"},
+    {"t": 3.0, "act": "select", "selector": "#appt-time", "value": "09:00", "note": "Select appointment time"},
+    {"t": 4.0, "act": "click", "selector": "button.pri", "note": "Book Appointment"},
+    {"t": 5.0, "act": "wait", "selector": ".badge.ok", "note": "Wait for booked status"},
+    {"t": 6.0, "act": "extract", "selector": ".card.mb-3 .title", "variable": "health.vaccines.last.id", "note": "Extract vaccine ID"}
+  ]
+}

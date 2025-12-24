@@ -4,7 +4,7 @@
   "final_state": "completed",
   "steps_completed": 3,
   "steps_total": 3,
-  "time_elapsed": 1.799271821975708,
+  "time_elapsed": 1.4491651058197021,
   "error": null,
   "trace": [
     {
@@ -41,5 +41,6 @@
   ],
   "memory_updates": {},
   "artifacts": [],
-  "warnings": []
+  "warnings": [],
+  "extracted_data": {}
 }

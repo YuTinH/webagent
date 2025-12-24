@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roommate Expense Splitter - Social.local</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #333; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: center; max-width: 600px; width: 90%; margin-top: 50px; }
+        h1 { color: #2c3e50; margin-bottom: 25px; font-size: 2.2em; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input[type="month"], input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .btn-split { background-color: #e67e22; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; text-decoration: none; display: inline-block; margin-top: 20px; }
+        .btn-split:hover { background-color: #d35400; }
+        .message { margin-top: 20px; font-weight: bold; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .status-badge { background-color: #f39c12; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold; margin-top: 10px; display: inline-block; }
+    </style>
+    <script src="/static/common.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 id="page-title">Roommate Expense Splitter</h1>
+        
+        <form id="split-form">
+            <div class="form-group">
+                <label for="month">Month</label>
+                <input type="month" id="month" value="2025-10" required>
+            </div>
+            <div class="form-group">
+                <label for="members">Members (comma-separated)</label>
+                <input type="text" id="members" value="Alice, Bob" required>
+            </div>
+            <div class="form-group">
+                <label for="rules">Split Rule</label>
+                <input type="text" id="rules" value="equal" required>
+            </div>
+
+            <button type="button" class="btn-split" onclick="splitExpenses()">Split Expenses</button>
+        </form>
+
+        <p class="message" id="status-message"></p>
+
+        <div id="result-section" style="display:none; margin-top: 30px;">
+            <h2>Settlement Status</h2>
+            <p>Month: <span id="res-month"></span></p>
+            <p>Status: <span id="split-state" class="status-badge">pending</span></p>
+        </div>
+    </div>
+
+    <script>
+        window.RelRoot = '../'; // Assuming split.html is directly under social.local
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const month = urlParams.get('month');
+        const state = urlParams.get('state');
+
+        if (state === 'settled') {
+            document.getElementById('split-form').style.display = 'none';
+            document.getElementById('result-section').style.display = 'block';
+            document.getElementById('res-month').textContent = month;
+            document.getElementById('split-state').textContent = 'settled';
+            document.getElementById('split-state').style.backgroundColor = '#28a745'; // Green for settled
+            document.getElementById('status-message').className = 'message success';
+            document.getElementById('status-message').textContent = 'Expenses settled successfully!';
+        }
+
+        function splitExpenses() {
+            const month = document.getElementById('month').value;
+            const members = document.getElementById('members').value.split(',').map(m => m.trim());
+            const rules = document.getElementById('rules').value;
+
+            send('K2-2025-SPLIT', 'split_expenses', {
+                month: month,
+                members: members,
+                rules: rules
+            });
+        }
+    </script>
+</body>
+</html>

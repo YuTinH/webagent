@@ -4,7 +4,8 @@
   "steps": [
     {"t": 0, "act": "open", "url": "https://school.local/index.html", "note": "Open course catalog"},
     {"t": 1.0, "act": "click", "selector": ".course-card:first-of-type .btn", "note": "View Deep Learning 101"},
-    {"t": 2.0, "act": "click", "selector": "button.btn.pri", "note": "Enroll Now"},
-    {"t": 3.0, "act": "wait", "selector": "body", "note": "Wait for redirect"}
+    {"t": 3.0, "act": "click", "selector": "button.btn.pri", "note": "Enroll Now"},
+    {"t": 4.0, "act": "wait", "selector": "body", "note": "Wait for redirect to complete"},
+    {"t": 5.0, "act": "verify_state", "checks": [{"type": "url", "includes": "/school.local/my-learning"}], "note": "Verify redirect to My Learning page"}
   ]
 }

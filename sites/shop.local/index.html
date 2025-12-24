@@ -253,6 +253,7 @@
     </div>
     <div class="search">
       <input id="quick-search" type="search" placeholder="搜索商品..." onkeypress="if(event.key==='Enter') searchProducts()">
+      <button type="submit" aria-label="Search" class="btn" onclick="searchProducts()">🔍</button>
     </div>
     <div style="display:flex; gap:16px; margin-left:16px">
       <button class="wishlist-icon-btn" onclick="openWishlist()" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; position:relative">
@@ -365,9 +366,7 @@
   </div>
 
   <!-- Products Grid -->
-  <div id="products-grid" class="product-grid">
-    <div class="loading">正在加载商品...</div>
-  </div>
+  <div id="products-grid" class="loading">正在加载商品...</div>
 
   <!-- Footer -->
   <div class="footer">
@@ -403,10 +402,9 @@ function updateCartCount() {
 
 // Update wishlist count
 function updateWishlistCount() {
-  const count = wishlist.length;
   const badge = document.getElementById('wishlist-count');
-  if (count > 0) {
-    badge.textContent = count;
+  if (wishlist.length > 0) {
+    badge.textContent = wishlist.length;
     badge.style.display = 'block';
   } else {
     badge.style.display = 'none';
@@ -446,9 +444,9 @@ function openWishlist() {
           <div style="font-size:32px">${getCategoryIcon(item.category)}</div>
           <div style="flex:1">
             <div style="font-weight:600">${escapeHtml(item.name)}</div>
-            <div style="color:var(--muted); font-size:14px">¥${item.price.toFixed(2)}</div>
+            <div style="color:var(--pri); font-weight:700; margin-top:4px">¥${item.price.toFixed(2)}</div>
           </div>
-          <button class="btn pri" onclick="viewProduct('${item.sku}')">查看</button>
+          <button class="btn sm" onclick="removeFromWishlist('${item.product_id}')">移除</button>
         </div>
       `).join('') :
       '<div style="text-align:center; padding:40px; color:var(--muted)">暂无收藏</div>',
@@ -459,7 +457,7 @@ function openWishlist() {
 
 // View product
 function viewProduct(sku) {
-  window.location.href = `../shop.local/product/${sku}`;
+  window.location.href = window.RelRoot + `shop.local/product/${sku}`;
 }
 
 // Filter by category
@@ -480,7 +478,7 @@ function filterCategory(category) {
 function searchProducts() {
   const query = document.getElementById('search-box').value || document.getElementById('quick-search').value;
   if (query.trim()) {
-    window.location.href = `../shop.local/search.html?q=${encodeURIComponent(query.trim())}`;
+    window.location.href = window.RelRoot + `shop.local/search.html?q=${encodeURIComponent(query.trim())}`;
   }
 }
 
@@ -490,7 +488,7 @@ async function loadProducts(category = 'all', search = '') {
   grid.innerHTML = '<div class="loading">正在加载商品...</div>';
 
   try {
-    let url ='../api/products?limit=12';
+    let url = window.RelRoot + 'api/products?limit=12';
     if (category !== 'all') {
       url += `&category=${category}`;
     }
@@ -535,7 +533,7 @@ function renderProducts(products) {
     const discount = product.original_price ? Math.round((1 - product.price / product.original_price) * 100) : 0;
     const inWishlist = isInWishlist(product.product_id);
     const adClass = product.is_ad ? 'sponsored' : '';
-    const clickAction = product.is_ad ? "Toast.info('这是一个广告链接')" : `window.location.href='../shop.local/product/${product.sku}'`;
+    const clickAction = product.is_ad ? "Toast.info('这是一个广告链接')" : `window.location.href=window.RelRoot+'shop.local/product/${product.sku}'`;
 
     return `
       <div onclick="${clickAction}" class="product-card product-item ${adClass}" data-product-id="${product.product_id}" style="cursor:pointer; display:block; position:relative; text-decoration:none; color:var(--text);">
@@ -681,21 +679,19 @@ document.addEventListener('DOMContentLoaded', () => {
   userDropdown = new Dropdown(document.getElementById('user-menu-btn'), {
     align: 'right',
     items: [
-      { icon: '👤', label: '我的账户' },
-      { icon: '📦', label: '我的订单' },
-      { icon: '❤️', label: '我的收藏' },
-      { divider: true },
-      { icon: '⚙️', label: '设置' },
-      { icon: '🚪', label: '退出登录' }
+      { icon: '👤', label: '我的账户', value: 'account' },
+      { icon: '📦', label: '我的订单', value: 'orders' },
+      { icon: '❤️', label: '我的收藏', value: 'wishlist' },
+      { type: 'divider' },
+      { icon: '⚙️', label: '设置', value: 'settings' },
+      { icon: '🚪', label: '退出登录', value: 'logout' }
     ],
     onSelect: (item) => {
-      if (item.label === '我的收藏') {
-        openWishlist();
-      } else if (item.label === '我的订单') {
-  window.location.href = `../shop.local/orders.html`;
-      } else {
-        Toast.info(`${item.label}功能即将推出`);
-      }
+      if (item.value === 'orders') window.location.href=window.RelRoot+'shop.local/orders.html';
+      else if (item.value === 'wishlist') openWishlist();
+      else if (item.value === 'account') Toast.info('个人中心功能开发中');
+      else if (item.value === 'settings') Toast.info('设置功能开发中');
+      else if (item.value === 'logout') Toast.info('已退出登录');
     }
   });
 });
@@ -705,7 +701,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 let currentSlide = 0;
 const slides = document.querySelectorAll('.carousel-slide');
-const dots = document.querySelectorAll('.carousel-dot');
+const dots = document.querySelectorAll('.carousel-dots .carousel-dot'); // Corrected selector for dots
 const track = document.querySelector('.carousel-track');
 
 function updateCarousel() {
@@ -726,6 +722,8 @@ function setCarousel(n) {
 // Auto play
 setInterval(() => moveCarousel(1), 5000);
 </script>
+
+
 
 
 <!-- Distractor: Chat Widget -->

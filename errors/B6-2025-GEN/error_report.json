@@ -1,0 +1,22 @@
+{
+  "task_id": "B6-2025-GEN",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-15T07:18:50.883489Z",
+  "step_index": 5,
+  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#apply-modal button.pri\")\n    - locator resolved to <button class=\"btn pri\" onclick=\"submitApplication()\">Submit Application</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div id=\"promo-1765783100801\" class=\"modal-overlay open\">\u2026</div> intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div id=\"promo-1765783100801\" class=\"modal-overlay open\">\u2026</div> intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    57 \u00d7 waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <div id=\"promo-1765783100801\" class=\"modal-overlay open\">\u2026</div> intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n",
+  "context": {
+    "url": "http://localhost:8015/shop.local/price-protection.html",
+    "screenshot": "errors/B6-2025-GEN/error_step_5.png"
+  },
+  "step": {
+    "t": 4.0,
+    "act": "click",
+    "selector": "#apply-modal button.pri",
+    "note": "Submit application"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

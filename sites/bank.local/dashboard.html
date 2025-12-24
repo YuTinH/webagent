@@ -261,6 +261,10 @@
         <span>💳</span>
         <span>卡片管理</span>
       </a>
+      <a href="../bank.local/budget.html" class="quick-action-btn">
+        <span>📊</span>
+        <span>Budget</span>
+      </a>
       <button class="quick-action-btn" onclick="Toast.info('存款功能即将推出')">
         <span>💰</span>
         <span>存款</span>
@@ -321,13 +325,14 @@
 
   <div class="footer">Nebula Bank</div>
 </div>
+<script>window.RelRoot = '../';</script>
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
 async function loadAccounts() {
   const grid = document.getElementById('accounts-grid');
   try {
-    const res = await fetch('../api/accounts?user_id=1');
+    const res = await fetch(window.RelRoot + 'api/accounts?user_id=1');
     const data = await res.json();
     if (data.success) {
       let totalAssets = 0;
@@ -343,7 +348,7 @@ async function loadAccounts() {
               <span class="badge ok">正常</span>
             </div>
             <div class="account-number">**** **** **** ${String(acc.account_id).slice(-4).padStart(4, '0')}</div>
-            <div class="account-balance">¥${acc.balance.toFixed(2)}</div>
+            <div class="account-balance" id="${acc.type}-balance">¥${acc.balance.toFixed(2)}</div>
             <div class="account-actions">
               <button class="btn" onclick="transferFrom('${acc.type}')">转账</button>
               <button class="btn" onclick="viewDetails('${acc.type}')">详情</button>
@@ -355,9 +360,17 @@ async function loadAccounts() {
       // Update total assets
       document.getElementById('total-assets').textContent = `¥${totalAssets.toFixed(2)}`;
 
-      // Update memory
+      // Update checking balance for D1 check
+      const checkingAccount = data.accounts.find(acc => acc.type === 'checking');
+      const checkingBalanceElement = document.getElementById('checking-balance');
+      if (checkingAccount && checkingBalanceElement) {
+        checkingBalanceElement.textContent = `¥${checkingAccount.balance.toFixed(2)}`;
+      }
+
+
+      // Update memory (This part is not needed for D1 but helpful for other tasks)
       for (const acc of data.accounts) {
-        await fetch('../api/memory', {
+        await fetch(window.RelRoot + 'api/memory', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -368,7 +381,7 @@ async function loadAccounts() {
         });
       }
 
-      await fetch('/api/memory', {
+      await fetch(window.RelRoot + 'api/memory', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({

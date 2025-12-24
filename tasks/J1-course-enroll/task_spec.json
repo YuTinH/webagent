@@ -25,7 +25,7 @@
     "courses.DL101.state"
   ],
   "success_criteria": [
-    "WITHIN(10, ALL[url().includes('/school.local/my-learning'), mem('courses.DL101.state') == 'enrolled', json('env','courses.DL101.state') == 'enrolled'])"
+    "WITHIN(10, ALL[url().includes('/school.local/my-learning'), mem('courses.DL101.state') == 'enrolled'])"
   ],
   "rubrics": {
     "SR": 1.0

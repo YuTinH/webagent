@@ -1,128 +1,118 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<script>window.RelRoot = "../";</script>
-  <meta charset="utf-8">
-  <title>bank.local - 自动扣款</title>
-  <link rel="stylesheet" href="../static/skin.css">
-<link rel="stylesheet" href="../static/components.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank.local - Set up Autopay</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #333; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: center; max-width: 600px; width: 90%; margin-top: 50px; }
+        h1 { color: #2c3e50; margin-bottom: 25px; font-size: 2.2em; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .btn-submit { background-color: #28a745; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; text-decoration: none; display: inline-block; margin-top: 20px; }
+        .btn-submit:hover { background-color: #218838; }
+        .message { margin-top: 20px; font-weight: bold; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .confirmation-card { background-color: #e8f5e9; border: 1px solid #28a745; color: #28a745; padding: 20px; border-radius: 8px; margin-top: 30px; }
+        .confirmation-card h2 { color: #28a745; margin-top: 0; }
+        .confirmation-card .status-badge { background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold; }
+    </style>
+    <script src="/static/common.js"></script>
 </head>
-<body class="page">
-  <div class="navbar">
-    <div class="inner">
-      <div class="brand"><div class="logo"></div> Nebula Bank</div>
-      <div class="navlinks">
-        <a href="../bank.local/dashboard">总览</a>
-        <a href="../bank.local/transactions">交易</a>
-        <a href="../bank.local/autopay" class="active">自动扣款</a>
-      </div>
-    </div>
-  </div>
-  <div id="__toast" class="toast"></div>
-  <div class="container">
+<body>
+    <div class="container">
+        <h1 id="page-title">Set Up Autopay</h1>
+        
+        <form id="autopay-form">
+            <div class="form-group">
+                <label for="payee">Payee</label>
+                <input type="text" id="payee" value="Utilities" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" id="amount" value="150" required>
+            </div>
+            <div class="form-group">
+                <label for="frequency">Frequency</label>
+                <select id="frequency" required>
+                    <option value="monthly">Monthly</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="quarterly">Quarterly</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="accountType">Account Type</label>
+                <select id="accountType" required>
+                    <option value="checking">Checking</option>
+                    <option value="savings">Savings</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" value="2025-12-20" required>
+            </div>
 
-<!-- Distractor: Top Ad Banner -->
-<div class="ad-banner" style="margin: 0 0 24px 0; background: linear-gradient(90deg, #ec4899, #8b5cf6);">
-  <div style="display:flex; align-items:center; gap:16px">
-    <span style="font-size:24px">🎁</span>
-    <div>
-      <div style="font-weight:700">Flash Sale</div>
-      <div style="font-size:13px; opacity:0.9">Ends in 02:14:59</div>
-    </div>
-  </div>
-  <button class="btn" style="background:rgba(255,255,255,0.2); border:none; color:white; font-size:13px">Shop</button>
-</div>
+            <button type="button" class="btn-submit" onclick="setupAutopay()">Confirm Autopay</button>
+        </form>
 
-    <div class="breadcrumbs"><a href="../bank.local/dashboard">银行</a> / <span>自动扣款</span></div>
-    <div class="grid cols-2">
-      <div class="card">
-        <div class="header"><div class="title">新增自动扣款</div></div>
-        <div class="form">
-          <label>缴费对象</label>
-          <select id="payee" class="input">
-            <option value="utilities">City Utilities</option>
-            <option value="landlord">Landlord</option>
-            <option value="internet">Internet Provider</option>
-          </select>
-          <label>扣款账户</label>
-          <select id="account" class="input">
-            <option value="checking">Checking ****1234</option>
-            <option value="savings">Savings ****0001</option>
-          </select>
-          <label>金额 (USD)</label>
-          <input id="amount" type="number" class="input" placeholder="130.50" value="130.50">
-          <label>频率</label>
-          <select id="frequency" class="input">
-            <option value="monthly" selected>每月</option>
-            <option value="weekly">每周</option>
-            <option value="quarterly">每季度</option>
-          </select>
-          <label>开始日期</label>
-          <input id="start-date" type="date" class="input" value="2025-11-28">
-          <button class="btn pri add-autopay save-autopay" onclick="createAutopay()">保存设置</button>
+        <div id="confirmation-section" class="confirmation-card" style="display:none;">
+            <h2>Autopay Setup Successful!</h2>
+            <p>Your autopay for <span id="conf-payee"></span> has been activated.</p>
+            <p>Status: <span id="autopay-status" class="status-badge">active</span></p>
+            <p>Amount: $<span id="conf-amount"></span></p>
+            <p>Frequency: <span id="conf-frequency"></span></p>
+            <p>Next Payment: <span id="conf-next-date"></span></p>
         </div>
-      </div>
-      <div class="card" id="autopay-card">
-        <div class="header"><div class="title">当前自动扣款</div></div>
-        <div id="autopay-list" class="kv" style="gap:12px"></div>
-        <div class="autopay-status badge" style="margin-top:12px">未设置</div>
-      </div>
+
+        <p class="message" id="status-message"></p>
     </div>
-  </div>
-<script src="../static/common.js"></script>
-<script src="../static/components.js"></script>
-  <script>
-  async function fetchAutopay(){
-    const res = await fetch('../api/autopay');
-    const data = await res.json();
-    const list = document.getElementById('autopay-list');
-    if (data.items.length === 0){
-      list.innerHTML = '<div class="muted">暂无自动扣款</div>';
-      return;
-    }
-    list.innerHTML = data.items.map(item => `
-      <div>
-        <div><strong>${item.payee}</strong> (${item.state})</div>
-        <div>账户：${item.account_type} · 频率：${item.frequency}</div>
-        <div>下次日期：${item.next_date}</div>
-      </div>
-    `).join('');
-    document.querySelector('.autopay-status').textContent = data.items[0].state;
-  }
-  async function createAutopay(){
-    const body = {
-      payee: document.getElementById('payee').value,
-      account_type: document.getElementById('account').value,
-      amount: parseFloat(document.getElementById('amount').value || '0'),
-      frequency: document.getElementById('frequency').value,
-      start_date: document.getElementById('start-date').value
-    };
-    const res = await fetch('../api/autopay', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    if (data.success){
-      document.querySelector('.autopay-status').textContent = data.autopay.state;
-      document.querySelector('.autopay-status').classList.add('badge','ok');
-      toast('自动扣款已启用');
-      fetchAutopay();
-    } else {
-      toast('提交失败');
-    }
-  }
-  document.addEventListener('DOMContentLoaded', fetchAutopay);
-  </script>
 
-<!-- Distractor: Random Toast -->
-<script>
-setTimeout(() => {
-  const msgs = ['New order from Tokyo', 'Server maintenance in 10m', 'High demand area', 'Stock running low'];
-  const msg = msgs[Math.floor(Math.random() * msgs.length)];
-  if (typeof Toast !== 'undefined') Toast.info(msg);
-}, 3500);
-</script>
+    <script>
+        window.RelRoot = '../'; // Assuming autopay.html is directly under bank.local
 
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        document.getElementById('startDate').value = `${yyyy}-${mm}-${dd}`;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const state = urlParams.get('state');
+        const payee = urlParams.get('payee');
+        const amount = urlParams.get('amount');
+        const frequency = urlParams.get('frequency');
+        const nextDate = urlParams.get('next_date');
+
+        if (state === 'active') {
+            document.getElementById('page-title').textContent = 'Autopay Status';
+            document.getElementById('autopay-form').style.display = 'none';
+            document.getElementById('confirmation-section').style.display = 'block';
+
+            document.getElementById('conf-payee').textContent = payee || 'Utilities';
+            document.getElementById('conf-amount').textContent = amount || '150';
+            document.getElementById('conf-frequency').textContent = frequency || 'Monthly';
+            document.getElementById('conf-next-date').textContent = nextDate || '2025-12-20';
+            document.getElementById('autopay-status').textContent = 'active';
+        }
+
+        function setupAutopay() {
+            const payee = document.getElementById('payee').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const frequency = document.getElementById('frequency').value;
+            const accountType = document.getElementById('accountType').value;
+            const startDate = document.getElementById('startDate').value;
+
+            send('D3-2025-AUTOPAY', 'setup_autopay', {
+                payee: payee,
+                amount: amount,
+                frequency: frequency,
+                account_type: accountType,
+                start_date: startDate
+            });
+        }
+    </script>
 </body>
 </html>

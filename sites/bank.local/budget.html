@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Management - Nebula Bank</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #333; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: center; max-width: 600px; width: 90%; margin-top: 50px; }
+        h1 { color: #2c3e50; margin-bottom: 25px; font-size: 2.2em; }
+        .budget-list { list-style: none; padding: 0; text-align: left; }
+        .budget-item { background-color: #f8f9fa; margin-bottom: 15px; padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #007bff; }
+        .budget-info h3 { margin: 0 0 5px 0; font-size: 1.2em; color: #333; }
+        .budget-info p { margin: 0; color: #666; font-size: 0.95em; }
+        .budget-limit { font-weight: bold; color: #2c3e50; }
+        .btn-edit { background-color: #ffc107; color: #333; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; transition: background-color 0.2s; }
+        .btn-edit:hover { background-color: #e0a800; }
+        
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; position: relative; }
+        .modal-header h2 { margin-top: 0; color: #2c3e50; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .btn-cancel { background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-save { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .message { margin-top: 20px; font-weight: bold; }
+        .success { color: #28a745; }
+    </style>
+    <script src="/static/common.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Monthly Budget</h1>
+        
+        <ul class="budget-list">
+            <li class="budget-item" data-category="food">
+                <div class="budget-info">
+                    <h3>Food & Dining</h3>
+                    <p>Limit: <span class="budget-limit" id="limit-food">$500.00</span></p>
+                </div>
+                <button class="btn-edit" onclick="openEditModal('food', 500)">Edit Limit</button>
+            </li>
+            <li class="budget-item" data-category="transport">
+                <div class="budget-info">
+                    <h3>Transportation</h3>
+                    <p>Limit: <span class="budget-limit" id="limit-transport">$200.00</span></p>
+                </div>
+                <button class="btn-edit" onclick="openEditModal('transport', 200)">Edit Limit</button>
+            </li>
+        </ul>
+
+        <p class="message" id="status-message"></p>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Edit Budget</h2>
+            </div>
+            <div class="form-group">
+                <label for="new-limit">New Limit ($)</label>
+                <input type="number" id="new-limit" min="0" step="10">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                <button class="btn-save" onclick="saveBudget()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.RelRoot = '../';
+        let currentCategory = '';
+
+        function openEditModal(category, currentLimit) {
+            currentCategory = category;
+            document.getElementById('modal-title').textContent = `Edit ${category.charAt(0).toUpperCase() + category.slice(1)} Budget`;
+            // Try to get updated limit from DOM if available
+            const displayLimit = document.getElementById(`limit-${category}`).textContent.replace(/[^0-9.]/g, '');
+            document.getElementById('new-limit').value = displayLimit || currentLimit;
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        async function saveBudget() {
+            const newLimit = parseFloat(document.getElementById('new-limit').value);
+            if (isNaN(newLimit) || newLimit < 0) {
+                alert('Please enter a valid amount.');
+                return;
+            }
+
+            closeEditModal();
+            
+            await send('D2-2025-BUDGET', 'adjust_budget', {
+                category: currentCategory,
+                limit: newLimit
+            });
+        }
+
+        // Handle page reload after update
+        async function loadBudgets() {
+            const env = await loadEnv();
+            const budgets = env?.finance?.budgets || {};
+            
+            for (const [cat, data] of Object.entries(budgets)) {
+                const el = document.getElementById(`limit-${cat}`);
+                if (el) {
+                    el.textContent = `$${parseFloat(data.limit).toFixed(2)}`;
+                }
+            }
+        }
+
+        loadBudgets();
+    </script>
+</body>
+</html>

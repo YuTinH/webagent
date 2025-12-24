@@ -1,4 +1,3 @@
-
 function qs(s){return document.querySelector(s)}; function qsa(s){return Array.from(document.querySelectorAll(s))};
 
 // 使用 XMLHttpRequest 替代 fetch，解决 "body stream already read"
@@ -55,6 +54,7 @@ async function send(taskId, action, payload){
   
   try {
       const data = await api(root + 'api/mutate','POST',{task_id:taskId, action, payload});
+      console.log('DEBUG: API mutate response:', data);
       await render(); 
       
       if (data.redirect) {
@@ -100,10 +100,15 @@ async function render(){
   } catch(e) {}
 }
 
-// --- Distractor Engine ---
+// Restore rendering
+document.addEventListener('DOMContentLoaded', () => { render(); });
+
+/*
+// --- Distractor Engine (Disabled) ---
 class DistractorEngine {
     constructor() { this.init(); }
     async init() {
+        return; // Disabled by user request
         try {
             const root = getApiRoot();
             const res = await api(root + 'api/marketing/promos');
@@ -145,4 +150,5 @@ class DistractorEngine {
         if (p.type === 'popup_center') this.renderPopup(p.content, p.delay);
     }
 }
-document.addEventListener('DOMContentLoaded', () => { window.distractorEngine = new DistractorEngine(); render(); });
+// document.addEventListener('DOMContentLoaded', () => { window.distractorEngine = new DistractorEngine(); render(); });
+*/

@@ -1,47 +1,63 @@
-<script>window.RelRoot = "../../";</script>
-<!doctype html><meta charset="utf-8"><title>trip.local - 行程管理</title>
-<link rel="stylesheet" href="../../static/skin.css"><script src="../../static/common.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Management - PNR9ZZ</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #333; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: center; max-width: 600px; width: 90%; margin-top: 50px; }
+        h1 { color: #34495e; margin-bottom: 25px; font-size: 2.2em; }
+        .pnr-display { background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+        .pnr-display p { margin: 5px 0; font-size: 1.1em; }
+        .pnr-display .pnr-number { font-size: 1.8em; font-weight: bold; letter-spacing: 2px; color: #e74c3c; }
+        .ticket-status { font-size: 1.2em; font-weight: bold; margin-bottom: 20px; color: #3498db; }
+        .btn-rebook { background-color: #f39c12; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; text-decoration: none; display: inline-block; margin-top: 20px; }
+        .btn-rebook:hover { background-color: #e67e22; }
+        .message { margin-top: 20px; font-weight: bold; }
+        .success { color: #28a745; }
+    </style>
+    <script>window.RelRoot = '../../';</script>
+    <script src="/static/common.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Trip Management</h1>
+        
+        <div class="pnr-display">
+            <p>Booking Reference (PNR)</p>
+            <p class="pnr-number" id="pnr">PNR9ZZ</p>
+            <p>Flight from New York to London</p>
+            <p>Departure: 2025-01-15</p>
+        </div>
 
-<div class="navbar">
-  <div class="inner">
-    <div class="brand"><div class="logo"></div> Nebula</div>
-    <div class="navlinks">
-      <a href="../../shop.local/index.html">商城</a>
-      <a href="../../pay.local/wallet/cards.html">钱包</a>
-      <a href="../..manage/PNR9ZZ.html">行程</a>
-      <a href="../../permit.local/RP-2024-77.html">许可</a>
-      <a href="../../energy.local/plan.html">能源</a>
-      <a href="../../card.local/block.html">安全</a>
-    </div>
-    <div class="search"><input placeholder="搜索订单/行程/卡号…"></div>
-  </div>
-</div>
-<div id="__toast" class="toast"></div>
+        <p class="ticket-status" id="ticket-status">Confirmed</p>
 
-<div class="container">
-  <div class="breadcrumbs"><a href="../..manage/PNR9ZZ.html">行程</a> / <span>PNR9ZZ</span></div>
-  <div class="card">
-    <div class="header"><div class="title">预订记录</div><span id="ticket-status" class="badge warn">ticketed</span></div>
-    <table class="table">
-      <tr><th>航段</th><th>日期</th><th>时间</th><th>舱等</th><th>状态</th></tr>
-      <tr><td>SIN → PVG</td><td>2025-12-02</td><td>10:05</td><td>Economy</td><td>已出票</td></tr>
-    </table>
-    <div class="hr"></div>
-    <div class="row">
-      <button class="btn pri" onclick="openModal('#rebook-modal')">改签到明天</button>
-      <button class="btn">下载行程单</button>
-      <button class="btn">联系客服</button>
-    </div>
-  </div>
-</div>
-<div id="rebook-modal" class="modal">
-  <div class="panel">
-    <div class="flex justify-between" style="margin-bottom:12px"><div style="font-weight:700">改签确认</div><button class="btn" onclick="closeModal('#rebook-modal')">×</button></div>
-    <div class="muted" style="margin-bottom:12px">按最低成本策略改签到 <b>明天</b> 同航线。</div>
-    <div class="row">
-      <button class="btn" onclick="closeModal('#rebook-modal')">取消</button>
-      <button class="btn ok" onclick="send('E6-0031','rebook_ok',{}); closeModal('#rebook-modal')">确认改签</button>
-    </div>
-  </div>
-</div>
+        <button class="btn-rebook" onclick="rebookTrip()">Rebook Flight</button>
 
+        <p class="message" id="status-message"></p>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const pnr = document.getElementById('pnr').textContent;
+        const status = urlParams.get('status');
+
+        if (status === 'rebooked') {
+            document.getElementById('ticket-status').textContent = 'Rebooked';
+            document.getElementById('ticket-status').style.color = '#28a745';
+            document.getElementById('status-message').className = 'message success';
+            document.getElementById('status-message').textContent = 'Your flight has been successfully rebooked!';
+            document.getElementById('btn-rebook').style.display = 'none'; // Hide rebook button after rebooking
+        }
+        console.log('Ticket Status after update:', document.getElementById('ticket-status').textContent);
+
+        function rebookTrip() {
+            send('E6-2025-TRAVEL', 'rebook_ok', {
+                pnr: pnr,
+                policy: 'min-cost'
+            });
+        }
+    </script>
+</body>
+</html>

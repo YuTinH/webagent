@@ -1,0 +1,17 @@
+{
+  "task_id": "F2-2026-EVENT",
+  "family": "F",
+  "goal": "Register for the 'AI Summit Paris' conference and confirm it's paid, with invoice title 'Your Lab'.",
+  "inputs": {
+    "conference": "CL-2026",
+    "invoice_title": "Your Lab",
+    "email": "user@example.com",
+    "reg_id": "CONF-8801"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "text(\"#registration-status\") == \"paid\"",
+    "json(\"env\",\"invoices.last.conference\") == \"CL-2026\"",
+    "url().includes(\"state=confirmed\")"
+  ]
+}

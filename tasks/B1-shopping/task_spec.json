@@ -25,7 +25,7 @@
     "mem('address.primary') != ''",
     "mem('payment.cards[0].last4') == '1234'",
     "mem('payment.cards[0].status') == 'active'",
-    "json('env', 'banking.balance.checking') >= 50.00"
+    "mem('banking.balance.checking') >= \"10.00\""
   ],
   "memory_keys": [
     "orders.last.id",

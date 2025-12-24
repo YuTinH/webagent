@@ -1,0 +1,22 @@
+{
+  "task_id": "G6-2025-GEN",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-17T07:07:39.314982Z",
+  "step_index": 5,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".badge.ok\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/health.local/vaccine.html",
+    "screenshot": "errors/G6-2025-GEN/error_step_5.png"
+  },
+  "step": {
+    "t": 5.0,
+    "act": "wait",
+    "selector": ".badge.ok",
+    "note": "Wait for booked status"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

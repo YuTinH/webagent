@@ -1,20 +1,18 @@
 {
   "task_id": "B1-2025-001",
   "error_type": "TimeoutError",
-  "timestamp": "2025-12-08T06:33:06.284891Z",
-  "step_index": 16,
-  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".cart-checkout-btn\")\n",
+  "timestamp": "2025-12-23T09:07:29.169175Z",
+  "step_index": 14,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#order-id\") to be visible\n",
   "context": {
     "url": "http://localhost:8014/shop.local/cart.html",
-    "screenshot": "errors/B1-2025-001/error_step_16.png"
+    "screenshot": "errors/B1-2025-001/error_step_14.png"
   },
   "step": {
-    "t": 15.0,
-    "url": "https://shop.local/cart",
-    "frame": "main",
-    "act": "click",
-    "selector": ".cart-checkout-btn",
-    "note": "Proceed to checkout"
+    "t": 28,
+    "act": "wait",
+    "selector": "#order-id",
+    "note": "Wait for order confirmation page"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",

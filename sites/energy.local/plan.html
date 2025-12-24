@@ -20,6 +20,16 @@
 
 <div class="container">
   <div class="breadcrumbs"><a href="../energy.local/plan.html">能源</a> / <span>电表 M-321</span></div>
+
+  <div id="setup-success-message" class="card" style="display:none; background-color: #d4edda; border-color: #28a745; color: #155724; text-align: left;">
+    <h3>✅ Utility Setup Confirmed!</h3>
+    <p>Your selected services have been successfully set up.</p>
+    <h4>Active Contracts:</h4>
+    <ul id="active-contracts-list">
+      <!-- Contracts will be injected here -->
+    </ul>
+  </div>
+
   <div class="grid cols-2">
     <div class="card">
       <div class="header"><div class="title">当前套餐</div><span id="plan" class="badge">standard</span></div>
@@ -40,3 +50,43 @@
   </div>
 </div>
 
+<script>
+    window.RelRoot = "../"; // Ensure RelRoot is set for common.js
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Render existing content
+        await render(); 
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const setupSuccess = urlParams.get('setup_success');
+
+        if (setupSuccess === 'true') {
+            document.getElementById('setup-success-message').style.display = 'block';
+            const contractsList = document.getElementById('active-contracts-list');
+            
+            const env = await loadEnv();
+            const contracts = env?.contracts || {};
+
+            for (const service in contracts) {
+                const contract = contracts[service];
+                const listItem = document.createElement('li');
+                listItem.textContent = `${service}: Status - ${contract.status}, Plan - ${contract.plan}`;
+                contractsList.appendChild(listItem);
+
+                // Add hidden markers for DSL verification
+                const statusMarker = document.createElement('div');
+                statusMarker.id = `service-${service}-status`;
+                statusMarker.className = `status-${contract.status}`; // e.g., status-active
+                statusMarker.textContent = contract.status;
+                statusMarker.style.display = 'none';
+                document.getElementById('setup-success-message').appendChild(statusMarker);
+
+                const idMarker = document.createElement('div');
+                idMarker.id = `contract-${service}-id`;
+                idMarker.className = `contract-id-${env?.memory?.[`contracts.${service}.id`] || 'UNKNOWN'}`; // e.g., contract-id-CTR-ELEC-1234
+                idMarker.textContent = env?.memory?.[`contracts.${service}.id`] || '';
+                idMarker.style.display = 'none';
+                document.getElementById('setup-success-message').appendChild(idMarker);
+            }
+        }
+    });
+</script>

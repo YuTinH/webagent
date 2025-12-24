@@ -1,47 +1,33 @@
 {
-  "task_id": "D4-2025-008",
+  "task_id": "D4-2025-CARD",
   "success": true,
   "final_state": "completed",
   "steps_completed": 3,
   "steps_total": 3,
-  "time_elapsed": 1.837193489074707,
+  "time_elapsed": 1.5319445133209229,
   "error": null,
   "trace": [
     {
       "t": 0,
-      "url": "https://bank.local/cards",
       "act": "open",
-      "note": "Navigate to cards page"
+      "url": "http://localhost:8014/pay.local/wallet/cards.html?oldLast4=1234&newLast4=7777",
+      "note": "Open wallet page to replace card"
     },
     {
       "t": 2,
-      "act": "wait",
-      "selector": ".card",
-      "note": "Wait for cards page"
+      "act": "click",
+      "selector": "button.btn-replace",
+      "note": "Click 'Replace Expired Card' button"
     },
     {
-      "t": 3,
-      "act": "verify_state",
-      "checks": [
-        {
-          "type": "url",
-          "contains": "/cards"
-        },
-        {
-          "type": "dom",
-          "selector": ".container",
-          "exists": true
-        },
-        {
-          "type": "dom",
-          "selector": "h1",
-          "exists": true
-        }
-      ],
-      "note": "Verify cards management page loaded"
+      "t": 5,
+      "act": "wait",
+      "selector": "#status-message.success",
+      "note": "Wait for success message"
     }
   ],
   "memory_updates": {},
   "artifacts": [],
-  "warnings": []
+  "warnings": [],
+  "extracted_data": {}
 }

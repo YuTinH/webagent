@@ -1,11 +1,51 @@
 {
-  "task_id": "G3-2025-103",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "G3-2025-HEALTH",
   "steps": [
-    {"t": 0, "url": "https://health.local/claim.html", "frame": "main", "act": "open", "note": "Open insurance claim form"},
-    {"t": 1.2, "act": "wait", "selector": ".claim-form", "note": "Wait for form"},
-    {"t": 1.6, "act": "type", "selector": "#claim-amount", "value": "250", "note": "Confirm claim amount"},
-    {"t": 2.0, "act": "click", "selector": "button.btn.pri", "note": "Submit claim via send()"},
-    {"t": 3.5, "act": "wait", "selector": "#application-id", "note": "Verify redirected status page is loaded"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/claims.html",
+      "note": "Open medical claims submission page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#claimId",
+      "value": "CLM-5501",
+      "note": "Enter Claim ID"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#appointmentId",
+      "value": "APT-9001",
+      "note": "Enter Appointment ID"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#amount",
+      "value": "250",
+      "note": "Enter Claim Amount"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#policyId",
+      "value": "P-9001",
+      "note": "Enter Policy ID"
+    },
+    {
+      "t": 10,
+      "act": "click",
+      "selector": "button.btn-submit",
+      "note": "Submit Claim"
+    },
+    {
+      "t": 12,
+      "act": "wait",
+      "selector": "#claim-state",
+      "note": "Wait for claim status to appear"
+    }
   ]
 }

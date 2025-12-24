@@ -1,0 +1,14 @@
+{
+  "task_id": "J1-2025-COURSE",
+  "family": "J",
+  "goal": "Enroll in the Deep Learning 101 course and confirm enrollment.",
+  "inputs": {
+    "course_id": "DL101",
+    "price": 199
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "text(\"div.text-sm.muted\") == \"Status: enrolled\"",
+    "json(\"env\",\"courses.DL101.state\") == \"enrolled\""
+  ]
+}

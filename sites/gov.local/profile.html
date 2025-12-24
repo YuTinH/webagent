@@ -1,0 +1,91 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>My Profile - City Portal</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> City Portal</div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="applications/index.html">Applications</a>
+      <a href="billing/index.html">Billing</a>
+      <a href="profile.html" class="active">Profile</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs"><a href="index.html">Home</a> / <span>My Profile</span></div>
+  
+  <h1 style="margin-bottom: 24px">My Profile</h1>
+  
+  <div class="card">
+    <div class="header">
+      <div class="title">Personal Information</div>
+      <button class="btn sm" onclick="Toast.info('Edit not implemented')">Edit</button>
+    </div>
+    <div class="kv">
+      <div class="key">Name</div><div>John Doe</div>
+      <div class="key">Address</div><div id="address-display">123 Main St, Springfield</div>
+      <div class="key">Verification Status</div>
+      <div id="verification-status"><span class="badge warn">Unverified</span></div>
+    </div>
+    
+    <div class="hr"></div>
+    
+    <h3>Address Verification</h3>
+    <p class="muted">Please upload a proof of address (e.g. utility bill, bank statement) to verify your residency.</p>
+    
+    <div id="upload-section">
+      <div class="mb-4">
+        <label class="muted">Document Type</label>
+        <select id="doc-type" class="input mt-1">
+          <option value="utility">Utility Bill</option>
+          <option value="bank">Bank Statement</option>
+          <option value="lease">Lease Agreement</option>
+        </select>
+      </div>
+      
+      <div class="mb-4">
+        <label class="muted">Upload File (PDF/Image)</label>
+        <input type="file" id="file-upload" class="input mt-1">
+      </div>
+      
+      <button class="btn pri" onclick="uploadProof()">Upload & Verify</button>
+    </div>
+  </div>
+</div>
+
+<script>
+async function init() {
+  try {
+    const env = await api('../api/env');
+    const status = env.identity?.address_verified ? 'verified' : 'unverified';
+    if (status === 'verified') {
+      document.getElementById('verification-status').innerHTML = '<span class="badge ok">Verified</span>';
+      document.getElementById('upload-section').style.display = 'none';
+    }
+  } catch(e) {}
+}
+
+async function uploadProof() {
+  const file = document.getElementById('file-upload').files[0];
+  const type = document.getElementById('doc-type').value;
+  
+  if (!file) {
+    Toast.error('Please select a file');
+    return;
+  }
+  
+  // Simulate upload
+  await send('A6-2025-GEN', 'verify_address', { docType: type, fileName: file.name });
+  
+  // Reload to show state
+  setTimeout(() => window.location.reload(), 1000);
+}
+
+init();
+</script>

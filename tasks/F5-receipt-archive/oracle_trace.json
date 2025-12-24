@@ -1,0 +1,12 @@
+{
+  "task_id": "F5-2025-GEN",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {"t": 0, "act": "open", "url": "https://cloud.local/index.html", "note": "Open Cloud Archive"},
+    {"t": 1.0, "act": "select", "selector": "#doc-type", "value": "receipt", "note": "Select document type"},
+    {"t": 2.0, "act": "upload", "selector": "#file-upload", "value": "utility_bill_dec.pdf", "note": "Upload file"},
+    {"t": 3.0, "act": "click", "selector": "button.pri", "note": "Submit"},
+    {"t": 4.0, "act": "wait", "selector": "#archived-files-list", "note": "Wait for file to appear"},
+    {"t": 5.0, "act": "extract", "selector": "#archived-files-list .title", "variable": "cloud.documents.last.id", "note": "Extract document ID (first listed)"}
+  ]
+}

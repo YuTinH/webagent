@@ -1,0 +1,14 @@
+{
+  "task_id": "L3-2025-SEC",
+  "family": "L",
+  "goal": "Check the security dashboard for compromised accounts and rotate keys for all affected providers.",
+  "inputs": {
+    "providers": ["mail", "cloud", "dev"],
+    "rotate": "mfa+api"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "count(\".rotation-complete\") >= 3",
+    "json(\"env\",\"security.last_rotation.providers\") == [\"mail\",\"cloud\",\"dev\"]"
+  ]
+}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Dashboard - SecureGuard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="/static/common.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <nav class="bg-indigo-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-shield-alt text-2xl text-green-400"></i>
+                <span class="text-xl font-bold tracking-tight">SecureGuard</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm opacity-80">Monitoring Active</span>
+                <div class="w-8 h-8 bg-indigo-700 rounded-full flex items-center justify-center">
+                    <i class="fas fa-user text-sm"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Security Dashboard</h1>
+            <p class="text-gray-600 mt-1">Overview of your account security and threat monitoring.</p>
+        </div>
+
+        <!-- Alert Section -->
+        <div id="alert-section" class="bg-red-50 border-l-4 border-red-500 p-4 mb-8 rounded shadow-sm hidden">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-xl"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-medium text-red-800">Security Alert: Compromised Accounts Detected</h3>
+                    <p class="text-sm text-red-700 mt-1">
+                        We have detected a data leak involving 3 of your connected providers. Immediate action is recommended.
+                    </p>
+                    <div class="mt-4">
+                        <button onclick="startRotation()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition shadow-sm font-medium">
+                            <i class="fas fa-sync-alt mr-2"></i>Rotate Keys & Secure Accounts
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Providers Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Mail Provider -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 provider-card" data-provider="mail">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Mail Service</h3>
+                            <p class="text-xs text-gray-500">Last scanned: Today</p>
+                        </div>
+                    </div>
+                    <span class="status-badge px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-800">Secure</span>
+                </div>
+                <div class="border-t pt-4 mt-2">
+                    <div class="text-sm text-gray-600 flex justify-between">
+                        <span>API Access</span>
+                        <span class="font-mono text-xs bg-gray-100 px-1 rounded">●●●●-8X92</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cloud Provider -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 provider-card" data-provider="cloud">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Cloud Storage</h3>
+                            <p class="text-xs text-gray-500">Last scanned: Today</p>
+                        </div>
+                    </div>
+                    <span class="status-badge px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-800">Secure</span>
+                </div>
+                <div class="border-t pt-4 mt-2">
+                    <div class="text-sm text-gray-600 flex justify-between">
+                        <span>Access Key</span>
+                        <span class="font-mono text-xs bg-gray-100 px-1 rounded">●●●●-K2J9</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dev Provider -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 provider-card" data-provider="dev">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-white">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Dev Platform</h3>
+                            <p class="text-xs text-gray-500">Last scanned: Today</p>
+                        </div>
+                    </div>
+                    <span class="status-badge px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-800">Secure</span>
+                </div>
+                <div class="border-t pt-4 mt-2">
+                    <div class="text-sm text-gray-600 flex justify-between">
+                        <span>SSH Key</span>
+                        <span class="font-mono text-xs bg-gray-100 px-1 rounded">SHA256:●●●●</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rotation Modal -->
+    <div id="rotation-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <i class="fas fa-sync fa-spin text-indigo-600 mr-2" id="spinner"></i>
+                <span id="modal-title">Rotating Security Keys...</span>
+            </h2>
+            <div class="space-y-4" id="progress-list">
+                <!-- Progress items will be injected here -->
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button id="close-modal-btn" onclick="finishTask()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 hidden">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate "Leak Detected" state if URL param is present
+        const urlParams = new URLSearchParams(window.location.search);
+        const compromised = ['mail', 'cloud', 'dev'];
+
+        if (!urlParams.has('rotated')) {
+            document.getElementById('alert-section').classList.remove('hidden');
+            compromised.forEach(p => {
+                const card = document.querySelector(`.provider-card[data-provider="${p}"]`);
+                if(card) {
+                    card.classList.add('border-red-300', 'bg-red-50');
+                    card.classList.remove('bg-white');
+                    const badge = card.querySelector('.status-badge');
+                    badge.className = 'status-badge px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-800';
+                    badge.textContent = 'Compromised';
+                }
+            });
+        } else {
+            // Show all secure
+             compromised.forEach(p => {
+                const card = document.querySelector(`.provider-card[data-provider="${p}"]`);
+                const badge = card.querySelector('.status-badge');
+                badge.textContent = 'Secure'; // Reset just in case
+                
+                // Add rotation-complete marker for DSL
+                const marker = document.createElement('div');
+                marker.className = 'rotation-complete hidden';
+                marker.textContent = p;
+                card.appendChild(marker);
+            });
+            const banner = document.createElement('div');
+            banner.className = 'bg-green-100 border-l-4 border-green-500 p-4 mb-8 rounded shadow-sm';
+            banner.innerHTML = '<p class="text-green-800 font-medium"><i class="fas fa-check-circle mr-2"></i>All security keys have been successfully rotated.</p>';
+            document.querySelector('main').prepend(banner);
+        }
+
+        function startRotation() {
+            const modal = document.getElementById('rotation-modal');
+            const list = document.getElementById('progress-list');
+            modal.classList.remove('hidden');
+            
+            const steps = [
+                { id: 'mail', text: 'Revoking old Mail API tokens...' },
+                { id: 'mail_gen', text: 'Generating new Mail keys...' },
+                { id: 'cloud', text: 'Rotating Cloud access keys...' },
+                { id: 'dev', text: 'Updating Dev Platform SSH keys...' }
+            ];
+
+            let delay = 500;
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.className = 'flex items-center text-sm text-gray-700';
+                    item.innerHTML = `<i class="fas fa-circle-notch fa-spin text-gray-400 mr-3"></i> ${step.text}`;
+                    list.appendChild(item);
+                    
+                    // Mark previous as done
+                    if(index > 0) {
+                        const prev = list.children[index-1];
+                        prev.innerHTML = prev.innerHTML.replace('fa-circle-notch fa-spin text-gray-400', 'fa-check text-green-500');
+                    }
+                }, delay);
+                delay += 800;
+            });
+
+            setTimeout(() => {
+                // All done
+                const last = list.lastElementChild;
+                if(last) last.innerHTML = last.innerHTML.replace('fa-circle-notch fa-spin text-gray-400', 'fa-check text-green-500');
+                
+                document.getElementById('modal-title').textContent = 'Rotation Complete';
+                document.getElementById('spinner').className = 'fas fa-check-circle text-green-500 mr-2';
+                document.getElementById('close-modal-btn').classList.remove('hidden');
+            }, delay + 500);
+        }
+
+        function finishTask() {
+            // Send to backend
+            // In a real app, this would happen during the process steps. 
+            // Here we send the final state update.
+            send('L3-2025-SEC', 'rotate_keys', {
+                providers: ['mail', 'cloud', 'dev'],
+                method: 'mfa+api'
+            });
+        }
+    </script>
+</body>
+</html>

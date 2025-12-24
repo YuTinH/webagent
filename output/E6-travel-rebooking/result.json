@@ -1,0 +1,33 @@
+{
+  "task_id": "E6-2025-TRAVEL",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 3,
+  "steps_total": 3,
+  "time_elapsed": 1.513920783996582,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/manage/PNR9ZZ.html",
+      "note": "Open trip management page for PNR9ZZ"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button.btn-rebook",
+      "note": "Click 'Rebook Flight' button"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#status-message.success",
+      "note": "Wait for rebooking success message"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

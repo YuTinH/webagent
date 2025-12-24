@@ -1,0 +1,22 @@
+{
+  "task_id": "M1-2025-CARD",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-18T03:06:39.250203Z",
+  "step_index": 1,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#card-state\") to be visible\n    - waiting for\" http://localhost:8014/card.local/block.html\" navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    3 \u00d7 locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n    - waiting for\" http://localhost:8014/card.local/block.html\" navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    - locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n    - waiting for navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    9 \u00d7 locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n    - waiting for navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    5 \u00d7 locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n    - waiting for\" http://localhost:8014/card.local/block.html\" navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    3 \u00d7 locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n    - waiting for\" http://localhost:8014/card.local/block.html\" navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    - locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n    - waiting for navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    2 \u00d7 locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n    - waiting for\" http://localhost:8014/card.local/block.html\" navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    5 \u00d7 locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n    - waiting for\" http://localhost:8014/card.local/block.html\" navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    2 \u00d7 locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n    - waiting for\" http://localhost:8014/card.local/block.html\" navigation to finish...\n    - navigated to \"http://localhost:8014/card.local/block.html\"\n    - locator resolved to visible <span id=\"card-state\" class=\"status-badge\">Blocked</span>\n",
+  "context": {
+    "url": "http://localhost:8014/card.local/block.html",
+    "screenshot": "errors/M1-2025-CARD/error_step_1.png"
+  },
+  "step": {
+    "t": 2,
+    "act": "wait",
+    "selector": "#card-state",
+    "note": "Wait for card state to be displayed"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

@@ -1,0 +1,31 @@
+{
+  "task_id": "F5-2025-GEN",
+  "family": "F",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Upload a utility bill receipt to cloud.local for archiving.",
+  "inputs": {
+    "file_path": "utility_bill_dec.pdf"
+  },
+  "allowed_domains": [
+    "cloud.local"
+  ],
+  "preconditions": [],
+  "dependencies": [],
+  "memory_keys": [
+    "cloud.documents.last.id"
+  ],
+  "success_criteria": [
+    "ALL[url().includes('/cloud.local/index.html'), mem('cloud.documents.last.id') != '']"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30
+}

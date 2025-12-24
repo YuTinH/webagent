@@ -1,0 +1,55 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Nebula Market - Second Hand</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Market</div>
+    <div class="navlinks">
+      <a href="index.html" class="active">Browse</a>
+      <a href="list-item.html">Sell Item</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <h1 style="margin-bottom: 24px">Second Hand Marketplace</h1>
+  
+  <div class="grid cols-3" id="items-list">
+    <!-- Rendered by JS -->
+  </div>
+</div>
+
+<script>
+const ITEMS = [
+  { id: 'ITEM-001', name: 'Used Laptop', price: 300.00, desc: 'Good condition, 8GB RAM, 256GB SSD.', seller: 'UserA', status: 'available' },
+  { id: 'ITEM-002', name: 'Vintage Bicycle', price: 150.00, desc: 'Classic model, some rust.', seller: 'UserB', status: 'available' },
+  { id: 'ITEM-003', name: 'Old Books Set', price: 20.00, desc: 'Various genres, good for reading.', seller: 'UserC', status: 'available' }
+];
+
+function renderItems() {
+  const list = document.getElementById('items-list');
+  list.innerHTML = ITEMS.map(item => `
+    <div class="card">
+      <div class="header">
+        <div class="title">${item.name}</div>
+        <span class="badge ok">$${item.price.toFixed(2)}</span>
+      </div>
+      <p class="muted">${item.desc}</p>
+      <div class="flex justify-between items-center mt-4">
+        <span class="text-sm muted">Seller: ${item.seller}</span>
+        <button class="btn pri" onclick="viewItem('${item.id}')">View Details</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function viewItem(itemId) {
+  Toast.info('Details for ' + itemId + ' coming soon!');
+}
+
+renderItems();
+</script>

@@ -8,23 +8,24 @@
   "persona": {
     "automation_preference": "medium"
   },
-  "goal": "Apply for price protection on recent order",
-  "inputs": {},
+  "goal": "Apply for price protection on the last delivered order on shop.local, claiming a lower price of $25.00.",
+  "inputs": {
+      "lower_price": 25.00
+  },
   "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
+    "shop.local"
   ],
   "preconditions": [
-    "mem('orders.last.id') != ''",
-    "mem('orders.last.price_drop') == true"
+    "mem('orders.last.id') != ''"
   ],
   "dependencies": [
     "B1-shopping"
   ],
-  "memory_keys": [],
+  "memory_keys": [
+    "claims.price_protection.last.id"
+  ],
   "success_criteria": [
-    "url().includes('/b6')"
+    "ALL[url().includes('/price-protection.html'), mem('claims.price_protection.last.id') != '']"
   ],
   "rubrics": {
     "SR": 1.0

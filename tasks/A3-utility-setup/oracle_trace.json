@@ -1,11 +1,23 @@
 {
-  "task_id": "A3-2025-001",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "A3-2025-UTIL",
   "steps": [
-    {"t": 0, "act": "open", "url": "https://energy.local/setup.html", "note": "Open utility setup page"},
-    {"t": 1.0, "act": "click", "selector": "#chk-net", "note": "Select broadband service"},
-    {"t": 1.5, "act": "select", "selector": "#plan-net", "value": "1gbps", "note": "Choose 1Gbps plan"},
-    {"t": 2.0, "act": "click", "selector": "button.btn.pri", "note": "Activate services"},
-    {"t": 3.0, "act": "wait", "selector": "body", "note": "Wait for redirect"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/energy.local/setup.html",
+      "note": "Open utility setup page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button.btn-submit",
+      "note": "Click 'Confirm Setup' button"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "body",
+      "note": "Wait for page reload/redirect to plan.html"
+    }
   ]
 }

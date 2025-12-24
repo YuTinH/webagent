@@ -1,0 +1,46 @@
+{
+  "task_id": "D2-2025-BUDGET",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 5,
+  "steps_total": 5,
+  "time_elapsed": 1.5939996242523193,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/budget.html",
+      "note": "Open budget management page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": ".budget-item[data-category='food'] .btn-edit",
+      "note": "Click 'Edit Limit' for Food"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#new-limit",
+      "value": "600",
+      "note": "Enter new limit"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "button.btn-save",
+      "note": "Save Changes"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#limit-food:has-text('$600.00')",
+      "note": "Wait for limit to update on page"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

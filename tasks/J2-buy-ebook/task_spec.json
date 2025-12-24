@@ -8,22 +8,25 @@
   "persona": {
     "automation_preference": "medium"
   },
-  "goal": "Purchase required textbook",
-  "inputs": {},
+  "goal": "Purchase the 'Deep Learning Basics' textbook from the shop.",
+  "inputs": {
+    "book_title": "Deep Learning Basics",
+    "sku": "BK-101"
+  },
   "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
+    "shop.local"
   ],
   "preconditions": [
-    "mem('education.current_course') != ''"
+    "mem('courses.DL101.state') == 'enrolled'"
   ],
   "dependencies": [
     "J1-course-enroll"
   ],
-  "memory_keys": [],
+  "memory_keys": [
+    "orders.last.id"
+  ],
   "success_criteria": [
-    "url().includes('/j2')"
+    "ALL[url().includes('/order/confirmation'), text('body') includes 'Deep Learning Basics', mem('orders.last.id') != '']"
   ],
   "rubrics": {
     "SR": 1.0
