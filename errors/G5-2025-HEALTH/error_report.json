@@ -1,0 +1,22 @@
+{
+  "task_id": "G5-2025-HEALTH",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-27T14:06:47.566423Z",
+  "step_index": 2,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#plan-premium.active\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/health.local/plan.html?activated=true",
+    "screenshot": "errors/G5-2025-HEALTH/error_step_2.png"
+  },
+  "step": {
+    "t": 4,
+    "act": "wait",
+    "selector": "#plan-premium.active",
+    "note": "Wait for Premium plan to be active"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

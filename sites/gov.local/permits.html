@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的许可 - 市政服务</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.permit-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.permit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--border);
+}
+.permit-title {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text);
+}
+.permit-id {
+  color: var(--muted);
+  font-size: 14px;
+}
+.permit-status {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.permit-status.active { background: var(--ok-bg); color: var(--ok); }
+.permit-status.expired { background: var(--err-bg); color: var(--err); }
+.permit-details div {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+.permit-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      市政服务
+    </div>
+    <div class="navlinks">
+      <a href="../gov.local/index.html">首页</a>
+      <a href="../gov.local/permits.html" class="active">我的许可</a>
+      <a href="../gov.local/applications.html">我的申请</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">我的许可</h1>
+
+  <!-- Permit List -->
+  <div id="permit-list">
+    <div class="permit-card">
+      <div class="permit-header">
+        <div>
+          <div class="permit-title">停车许可</div>
+          <div class="permit-id">ID: RP-2024-77</div>
+        </div>
+        <div class="permit-status active">有效</div>
+      </div>
+      <div class="permit-details">
+        <div>到期日期: <span id="permit-expiry">2025-12-01</span></div>
+        <div>签发日期: 2024-12-01</div>
+        <div>地址: 123 Main St, Springfield</div>
+      </div>
+      <div class="permit-actions">
+        <button class="btn pri" onclick="renewPermit('RP-2024-77')">续期</button>
+        <button class="btn">查看详情</button>
+      </div>
+    </div>
+
+    <div class="permit-card">
+      <div class="permit-header">
+        <div>
+          <div class="permit-title">建筑施工许可</div>
+          <div class="permit-id">ID: BC-2024-12</div>
+        </div>
+        <div class="permit-status expired">已过期</div>
+      </div>
+      <div class="permit-details">
+        <div>到期日期: 2025-06-15</div>
+        <div>签发日期: 2024-06-15</div>
+        <div>地址: 456 Elm St, Springfield</div>
+      </div>
+      <div class="permit-actions">
+        <button class="btn pri" disabled>续期</button>
+        <button class="btn">查看详情</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    市政服务 · Synthetic UI for Web Agent Research
+  </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function loadPermits() {
+  try {
+    const env = await loadEnv();
+    const permit = env.permits?.["RP-2024-77"]; // Assuming this specific permit for the task
+    if (permit && permit.next_appointment) { // Using next_appointment as proxy for expiry date
+      document.getElementById('permit-expiry').textContent = permit.next_appointment.split('T')[0];
+    }
+  } catch (e) {
+    console.error("Failed to load permit info:", e);
+  }
+}
+
+function renewPermit(permitId) {
+  window.location.href = `${window.RelRoot}gov.local/renew.html?permit_id=${permitId}`;
+}
+
+document.addEventListener('DOMContentLoaded', loadPermits);
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

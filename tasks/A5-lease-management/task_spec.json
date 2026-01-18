@@ -1,0 +1,19 @@
+{
+  "task_id": "A5-2025-LEASE",
+  "family": "A",
+  "goal": "Register a new lease contract 'CTR-2025-001' with a monthly rent of 3500 and a deposit of 3500. Set the end date to '2026-12-31' and enable expiry reminders.",
+  "inputs": {
+    "lease_id": "CTR-2025-001",
+    "rent": 3500,
+    "deposit": 3500,
+    "end_date": "2026-12-31"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/housing.local/lease-management.html')",
+    "mem('housing.leases.CTR-2025-001.id') == 'CTR-2025-001'",
+    "mem('housing.leases.CTR-2025-001.deposit') == '3500'",
+    "mem('housing.leases.CTR-2025-001.end_date') == '2026-12-31'",
+    "mem('housing.leases.CTR-2025-001.reminder') == '1'"
+  ]
+}

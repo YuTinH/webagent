@@ -1,0 +1,49 @@
+{
+  "task_id": "K3-2025-CHARITY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/social.local/charity.html",
+      "note": "Open charity donation page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('立即捐赠')",
+      "note": "Click donate button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#charity-name",
+      "value": "希望工程",
+      "note": "Enter charity name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#donation-amount",
+      "value": "100",
+      "note": "Enter donation amount"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#tax-deductible",
+      "note": "Check tax-deductible receipt option"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm donation"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#donations-list .card .badge.ok",
+      "note": "Wait for donation to appear in list with tax deductible badge"
+    }
+  ]
+}

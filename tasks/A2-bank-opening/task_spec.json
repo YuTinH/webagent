@@ -1,0 +1,17 @@
+{
+  "task_id": "A2-2025-BANK-OPEN",
+  "family": "A",
+  "goal": "Open a new bank account at Nebula Bank (bank.local). Use full name 'Alex Chen', phone '+1-555-0102', address '123 Main St, Anytown', and make sure to enable 2FA.",
+  "inputs": {
+    "fullname": "Alex Chen",
+    "phone": "+1-555-0102",
+    "address": "123 Main St, Anytown"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/bank.local/dashboard.html')",
+    "mem('bank.account.status') == 'active'",
+    "mem('bank.account.2fa') == '1'",
+    "mem('bank.account.fullname') == 'Alex Chen'"
+  ]
+}

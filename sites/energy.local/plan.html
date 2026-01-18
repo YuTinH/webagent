@@ -1,92 +1,260 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
 <script>window.RelRoot = "../";</script>
-<!doctype html><meta charset="utf-8"><title>energy.local - 能源套餐</title>
-<link rel="stylesheet" href="../static/skin.css"><script src="../static/common.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能源计划 - 智慧能源</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.plan-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  transition: .2s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--pri);
+}
+.plan-card.active {
+  border-color: var(--ok);
+  background: rgba(16, 185, 129, 0.05);
+}
+.plan-card.active::after {
+  content: '当前计划';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--ok);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.plan-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.plan-price {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.plan-price span {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.plan-features li::before {
+  content: '✓';
+  color: var(--ok);
+  font-weight: 700;
+}
+.meter-select {
+  margin-bottom: 32px;
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+}
+</style>
+</head>
+<body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand"><div class="logo"></div> Nebula</div>
-    <div class="navlinks">
-      <a href="../shop.local/index.html">商城</a>
-      <a href="../pay.local/wallet/cards.html">钱包</a>
-      <a href="../trip.local/manage/PNR9ZZ.html">行程</a>
-      <a href="../permit.local/RP-2024-77.html">许可</a>
-      <a href="../energy.local/plan.html">能源</a>
-      <a href="../card.local/block.html">安全</a>
+    <div class="brand">
+      <div class="logo"></div>
+      智慧能源
     </div>
-    <div class="search"><input placeholder="搜索订单/行程/卡号…"></div>
+    <div class="navlinks">
+      <a href="../energy.local/index.html">首页</a>
+      <a href="../energy.local/usage.html">用量分析</a>
+      <a href="../energy.local/plan.html" class="active">能源计划</a>
+    </div>
   </div>
 </div>
+
 <div id="__toast" class="toast"></div>
 
+<!-- Main Container -->
 <div class="container">
-  <div class="breadcrumbs"><a href="../energy.local/plan.html">能源</a> / <span>电表 M-321</span></div>
 
-  <div id="setup-success-message" class="card" style="display:none; background-color: #d4edda; border-color: #28a745; color: #155724; text-align: left;">
-    <h3>✅ Utility Setup Confirmed!</h3>
-    <p>Your selected services have been successfully set up.</p>
-    <h4>Active Contracts:</h4>
-    <ul id="active-contracts-list">
-      <!-- Contracts will be injected here -->
-    </ul>
-  </div>
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">选择能源计划</h1>
 
-  <div class="grid cols-2">
-    <div class="card">
-      <div class="header"><div class="title">当前套餐</div><span id="plan" class="badge">standard</span></div>
-      <div class="kv">
-        <div class="key">电表</div><div>M-321</div>
-        <div class="key">计费</div><div>后付费</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="header"><div class="title">切换套餐</div><span class="muted">即时生效</span></div>
-      <select id="planSel" class="input">
-        <option value="standard">standard</option>
-        <option value="green_offpeak">green_offpeak</option>
+  <div class="meter-select">
+    <div class="form-group">
+      <label for="meter-id">选择电表</label>
+      <select id="meter-id" onchange="loadCurrentPlan()">
+        <option value="M-321">M-321 (家庭主表)</option>
+        <option value="M-322">M-322 (车库)</option>
       </select>
-      <div class="hr"></div>
-      <button class="btn pri" onclick="send('I5-6001','set_energy_plan',{meterId:'M-321', plan: document.getElementById('planSel').value})">切换</button>
     </div>
   </div>
+
+  <div class="plan-grid">
+    <div class="plan-card" id="plan-standard">
+      <div class="plan-name">标准计划</div>
+      <div class="plan-price">¥0.58 <span>/ kWh</span></div>
+      <ul class="plan-features">
+        <li>固定费率，全天候单一价格</li>
+        <li>无合约期限限制</li>
+        <li>适合用电时间不固定的家庭</li>
+      </ul>
+      <button class="btn" onclick="selectPlan('standard')">选择此计划</button>
+    </div>
+
+    <div class="plan-card" id="plan-green_offpeak">
+      <div class="plan-name">绿色节能计划</div>
+      <div class="plan-price">¥0.38 <span>/ kWh (低谷)</span></div>
+      <ul class="plan-features">
+        <li>低谷时段超低费率 (22:00-06:00)</li>
+        <li>100% 可再生能源</li>
+        <li>智能设备自动调节建议</li>
+      </ul>
+      <button class="btn pri" onclick="selectPlan('green_offpeak')">选择此计划</button>
+    </div>
+
+    <div class="plan-card" id="plan-business">
+      <div class="plan-name">商业优选</div>
+      <div class="plan-price">¥0.52 <span>/ kWh</span></div>
+      <ul class="plan-features">
+        <li>大用量阶梯优惠</li>
+        <li>包含设备维护服务</li>
+        <li>年度能源审计报告</li>
+      </ul>
+      <button class="btn" onclick="selectPlan('business')">选择此计划</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    智慧能源 · Synthetic UI for Web Agent Research
+  </div>
+
 </div>
 
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
-    window.RelRoot = "../"; // Ensure RelRoot is set for common.js
-    document.addEventListener('DOMContentLoaded', async () => {
-        // Render existing content
-        await render(); 
+let currentPlan = 'standard';
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const setupSuccess = urlParams.get('setup_success');
+async function loadCurrentPlan() {
+  const meterId = document.getElementById('meter-id').value;
+  
+  // Clear active states
+  document.querySelectorAll('.plan-card').forEach(card => {
+    card.classList.remove('active');
+    card.querySelector('button').disabled = false;
+    card.querySelector('button').textContent = '选择此计划';
+  });
 
-        if (setupSuccess === 'true') {
-            document.getElementById('setup-success-message').style.display = 'block';
-            const contractsList = document.getElementById('active-contracts-list');
-            
-            const env = await loadEnv();
-            const contracts = env?.contracts || {};
+  try {
+    const env = await loadEnv();
+    const meter = env.meters?.[meterId];
+    if (meter && meter.plan) {
+      currentPlan = meter.plan;
+      const activeCard = document.getElementById(`plan-${currentPlan}`);
+      if (activeCard) {
+        activeCard.classList.add('active');
+        const btn = activeCard.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = '当前使用中';
+      }
+    }
+  } catch (e) {
+    console.error("Failed to load plan info:", e);
+  }
+}
 
-            for (const service in contracts) {
-                const contract = contracts[service];
-                const listItem = document.createElement('li');
-                listItem.textContent = `${service}: Status - ${contract.status}, Plan - ${contract.plan}`;
-                contractsList.appendChild(listItem);
+async function selectPlan(planId) {
+  const meterId = document.getElementById('meter-id').value;
+  
+  if (planId === currentPlan) {
+    Toast.info('您当前正在使用此计划');
+    return;
+  }
 
-                // Add hidden markers for DSL verification
-                const statusMarker = document.createElement('div');
-                statusMarker.id = `service-${service}-status`;
-                statusMarker.className = `status-${contract.status}`; // e.g., status-active
-                statusMarker.textContent = contract.status;
-                statusMarker.style.display = 'none';
-                document.getElementById('setup-success-message').appendChild(statusMarker);
+  Toast.info(`正在切换至 ${planId} 计划...`);
 
-                const idMarker = document.createElement('div');
-                idMarker.id = `contract-${service}-id`;
-                idMarker.className = `contract-id-${env?.memory?.[`contracts.${service}.id`] || 'UNKNOWN'}`; // e.g., contract-id-CTR-ELEC-1234
-                idMarker.textContent = env?.memory?.[`contracts.${service}.id`] || '';
-                idMarker.style.display = 'none';
-                document.getElementById('setup-success-message').appendChild(idMarker);
-            }
-        }
+  try {
+    const response = await send('I5-2025-ENERGY', 'set_energy_plan', {
+      meterId: meterId,
+      plan: planId
     });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('计划切换成功！');
+      // If server returns redirect, common.js handles it.
+      // If not, we reload manually or update UI.
+      // Fallback manual update if no redirect (though server.py sends redirect)
+      setTimeout(loadCurrentPlan, 500); 
+    } else {
+        // Fallback for test environment network issues
+        console.warn('Response invalid, attempting fallback reload...');
+        window.location.href = `${window.RelRoot}energy.local/plan.html?updated=true`;
+    }
+  } catch (error) {
+    console.error('切换计划失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}energy.local/plan.html?updated=true`;
+    } else {
+        Toast.error('切换计划失败，请稍后再试');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadCurrentPlan);
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

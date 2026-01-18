@@ -1,0 +1,17 @@
+{
+  "task_id": "H4-2025-PARKING",
+  "family": "H",
+  "goal": "Apply for a new residential parking permit for plate number '沪A-12345' with a duration of 12 months. Then, renew this permit for another 6 months. Verify the permit status is active and the expiry date is updated.",
+  "inputs": {
+    "plate_number": "沪A-12345",
+    "initial_duration": 12,
+    "renewal_duration": 6
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/gov.local/parking-permits.html')",
+    "mem('gov.parking_permits.last.status') == 'active'",
+    "mem('gov.parking_permits.last.id') != ''",
+    "mem('gov.parking_permits.last.plate_number') == '沪A-12345'"
+  ]
+}

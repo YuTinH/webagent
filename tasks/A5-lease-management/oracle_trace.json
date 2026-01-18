@@ -1,0 +1,63 @@
+{
+  "task_id": "A5-2025-LEASE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/housing.local/lease-management.html",
+      "note": "Open lease management page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('+ 添加合同')",
+      "note": "Click add contract button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-id",
+      "value": "CTR-2025-001",
+      "note": "Enter contract ID"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#new-rent",
+      "value": "3500",
+      "note": "Enter monthly rent"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#new-deposit",
+      "value": "3500",
+      "note": "Enter deposit amount"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#new-end-date",
+      "value": "2026-12-31",
+      "note": "Enter end date"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "#new-reminder",
+      "note": "Enable reminder"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Click save"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#leases-list .card",
+      "note": "Wait for lease to appear in list"
+    }
+  ]
+}

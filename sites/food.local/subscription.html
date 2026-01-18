@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>food.local - 生鲜订阅</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🥗 FreshDelight</div>
+      <div class="navlinks">
+        <a href="../food.local/index.html">订餐</a>
+        <a href="../food.local/orders.html">我的订单</a>
+        <a href="../food.local/subscription.html" class="active">生鲜订阅</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>我的生鲜订阅</h1>
+      <button class="btn pri" onclick="openSubscribeModal()">+ 订阅新计划</button>
+    </div>
+
+    <div id="subscriptions-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Subscriptions loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadSubscriptions() {
+    const list = document.getElementById('subscriptions-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const subscriptions = env.food?.subscriptions || {};
+      
+      if (Object.keys(subscriptions).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🍅</div>
+            <div style="color:var(--muted)">暂无生鲜订阅计划</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(subscriptions).map(([id, sub]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${sub.name || '生鲜订阅计划'} #${id}</h3>
+              <div style="color:var(--muted); font-size:14px">状态: <span class="badge ${sub.status === 'active' ? 'ok' : 'warn'}">${sub.status === 'active' ? '活跃' : '暂停'}</span></div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">¥${sub.price_per_delivery || 'N/A'} / 次</div>
+              <div style="color:var(--muted); font-size:13px">频率: ${sub.frequency || '每周'}</div>
+            </div>
+          </div>
+          
+          <div style="background:rgba(0,0,0,0.03); padding:16px; border-radius:8px; display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px">
+            <div>
+              <div style="font-size:12px; color:var(--muted)">下次送达</div>
+              <div>${sub.next_delivery_date || '未设置'}</div>
+            </div>
+            <div>
+              <div style="font-size:12px; color:var(--muted)">商品内容</div>
+              <div>${sub.items ? sub.items.join(', ') : '标准组合'}</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="openRescheduleModal('${id}')">更改送达</button>
+            <button class="btn ${sub.status === 'active' ? 'secondary' : 'pri'}" onclick="toggleSubscriptionStatus('${id}', '${sub.status}')">${sub.status === 'active' ? '暂停订阅' : '恢复订阅'}</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openSubscribeModal() {
+    new Modal({
+      title: '订阅新计划',
+      content: `
+        <div class="form">
+          <label>计划名称 / Plan Name</label>
+          <input id="new-name" class="input" value="每周生鲜组合">
+          
+          <label>配送频率 / Frequency</label>
+          <select id="new-frequency" class="input">
+            <option value="weekly">每周</option>
+            <option value="bi-weekly">每两周</option>
+            <option value="monthly">每月</option>
+          </select>
+
+          <label>商品内容 / Items (逗号分隔)</label>
+          <input id="new-items" class="input" value="水果, 蔬菜, 鸡蛋">
+          
+          <label>价格 / Price per Delivery</label>
+          <input id="new-price" type="number" class="input" value="120">
+          
+          <label>下次送达日期 / Next Delivery Date</label>
+          <input id="new-delivery-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: '确认订阅',
+      onConfirm: async () => {
+        const name = document.getElementById('new-name').value;
+        const frequency = document.getElementById('new-frequency').value;
+        const items = document.getElementById('new-items').value.split(',').map(s => s.trim());
+        const price = document.getElementById('new-price').value;
+        const deliveryDate = document.getElementById('new-delivery-date').value;
+        
+        if (!name || !price || !deliveryDate) {
+          Toast.error("请填写完整信息");
+          return;
+        }
+        
+        await send('B2-2025-FRESHSUB', 'manage_subscription', {
+          action_type: 'subscribe',
+          name: name,
+          frequency: frequency,
+          items: items,
+          price_per_delivery: price,
+          next_delivery_date: deliveryDate
+        });
+        
+        setTimeout(loadSubscriptions, 500);
+      }
+    }).open();
+  }
+
+  function openRescheduleModal(id) {
+    new Modal({
+      title: `更改订阅 ${id} 送达日期`,
+      content: `
+        <div class="form">
+          <label>新送达日期</label>
+          <input id="reschedule-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: '确认更改',
+      onConfirm: async () => {
+        const rescheduleDate = document.getElementById('reschedule-date').value;
+        
+        if (!rescheduleDate) {
+          Toast.error("请选择新日期");
+          return;
+        }
+        
+        await send('B2-2025-FRESHSUB', 'manage_subscription', {
+          action_type: 'reschedule',
+          subscription_id: id,
+          next_delivery_date: rescheduleDate
+        });
+        
+        setTimeout(loadSubscriptions, 500);
+      }
+    }).open();
+  }
+
+  function toggleSubscriptionStatus(id, currentStatus) {
+    const newStatus = currentStatus === 'active' ? 'paused' : 'active';
+    new Modal({
+      title: `${newStatus === 'paused' ? '暂停' : '恢复'}订阅 ${id}`,
+      content: `您确定要${newStatus === 'paused' ? '暂停' : '恢复'}此订阅吗？`,
+      confirmText: newStatus === 'paused' ? '确认暂停' : '确认恢复',
+      onConfirm: async () => {
+        await send('B2-2025-FRESHSUB', 'manage_subscription', {
+          action_type: 'toggle_status',
+          subscription_id: id,
+          status: newStatus
+        });
+        setTimeout(loadSubscriptions, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadSubscriptions);
+  </script>
+</body>
+</html>

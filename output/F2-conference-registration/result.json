@@ -1,43 +1,57 @@
 {
-  "task_id": "F2-2026-EVENT",
+  "task_id": "F2-2025-CONF",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 5,
-  "steps_total": 5,
-  "time_elapsed": 1.6109960079193115,
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 1.9001410007476807,
   "error": null,
   "trace": [
     {
       "t": 0,
       "act": "open",
-      "url": "http://localhost:8014/event.local/registration.html",
+      "url": "http://localhost:8014/event.local/register.html?id=CL-2026",
       "note": "Open conference registration page"
     },
     {
       "t": 2,
       "act": "type",
-      "selector": "#invoiceTitle",
-      "value": "Your Lab",
-      "note": "Enter Invoice Title"
+      "selector": "#full-name",
+      "value": "Masteryth",
+      "note": "Enter full name"
     },
     {
       "t": 4,
       "act": "type",
       "selector": "#email",
-      "value": "user@example.com",
-      "note": "Enter Email"
+      "value": "masteryth@example.com",
+      "note": "Enter email"
     },
     {
       "t": 6,
-      "act": "click",
-      "selector": "button.btn-submit",
-      "note": "Confirm Registration"
+      "act": "type",
+      "selector": "#invoice-title",
+      "value": "Your Lab",
+      "note": "Enter invoice title"
     },
     {
       "t": 8,
+      "act": "select",
+      "selector": "#payment-method",
+      "value": "card",
+      "note": "Select payment method"
+    },
+    {
+      "t": 10,
+      "act": "click",
+      "selector": "button.btn.pri.lg:has-text('\u786e\u8ba4\u6ce8\u518c')",
+      "note": "Click 'Confirm Registration' button"
+    },
+    {
+      "t": 12,
       "act": "wait",
-      "selector": "#confirmation-section",
-      "note": "Wait for confirmation message"
+      "selector": "h3:has-text('\u6ce8\u518c\u6210\u529f')",
+      "note": "Wait for success message"
     }
   ],
   "memory_updates": {},

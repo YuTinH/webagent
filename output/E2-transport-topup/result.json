@@ -1,0 +1,83 @@
+{
+  "task_id": "E2-2025-TOPUP",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 11,
+  "steps_total": 11,
+  "time_elapsed": 2.7512428760528564,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/transport-card.html",
+      "note": "Open transport card management page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('+ \u5145\u503c')",
+      "note": "Click top-up button"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('\u00a5100')",
+      "note": "Select 100 RMB amount"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm top-up"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#card-balance",
+      "note": "Wait for balance update"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "button:has-text('\u8bbe\u7f6e\u81ea\u52a8\u5145\u503c')",
+      "note": "Click auto-recharge settings button"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "#ar-enable",
+      "note": "Enable auto-recharge"
+    },
+    {
+      "t": 7,
+      "act": "type",
+      "selector": "#ar-threshold",
+      "value": "20",
+      "note": "Set threshold to 20"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#ar-amount",
+      "value": "50",
+      "note": "Set recharge amount to 50"
+    },
+    {
+      "t": 9,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Save auto-recharge settings"
+    },
+    {
+      "t": 10,
+      "act": "wait",
+      "selector": "#auto-recharge-status:has-text('\u5df2\u5f00\u542f')",
+      "note": "Wait for auto-recharge status to update"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

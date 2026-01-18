@@ -1,0 +1,22 @@
+{
+  "task_id": "F5-2025-ARCHIVE",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-27T13:49:06.430356Z",
+  "step_index": 4,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".file-item:has(.file-name:has-text('monthly_expenses.pdf'))\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/cloud.local/index.html?uploaded=true",
+    "screenshot": "errors/F5-2025-ARCHIVE/error_step_4.png"
+  },
+  "step": {
+    "t": 8,
+    "act": "wait",
+    "selector": ".file-item:has(.file-name:has-text('monthly_expenses.pdf'))",
+    "note": "Wait for the uploaded file to appear in the list"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

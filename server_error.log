@@ -1,0 +1,20 @@
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 747, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 752, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+

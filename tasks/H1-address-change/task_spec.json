@@ -1,0 +1,17 @@
+{
+  "task_id": "H1-2025-ADDRCHANGE",
+  "family": "H",
+  "goal": "Change municipal address to '上海市浦东新区张江高科张衡路XXX号' with zip code '201203', uploading 'proof_of_address.pdf'. Verify the new address is recorded and the change status is pending.",
+  "inputs": {
+    "new_address": "上海市浦东新区张江高科张衡路XXX号",
+    "zip_code": "201203",
+    "proof_document": "proof_of_address.pdf"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/gov.local/address-change.html')",
+    "mem('user_profile.address.current_address') == '上海市浦东新区张江高科张衡路XXX号'",
+    "mem('user_profile.address.zip_code') == '201203'",
+    "mem('user_profile.address_change_history.last.status') == 'pending'"
+  ]
+}

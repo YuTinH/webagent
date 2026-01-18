@@ -1,0 +1,19 @@
+{
+  "task_id": "E1-2025-COMMUTE",
+  "family": "E",
+  "goal": "Compare commute routes from '家' to '办公室' for '08:00' using all transport modes. Verify that the search is recorded and at least one route is found.",
+  "inputs": {
+    "origin": "家",
+    "destination": "办公室",
+    "commute_time": "08:00",
+    "transport_mode": "all"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/trip.local/commute.html')",
+    "mem('commute.last_search.origin') == '家'",
+    "mem('commute.last_search.destination') == '办公室'",
+    "mem('commute.last_search.transport_mode') == 'all'",
+    "count('#results-list .card') > 0"
+  ]
+}

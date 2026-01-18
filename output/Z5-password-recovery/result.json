@@ -1,0 +1,78 @@
+{
+  "task_id": "Z5-2025-RESET",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 10,
+  "steps_total": 10,
+  "time_elapsed": 2.8387153148651123,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/forgot-password.html",
+      "note": "Open forgot password page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#username",
+      "value": "user123",
+      "note": "Enter username"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('\u83b7\u53d6\u9a8c\u8bc1\u7801')",
+      "note": "Request code"
+    },
+    {
+      "t": 3,
+      "act": "open",
+      "url": "http://localhost:8014/mobile.local/messages.html",
+      "note": "Check messages"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": ".card:has-text('Your verification code is 1234')",
+      "note": "Read code"
+    },
+    {
+      "t": 6,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/reset-password.html",
+      "note": "Go to reset page"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#code",
+      "value": "1234",
+      "note": "Enter code"
+    },
+    {
+      "t": 7,
+      "act": "type",
+      "selector": "#new-password",
+      "value": "newpass123",
+      "note": "Enter new password"
+    },
+    {
+      "t": 8,
+      "act": "click",
+      "selector": "button:has-text('\u91cd\u7f6e\u5bc6\u7801')",
+      "note": "Submit reset"
+    },
+    {
+      "t": 9,
+      "act": "wait",
+      "selector": "#reset-success",
+      "note": "Wait for login page with success message"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

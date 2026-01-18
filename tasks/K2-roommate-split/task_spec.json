@@ -1,16 +1,17 @@
 {
   "task_id": "K2-2025-SPLIT",
   "family": "K",
-  "goal": "Split household expenses for October 2025 equally between Alice and Bob.",
+  "goal": "Settle roommate expenses for October 2025 with members Masteryth, Alice, Bob using equal split.",
   "inputs": {
     "month": "2025-10",
-    "members": ["Alice", "Bob"],
+    "members": ["Masteryth", "Alice", "Bob"],
     "rules": "equal"
   },
   "preconditions": [],
   "success_criteria": [
-    "text(\"#split-state\") == \"settled\"",
-    "json(\"env\",\"settlements.2025-10.state\") == \"settled\"",
-    "url().includes(\"month=2025-10\")"
+    "url().includes('/social.local/split.html?month=2025-10&state=settled')",
+    "json('env','settlements.2025-10.state') == 'settled'",
+    "json('env','settlements.2025-10.members') includes 'Masteryth'",
+    "json('env','settlements.2025-10.rules') == 'equal'"
   ]
 }

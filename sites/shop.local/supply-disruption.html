@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - 供应中断通知</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">购物</a>
+        <a href="../shop.local/orders.html">订单</a>
+        <a href="../shop.local/supply-disruption.html" class="active">供应通知</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>供应/配送中断通知</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px; border: 1px solid var(--warn); background: rgba(255, 165, 0, 0.05);">
+        <h2 style="color:var(--warn)">⚠️ 当前中断预警</h2>
+        <div id="disruption-alerts">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <h2>应急采购建议</h2>
+    <div id="alternative-options-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Options loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadDisruptionData() {
+    const alertsDiv = document.getElementById('disruption-alerts');
+    const optionsList = document.getElementById('alternative-options-list');
+    
+    try {
+      const env = await loadEnv();
+      const disruptions = env.supply_chain?.disruptions || {};
+      const alternatives = env.supply_chain?.alternatives || {};
+
+      if (Object.keys(disruptions).length === 0) {
+        alertsDiv.innerHTML = `<div style="padding:16px">当前无重大供应中断。</div>`;
+      } else {
+        alertsDiv.innerHTML = Object.entries(disruptions).map(([id, alert]) => `
+          <div style="margin-bottom:12px">
+            <h3 style="margin:0 0 4px 0">${alert.title}</h3>
+            <p>${alert.description}</p>
+            <div style="font-size:13px; color:var(--muted)">影响范围: ${alert.affected_areas.join(', ')}</div>
+          </div>
+        `).join('');
+      }
+
+      if (Object.keys(alternatives).length === 0) {
+        optionsList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">暂无替代方案建议</div></div>`;
+      } else {
+        optionsList.innerHTML = Object.entries(alternatives).map(([id, option]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">${option.item_name}</h3>
+                <div style="color:var(--muted); font-size:14px">替代来源: ${option.alternative_source}</div>
+              </div>
+              <div style="text-align:right">
+                <span class="badge ${option.status === 'available' ? 'ok' : 'warn'}">${option.status === 'available' ? '有货' : '缺货'}</span>
+              </div>
+            </div>
+            <p>建议操作: ${option.action_needed}</p>
+            <button class="btn pri" onclick="confirmAlternative('${id}')">确认改为自提/替代</button>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      alertsDiv.innerHTML = '<div class="error">加载失败</div>';
+      optionsList.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function confirmAlternative(id) {
+    new Modal({
+      title: '确认更改配送方式',
+      content: `您确定要将此商品的配送方式更改为本地自提或替代方案吗？`,
+      confirmText: '确认更改',
+      onConfirm: async () => {
+        await send('M2-2025-SUPPLY', 'handle_supply_disruption', {
+          action_type: 'switch_to_pickup',
+          alternative_id: id
+        });
+        setTimeout(loadDisruptionData, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadDisruptionData);
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "task_id": "F5-2025-ARCHIVE",
+  "family": "F",
+  "goal": "Upload and archive a receipt document named 'monthly_expenses.pdf'.",
+  "inputs": {
+    "docType": "receipt",
+    "fileName": "monthly_expenses.pdf"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/cloud.local/index.html?uploaded=true')",
+    "mem('cloud.documents.last.name') == 'monthly_expenses.pdf'",
+    "mem('cloud.documents.last.type') == 'receipt'"
+  ]
+}

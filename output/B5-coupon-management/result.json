@@ -1,0 +1,74 @@
+{
+  "task_id": "B5-2025-COUPONS",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 9,
+  "steps_total": 9,
+  "time_elapsed": 1.6097099781036377,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/coupons.html",
+      "note": "Open coupons management page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('\u6dfb\u52a0\u4f18\u60e0\u5238')",
+      "note": "Click add coupon button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-name",
+      "value": "\u65b0\u5e74\u4f18\u60e0",
+      "note": "Enter coupon name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#new-code",
+      "value": "NEWYEAR20",
+      "note": "Enter coupon code"
+    },
+    {
+      "t": 4,
+      "act": "select",
+      "selector": "#new-type",
+      "value": "percentage",
+      "note": "Select coupon type"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#new-value",
+      "value": "20",
+      "note": "Enter coupon value"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#new-expiry-date",
+      "value": "2026-01-31",
+      "note": "Enter expiry date"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm adding coupon"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#coupons-list .card",
+      "note": "Wait for coupon to appear in list"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

@@ -1,20 +1,41 @@
 {
-  "task_id": "J2-2025-GEN",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "J2-2025-EBOOK",
   "steps": [
-    {"t": 0, "act": "open", "url": "https://shop.local/index.html", "note": "Open Shop"},
-    {"t": 1.0, "act": "type", "selector": "#search-box", "value": "Deep Learning Basics", "note": "Search for book"},
-    {"t": 2.0, "act": "click", "selector": "button[type='submit']", "note": "Submit search"},
-    {"t": 3.0, "act": "wait", "selector": ".product-card", "note": "Wait for results"},
-    {"t": 4.0, "act": "click", "selector": ".product-card[data-product-id]", "note": "Click on book"},
-    {"t": 5.0, "act": "wait", "selector": "#add-to-cart-btn", "note": "Wait for details"},
-    {"t": 7.0, "act": "click", "selector": "#add-to-cart-btn", "note": "Add to cart"},
-    {"t": 8.0, "act": "wait", "selector": ".cart-drawer.open", "note": "Wait for drawer"},
-    {"t": 9.0, "act": "click", "selector": ".cart-checkout-btn", "force": true, "note": "Checkout from drawer"},
-    {"t": 10.0, "act": "wait", "selector": "#shipping-address", "note": "Wait for checkout"},
-    {"t": 9.0, "act": "click", "selector": "button.place-order", "note": "Place order"},
-    {"t": 9.5, "act": "click", "selector": ".modal-confirm", "note": "Confirm success modal"},
-    {"t": 10.0, "act": "wait", "selector": ".order-items-list", "note": "Wait for confirmation page"},
-    {"t": 11.0, "act": "extract", "selector": "#order-number", "variable": "orders.last.id", "note": "Extract Order ID"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/catalog.html",
+      "note": "Open ebook catalog"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": ".book-card",
+      "note": "Wait for books to load"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": ".book-card[href*='id=BK-102']",
+      "note": "Click on Python Data Analysis book"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#book-price",
+      "note": "Wait for book details"
+    },
+    {
+      "t": 8,
+      "act": "click",
+      "selector": "button.btn.pri.lg:has-text('购买电子书')",
+      "note": "Click 'Buy Ebook' button"
+    },
+    {
+      "t": 10,
+      "act": "wait",
+      "selector": "h1:has-text('我的学习')",
+      "note": "Wait for My Learning page to load"
+    }
   ]
 }

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - 兴趣装备租售</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">购物</a>
+        <a href="../shop.local/orders.html">订单</a>
+        <a href="../shop.local/gear-rental.html" class="active">装备租售</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>兴趣装备租/售</h1>
+      <button class="btn pri" onclick="openListGearModal()">+ 挂售/出租装备</button>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>出租中的装备</h2>
+        <div id="rental-gear-list" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:16px">
+            <!-- Rental gear loaded here -->
+        </div>
+    </div>
+
+    <h2>我的挂售装备</h2>
+    <div id="selling-gear-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Selling gear loaded here -->
+      <div class="card soft" style="text-align:center; padding:24px">
+        <div style="color:var(--muted)">暂无挂售装备</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadGearData() {
+    const rentalList = document.getElementById('rental-gear-list');
+    const sellingList = document.getElementById('selling-gear-list');
+    rentalList.innerHTML = '<div class="loading">加载中...</div>';
+    sellingList.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const rentalGear = env.gear?.rentals || {};
+      const sellingGear = env.gear?.sales || {};
+
+      if (Object.keys(rentalGear).length === 0) {
+        rentalList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">暂无出租装备</div></div>`;
+      } else {
+        rentalList.innerHTML = Object.entries(rentalGear).map(([id, gear]) => `
+          <div class="card soft">
+            <h3 style="margin:0 0 4px 0">${gear.name}</h3>
+            <div style="color:var(--muted); font-size:14px">日租金: ¥${gear.rental_price}/天</div>
+            <div style="color:var(--muted); font-size:14px">状态: ${gear.status}</div>
+          </div>
+        `).join('');
+      }
+
+      if (Object.keys(sellingGear).length === 0) {
+        sellingList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">暂无挂售装备</div></div>`;
+      } else {
+        sellingList.innerHTML = Object.entries(sellingGear).map(([id, gear]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">${gear.name} (#${id})</h3>
+                <div style="color:var(--muted); font-size:14px">类型: ${gear.type}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:600">售价: ¥${gear.price}</div>
+                <div style="color:var(--muted); font-size:13px">状态: <span class="badge ${gear.status === 'listed' ? 'ok' : 'warn'}">${gear.status}</span></div>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px">
+              <button class="btn" onclick="editListing('${id}')">编辑</button>
+              <button class="btn secondary" onclick="removeListing('${id}')">下架</button>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      rentalList.innerHTML = '<div class="error">加载失败</div>';
+      sellingList.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openListGearModal() {
+    new Modal({
+      title: '挂售/出租新装备',
+      content: `
+        <div class="form">
+          <label>装备名称</label>
+          <input id="gear-name" class="input" placeholder="例如: 露营帐篷, 单反相机">
+          
+          <label>操作类型</label>
+          <select id="listing-type" class="input">
+            <option value="sale">出售</option>
+            <option value="rent">出租</option>
+          </select>
+
+          <label>价格 (出售价格或日租金)</label>
+          <input id="gear-price" type="number" class="input" placeholder="例如: 500">
+        </div>
+      `,
+      confirmText: '提交',
+      onConfirm: async () => {
+        const name = document.getElementById('gear-name').value;
+        const type = document.getElementById('listing-type').value;
+        const price = document.getElementById('gear-price').value;
+        
+        if (!name || !price) {
+          Toast.error("请填写必填项");
+          return;
+        }
+        
+        await send('J4-2025-GEAR', 'manage_gear_listing', {
+          action_type: 'list',
+          name: name,
+          type: type,
+          price: parseFloat(price)
+        });
+        
+        setTimeout(loadGearData, 500);
+      }
+    }).open();
+  }
+
+  function editListing(id) {
+    Toast.info(`编辑装备 ${id} (模拟功能)`);
+  }
+
+  function removeListing(id) {
+    new Modal({
+      title: '确认下架',
+      content: `您确定要下架装备 ${id} 吗？`,
+      confirmText: '确认下架',
+      onConfirm: async () => {
+        await send('J4-2025-GEAR', 'manage_gear_listing', {
+          action_type: 'remove',
+          gear_id: id
+        });
+        setTimeout(loadGearData, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadGearData);
+  </script>
+</body>
+</html>

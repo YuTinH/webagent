@@ -1,33 +1,17 @@
 {
-  "task_id": "I1-2025-GEN",
+  "task_id": "I1-2025-SMARTBULB",
   "family": "I",
-  "episode_id": "ep-gen",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T10:00:00Z",
-  "persona": {
-    "automation_preference": "medium"
+  "goal": "Set up a smart bulb (ID: BULB-001) in the '客厅' (Living Room) with default color '暖白'.",
+  "inputs": {
+    "deviceId": "BULB-001",
+    "location": "客厅",
+    "color": "warm_white"
   },
-  "goal": "Setup smart bulb",
-  "inputs": {},
-  "allowed_domains": [
-    "shop.local",
-    "bank.local",
-    "gov.local"
-  ],
-  "preconditions": [
-    "mem('devices.new_bulb.id') != ''"
-  ],
-  "dependencies": [
-    "B1-shopping"
-  ],
-  "memory_keys": [],
+  "preconditions": [],
   "success_criteria": [
-    "url().includes('/i1')"
-  ],
-  "rubrics": {
-    "SR": 1.0
-  },
-  "timeout": 300,
-  "step_timeout": 30
+    "url().includes('/energy.local/index.html?setup_success=true')",
+    "json('env','devices.BULB-001.location') == '客厅'",
+    "json('env','devices.BULB-001.color') == 'warm_white'",
+    "json('env','devices.BULB-001.status') == 'active'"
+  ]
 }

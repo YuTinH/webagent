@@ -1,0 +1,14 @@
+{
+  "task_id": "Z2-2025-GROWTH",
+  "family": "Z",
+  "goal": "Open a 'Growth Fund' investment account with $1000, wait 30 days (simulated), and verify the balance has grown.",
+  "inputs": {
+    "account_type": "funds",
+    "deposit": 1000
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/bank.local/investments.html')",
+    "mem('finance.investment_accounts.last.balance') == '1050.00'"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "task_id": "L2-2025-DSR",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/data-deletion.html",
+      "note": "Open data deletion request page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('提交新请求')",
+      "note": "Click submit new request button"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#request-type",
+      "value": "deletion",
+      "note": "Select request type as deletion"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#platform-name",
+      "value": "Facebook",
+      "note": "Enter platform name"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#data-scope",
+      "value": "全部",
+      "note": "Enter data scope"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm submission"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#requests-list .card",
+      "note": "Wait for request to appear in list"
+    }
+  ]
+}

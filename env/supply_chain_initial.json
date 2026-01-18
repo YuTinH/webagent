@@ -1,0 +1,19 @@
+{
+  "supply_chain": {
+    "disruptions": {
+      "DIS-001": {
+        "title": "物流罢工预警",
+        "description": "由于区域物流罢工，部分快递配送将延迟3-5天。",
+        "affected_areas": ["市中心", "高新区"]
+      }
+    },
+    "alternatives": {
+      "ALT-101": {
+        "item_name": "生鲜蔬菜包",
+        "alternative_source": "社区合作自提点",
+        "status": "available",
+        "action_needed": "建议切换为自提以避免延误"
+      }
+    }
+  }
+}

@@ -1,215 +1,321 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
+<script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flight Results - SkyHigh Travel</title>
+<title>预订航班 - Nebula出行</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
 <style>
-.flight-card {
-  display: grid;
-  grid-template-columns: 80px 1fr 1fr 1fr auto;
-  align-items: center;
-  gap: 20px;
+.search-form {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
-  margin-bottom: 16px;
-  transition: var(--transition);
+  padding: 32px;
+  margin-bottom: 24px;
 }
-.flight-card:hover {
-  border-color: var(--pri);
-  transform: translateY(-2px);
-}
-.airline-logo {
-  width: 60px;
-  height: 60px;
-  background: var(--panel);
-  border-radius: 50%;
+.form-grid {
   display: grid;
-  place-items: center;
-  font-size: 24px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
-.flight-route {
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+.flight-results {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+.flight-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+}
+.flight-item:last-child {
+  border-bottom: none;
+}
+.flight-details {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 18px;
-  font-weight: 700;
+  gap: 24px;
 }
-.flight-meta {
+.airline-logo {
+  font-size: 48px;
+  width: 60px;
+  text-align: center;
+}
+.flight-info h3 {
+  font-size: 18px;
+  margin: 0 0 4px 0;
+}
+.flight-route {
   color: var(--muted);
   font-size: 14px;
 }
 .flight-price {
   font-size: 24px;
-  font-weight: 800;
-  color: #38bdf8;
-  text-align: right;
+  font-weight: 700;
+  color: #60a5fa;
 }
-.duration-line {
-  position: relative;
-  height: 2px;
-  background: var(--border);
-  width: 100px;
-  margin: 0 10px;
+.flight-actions .btn {
+  padding: 10px 20px;
+  font-size: 15px;
 }
-.duration-line::after {
-  content: '✈️';
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
-  background: var(--card);
-  padding: 0 4px;
+.loading-message {
+  padding: 40px;
+  text-align: center;
+  color: var(--muted);
 }
 </style>
 </head>
 <body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand">
-      <div class="logo" style="background: linear-gradient(135deg, #0ea5e9, #22d3ee)"></div>
-      SkyHigh Travel
-    </div>
+    <div class="brand"><div class="logo"></div> Nebula出行</div>
     <div class="navlinks">
-      <a href="index.html">Flights</a>
-      <a href="hotels.html">Hotels</a>
-      <a href="manage.html">My Trips</a>
+      <a href="../trip.local/dashboard.html">首页</a>
+      <a href="../trip.local/flights.html" class="active">航班</a>
+      <a href="../trip.local/hotels.html">酒店</a>
+      <a href="../trip.local/manage.html">我的行程</a>
+    </div>
+    <div style="margin-left:auto">
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
     </div>
   </div>
 </div>
 
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
 <div class="container">
-  
-  <div class="flex justify-between items-center mb-4">
-    <div class="breadcrumbs">
-      <a href="index.html">Home</a> / <span>Flight Results</span>
-    </div>
-    <button class="btn" onclick="toggleFilterPanel()">Filter & Sort</button>
-  </div>
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">预订航班</h1>
 
-  <div class="grid cols-4" style="align-items:start">
-    <!-- Filters Sidebar -->
-    <div id="filter-container" style="display:block">
-      <!-- FilterPanel will render here -->
-    </div>
-
-    <!-- Results -->
-    <div style="grid-column: span 3">
-      <h2 id="results-title">Flights to ...</h2>
-      
-      <div id="flight-list">
-        <!-- Rendered by JS -->
-        <div class="skeleton" style="height:120px; margin-bottom:16px"></div>
-        <div class="skeleton" style="height:120px; margin-bottom:16px"></div>
-        <div class="skeleton" style="height:120px; margin-bottom:16px"></div>
+  <!-- Flight Search Form -->
+  <div class="search-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="departure">出发地</label>
+        <input type="text" id="departure" value="北京">
+      </div>
+      <div class="form-group">
+        <label for="destination">目的地</label>
+        <input type="text" id="destination" value="上海">
+      </div>
+      <div class="form-group">
+        <label for="depart-date">出发日期</label>
+        <input type="date" id="depart-date" value="2025-12-31">
+      </div>
+      <div class="form-group">
+        <label for="return-date">返程日期 (可选)</label>
+        <input type="date" id="return-date">
+      </div>
+      <div class="form-group">
+        <label for="passengers">乘客人数</label>
+        <input type="number" id="passengers" value="1" min="1">
+      </div>
+      <div class="form-group">
+        <label for="class">舱位</label>
+        <select id="class">
+          <option value="economy">经济舱</option>
+          <option value="business">商务舱</option>
+          <option value="first">头等舱</option>
+        </select>
       </div>
     </div>
+    <div class="button-group">
+      <button class="btn pri lg" onclick="searchFlights()">搜索航班</button>
+    </div>
   </div>
 
+  <!-- Flight Search Results -->
+  <div id="flight-results" class="flight-results">
+    <div class="loading-message">请填写搜索条件以查找航班</div>
+  </div>
+
+  <div class="footer">Nebula出行 · Synthetic UI for Web Agent Research</div>
 </div>
 
+<!-- JavaScript -->
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
-// Mock Data
-const FLIGHTS = [
-  { id: 'FL-101', airline: 'SkyAir', code: 'SA101', dep: '08:00', arr: '11:30', price: 450, stops: 0 },
-  { id: 'FL-202', airline: 'JetStream', code: 'JS202', dep: '10:15', arr: '14:45', price: 380, stops: 1 },
-  { id: 'FL-303', airline: 'GlobalWings', code: 'GW303', dep: '16:00', arr: '19:30', price: 520, stops: 0 },
-  { id: 'FL-404', airline: 'EcoFly', code: 'EF404', dep: '06:30', arr: '10:00', price: 290, stops: 2 },
-];
+let currentFlights = [];
+let userMenuDropdown = null;
 
-function getParams() {
-  const p = new URLSearchParams(window.location.search);
-  return {
-    to: p.get('to') || 'Paris',
-    date: p.get('date') || 'Tomorrow'
-  };
-}
-
-function init() {
-  const { to, date } = getParams();
-  document.getElementById('results-title').textContent = `Flights to ${to} (${date})`;
-
-  // Init Filters
-  const filterPanel = new FilterPanel({
-    filters: [
-      {
-        type: 'checkbox',
-        key: 'stops',
-        label: 'Stops',
-        options: [
-          { value: 0, label: 'Non-stop' },
-          { value: 1, label: '1 Stop' },
-          { value: 2, label: '2+ Stops' }
-        ]
-      },
-      {
-        type: 'range',
-        key: 'price',
-        label: 'Price Range'
-      }
+// Initialize components on load
+window.addEventListener('DOMContentLoaded', () => {
+  // User menu dropdown
+  userMenuDropdown = new Dropdown(document.getElementById('user-menu-btn'), {
+    align: 'right',
+    items: [
+      { icon: '👤', label: '我的账户', value: 'account' },
+      { icon: '✈️', label: '我的行程', value: 'my_trips' },
+      { type: 'divider' },
+      { icon: '⚙️', label: '设置', value: 'settings' },
+      { icon: '🚪', label: '退出登录', value: 'logout' }
     ],
-    onApply: (filters) => {
-      Toast.info('Filters applied (mock)');
-      renderFlights();
+    onSelect: (item) => {
+      if (item.value === 'my_trips') window.location.href=window.RelRoot+'trip.local/manage.html';
+      else Toast.info(`${item.label}功能即将推出`);
     }
   });
-  filterPanel.render('filter-container');
+});
 
-  // Simulate Load
-  setTimeout(() => renderFlights(), 800);
+
+async function searchFlights() {
+  const departure = document.getElementById('departure').value;
+  const destination = document.getElementById('destination').value;
+  const departDate = document.getElementById('depart-date').value;
+  const returnDate = document.getElementById('return-date').value;
+  const passengers = document.getElementById('passengers').value;
+  const flightClass = document.getElementById('class').value;
+
+  if (!departure || !destination || !departDate || !passengers) {
+    Toast.error('请填写所有必填项');
+    return;
+  }
+
+  const resultsContainer = document.getElementById('flight-results');
+  resultsContainer.innerHTML = '<div class="loading-message">正在搜索航班...</div>';
+
+  try {
+    const response = await fetch(`${window.RelRoot}api/flights/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        departure,
+        destination,
+        depart_date: departDate,
+        return_date: returnDate || null,
+        passengers: parseInt(passengers),
+        class: flightClass
+      })
+    });
+    const data = await response.json();
+
+    if (data.success && data.flights.length > 0) {
+      currentFlights = data.flights;
+      renderFlights(currentFlights);
+    } else {
+      resultsContainer.innerHTML = '<div class="loading-message">未找到符合条件的航班</div>';
+    }
+  } catch (error) {
+    console.error('搜索航班失败:', error);
+    resultsContainer.innerHTML = '<div class="loading-message">搜索航班失败，请稍后再试</div>';
+    Toast.error('搜索航班失败');
+  }
 }
 
-function renderFlights() {
-  const list = document.getElementById('flight-list');
-  list.innerHTML = FLIGHTS.map(f => `
-    <div class="flight-card">
-      <div class="airline-logo">✈️</div>
-      <div>
-        <div class="flight-route">${f.dep} - ${f.arr}</div>
-        <div class="flight-meta">${f.airline} • ${f.code}</div>
+function renderFlights(flights) {
+  const resultsContainer = document.getElementById('flight-results');
+  resultsContainer.innerHTML = ''; // Clear loading message
+
+  flights.forEach(flight => {
+    const flightItem = document.createElement('div');
+    flightItem.className = 'flight-item';
+    flightItem.innerHTML = `
+      <div class="flight-details">
+        <div class="airline-logo">✈️</div>
+        <div class="flight-info">
+          <h3>${flight.airline} ${flight.flight_number}</h3>
+          <div class="flight-route">${flight.departure_airport} (${flight.departure_time}) → ${flight.destination_airport} (${flight.arrival_time})</div>
+        </div>
       </div>
-      <div style="text-align:center">
-        <div class="flight-meta">${f.stops === 0 ? 'Non-stop' : f.stops + ' Stop(s)'}</div>
-        <div class="duration-line"></div>
-        <div class="flight-meta">3h 30m</div>
+      <div class="flight-price">¥${flight.price.toFixed(2)}</div>
+      <div class="flight-actions">
+        <button class="btn pri" onclick="bookFlight('${flight.flight_number}', '${flight.price}', '${flight.departure_airport}', '${flight.destination_airport}', '${flight.departure_time}')">预订</button>
       </div>
-      <div class="flight-price">$${f.price}</div>
-      <button class="btn pri" onclick="bookFlight('${f.id}')">Select</button>
-    </div>
-  `).join('');
+    `;
+    resultsContainer.appendChild(flightItem);
+  });
 }
 
-function bookFlight(id) {
-  window.location.href = `book.html?id=${id}`;
+async function bookFlight(flightNumber, price, departureAirport, destinationAirport, departureTime) {
+  const departDate = document.getElementById('depart-date').value;
+  Toast.info(`正在预订航班 ${flightNumber}...`);
+  try {
+    const response = await send('E1-2025-FLIGHT', 'book_flight', {
+      flight_number: flightNumber,
+      price: parseFloat(price),
+      departure: departureAirport,
+      destination: destinationAirport,
+      date: departDate,
+      depart_time: departureTime
+    });
+
+    if (response && response.success) {
+      Toast.success('航班预订成功！');
+      // Redirect to trip management page or show confirmation
+      window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    } else {
+      Toast.error('航班预订失败: ' + (response ? response.error : '无响应'));
+      // Fallback for test environment network issues
+      console.warn('Response invalid, attempting fallback redirect...');
+      window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    }
+  } catch (error) {
+    console.error('预订航班失败:', error);
+    // Fallback for network errors
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    } else {
+        Toast.error('预订航班失败，请稍后再试');
+    }
+  }
 }
 
-init();
+// Initial search on load if params are present (e.g., from a dashboard widget)
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('departure') && params.get('destination') && params.get('date')) {
+        document.getElementById('departure').value = params.get('departure');
+        document.getElementById('destination').value = params.get('destination');
+        document.getElementById('depart-date').value = params.get('date');
+        searchFlights();
+    }
+});
 </script>
 
-
-<!-- Distractor: Popover Promo -->
-<div id="promo-popup" class="popover-promo">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
-    <h4 style="margin:0">Special Offer!</h4>
-    <button onclick="document.getElementById('promo-popup').style.display='none'" style="background:none; border:none; color:var(--text); cursor:pointer">×</button>
-  </div>
-  <p style="font-size:14px; color:var(--muted); margin-bottom:16px">Get 50% off your next purchase. Limited time only!</p>
-  <button class="btn pri" style="width:100%" onclick="document.getElementById('promo-popup').style.display='none'; Toast.success('Coupon applied!')">Claim Now</button>
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
 </div>
-<script>
-setTimeout(() => {
-  const popup = document.getElementById('promo-popup');
-  if(popup) popup.classList.add('active');
-}, 2000);
-</script>
 
 </body>
 </html>

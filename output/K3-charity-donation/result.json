@@ -1,0 +1,59 @@
+{
+  "task_id": "K3-2025-CHARITY",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 1.960716962814331,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/social.local/charity.html",
+      "note": "Open charity donation page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('\u7acb\u5373\u6350\u8d60')",
+      "note": "Click donate button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#charity-name",
+      "value": "\u5e0c\u671b\u5de5\u7a0b",
+      "note": "Enter charity name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#donation-amount",
+      "value": "100",
+      "note": "Enter donation amount"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#tax-deductible",
+      "note": "Check tax-deductible receipt option"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm donation"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#donations-list .card .badge.ok",
+      "note": "Wait for donation to appear in list with tax deductible badge"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

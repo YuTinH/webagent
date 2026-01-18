@@ -1,123 +1,255 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
+<script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Property Details - HomeFinder</title>
+<title id="page-title">房源详情 - 智慧居住</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
+<style>
+.property-details-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+.main-image {
+  width: 100%;
+  height: 400px;
+  background-color: #334155;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 120px;
+  margin-bottom: 24px;
+}
+.detail-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.detail-section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.feature-list li {
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.key-value-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.key-value-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+.key-value-item .key {
+  color: var(--muted);
+}
+.apply-section {
+  position: sticky;
+  top: 80px;
+}
+.apply-button {
+  width: 100%;
+  padding: 18px;
+  font-size: 17px;
+  font-weight: 700;
+}
+</style>
 </head>
 <body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
     <div class="brand">
-      <div class="logo" style="background: linear-gradient(135deg, #3b82f6, #60a5fa)"></div>
-      HomeFinder
+      <div class="logo"></div>
+      智慧居住
     </div>
     <div class="navlinks">
-      <a href="index.html">Rent</a>
-      <a href="#">Buy</a>
-      <a href="#">Sell</a>
+      <a href="../housing.local/index.html" class="active">找房</a>
+      <a href="../housing.local/applications.html">我的申请</a>
+      <a href="../housing.local/leasing.html">我的租赁</a>
     </div>
   </div>
 </div>
 
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
 <div class="container">
-  
-  <div class="breadcrumbs">
-    <a href="index.html">Rent</a> / <span id="prop-breadcrumb">Property</span>
-  </div>
 
-  <div class="grid cols-2 gap-8 mt-4">
-    
-    <!-- Left: Images -->
-    <div>
-      <div style="height:400px; background:#e2e8f0; border-radius:var(--radius); display:flex; align-items:center; justify-content:center; font-size:96px" id="prop-img">
-        🏢
-      </div>
-      <div class="grid cols-3 gap-2 mt-2">
-        <div style="height:100px; background:#f1f5f9; border-radius:8px"></div>
-        <div style="height:100px; background:#f1f5f9; border-radius:8px"></div>
-        <div style="height:100px; background:#f1f5f9; border-radius:8px"></div>
-      </div>
-    </div>
+  <div id="property-details-content">
+    <div class="property-details-grid">
+      <div>
+        <div class="main-image">🏠</div>
+        <div class="detail-card">
+          <div class="detail-section-title" id="property-address">加载中...</div>
+          <p id="property-description">加载中...</p>
+        </div>
 
-    <!-- Right: Info -->
-    <div>
-      <h1 style="margin:0 0 8px" id="prop-title">Loading...</h1>
-      <div style="font-size:32px; font-weight:700; color:var(--pri); margin-bottom:16px" id="prop-price">...</div>
-      
-      <div class="flex gap-4 mb-6 text-lg">
-        <div class="badge"><span id="prop-beds"></span> Beds</div>
-        <div class="badge"><span id="prop-baths"></span> Baths</div>
-        <div class="badge"><span id="prop-sqft"></span> Sqft</div>
-      </div>
-
-      <p class="muted" style="line-height:1.6; margin-bottom:32px">
-        Beautiful apartment located in the heart of the city. Close to public transport, shopping centers, and parks. Newly renovated kitchen with modern appliances.
-      </p>
-
-      <div class="panel p-6 border">
-        <h3>Interested in this property?</h3>
-        <p class="muted mb-4">Schedule a tour or submit an application today.</p>
-        <div class="flex gap-4">
-          <button class="btn w-full" onclick="scheduleTour()">Schedule Tour</button>
-          <button class="btn pri w-full" onclick="applyNow()">Apply Now</button>
+        <div class="detail-card">
+          <div class="detail-section-title">房源特色</div>
+          <ul class="feature-list">
+            <li>✨ 全新装修</li>
+            <li>🅿️ 免费停车位</li>
+            <li>🚇 交通便利</li>
+            <li>🌳 小区绿化</li>
+          </ul>
         </div>
       </div>
 
+      <div>
+        <div class="detail-card apply-section">
+          <div class="detail-section-title">申请信息</div>
+          <div class="key-value-list">
+            <div class="key-value-item">
+              <span class="key">租金</span>
+              <span class="value">¥<span id="property-price">0</span>/月</span>
+            </div>
+            <div class="key-value-item">
+              <span class="key">房型</span>
+              <span class="value" id="property-type"></span>
+            </div>
+            <div class="key-value-item">
+              <span class="key">面积</span>
+              <span class="value" id="property-area"></span>
+            </div>
+            <div class="key-value-item">
+              <span class="key">卧室</span>
+              <span class="value" id="property-beds"></span>
+            </div>
+            <div class="key-value-item">
+              <span class="key">卫生间</span>
+              <span class="value" id="property-baths"></span>
+            </div>
+            <div class="key-value-item">
+              <span class="key">最短租期</span>
+              <select id="lease-term" style="width:auto; padding:8px">
+                <option value="6 months">6个月</option>
+                <option value="12 months">12个月</option>
+                <option value="24 months">24个月</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn pri apply-button" onclick="applyToRent()">申请租赁</button>
+        </div>
+      </div>
     </div>
+  </div>
 
+  <div class="footer">
+    智慧居住 · Synthetic UI for Web Agent Research
   </div>
 
 </div>
 
+<!-- JavaScript -->
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
-const PROPERTIES = {
-  'PROP-101': { title: 'Modern Downtown Apt', price: 1800, beds: 2, baths: 2, sqft: 1100, img: '🏢' },
-  'PROP-102': { title: 'Cozy Suburban House', price: 2200, beds: 3, baths: 2.5, sqft: 1800, img: '🏡' },
-  'PROP-103': { title: 'Studio Near Park', price: 950, beds: 1, baths: 1, sqft: 600, img: '🏬' },
-  'PROP-104': { title: 'Luxury Loft', price: 2800, beds: 2, baths: 2, sqft: 1400, img: '🏙️' },
-  'PROP-105': { title: 'Garden Apartment', price: 1500, beds: 2, baths: 1, sqft: 950, img: '🌳' },
-  'PROP-106': { title: 'Historic Townhouse', price: 3200, beds: 4, baths: 3, sqft: 2400, img: '🏘️' },
-};
+let propertyId = '';
 
-function getParams() {
-  const p = new URLSearchParams(window.location.search);
-  return { id: p.get('id') || 'PROP-101' };
-}
+async function loadPropertyDetails() {
+  const urlParams = new URLSearchParams(window.location.search);
+  propertyId = urlParams.get('id') || 'PROP-101'; // Default property ID
 
-function init() {
-  const { id } = getParams();
-  const p = PROPERTIES[id];
-  if(p) {
-    document.title = p.title + " - HomeFinder";
-    document.getElementById('prop-breadcrumb').textContent = p.title;
-    document.getElementById('prop-title').textContent = p.title;
-    document.getElementById('prop-price').textContent = `$${p.price}/mo`;
-    document.getElementById('prop-beds').textContent = p.beds;
-    document.getElementById('prop-baths').textContent = p.baths;
-    document.getElementById('prop-sqft').textContent = p.sqft;
-    document.getElementById('prop-img').textContent = p.img;
+  const propertyData = { // Mock data
+    'PROP-101': {
+      address: '中央大街101号',
+      location: 'Springfield',
+      type: '公寓',
+      price: 3500,
+      area: '80平米',
+      beds: 2,
+      baths: 1,
+      description: '市中心豪华公寓，交通便利，设施齐全，采光极佳。'
+    },
+    'PROP-102': {
+      address: '阳光海岸别墅区20号',
+      location: 'Springfield',
+      type: '独栋别墅',
+      price: 8000,
+      area: '200平米',
+      beds: 4,
+      baths: 3,
+      description: '海景别墅，宽敞明亮，带独立花园和泳池，尊享奢华生活。'
+    }
+  };
+
+  const property = propertyData[propertyId];
+  if (property) {
+    document.getElementById('page-title').textContent = `${property.address} - 智慧居住`;
+    document.getElementById('property-address').textContent = property.address;
+    document.getElementById('property-description').textContent = property.description;
+    document.getElementById('property-price').textContent = property.price;
+    document.getElementById('property-type').textContent = property.type;
+    document.getElementById('property-area').textContent = property.area;
+    document.getElementById('property-beds').textContent = property.beds;
+    document.getElementById('property-baths').textContent = property.baths;
+  } else {
+    document.getElementById('property-details-content').innerHTML = '<div class="main-image">❓</div><div class="detail-card"><h1>房源未找到</h1></div>';
   }
 }
 
-async function applyNow() {
-  const { id } = getParams();
-  await send('A1-2025-001', 'rent_property', { propertyId: id, leaseTerm: '12 months' });
+async function applyToRent() {
+  const leaseTerm = document.getElementById('lease-term').value;
+
+  Toast.info('正在提交租赁申请...');
+
+  try {
+    const response = await send('A1-2025-HOME', 'rent_property', {
+      propertyId: propertyId,
+      leaseTerm: leaseTerm
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('租赁申请成功！');
+      window.location.href = `${window.RelRoot}housing.local/leasing.html?applied=true`;
+    } else {
+        console.warn('Response invalid, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}housing.local/leasing.html?applied=true`;
+    }
+  } catch (error) {
+    console.error('申请租赁失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}housing.local/leasing.html?applied=true`;
+    } else {
+        Toast.error('申请租赁失败，请稍后再试');
+    }
+  }
 }
 
-function scheduleTour() {
-  const { id } = getParams();
-  // Simplified for now
-  Toast.success('Tour request sent to agent!');
-}
-
-init();
+document.addEventListener('DOMContentLoaded', loadPropertyDetails);
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
 
 </body>
 </html>

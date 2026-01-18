@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>work.local - 邮件追踪</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">💼 Work.local</div>
+      <div class="navlinks">
+        <a href="../work.local/dashboard.html">仪表盘</a>
+        <a href="../work.local/calendar.html">日历</a>
+        <a href="../work.local/paper-submission.html">论文投稿</a>
+        <a href="../work.local/email-tracking.html" class="active">邮件追踪</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>邮件线程跟踪</h1>
+      <button class="btn pri" onclick="openTrackEmailModal()">+ 追踪新邮件</button>
+    </div>
+
+    <div id="email-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Email list loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadEmails() {
+    const list = document.getElementById('email-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const emails = env.work?.email_threads || {};
+      
+      if (Object.keys(emails).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">📧</div>
+            <div style="color:var(--muted)">暂无追踪邮件</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(emails).map(([id, email]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${email.subject || '无主题'}</h3>
+              <div style="color:var(--muted); font-size:14px">发件人: ${email.sender || '未知'}</div>
+            </div>
+            <div style="text-align:right">
+              <span class="badge ${email.status === 'replied' ? 'ok' : 'warn'}">${email.status === 'replied' ? '已回复' : '待处理'}</span>
+            </div>
+          </div>
+          <div style="font-size:13px; color:var(--muted); margin-bottom:8px">最后更新: ${email.last_updated || 'N/A'}</div>
+          <p style="font-size:14px; margin-bottom:12px">${email.summary || '无摘要'}</p>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn secondary" onclick="viewThread('${id}')">查看详情</button>
+            <button class="btn" onclick="markReplied('${id}')" ${email.status === 'replied' ? 'disabled' : ''}>标记为已回复</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openTrackEmailModal() {
+    new Modal({
+      title: '追踪新邮件',
+      content: `
+        <div class="form">
+          <label>邮件主题</label>
+          <input id="email-subject" class="input" placeholder="例如: 关于项目进度的回复">
+          
+          <label>发件人</label>
+          <input id="email-sender" class="input" placeholder="例如: client@example.com">
+          
+          <label>关键信息/摘要</label>
+          <textarea id="email-summary" class="input" rows="3" placeholder="例如: 需要在本周五前提交报告"></textarea>
+        </div>
+      `,
+      confirmText: '开始追踪',
+      onConfirm: async () => {
+        const subject = document.getElementById('email-subject').value;
+        const sender = document.getElementById('email-sender').value;
+        const summary = document.getElementById('email-summary').value;
+        
+        if (!subject || !sender) {
+          Toast.error("请填写必填项");
+          return;
+        }
+        
+        await send('F4-2025-EMAILTRACK', 'track_email_thread', {
+          action_type: 'add',
+          subject: subject,
+          sender: sender,
+          summary: summary
+        });
+        
+        setTimeout(loadEmails, 500);
+      }
+    }).open();
+  }
+
+  function markReplied(id) {
+    send('F4-2025-EMAILTRACK', 'track_email_thread', {
+        action_type: 'mark_replied',
+        thread_id: id
+    });
+    setTimeout(loadEmails, 500);
+  }
+
+  function viewThread(id) {
+    Toast.info(`查看邮件线程 ${id} (模拟功能)`);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadEmails);
+  </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>health.local - 突发疾病/隔离</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">⚕️ Health.local</div>
+      <div class="navlinks">
+        <a href="../health.local/index.html">首页</a>
+        <a href="../health.local/appointments.html">预约</a>
+        <a href="../health.local/insurance.html">保险</a>
+        <a href="../health.local/illness-reporting.html" class="active">疾病报告</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>突发疾病/隔离报告</h1>
+      <button class="btn pri" onclick="openReportModal()">+ 提交新报告</button>
+    </div>
+
+    <div id="reports-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Reports loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadReports() {
+    const list = document.getElementById('reports-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const reports = env.health?.illness_reports || {};
+      
+      if (Object.keys(reports).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">😷</div>
+            <div style="color:var(--muted)">暂无疾病/隔离报告</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(reports).map(([id, report]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${report.type === 'illness' ? '疾病报告' : '隔离报告'} (#${id})</h3>
+              <div style="color:var(--muted); font-size:14px">原因: ${report.reason}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">状态: <span class="badge ${report.status === 'resolved' ? 'ok' : 'warn'}">${report.status}</span></div>
+              <div style="color:var(--muted); font-size:13px">提交日期: ${report.submitted_at || 'N/A'}</div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="viewDetails('${id}')">查看详情</button>
+            <button class="btn secondary" onclick="requestAssistance('${id}')">请求协助</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openReportModal() {
+    new Modal({
+      title: '提交新报告',
+      content: `
+        <div class="form">
+          <label>报告类型</label>
+          <select id="report-type" class="input">
+            <option value="illness">突发疾病</option>
+            <option value="isolation">隔离通知</option>
+          </select>
+          
+          <label>具体原因</label>
+          <input id="report-reason" class="input" placeholder="例如: 发烧, 接触史">
+          
+          <label>隔离/预计康复日期 (可选)</label>
+          <input id="end-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: '提交报告',
+      onConfirm: async () => {
+        const type = document.getElementById('report-type').value;
+        const reason = document.getElementById('report-reason').value;
+        const endDate = document.getElementById('end-date').value;
+        
+        if (!type || !reason) {
+          Toast.error("请填写必填项");
+          return;
+        }
+        
+        await send('M3-2025-ILLNESS', 'submit_illness_report', {
+          type: type,
+          reason: reason,
+          end_date: endDate || null
+        });
+        
+        setTimeout(loadReports, 500);
+      }
+    }).open();
+  }
+
+  function viewDetails(id) {
+    Toast.info(`查看报告 ${id} 详情 (模拟功能)`);
+  }
+
+  function requestAssistance(id) {
+    new Modal({
+      title: '请求协助',
+      content: `您需要关于报告 ${id} 的何种协助？例如：行程取消，保险理赔。`,
+      confirmText: '确认请求',
+      onConfirm: async () => {
+        Toast.info('协助请求已提交！');
+        // In a real app, this would trigger backend processes for assistance.
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadReports);
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "task_id": "K3-2025-CHARITY",
+  "family": "K",
+  "goal": "Make a donation of 100 RMB to '希望工程' and ensure a tax-deductible receipt is requested. Verify the donation is recorded as tax-deductible.",
+  "inputs": {
+    "charity_name": "希望工程",
+    "amount": 100,
+    "tax_deductible": true
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/social.local/charity.html')",
+    "mem('charity.donations.last.charity_name') == '希望工程'",
+    "mem('charity.donations.last.amount') == '100.0'",
+    "mem('charity.donations.last.tax_deductible') == '1'"
+  ]
+}

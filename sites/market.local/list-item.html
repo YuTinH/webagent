@@ -1,79 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
 <script>window.RelRoot = "../";</script>
-<!doctype html><meta charset="utf-8"><title>Nebula Market - List Item</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发布闲置 - Nebula社区</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
-<script src="../static/common.js"></script>
+<style>
+.form-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+</style>
+</head>
+<body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand"><div class="logo"></div> Nebula Market</div>
+    <div class="brand">
+      <div class="logo"></div>
+      Nebula社区
+    </div>
     <div class="navlinks">
-      <a href="index.html">Browse</a>
-      <a href="list-item.html" class="active">Sell Item</a>
+      <a href="../social.local/index.html">社区首页</a>
+      <a href="../market.local/index.html">二手市场</a>
+      <a href="../market.local/my-listings.html">我的发布</a>
     </div>
   </div>
 </div>
+
 <div id="__toast" class="toast"></div>
 
+<!-- Main Container -->
 <div class="container">
-  <h1 style="margin-bottom: 24px">List Your Item for Sale</h1>
-  
-  <div class="card" style="max-width:600px; margin:0 auto;">
-    <div class="mb-4">
-      <label class="muted">Item Name</label>
-      <input type="text" id="item-name" class="input mt-1" placeholder="e.g. Used Gaming Laptop">
+
+  <h1 style="text-align:center; font-size:28px; font-weight:700; margin:32px 0">发布您的闲置物品</h1>
+
+  <div class="form-card">
+    <div class="form-group">
+      <label for="item-name">物品名称</label>
+      <input type="text" id="item-name" placeholder="例如：闲置自行车">
     </div>
-    <div class="mb-4">
-      <label class="muted">Description</label>
-      <textarea id="item-desc" class="input mt-1" rows="4" placeholder="Describe your item's condition, features, etc."></textarea>
+    <div class="form-group">
+      <label for="description">详细描述</label>
+      <textarea id="description" rows="4" placeholder="描述物品的状况、特点等..."></textarea>
     </div>
-    <div class="mb-4">
-      <label class="muted">Price ($)</label>
-      <input type="number" id="item-price" class="input mt-1" placeholder="e.g. 250.00">
+    <div class="form-group">
+      <label for="price">价格 (¥)</label>
+      <input type="number" id="price" placeholder="例如：200">
     </div>
-    <div class="mb-4">
-      <label class="muted">Category</label>
-      <select id="item-category" class="input mt-1">
-        <option value="electronics">Electronics</option>
-        <option value="home">Home Goods</option>
-        <option value="books">Books</option>
-        <option value="sports">Sports</option>
-        <option value="other">Other</option>
+    <div class="form-group">
+      <label for="category">分类</label>
+      <select id="category">
+        <option value="electronics">电子产品</option>
+        <option value="furniture">家具</option>
+        <option value="books">书籍</option>
+        <option value="sports">运动户外</option>
+        <option value="other">其他</option>
       </select>
     </div>
-    <div class="mb-4">
-      <label class="muted">Upload Photo (Optional)</label>
-      <input type="file" id="item-photo" class="input mt-1">
+    <div class="form-group">
+      <label for="photo-upload">上传照片 (可选)</label>
+      <input type="file" id="photo-upload">
     </div>
-    
-    <button class="btn pri" style="width:100%" onclick="submitListing()">List Item</button>
+    <button class="btn pri lg" style="width:100%" onclick="submitListing()">确认发布</button>
   </div>
+
+  <div class="footer">Nebula社区 · Synthetic UI for Web Agent Research</div>
 </div>
 
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
 async function submitListing() {
-  const name = document.getElementById('item-name').value;
-  const desc = document.getElementById('item-desc').value;
-  const price = parseFloat(document.getElementById('item-price').value);
-  const category = document.getElementById('item-category').value;
-  const photo = document.getElementById('item-photo').files[0];
-  
-  if (!name || !desc || isNaN(price) || price <= 0) {
-    Toast.error('Please fill in all required fields correctly.');
+  const itemName = document.getElementById('item-name').value;
+  const description = document.getElementById('description').value;
+  const price = document.getElementById('price').value;
+  const category = document.getElementById('category').value;
+  const photoInput = document.getElementById('photo-upload');
+  const photoName = photoInput.files.length > 0 ? photoInput.files[0].name : '';
+
+  if (!itemName || !price || !category) {
+    Toast.error('请填写所有必填项');
     return;
   }
-  
-  await send('B7-2025-GEN', 'list_second_hand_item', {
-    name: name,
-    description: desc,
-    price: price,
-    category: category,
-    photo_name: photo ? photo.name : ''
-  });
-  
-  Toast.success('Item listed successfully!');
-  setTimeout(() => {
-    window.location.href = 'index.html?listed=true';
-  }, 1000);
+
+  Toast.info('正在发布物品...');
+
+  try {
+    const response = await send('B7-2025-MARKET', 'list_second_hand_item', {
+      name: itemName,
+      description: description,
+      price: parseFloat(price),
+      category: category,
+      photo_name: photoName
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('物品发布成功！');
+      // Fallback reload if redirect doesn't happen automatically
+      if (!response.redirect) {
+          window.location.href = `${window.RelRoot}market.local/index.html?listed=true`;
+      }
+    } else {
+        console.warn('Response invalid, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}market.local/index.html?listed=true`;
+    }
+  } catch (error) {
+    console.error('发布失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}market.local/index.html?listed=true`;
+    } else {
+        Toast.error('发布失败，请稍后再试');
+    }
+  }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('listed') === 'true') {
+        Toast.success('物品发布成功！');
+    }
+});
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

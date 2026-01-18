@@ -41,10 +41,16 @@
     </div>
 
     <div class="cart-bar" id="cart-bar">
-        <div>
-            <span id="cart-count">0</span> items | Total: $<span id="cart-total">0.00</span>
+        <div style="flex:1">
+            <div style="margin-bottom:5px">
+                <span id="cart-count">0</span> items | Total: $<span id="cart-total">0.00</span>
+            </div>
+            <div style="display:flex; gap:10px">
+                <input type="text" id="promo-code" placeholder="Promo Code" class="input" style="width:120px; padding:5px 10px">
+                <button class="btn sm" onclick="applyPromo()">Apply</button>
+            </div>
         </div>
-        <button class="btn-checkout" onclick="placeOrder()">Checkout</button>
+        <button class="btn-checkout" onclick="placeOrder()">Confirm Order</button>
     </div>
 
     <script>
@@ -90,35 +96,70 @@
         });
 
         let cart = [];
-        
+        let promoCode = '';
+        let discountedTotal = 0;
+
         function addToCart(name, price) {
+            console.log('DEBUG: Adding to cart:', name, price);
             cart.push({name, price});
             updateCart();
         }
 
         function updateCart() {
             const count = cart.length;
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            let total = cart.reduce((sum, item) => sum + item.price, 0);
+            discountedTotal = total;
+
+            if (promoCode === 'SAVE20') {
+                discountedTotal = total * 0.8; // Apply 20% discount
+                Toast.success('Promo code SAVE20 applied! 20% off.');
+            }
             
             document.getElementById('cart-count').textContent = count;
-            document.getElementById('cart-total').textContent = total.toFixed(2);
+            document.getElementById('cart-total').textContent = discountedTotal.toFixed(2);
             
             const cartBar = document.getElementById('cart-bar');
             if (count > 0) cartBar.classList.add('visible');
             else cartBar.classList.remove('visible');
         }
 
-        function placeOrder() {
+        function applyPromo() {
+            const inputPromo = document.getElementById('promo-code').value;
+            console.log('DEBUG: applyPromo called with:', inputPromo);
+            if (inputPromo === 'SAVE20') {
+                promoCode = inputPromo;
+                updateCart();
+            } else {
+                console.log('DEBUG: Invalid promo code');
+                Toast.error('Invalid promo code');
+                promoCode = '';
+                updateCart();
+            }
+        }
+
+        async function placeOrder() {
             if (cart.length === 0) return;
             
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            // Ensure promo code is captured
+            if (!promoCode) {
+                const inputVal = document.getElementById('promo-code').value;
+                if (inputVal === 'SAVE20') promoCode = inputVal;
+            }
+
             const items = cart.map(i => i.name);
+            console.log('DEBUG: placeOrder cart:', cart);
+            console.log('DEBUG: placeOrder items:', items);
+            console.log('DEBUG: placeOrder discountedTotal:', discountedTotal);
+            console.log('DEBUG: placeOrder global promoCode before send:', promoCode);
             
-            send('B4-2025-001', 'order_food', {
+            // This is for B3: order_food_with_promo
+            await send('B3-2025-FOOD-PROMO', 'order_food_with_promo', {
                 restaurant: restaurant.name,
                 items: items,
-                total: parseFloat(total.toFixed(2))
+                total: parseFloat(discountedTotal.toFixed(2)),
+                promo_code: promoCode
             });
+            // The send function handles redirection to order confirmation.
         }
     </script>
 </body>

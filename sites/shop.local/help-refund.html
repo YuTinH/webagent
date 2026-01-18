@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - 订阅退款</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">购物</a>
+        <a href="../shop.local/orders.html">订单</a>
+        <a href="../shop.local/help.html" class="active">帮助中心</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>订阅退款申请 (按比例)</h1>
+    </div>
+
+    <div class="card soft">
+        <div class="form">
+            <label>选择订阅服务</label>
+            <select id="subscription-select" class="input">
+                <option value="SUB-8821">高级会员 (年付) - 剩余 8 个月</option>
+                <option value="SUB-9932">云存储 (月付) - 剩余 10 天</option>
+            </select>
+            
+            <label>退款原因</label>
+            <textarea id="refund-reason" class="input" rows="3" placeholder="例如: 服务不再需要，体验不佳"></textarea>
+            
+            <div class="info-box" style="background:rgba(99,102,241,0.1); padding:16px; border-radius:8px; margin-bottom:16px">
+                <p style="margin:0; font-size:14px">💡 提示：提前终止订阅将扣除违约金（如有），并按剩余天数比例退款。预计退款金额将在审核后计算。</p>
+            </div>
+            
+            <button class="btn pri" style="margin-top:24px; width:100%" onclick="submitRefund()">提交退款申请</button>
+        </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>申请记录</h2>
+        <div id="refund-requests-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Requests loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">暂无申请记录</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadRefundRequests() {
+    const list = document.getElementById('refund-requests-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const requests = env.support?.refund_requests || {};
+      
+      if (Object.keys(requests).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">暂无申请记录</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(requests).map(([id, req]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">退款申请 #${id}</h3>
+              <div style="color:var(--muted); font-size:14px">订阅: ${req.subscription_id}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">状态: <span class="badge ${req.status === 'approved' ? 'ok' : 'warn'}">${req.status === 'approved' ? '已通过' : '审核中'}</span></div>
+              <div style="color:var(--muted); font-size:13px">预计退款: ${req.estimated_refund ? '¥' + req.estimated_refund : '计算中'}</div>
+            </div>
+          </div>
+          <div style="font-size:13px; color:var(--muted)">原因: ${req.reason}</div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  async function submitRefund() {
+    const subId = document.getElementById('subscription-select').value;
+    const reason = document.getElementById('refund-reason').value;
+
+    if (!reason) {
+      Toast.error("请输入退款原因");
+      return;
+    }
+    
+    await send('C3-2025-REFUND', 'request_prorated_refund', {
+      subscription_id: subId,
+      reason: reason
+    });
+    
+    setTimeout(loadRefundRequests, 500);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadRefundRequests);
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "task_id": "J3-2025-TICKETS",
+  "family": "J",
+  "goal": "Buy a ticket for '校园音乐节' costing 50 RMB. Then transfer this ticket to student 'S987654'. Verify the ticket status is transferred.",
+  "inputs": {
+    "event_name": "校园音乐节",
+    "price": 50,
+    "recipient_id": "S987654"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/school.local/event-tickets.html')",
+    "mem('tickets.user_tickets.last.event_name') == '校园音乐节'",
+    "mem('tickets.user_tickets.last.status') == 'transferred'"
+  ]
+}

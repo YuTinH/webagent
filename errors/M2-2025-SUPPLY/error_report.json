@@ -1,0 +1,22 @@
+{
+  "task_id": "M2-2025-SUPPLY",
+  "error_type": "TimeoutError",
+  "timestamp": "2026-01-07T11:48:04.414354Z",
+  "step_index": 2,
+  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('\u786e\u8ba4\u6539\u4e3a\u81ea\u63d0/\u66ff\u4ee3')\")\n",
+  "context": {
+    "url": "http://localhost:8014/shop.local/supply-disruption.html",
+    "screenshot": "errors/M2-2025-SUPPLY/error_step_2.png"
+  },
+  "step": {
+    "t": 2,
+    "act": "click",
+    "selector": "button:has-text('\u786e\u8ba4\u6539\u4e3a\u81ea\u63d0/\u66ff\u4ee3')",
+    "note": "Click confirm alternative button"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

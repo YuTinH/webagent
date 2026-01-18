@@ -1,0 +1,60 @@
+{
+  "task_id": "M3-2025-ILLNESS",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 1.8607947826385498,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/illness-reporting.html",
+      "note": "Open illness reporting page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('\u63d0\u4ea4\u65b0\u62a5\u544a')",
+      "note": "Click submit new report button"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#report-type",
+      "value": "illness",
+      "note": "Select report type as illness"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#report-reason",
+      "value": "\u53d1\u70e7",
+      "note": "Enter reason"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#end-date",
+      "value": "2026-01-10",
+      "note": "Enter expected recovery date"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm submission"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#reports-list .card",
+      "note": "Wait for report to appear in list"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

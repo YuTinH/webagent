@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - 家政服务预订</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">购物</a>
+        <a href="../shop.local/orders.html">订单</a>
+        <a href="../shop.local/housekeeping.html" class="active">家政服务</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>家政服务预订</h1>
+    </div>
+
+    <div class="card soft">
+      <div class="form">
+        <label>服务类型</label>
+        <select id="service-type" class="input">
+          <option value="regular_cleaning">日常保洁</option>
+          <option value="deep_cleaning">深度清洁</option>
+          <option value="move_out_cleaning">搬家清洁</option>
+        </select>
+        
+        <label>服务日期</label>
+        <input id="service-date" type="date" class="input">
+        
+        <label>服务时间</label>
+        <select id="service-time" class="input">
+          <option value="09:00">09:00 - 11:00</option>
+          <option value="11:00">11:00 - 13:00</option>
+          <option value="13:00">13:00 - 15:00</option>
+          <option value="15:00">15:00 - 17:00</option>
+        </select>
+        
+        <label>特殊说明 / 门禁</label>
+        <textarea id="instructions" class="input" rows="3" placeholder="例如: 请携带吸尘器, 密码锁0123#"></textarea>
+        
+        <button id="book-btn" class="btn pri" style="margin-top:24px; width:100%" onclick="bookService()">立即预订</button>
+      </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>我的预订</h2>
+        <div id="bookings-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Bookings loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">暂无预订记录</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function bookService() {
+    const serviceType = document.getElementById('service-type').value;
+    const serviceDate = document.getElementById('service-date').value;
+    const serviceTime = document.getElementById('service-time').value;
+    const instructions = document.getElementById('instructions').value;
+    
+    if (!serviceDate || !serviceTime) {
+      Toast.error("请选择服务日期和时间");
+      return;
+    }
+    
+    document.getElementById('book-btn').disabled = true;
+    document.getElementById('book-btn').innerText = "预订中...";
+    
+    await send('B3-2025-HOUSEKEEPING', 'book_housekeeping', {
+      service_type: serviceType,
+      service_date: serviceDate,
+      service_time: serviceTime,
+      instructions: instructions
+    });
+    
+    setTimeout(() => {
+        document.getElementById('book-btn').disabled = false;
+        document.getElementById('book-btn').innerText = "立即预订";
+        loadBookings(); // Reload bookings after submission
+    }, 500);
+  }
+
+  async function loadBookings() {
+    const list = document.getElementById('bookings-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+
+    try {
+      const env = await loadEnv();
+      const bookings = env.local_services?.housekeeping_bookings || {};
+
+      if (Object.keys(bookings).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">暂无预订记录</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(bookings).map(([id, booking]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${booking.service_type === 'regular_cleaning' ? '日常保洁' : booking.service_type === 'deep_cleaning' ? '深度清洁' : '搬家清洁'}</h3>
+              <div style="color:var(--muted); font-size:14px">${booking.service_date} ${booking.service_time}</div>
+            </div>
+            <div style="text-align:right">
+              <span class="badge ok">${booking.status}</span>
+            </div>
+          </div>
+          <div style="font-size:13px; color:var(--muted)">说明: ${booking.instructions || '无'}</div>
+        </div>
+      `).join('');
+
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadBookings);
+  </script>
+</body>
+</html>

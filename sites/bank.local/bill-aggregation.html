@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - 账单聚合</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+      <div class="navlinks">
+        <a href="../bank.local/dashboard.html">账户</a>
+        <a href="../bank.local/transactions.html">交易</a>
+        <a href="../bank.local/bill-aggregation.html" class="active">账单聚合</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>账单聚合与记账初始化</h1>
+      <button class="btn pri" onclick="openAddBillSourceModal()">+ 添加账单来源</button>
+    </div>
+
+    <div id="bill-sources-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Bill sources loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadBillSources() {
+    const list = document.getElementById('bill-sources-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const bills = env.bills?.sources || {};
+      
+      if (Object.keys(bills).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🧾</div>
+            <div style="color:var(--muted)">暂无账单来源</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(bills).map(([id, source]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${source.name || '账单来源'} (#${id})</h3>
+              <div style="color:var(--muted); font-size:14px">类型: ${source.type || '未知'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">上次同步: ${source.last_synced || 'N/A'}</div>
+              <div style="color:var(--muted); font-size:13px">状态: <span class="badge ${source.status === 'active' ? 'ok' : 'warn'}">${source.status === 'active' ? '活跃' : '异常'}</span></div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="syncBills('${id}')">立即同步</button>
+            <button class="btn secondary" onclick="removeBillSource('${id}')">移除</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openAddBillSourceModal() {
+    new Modal({
+      title: '添加新账单来源',
+      content: `
+        <div class="form">
+          <label>来源名称</label>
+          <input id="new-name" class="input" placeholder="例如: 电力公司, 信用卡A">
+          
+          <label>来源类型</label>
+          <select id="new-type" class="input">
+            <option value="utility">公共事业</option>
+            <option value="credit_card">信用卡</option>
+            <option value="broadband">宽带</option>
+            <option value="other">其他</option>
+          </select>
+
+          <label>账户/合同号 (可选)</label>
+          <input id="new-account-id" class="input" placeholder="请输入账户或合同号">
+        </div>
+      `,
+      confirmText: '添加',
+      onConfirm: async () => {
+        const name = document.getElementById('new-name').value;
+        const type = document.getElementById('new-type').value;
+        const accountId = document.getElementById('new-account-id').value;
+        
+        if (!name || !type) {
+          Toast.error("请填写来源名称和类型");
+          return;
+        }
+        
+        await send('D1-2025-BILLAGG', 'manage_bill_source', {
+          action_type: 'add',
+          name: name,
+          type: type,
+          account_id: accountId || null
+        });
+        
+        setTimeout(loadBillSources, 500);
+      }
+    }).open();
+  }
+
+  function syncBills(id) {
+    Toast.info(`开始同步 ${id} 的账单...`);
+    // In a real app, this would trigger a backend sync
+    // For now, just a dummy update
+    send('D1-2025-BILLAGG', 'manage_bill_source', {
+        action_type: 'sync',
+        source_id: id
+    });
+    setTimeout(loadBillSources, 1000);
+  }
+
+  function removeBillSource(id) {
+    new Modal({
+      title: '确认移除',
+      content: `您确定要移除账单来源 ${id} 吗？`,
+      confirmText: '移除',
+      onConfirm: async () => {
+        await send('D1-2025-BILLAGG', 'manage_bill_source', {
+          action_type: 'remove',
+          source_id: id
+        });
+        setTimeout(loadBillSources, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadBillSources);
+  </script>
+</body>
+</html>

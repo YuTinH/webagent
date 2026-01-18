@@ -1,0 +1,18 @@
+{
+  "task_id": "I2-2025-APPREPAIR",
+  "family": "I",
+  "goal": "Submit an appliance repair request for '洗衣机' with serial number 'SN12345' and problem '无法启动' for service date '2026-03-01'. Verify the request is submitted and its status is 'submitted'.",
+  "inputs": {
+    "appliance": "洗衣机",
+    "serial_number": "SN12345",
+    "problem": "无法启动",
+    "service_date": "2026-03-01"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/appliance-repair.html')",
+    "mem('appliance_repairs.requests.last.status') == 'submitted'",
+    "mem('appliance_repairs.requests.last.appliance') == '洗衣机'",
+    "mem('appliance_repairs.requests.last.problem') == '无法启动'"
+  ]
+}

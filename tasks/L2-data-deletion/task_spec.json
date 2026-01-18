@@ -1,0 +1,17 @@
+{
+  "task_id": "L2-2025-DSR",
+  "family": "L",
+  "goal": "Submit a data deletion request for 'Facebook' covering '全部' (all) data. Verify the request is submitted and its status is 'pending'.",
+  "inputs": {
+    "platform": "Facebook",
+    "request_type": "deletion",
+    "data_scope": "全部"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/security.local/data-deletion.html')",
+    "mem('security.data_deletion_requests.last.status') == 'pending'",
+    "mem('security.data_deletion_requests.last.platform') == 'Facebook'",
+    "mem('security.data_deletion_requests.last.id') != ''"
+  ]
+}

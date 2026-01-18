@@ -1,0 +1,72 @@
+{
+  "task_id": "Z2-2025-GROWTH",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 9,
+  "steps_total": 9,
+  "time_elapsed": 2.668536424636841,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/investments.html",
+      "note": "Open investments page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('\u5f00\u8bbe\u65b0\u8d26\u6237')",
+      "note": "Open new account modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-name",
+      "value": "My Growth Fund",
+      "note": "Enter account name"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#new-type",
+      "value": "funds",
+      "note": "Select Growth Fund"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#initial-deposit",
+      "value": "1000",
+      "note": "Enter deposit"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "button:has-text('\u5f00\u8bbe\u8d26\u6237')",
+      "note": "Confirm open"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": ".card:has-text('My Growth Fund')",
+      "note": "Wait for account to appear"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": "button:has-text('Debug: +30 Days')",
+      "note": "Trigger time travel"
+    },
+    {
+      "t": 9,
+      "act": "wait",
+      "selector": "div:has-text('\u4f59\u989d: \u00a51050.00')",
+      "note": "Wait for balance change"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

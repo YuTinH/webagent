@@ -1,0 +1,44 @@
+{
+  "task_id": "H1-2025-ADDRCHANGE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/address-change.html",
+      "note": "Open municipal address change page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#new-address",
+      "value": "上海市浦东新区张江高科张衡路XXX号",
+      "note": "Enter new address"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#zip-code",
+      "value": "201203",
+      "note": "Enter zip code"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#proof-document",
+      "value": "proof_of_address.pdf",
+      "note": "Upload proof document"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button:has-text('提交变更')",
+      "note": "Submit address change"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#change-history-list .card .badge.warn",
+      "note": "Wait for change status to be pending"
+    }
+  ]
+}

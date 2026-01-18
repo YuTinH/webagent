@@ -1,36 +1,61 @@
 {
-  "task_id": "H3-2025-PERMIT",
+  "task_id": "H3-2025-RENEWAL",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 4,
-  "steps_total": 4,
-  "time_elapsed": 1.7266743183135986,
+  "steps_completed": 8,
+  "steps_total": 8,
+  "time_elapsed": 3.622453451156616,
   "error": null,
   "trace": [
     {
       "t": 0,
       "act": "open",
-      "url": "http://localhost:8014/permit.local/RP-2024-77.html",
-      "note": "Open permit details page"
+      "url": "http://localhost:8014/gov.local/permits.html",
+      "note": "Open permits list page"
     },
     {
       "t": 2,
-      "act": "type",
-      "selector": "#appointment-slot",
-      "value": "2025-12-01T10:00",
-      "note": "Enter appointment slot"
+      "act": "wait",
+      "selector": "#permit-expiry",
+      "note": "Wait for permit list to load"
     },
     {
       "t": 4,
       "act": "click",
-      "selector": "button.btn-book",
-      "note": "Book Appointment"
+      "selector": ".permit-card:has(.permit-id:has-text('RP-2024-77')) button:has-text('\u7eed\u671f')",
+      "note": "Click renew button for RP-2024-77"
     },
     {
       "t": 6,
       "act": "wait",
-      "selector": "#appointment-state",
-      "note": "Wait for appointment status to update"
+      "selector": "#new-expiry",
+      "note": "Wait for renewal form to load"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#new-expiry",
+      "value": "2026-12-01",
+      "note": "Enter new expiry date"
+    },
+    {
+      "t": 10,
+      "act": "select",
+      "selector": "#payment-method",
+      "value": "card",
+      "note": "Select payment method"
+    },
+    {
+      "t": 12,
+      "act": "click",
+      "selector": "button.btn.pri.lg:has-text('\u63d0\u4ea4\u7eed\u671f')",
+      "note": "Submit renewal form"
+    },
+    {
+      "t": 14,
+      "act": "wait",
+      "selector": "h1:has-text('\u6211\u7684\u8bb8\u53ef')",
+      "note": "Wait for permits list page to load after renewal"
     }
   ],
   "memory_updates": {},

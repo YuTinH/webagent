@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Messages - Mobile</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">📱 Messages</div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:600px">
+    <div id="messages-list" style="display:flex; flex-direction:column; gap:12px">
+        <div class="loading">加载短信中...</div>
+    </div>
+  </div>
+
+  <script>
+  async function loadMessages() {
+      const list = document.getElementById('messages-list');
+      try {
+          const env = await loadEnv();
+          const messages = env.mobile?.messages || [];
+          
+          if (messages.length === 0) {
+              list.innerHTML = `<div style="text-align:center; padding:24px; color:var(--muted)">无新消息</div>`;
+              return;
+          }
+          
+          list.innerHTML = messages.reverse().map(msg => `
+            <div class="card soft">
+                <div style="font-weight:700; margin-bottom:4px">${msg.from}</div>
+                <div style="font-size:16px">${msg.content}</div>
+                <div style="color:var(--muted); font-size:12px; margin-top:8px">${msg.timestamp}</div>
+            </div>
+          `).join('');
+      } catch (e) {
+          list.innerHTML = '<div class="error">加载失败</div>';
+      }
+  }
+  document.addEventListener('DOMContentLoaded', loadMessages);
+  </script>
+</body>
+</html>

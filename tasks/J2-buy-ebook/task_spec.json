@@ -1,36 +1,13 @@
 {
-  "task_id": "J2-2025-GEN",
+  "task_id": "J2-2025-EBOOK",
   "family": "J",
-  "episode_id": "ep-gen",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T10:00:00Z",
-  "persona": {
-    "automation_preference": "medium"
-  },
-  "goal": "Purchase the 'Deep Learning Basics' textbook from the shop.",
+  "goal": "Buy the ebook 'Python数据分析' (ID: BK-102).",
   "inputs": {
-    "book_title": "Deep Learning Basics",
-    "sku": "BK-101"
+    "bookId": "BK-102"
   },
-  "allowed_domains": [
-    "shop.local"
-  ],
-  "preconditions": [
-    "mem('courses.DL101.state') == 'enrolled'"
-  ],
-  "dependencies": [
-    "J1-course-enroll"
-  ],
-  "memory_keys": [
-    "orders.last.id"
-  ],
+  "preconditions": [],
   "success_criteria": [
-    "ALL[url().includes('/order/confirmation'), text('body') includes 'Deep Learning Basics', mem('orders.last.id') != '']"
-  ],
-  "rubrics": {
-    "SR": 1.0
-  },
-  "timeout": 300,
-  "step_timeout": 30
+    "url().includes('/school.local/my-learning.html?new_book=true')",
+    "json('env','library.books.BK-102.owned') == true"
+  ]
 }

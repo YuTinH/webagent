@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>trip.local - 签证要求</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">✈️ Trip.local</div>
+      <div class="navlinks">
+        <a href="../trip.local/flights.html">航班</a>
+        <a href="../trip.local/hotels.html">酒店</a>
+        <a href="../trip.local/commute.html">通勤</a>
+        <a href="../trip.local/transport-card.html">交通卡</a>
+        <a href="../trip.local/visa-requirements.html" class="active">签证</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>签证/入境要求检索</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>查询签证要求</h2>
+        <div class="form">
+            <label>目的国家</label>
+            <select id="destination-country" class="input">
+                <option value="Japan">日本</option>
+                <option value="France">法国</option>
+                <option value="USA">美国</option>
+                <option value="UK">英国</option>
+                <option value="Singapore">新加坡</option>
+            </select>
+            <label>护照签发国</label>
+            <select id="passport-country" class="input" disabled>
+                <option value="China" selected>中国</option>
+            </select>
+            <button class="btn pri" style="margin-top:24px; width:100%" onclick="searchVisa()">查询</button>
+        </div>
+    </div>
+
+    <h2>查询结果</h2>
+    <div id="visa-result" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Results loaded here -->
+      <div class="card soft" style="text-align:center; padding:24px">
+        <div style="color:var(--muted)">请选择目的地进行查询</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  async function searchVisa() {
+    const destination = document.getElementById('destination-country').value;
+    
+    await send('E4-2025-VISA', 'search_visa_requirements', {
+      destination_country: destination,
+      passport_country: 'China'
+    });
+
+    // Manually trigger reload of results
+    setTimeout(loadVisaResults, 500);
+  }
+
+  async function loadVisaResults() {
+    const list = document.getElementById('visa-result');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+
+    try {
+      const env = await loadEnv();
+      const result = env.visa?.last_search_result;
+
+      if (!result) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">暂无查询结果</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = `
+        <div class="card soft">
+          <div style="margin-bottom:16px">
+            <h3 style="margin:0 0 4px 0">${result.destination_cn} (${result.destination})</h3>
+            <div style="color:var(--muted); font-size:14px">护照持有者: ${result.passport_cn}</div>
+          </div>
+          
+          <div style="background:rgba(0,0,0,0.03); padding:16px; border-radius:8px; margin-bottom:16px">
+            <div style="margin-bottom:8px"><strong>签证类型:</strong> ${result.visa_type}</div>
+            <div style="margin-bottom:8px"><strong>停留期限:</strong> ${result.stay_duration}</div>
+            <div style="margin-bottom:8px"><strong>所需材料:</strong></div>
+            <ul style="margin:0; padding-left:20px; font-size:14px; color:var(--text)">
+                ${result.documents.map(d => `<li>${d}</li>`).join('')}
+            </ul>
+          </div>
+          
+          <p>${result.notes || ''}</p>
+        </div>
+      `;
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadVisaResults);
+  </script>
+</body>
+</html>

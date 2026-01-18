@@ -1,0 +1,73 @@
+{
+  "task_id": "E2-2025-HOTEL",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 9,
+  "steps_total": 9,
+  "time_elapsed": 2.6005494594573975,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/hotels.html",
+      "note": "Open hotel booking page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#city",
+      "value": "\u4e0a\u6d77",
+      "note": "Enter destination city"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#check-in-date",
+      "value": "2025-12-31",
+      "note": "Enter check-in date"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#check-out-date",
+      "value": "2026-01-03",
+      "note": "Enter check-out date"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#guests",
+      "value": "1",
+      "note": "Enter number of guests"
+    },
+    {
+      "t": 10,
+      "act": "click",
+      "selector": "button.btn.pri.lg:has-text('\u641c\u7d22\u9152\u5e97')",
+      "note": "Click search hotels button"
+    },
+    {
+      "t": 12,
+      "act": "wait",
+      "selector": ".hotel-item",
+      "note": "Wait for hotel results to load"
+    },
+    {
+      "t": 14,
+      "act": "click",
+      "selector": ".hotel-item:has(h3:has-text('\u6d66\u4e1c\u9999\u683c\u91cc\u62c9\u5927\u9152\u5e97')) button.btn.pri:has-text('\u9884\u8ba2')",
+      "note": "Click book button for Pudong Shangri-La"
+    },
+    {
+      "t": 16,
+      "act": "wait",
+      "selector": "h1:has-text('\u6211\u7684\u884c\u7a0b')",
+      "note": "Wait for trip management page to load"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

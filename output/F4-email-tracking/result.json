@@ -1,0 +1,60 @@
+{
+  "task_id": "F4-2025-EMAILTRACK",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 1.6561810970306396,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/work.local/email-tracking.html",
+      "note": "Open email tracking page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('\u8ffd\u8e2a\u65b0\u90ae\u4ef6')",
+      "note": "Click track new email button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#email-subject",
+      "value": "\u9879\u76ee\u8fdb\u5ea6\u66f4\u65b0",
+      "note": "Enter email subject"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#email-sender",
+      "value": "manager@example.com",
+      "note": "Enter sender email"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#email-summary",
+      "value": "\u9700\u8981\u786e\u8ba4\u4e0b\u5468\u4f1a\u8bae\u65f6\u95f4",
+      "note": "Enter email summary"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm tracking"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#email-list .card",
+      "note": "Wait for email to appear in list"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

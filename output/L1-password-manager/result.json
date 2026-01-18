@@ -1,0 +1,60 @@
+{
+  "task_id": "L1-2025-PASSMGR",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 2.320592164993286,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/password-manager.html",
+      "note": "Open password manager page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('\u6dfb\u52a0\u65b0\u5bc6\u7801')",
+      "note": "Click add new password button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#site-name",
+      "value": "Google",
+      "note": "Enter site name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#username-input",
+      "value": "test@google.com",
+      "note": "Enter username"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#password-input",
+      "value": "SecurePass!123",
+      "note": "Enter password"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm adding password"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#password-list .card",
+      "note": "Wait for password to appear in list"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>trip.local - 通勤路线对比</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">✈️ Trip.local</div>
+      <div class="navlinks">
+        <a href="../trip.local/flights.html">航班</a>
+        <a href="../trip.local/hotels.html">酒店</a>
+        <a href="../trip.local/commute.html" class="active">通勤</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>通勤路线对比</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>查询路线</h2>
+        <div class="form">
+            <label>出发地</label>
+            <input id="origin" class="input" placeholder="例如: 家, 公司">
+            <label>目的地</label>
+            <input id="destination" class="input" placeholder="例如: 办公室, 学校">
+            <label>通勤时间 (例如: 08:00 AM)</label>
+            <input id="commute-time" type="time" class="input">
+            <label>偏好交通方式</label>
+            <select id="transport-mode" class="input">
+                <option value="all">所有方式</option>
+                <option value="bus">公交</option>
+                <option value="subway">地铁</option>
+                <option value="bike">骑行</option>
+                <option value="car_hailing">打车</option>
+            </select>
+            <button class="btn pri" style="margin-top:24px; width:100%" onclick="searchCommute()">查询路线</button>
+        </div>
+    </div>
+
+    <h2>查询结果</h2>
+    <div id="results-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Results loaded here -->
+      <div class="card soft" style="text-align:center; padding:24px">
+        <div style="color:var(--muted)">暂无路线结果</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  async function searchCommute() {
+    const origin = document.getElementById('origin').value;
+    const destination = document.getElementById('destination').value;
+    const commuteTime = document.getElementById('commute-time').value;
+    const transportMode = document.getElementById('transport-mode').value;
+
+    if (!origin || !destination) {
+      Toast.error("请填写出发地和目的地");
+      return;
+    }
+    
+    await send('E1-2025-COMMUTE', 'search_commute_route', {
+      origin: origin,
+      destination: destination,
+      commute_time: commuteTime,
+      transport_mode: transportMode
+    });
+
+    // For now, manually simulate results after submission
+    setTimeout(loadCommuteResults, 500);
+  }
+
+  async function loadCommuteResults() {
+    const list = document.getElementById('results-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+
+    try {
+      const env = await loadEnv();
+      const results = env.commute?.search_results || {};
+
+      if (Object.keys(results).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">暂无路线结果</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(results).map(([id, route]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${route.transport_mode_cn} (${route.route_name})</h3>
+              <div style="color:var(--muted); font-size:14px">出发: ${route.origin} 到达: ${route.destination}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">耗时: ${route.duration}</div>
+              <div style="color:var(--muted); font-size:13px">费用: ¥${route.cost ? route.cost.toFixed(2) : '0.00'}</div>
+            </div>
+          </div>
+          <p>${route.details || '无详细信息'}</p>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadCommuteResults);
+  </script>
+</body>
+</html>

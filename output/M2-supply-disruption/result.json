@@ -1,0 +1,45 @@
+{
+  "task_id": "M2-2025-SUPPLY",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 5,
+  "steps_total": 5,
+  "time_elapsed": 3.2861948013305664,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/supply-disruption.html",
+      "note": "Open supply disruption page"
+    },
+    {
+      "t": 1,
+      "act": "wait",
+      "selector": "#disruption-alerts div",
+      "note": "Wait for disruption alerts to load"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('\u786e\u8ba4\u6539\u4e3a\u81ea\u63d0/\u66ff\u4ee3')",
+      "note": "Click confirm alternative button"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm switch to pickup"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#alternative-options-list .card .badge:has-text('\u7f3a\u8d27')",
+      "note": "Wait for status update (mocked as switched/unavailable for delivery)"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

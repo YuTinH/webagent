@@ -1,0 +1,16 @@
+{
+  "task_id": "J4-2025-GEAR",
+  "family": "J",
+  "goal": "List a '登山背包' for rent at 20 RMB per day. Verify the gear is listed as available for rent and its name is recorded.",
+  "inputs": {
+    "name": "登山背包",
+    "listing_type": "rent",
+    "price": 20
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/gear-rental.html')",
+    "mem('gear.rentals.last.status') == 'available'",
+    "mem('gear.rentals.last.name') == '登山背包'"
+  ]
+}

@@ -1,14 +1,13 @@
 {
-  "task_id": "J1-2025-COURSE",
+  "task_id": "J1-2025-ENROLL",
   "family": "J",
-  "goal": "Enroll in the Deep Learning 101 course and confirm enrollment.",
+  "goal": "Enroll in the '机器学习进阶' course (ID: ML202).",
   "inputs": {
-    "course_id": "DL101",
-    "price": 199
+    "courseId": "ML202"
   },
   "preconditions": [],
   "success_criteria": [
-    "text(\"div.text-sm.muted\") == \"Status: enrolled\"",
-    "json(\"env\",\"courses.DL101.state\") == \"enrolled\""
+    "url().includes('/school.local/my-learning.html?enrolled=true')",
+    "json('env','courses.ML202.state') == 'enrolled'"
   ]
 }

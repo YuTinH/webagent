@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>social.local - 慈善捐赠</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🤝 Social.local</div>
+      <div class="navlinks">
+        <a href="../social.local/my-groups.html">我的群组</a>
+        <a href="../social.local/split.html">费用分摊</a>
+        <a href="../social.local/charity.html" class="active">慈善捐赠</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>慈善捐赠与凭证获取</h1>
+      <button class="btn pri" onclick="openDonateModal()">+ 立即捐赠</button>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>我的捐赠总览 (2025)</h2>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px">
+            <div>
+                <div style="color:var(--muted); font-size:14px">总捐赠金额</div>
+                <div style="font-size:24px; font-weight:700" id="total-donations">¥0.00</div>
+            </div>
+            <div>
+                <div style="color:var(--muted); font-size:14px">可抵税金额</div>
+                <div style="font-size:24px; font-weight:700" id="total-tax-deductible">¥0.00</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>我的捐赠记录</h2>
+    <div id="donations-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Donations loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadDonationData() {
+    const list = document.getElementById('donations-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const donations = env.charity?.donations || {};
+      
+      let totalDonations = 0;
+      let taxDeductible = 0;
+
+      if (Object.keys(donations).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">❤️</div>
+            <div style="color:var(--muted)">暂无捐赠记录</div>
+          </div>
+        `;
+      } else {
+        list.innerHTML = Object.entries(donations).map(([id, donation]) => {
+            totalDonations += donation.amount;
+            if (donation.tax_deductible) taxDeductible += donation.amount;
+
+            return `
+              <div class="card soft">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+                  <div>
+                    <h3 style="margin:0 0 4px 0">${donation.charity_name}</h3>
+                    <div style="color:var(--muted); font-size:14px">捐赠日期: ${donation.date}</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="font-weight:600">¥${parseFloat(donation.amount).toFixed(2)}</div>
+                    <div style="color:var(--muted); font-size:13px">可抵税: <span class="badge ${donation.tax_deductible ? 'ok' : 'warn'}">${donation.tax_deductible ? '是' : '否'}</span></div>
+                  </div>
+                </div>
+                <button class="btn secondary" onclick="getReceipt('${id}')" ${!donation.tax_deductible ? 'disabled' : ''}>获取捐赠凭证</button>
+              </div>
+            `;
+        }).join('');
+      }
+
+      document.getElementById('total-donations').innerText = `¥${totalDonations.toFixed(2)}`;
+      document.getElementById('total-tax-deductible').innerText = `¥${taxDeductible.toFixed(2)}`;
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openDonateModal() {
+    new Modal({
+      title: '进行慈善捐赠',
+      content: `
+        <div class="form">
+          <label>受赠机构名称</label>
+          <input id="charity-name" class="input" placeholder="例如: 壹基金">
+          
+          <label>捐赠金额</label>
+          <input id="donation-amount" type="number" class="input" placeholder="例如: 100.00">
+
+          <div style="margin-top:16px; display:flex; align-items:center; gap:8px">
+            <input type="checkbox" id="tax-deductible">
+            <label for="tax-deductible" style="margin:0">需要抵税凭证</label>
+          </div>
+        </div>
+      `,
+      confirmText: '确认捐赠',
+      onConfirm: async () => {
+        const charityName = document.getElementById('charity-name').value;
+        const amount = document.getElementById('donation-amount').value;
+        const taxDeductible = document.getElementById('tax-deductible').checked;
+        
+        if (!charityName || !amount) {
+          Toast.error("请填写必填项");
+          return;
+        }
+        
+        await send('K3-2025-CHARITY', 'make_donation', {
+          charity_name: charityName,
+          amount: parseFloat(amount),
+          tax_deductible: taxDeductible
+        });
+        
+        setTimeout(loadDonationData, 500);
+      }
+    }).open();
+  }
+
+  function getReceipt(id) {
+    Toast.info(`正在生成捐赠凭证 ${id}... (模拟功能)`);
+    // In a real app, this would trigger a backend process to generate and download a PDF receipt.
+  }
+
+  document.addEventListener('DOMContentLoaded', loadDonationData);
+  </script>
+</body>
+</html>

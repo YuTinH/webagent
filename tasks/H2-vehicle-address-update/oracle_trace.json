@@ -1,0 +1,43 @@
+{
+  "task_id": "H2-2025-VEHICLEADDR",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/vehicle-registration.html",
+      "note": "Open vehicle registration page"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#vehicle-select",
+      "value": "V-8821",
+      "note": "Select vehicle V-8821"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-address",
+      "value": "上海市浦东新区张江高科张衡路XXX号",
+      "note": "Enter new address"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "#notify-insurance",
+      "note": "Check notify insurance"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button:has-text('提交更新')",
+      "note": "Submit update"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#vehicle-list div:has-text('上海市浦东新区张江高科张衡路XXX号')",
+      "note": "Wait for address to update in list"
+    }
+  ]
+}

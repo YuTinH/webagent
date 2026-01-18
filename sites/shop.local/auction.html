@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Live Auction - Nebula Shop</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">首页</a>
+        <a href="../shop.local/auction.html" class="active">拍卖</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div class="card soft">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+            <h1>🏺 明代青花瓷瓶 (仿品)</h1>
+            <span class="badge warn" id="status-badge">竞拍中</span>
+        </div>
+        
+        <div style="margin: 24px 0; text-align:center">
+            <div style="font-size:14px; color:var(--muted)">当前最高价</div>
+            <div style="font-size:48px; font-weight:800; color:var(--pri)" id="current-price">¥100.00</div>
+            <div style="margin-top:8px" id="bidder-info">出价人: System</div>
+        </div>
+
+        <div class="form">
+            <label>您的出价 (最低加价 ¥10)</label>
+            <div style="display:flex; gap:12px">
+                <input id="bid-amount" type="number" class="input" value="110">
+                <button class="btn pri" onclick="placeBid()">出价</button>
+            </div>
+        </div>
+        
+        <div style="margin-top:24px; padding:16px; background:rgba(0,0,0,0.05); border-radius:8px">
+            <h3>拍卖说明</h3>
+            <p>1. 实时竞拍，价格会随时间上涨。</p>
+            <p>2. 您的预算上限为 ¥500。</p>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  let currentPrice = 100.00;
+  let isAuctionActive = true;
+
+  // Simulate live updates
+  setInterval(() => {
+      if (!isAuctionActive) return;
+      
+      // Randomly increase price to simulate other bidders
+      if (Math.random() > 0.7) {
+          const increase = Math.floor(Math.random() * 20) + 10;
+          currentPrice += increase;
+          updateDisplay();
+          
+          if (currentPrice > 600) {
+              isAuctionActive = false;
+              document.getElementById('status-badge').textContent = "已结束";
+              document.getElementById('status-badge').className = "badge err";
+          }
+      }
+  }, 2000); // Update every 2 seconds
+
+  function updateDisplay() {
+      document.getElementById('current-price').textContent = `¥${currentPrice.toFixed(2)}`;
+      document.getElementById('bid-amount').min = currentPrice + 10;
+      document.getElementById('bid-amount').value = currentPrice + 10;
+  }
+
+  async function placeBid() {
+      const bid = parseFloat(document.getElementById('bid-amount').value);
+      
+      if (bid <= currentPrice) {
+          Toast.error("出价必须高于当前价格");
+          return;
+      }
+      
+      // Send bid to server
+      const resp = await send('Z3-2025-AUCTION', 'place_bid', {
+          auction_id: 'VASE-001',
+          bid_amount: bid
+      });
+      
+      if (resp && resp.success) {
+          currentPrice = bid;
+          document.getElementById('bidder-info').textContent = "出价人: 您 (领先)";
+          updateDisplay();
+          Toast.success("出价成功！");
+      } else {
+          Toast.error("出价失败");
+      }
+  }
+  
+  updateDisplay();
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{
+  "task_id": "Z1-2025-ARRIVAL",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 1.6443073749542236,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/product.html?id=WM-5521",
+      "note": "Open product page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#add-to-cart-btn",
+      "note": "Add to cart"
+    },
+    {
+      "t": 2,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/cart.html",
+      "note": "Go to cart"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#checkout-btn",
+      "note": "Checkout"
+    },
+    {
+      "t": 5,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/orders.html",
+      "note": "Go to orders page"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "button:has-text('Debug: +3 Days')",
+      "note": "Trigger time travel"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": ".order-status:has-text('\u5df2\u9001\u8fbe')",
+      "note": "Wait for status update"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

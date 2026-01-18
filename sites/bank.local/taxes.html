@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - 税务准备</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+      <div class="navlinks">
+        <a href="../bank.local/dashboard.html">账户</a>
+        <a href="../bank.local/transactions.html">交易</a>
+        <a href="../bank.local/bill-aggregation.html">账单聚合</a>
+        <a href="../bank.local/taxes.html" class="active">税务中心</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>税务准备与凭证汇总</h1>
+      <button class="btn pri" onclick="openUploadModal()">+ 上传凭证</button>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>年度税务概览 (2025)</h2>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px">
+            <div>
+                <div style="color:var(--muted); font-size:14px">已归档凭证数</div>
+                <div style="font-size:24px; font-weight:700" id="doc-count">0</div>
+            </div>
+            <div>
+                <div style="color:var(--muted); font-size:14px">待分类项目</div>
+                <div style="font-size:24px; font-weight:700; color:var(--warn)" id="pending-count">0</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>我的税务凭证</h2>
+    <div id="tax-docs-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Documents loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadTaxDocs() {
+    const list = document.getElementById('tax-docs-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const docs = env.finance?.tax_documents || {};
+      
+      document.getElementById('doc-count').innerText = Object.keys(docs).length;
+      document.getElementById('pending-count').innerText = Object.values(docs).filter(d => d.status === 'pending').length;
+
+      if (Object.keys(docs).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">📂</div>
+            <div style="color:var(--muted)">暂无税务凭证</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(docs).map(([id, doc]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${doc.name || '未命名凭证'} (${doc.type || '其他'})</h3>
+              <div style="color:var(--muted); font-size:14px">日期: ${doc.date || '未知'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">¥${doc.amount || '0.00'}</div>
+              <div style="color:var(--muted); font-size:13px">状态: <span class="badge ${doc.status === 'verified' ? 'ok' : 'warn'}">${doc.status === 'verified' ? '已核验' : '待处理'}</span></div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="verifyDoc('${id}')" ${doc.status === 'verified' ? 'disabled' : ''}>${doc.status === 'verified' ? '已核验' : '标记为已核验'}</button>
+            <button class="btn secondary" onclick="deleteDoc('${id}')">删除</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openUploadModal() {
+    new Modal({
+      title: '上传税务凭证',
+      content: `
+        <div class="form">
+          <label>凭证名称</label>
+          <input id="doc-name" class="input" placeholder="例如: 办公用品发票">
+          
+          <label>凭证类型</label>
+          <select id="doc-type" class="input">
+            <option value="invoice">发票</option>
+            <option value="receipt">收据</option>
+            <option value="statement">银行对账单</option>
+          </select>
+
+          <label>金额</label>
+          <input id="doc-amount" type="number" class="input" placeholder="0.00">
+          
+          <label>日期</label>
+          <input id="doc-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: '上传',
+      onConfirm: async () => {
+        const name = document.getElementById('doc-name').value;
+        const type = document.getElementById('doc-type').value;
+        const amount = document.getElementById('doc-amount').value;
+        const date = document.getElementById('doc-date').value;
+        
+        if (!name || !amount) {
+          Toast.error("请填写完整信息");
+          return;
+        }
+        
+        await send('D5-2025-TAXPREP', 'upload_tax_document', {
+          action_type: 'upload',
+          name: name,
+          type: type,
+          amount: parseFloat(amount),
+          date: date
+        });
+        
+        setTimeout(loadTaxDocs, 500);
+      }
+    }).open();
+  }
+
+  function verifyDoc(id) {
+    send('D5-2025-TAXPREP', 'upload_tax_document', {
+        action_type: 'verify',
+        doc_id: id
+    });
+    setTimeout(loadTaxDocs, 500);
+  }
+
+  function deleteDoc(id) {
+    new Modal({
+      title: '确认删除',
+      content: `您确定要删除凭证 ${id} 吗？`,
+      confirmText: '删除',
+      onConfirm: async () => {
+        await send('D5-2025-TAXPREP', 'upload_tax_document', {
+          action_type: 'delete',
+          doc_id: id
+        });
+        setTimeout(loadTaxDocs, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadTaxDocs);
+  </script>
+</body>
+</html>

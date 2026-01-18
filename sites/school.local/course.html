@@ -1,71 +1,234 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
+<script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Course Details - EduNet</title>
+<title id="page-title">课程详情 - Nebula学校</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
+<style>
+.course-header {
+  background: radial-gradient(100% 140% at 0% 0%, rgba(139, 92, 246, .12), transparent 40%), var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.course-header h1 {
+  font-size: 32px;
+  margin: 0 0 12px 0;
+}
+.course-meta {
+  color: var(--muted);
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+.course-sections {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+.course-section-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.syllabus-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.syllabus-item:last-child {
+  border-bottom: none;
+}
+.syllabus-icon {
+  font-size: 24px;
+}
+.syllabus-info {
+  flex: 1;
+}
+.syllabus-title {
+  font-weight: 500;
+}
+.syllabus-duration {
+  color: var(--muted);
+  font-size: 14px;
+}
+</style>
 </head>
 <body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand">
-      <div class="logo" style="background: linear-gradient(135deg, #8b5cf6, #d946ef)"></div>
-      EduNet
-    </div>
+    <div class="brand"><div class="logo"></div> Nebula学校</div>
     <div class="navlinks">
-      <a href="index.html">Courses</a>
-      <a href="my-learning.html">My Learning</a>
+      <a href="../school.local/index.html">首页</a>
+      <a href="../school.local/catalog.html">课程目录</a>
+      <a href="../school.local/my-learning.html">我的学习</a>
+    </div>
+    <div style="margin-left:auto">
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
     </div>
   </div>
 </div>
 
-<div class="container">
-  
-  <div class="breadcrumbs">
-    <a href="index.html">Courses</a> / <span>Deep Learning 101</span>
-  </div>
+<div id="__toast" class="toast"></div>
 
-  <div class="grid cols-3 gap-8">
-    
-    <div style="grid-column: span 2">
-      <h1 style="font-size:36px; margin-bottom:16px">Deep Learning 101</h1>
-      <p class="muted" style="font-size:18px; margin-bottom:24px">Master the fundamentals of deep learning and build your own neural networks.</p>
-      
-      <div class="panel p-6 mb-4">
-        <h3>What you'll learn</h3>
-        <ul style="padding-left:20px; color:var(--muted)">
-          <li>Understand neural network architecture</li>
-          <li>Build models with PyTorch</li>
-          <li>Train and evaluate on real datasets</li>
-        </ul>
+<!-- Main Container -->
+<div class="container">
+
+  <div id="course-details">
+    <div class="course-header">
+      <h1 id="course-title">加载中...</h1>
+      <div class="course-meta">讲师: <span id="course-instructor"></span> · 学分: <span id="course-credits"></span></div>
+      <button class="btn pri lg" id="enroll-button" onclick="enrollCourse()">立即报名</button>
+    </div>
+
+    <div class="course-sections">
+      <div>
+        <div class="course-section-card">
+          <div class="section-title">课程简介</div>
+          <p id="course-description">加载中...</p>
+        </div>
+        <div class="course-section-card">
+          <div class="section-title">课程大纲</div>
+          <div id="course-syllabus">
+            <!-- Syllabus items injected here -->
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="course-section-card">
+          <div class="section-title">课程评价</div>
+          <div style="text-align:center; color:var(--muted); font-size:14px">暂无评价</div>
+        </div>
       </div>
     </div>
-
-    <div class="panel p-6" style="height:fit-content; border:1px solid var(--border)">
-      <div style="font-size:32px; font-weight:800; margin-bottom:8px">$199</div>
-      <p class="muted mb-4">One-time payment</p>
-      <button class="btn pri w-full" style="font-size:18px; padding:16px" onclick="enroll()">Enroll Now</button>
-      <div class="text-center mt-4 muted text-sm">30-day money-back guarantee</div>
-    </div>
-
   </div>
 
+  <div class="footer">Nebula学校 · Synthetic UI for Web Agent Research</div>
 </div>
 
-<script>window.RelRoot = '../';</script>
+<!-- JavaScript -->
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
-async function enroll() {
-  await send('J1-2025-GEN', 'enroll_course', {
-    courseId: 'DL101',
-    price: 199
-  });
+let courseId = '';
+
+async function loadCourseDetails() {
+  const urlParams = new URLSearchParams(window.location.search);
+  courseId = urlParams.get('id') || 'DL101'; // Default course ID
+  
+  const courseData = { // Mock data for now
+    'DL101': {
+      title: 'Web Agent编程指南',
+      instructor: 'Masteryth',
+      credits: 3,
+      description: '深入了解Web Agent的开发原理与实战技巧，掌握自动化操作与数据提取技术。',
+      syllabus: [
+        { title: 'Web Agent概述', duration: '1小时' },
+        { title: 'Playwright基础', duration: '2小时' }
+      ]
+    },
+    'ML202': {
+      title: '机器学习进阶',
+      instructor: 'Alice',
+      credits: 4,
+      description: '探索高级机器学习算法，包括深度学习、强化学习及其应用。',
+      syllabus: [
+        { title: '神经网络基础', duration: '2小时' },
+        { title: 'CNN与RNN', duration: '3小时' },
+        { title: 'Transformer模型', duration: '3小时' },
+        { title: '强化学习导论', duration: '2小时' }
+      ]
+    }
+  };
+
+  const course = courseData[courseId];
+  if (course) {
+    document.getElementById('page-title').textContent = `${course.title} - Nebula学校`;
+    document.getElementById('course-title').textContent = course.title;
+    document.getElementById('course-instructor').textContent = course.instructor;
+    document.getElementById('course-credits').textContent = course.credits;
+    document.getElementById('course-description').textContent = course.description;
+
+    const syllabusContainer = document.getElementById('course-syllabus');
+    syllabusContainer.innerHTML = course.syllabus.map(item => `
+      <div class="syllabus-item">
+        <div class="syllabus-icon">📖</div>
+        <div class="syllabus-info">
+          <div class="syllabus-title">${item.title}</div>
+          <div class="syllabus-duration">${item.duration}</div>
+        </div>
+      </div>
+    `).join('');
+
+    // Check if already enrolled
+    const env = await loadEnv();
+    const enrolled = env.courses?.[courseId]?.state === 'enrolled';
+    if (enrolled) {
+      const btn = document.getElementById('enroll-button');
+      btn.textContent = '已报名';
+      btn.disabled = true;
+      btn.classList.remove('pri');
+      btn.classList.add('ok');
+    }
+  } else {
+    document.getElementById('course-details').innerHTML = '<div class="course-header"><h1>课程未找到</h1></div>';
+  }
 }
+
+async function enrollCourse() {
+  const btn = document.getElementById('enroll-button');
+  btn.disabled = true;
+  btn.textContent = '正在报名...';
+
+  try {
+    const response = await send('J1-2025-ENROLL', 'enroll_course', {
+      courseId: courseId
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('报名成功！');
+      window.location.href = `${window.RelRoot}school.local/my-learning.html?enrolled=true`;
+    } else {
+        console.warn('Response invalid, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}school.local/my-learning.html?enrolled=true`;
+    }
+  } catch (error) {
+    console.error('报名失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}school.local/my-learning.html?enrolled=true`;
+    } else {
+        Toast.error('报名失败，请稍后再试');
+        btn.disabled = false;
+        btn.textContent = '立即报名';
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadCourseDetails);
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
 
 </body>
 </html>

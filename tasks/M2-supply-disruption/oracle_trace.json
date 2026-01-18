@@ -1,0 +1,35 @@
+{
+  "task_id": "M2-2025-SUPPLY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/supply-disruption.html",
+      "note": "Open supply disruption page"
+    },
+    {
+      "t": 1,
+      "act": "wait",
+      "selector": "#disruption-alerts div",
+      "note": "Wait for disruption alerts to load"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('确认改为自提/替代')",
+      "note": "Click confirm alternative button"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm switch to pickup"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#alternative-options-list .card .badge:has-text('缺货')",
+      "note": "Wait for status update (mocked as switched/unavailable for delivery)"
+    }
+  ]
+}

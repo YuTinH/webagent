@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>订单跟踪 - Nebula商城</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.tracking-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+}
+.tracking-id {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.tracking-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+.status-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.step-dot {
+  width: 24px;
+  height: 24px;
+  background: var(--muted);
+  border-radius: 50%;
+  margin: 0 auto 8px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+}
+.step-dot.active {
+  background: var(--pri);
+}
+.step-dot.completed {
+  background: var(--ok);
+}
+.step-text {
+  color: var(--muted);
+  font-size: 14px;
+}
+.step-text.active, .step-text.completed {
+  color: var(--text);
+}
+.status-line {
+  position: absolute;
+  top: 11px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+.status-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--pri);
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      Nebula商城
+    </div>
+    <div class="navlinks">
+      <a href="../shop.local/index.html">首页</a>
+      <a href="../shop.local/orders.html" class="active">订单</a>
+      <a href="../pay.local/wallet/cards.html">钱包</a>
+    </div>
+    <div style="display:flex; gap:16px; margin-left:16px">
+      <button class="wishlist-icon-btn" onclick="openWishlist()" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; position:relative">
+        ❤️
+        <span id="wishlist-count" class="cart-count" style="display:none">0</span>
+      </button>
+      <button class="cart-icon-btn" onclick="openCartDrawer()" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; position:relative">
+        🛒
+        <span id="cart-count" class="cart-count" style="display:none">0</span>
+      </button>
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">订单跟踪</h1>
+
+  <!-- Tracking Card -->
+  <div class="tracking-card">
+    <div class="tracking-id">订单号: <span id="order-id">加载中...</span></div>
+
+    <div class="tracking-status">
+      <div class="status-line"><div class="status-progress" id="status-progress"></div></div>
+      <div class="status-step" id="step-confirmed">
+        <div class="step-dot">1</div>
+        <div class="step-text">已确认</div>
+      </div>
+      <div class="status-step" id="step-shipped">
+        <div class="step-dot">2</div>
+        <div class="step-text">已发货</div>
+      </div>
+      <div class="status-step" id="step-transit">
+        <div class="step-dot">3</div>
+        <div class="step-text">运输中</div>
+      </div>
+      <div class="status-step" id="step-delivered">
+        <div class="step-dot">4</div>
+        <div class="step-text">已送达</div>
+      </div>
+    </div>
+    
+    <button class="btn pri" onclick="window.location.href=window.RelRoot+'shop.local/orders.html'" style="margin-top:20px">返回订单列表</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Nebula商城 · Synthetic UI for Web Agent Research
+  </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const statusMap = {
+  'confirmed': 0,
+  'shipped': 1,
+  'transit': 2,
+  'delivered': 3
+};
+
+async function loadTrackingInfo() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderId = urlParams.get('order_id');
+  const orderIdDisplay = document.getElementById('order-id');
+  const statusProgress = document.getElementById('status-progress');
+
+  if (!orderId) {
+    orderIdDisplay.textContent = '未找到订单号';
+    return;
+  }
+
+  orderIdDisplay.textContent = orderId;
+
+  try {
+    const response = await fetch(`${window.RelRoot}api/orders/${orderId}`);
+    const data = await response.json();
+
+    if (data.success && data.order) {
+      updateTrackingStatus(data.order.state);
+    } else {
+      Toast.error('加载订单详情失败');
+    }
+  } catch (error) {
+    console.error('加载订单详情失败:', error);
+    Toast.error('加载订单详情失败');
+  }
+}
+
+function updateTrackingStatus(status) {
+  const stepIndex = statusMap[status] || 0;
+  const steps = document.querySelectorAll('.status-step');
+  const statusProgress = document.getElementById('status-progress');
+
+  steps.forEach((step, index) => {
+    if (index < stepIndex) {
+      step.querySelector('.step-dot').classList.add('completed');
+      step.querySelector('.step-text').classList.add('completed');
+    } else if (index === stepIndex) {
+      step.querySelector('.step-dot').classList.add('active');
+      step.querySelector('.step-text').classList.add('active');
+    }
+  });
+
+  statusProgress.style.width = `${(stepIndex / (steps.length - 1)) * 100}%`;
+}
+
+document.addEventListener('DOMContentLoaded', loadTrackingInfo);
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

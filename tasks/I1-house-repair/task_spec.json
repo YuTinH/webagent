@@ -1,0 +1,17 @@
+{
+  "task_id": "I1-2025-REPAIR",
+  "family": "I",
+  "goal": "Submit a repair request for '冰箱' with problem '不制冷' and desired service date '2026-02-10'. Verify the request is submitted and its status is 'submitted'.",
+  "inputs": {
+    "item": "冰箱",
+    "problem": "不制冷",
+    "service_date": "2026-02-10"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/repairs.html')",
+    "mem('repairs.requests.last.status') == 'submitted'",
+    "mem('repairs.requests.last.item') == '冰箱'",
+    "mem('repairs.requests.last.problem') == '不制冷'"
+  ]
+}

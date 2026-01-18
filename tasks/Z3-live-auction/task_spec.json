@@ -1,0 +1,14 @@
+{
+  "task_id": "Z3-2025-AUCTION",
+  "family": "Z",
+  "goal": "Participate in the live auction for 'Ming Vase' and place a winning bid (higher than current price) within budget.",
+  "inputs": {
+    "item": "Ming Vase",
+    "budget": 500
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/auction.html')",
+    "mem('auctions.VASE-001.highest_bidder') == 'user'"
+  ]
+}

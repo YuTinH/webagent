@@ -1,0 +1,67 @@
+{
+  "task_id": "I2-2025-APPREPAIR",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 8,
+  "steps_total": 8,
+  "time_elapsed": 1.8464350700378418,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/appliance-repair.html",
+      "note": "Open appliance repair page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('\u63d0\u4ea4\u65b0\u7ef4\u4fee\u8bf7\u6c42')",
+      "note": "Click submit new request button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#appliance-name",
+      "value": "\u6d17\u8863\u673a",
+      "note": "Enter appliance name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#serial-number",
+      "value": "SN12345",
+      "note": "Enter serial number"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#problem-description",
+      "value": "\u65e0\u6cd5\u542f\u52a8",
+      "note": "Enter problem description"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#service-date",
+      "value": "2026-03-01",
+      "note": "Enter service date"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm submission"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#appliance-repair-requests-list .card",
+      "note": "Wait for request to appear in list"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

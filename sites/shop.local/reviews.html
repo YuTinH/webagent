@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - 评价与黑名单</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">购物</a>
+        <a href="../shop.local/orders.html">订单</a>
+        <a href="../shop.local/reviews.html" class="active">评价管理</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <h1 style="margin-bottom:24px">评价与商家黑名单</h1>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>提交新评价</h2>
+        <div class="form">
+            <label>商家名称</label>
+            <input id="merchant-name" class="input" placeholder="例如: 星巴克">
+            <label>评分</label>
+            <div id="rating-component" style="margin-bottom:16px"></div>
+            <label>评价内容</label>
+            <textarea id="review-content" class="input" rows="3" placeholder="写下你的评价..."></textarea>
+            <div style="margin-top:16px; display:flex; align-items:center; gap:8px">
+              <input type="checkbox" id="add-to-blacklist">
+              <label for="add-to-blacklist" style="margin:0">加入黑名单</label>
+            </div>
+            <button id="submit-btn" class="btn pri" style="margin-top:24px; width:100%" onclick="submitReview()">提交评价</button>
+        </div>
+    </div>
+
+    <div style="margin-bottom:24px">
+        <h2>我的评价历史</h2>
+        <div id="review-history-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Review history loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">暂无评价记录</div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h2>我的商家黑名单</h2>
+        <div id="blacklist-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Blacklist loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">黑名单为空</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  let currentRating = 0;
+  let ratingInstance;
+
+  async function loadReviewsAndBlacklist() {
+    const reviewsList = document.getElementById('review-history-list');
+    const blacklistList = document.getElementById('blacklist-list');
+    reviewsList.innerHTML = '<div class="loading">加载中...</div>';
+    blacklistList.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const reviews = env.user_reviews?.reviews || {};
+      const blacklist = env.user_reviews?.blacklist || {};
+
+      // Render reviews
+      if (Object.keys(reviews).length === 0) {
+        reviewsList.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">暂无评价记录</div>
+          </div>
+        `;
+      } else {
+        reviewsList.innerHTML = Object.entries(reviews).map(([id, review]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">${review.merchant}</h3>
+                <div style="font-size:14px">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</div>
+              </div>
+              <div style="color:var(--muted); font-size:13px">${review.date}</div>
+            </div>
+            <p>${review.content}</p>
+          </div>
+        `).join('');
+      }
+
+      // Render blacklist
+      if (Object.keys(blacklist).length === 0) {
+        blacklistList.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">黑名单为空</div>
+          </div>
+        `;
+      } else {
+        blacklistList.innerHTML = Object.entries(blacklist).map(([merchant, status]) => `
+          <div class="card soft" style="display:flex; justify-content:space-between; align-items:center">
+            <h3>${merchant}</h3>
+            <button class="btn secondary" onclick="removeFromBlacklist('${merchant}')">移出黑名单</button>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      reviewsList.innerHTML = '<div class="error">加载失败</div>';
+      blacklistList.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function setupRating() {
+    ratingInstance = new Rating('rating-component', {
+      value: 0,
+      onChange: (value) => {
+        currentRating = value;
+      }
+    });
+  }
+
+  async function submitReview() {
+    const merchantName = document.getElementById('merchant-name').value;
+    const reviewContent = document.getElementById('review-content').value;
+    const addToBlacklist = document.getElementById('add-to-blacklist').checked;
+
+    if (!merchantName || !reviewContent || currentRating === 0) {
+      Toast.error("请填写完整评价信息和评分");
+      return;
+    }
+    
+    await send('C5-2025-REVIEWS', 'submit_review', {
+      merchant: merchantName,
+      rating: currentRating,
+      content: reviewContent,
+      add_to_blacklist: addToBlacklist
+    });
+
+    setTimeout(loadReviewsAndBlacklist, 500);
+  }
+
+  async function removeFromBlacklist(merchant) {
+    new Modal({
+      title: '移出黑名单',
+      content: `确定要将 ${merchant} 移出黑名单吗？`,
+      confirmText: '确认移出',
+      onConfirm: async () => {
+        await send('C5-2025-REVIEWS', 'manage_blacklist', {
+          merchant: merchant,
+          action_type: 'remove'
+        });
+        setTimeout(loadReviewsAndBlacklist, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupRating();
+    loadReviewsAndBlacklist();
+  });
+  </script>
+</body>
+</html>

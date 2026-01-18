@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会议注册 - 活动中心</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.register-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+.conference-info {
+  margin-bottom: 32px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> 活动中心</div>
+    <div class="navlinks">
+      <a href="../event.local/index.html">首页</a>
+      <a href="../event.local/events.html">活动日历</a>
+      <a href="../event.local/my-tickets.html">我的票券</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="text-align:center; font-size:28px; font-weight:700; margin:32px 0">会议注册</h1>
+
+  <div class="conference-info">
+    <h2 id="conference-name" style="margin-bottom:8px">Loading Conference...</h2>
+    <p id="conference-date" style="color:var(--muted)">Loading Date...</p>
+  </div>
+
+  <div class="register-card">
+    <div class="form-group">
+      <label for="full-name">全名</label>
+      <input type="text" id="full-name" value="Masteryth">
+    </div>
+    <div class="form-group">
+      <label for="email">邮箱</label>
+      <input type="email" id="email" value="masteryth@example.com">
+    </div>
+    <div class="form-group">
+      <label for="invoice-title">发票抬头</label>
+      <input type="text" id="invoice-title" value="Your Lab">
+    </div>
+    <div class="form-group">
+      <label for="payment-method">支付方式</label>
+      <select id="payment-method">
+        <option value="card">银行卡 (**** 7777)</option>
+        <option value="alipay">支付宝</option>
+        <option value="wechat">微信支付</option>
+      </select>
+    </div>
+    <button class="btn pri lg" style="width:100%" onclick="submitRegistration()">确认注册</button>
+  </div>
+
+  <div class="footer">活动中心 · Synthetic UI for Web Agent Research</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+let conferenceId = 'CL-2026'; // Default conference ID
+
+async function loadConferenceInfo() {
+  const urlParams = new URLSearchParams(window.location.search);
+  conferenceId = urlParams.get('id') || 'CL-2026'; // Override default if ID is in URL
+
+  const confData = { // Mock conference data
+    'CL-2026': {
+      name: 'Web Agent未来峰会',
+      date: '2026年3月10-12日'
+    }
+  };
+
+  const conf = confData[conferenceId];
+  if (conf) {
+    document.getElementById('conference-name').textContent = conf.name;
+    document.getElementById('conference-date').textContent = conf.date;
+  } else {
+    document.getElementById('conference-name').textContent = '会议未找到';
+    document.getElementById('conference-date').textContent = '';
+  }
+}
+
+async function submitRegistration() {
+  const fullName = document.getElementById('full-name').value;
+  const email = document.getElementById('email').value;
+  const invoiceTitle = document.getElementById('invoice-title').value;
+  const paymentMethod = document.getElementById('payment-method').value;
+
+  if (!fullName || !email || !invoiceTitle || !paymentMethod) {
+    Toast.error('请填写所有必填项');
+    return;
+  }
+
+  Toast.info('正在提交注册...');
+
+  try {
+    const response = await send('F2-2025-CONF', 'conference_register', {
+      conferenceId: conferenceId,
+      fullName: fullName,
+      email: email,
+      invoiceTitle: invoiceTitle,
+      paymentMethod: paymentMethod
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('注册成功！');
+      // Fallback reload if redirect doesn't happen automatically
+      if (!response.redirect) {
+          window.location.href = `${window.RelRoot}event.local/registration.html?state=confirmed`;
+      }
+    } else {
+        console.warn('Response invalid, attempting fallback reload...');
+        window.location.href = `${window.RelRoot}event.local/registration.html?state=confirmed`;
+    }
+  } catch (error) {
+    console.error('注册失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}event.local/registration.html?state=confirmed`;
+    } else {
+        Toast.error('注册失败，请稍后再试');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadConferenceInfo);
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

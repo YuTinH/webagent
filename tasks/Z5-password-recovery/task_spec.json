@@ -1,0 +1,14 @@
+{
+  "task_id": "Z5-2025-RESET",
+  "family": "Z",
+  "goal": "Reset password by requesting a verification code and entering it correctly.",
+  "inputs": {
+    "username": "user123",
+    "new_password": "newpass123"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('login.html')",
+    "mem('security.password_reset.status') == 'success'"
+  ]
+}

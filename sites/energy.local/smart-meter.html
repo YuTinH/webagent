@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>energy.local - 智能电表</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">⚡ Energy.local</div>
+      <div class="navlinks">
+        <a href="../energy.local/index.html">仪表盘</a>
+        <a href="../energy.local/plan.html">用能计划</a>
+        <a href="../energy.local/smart-meter.html" class="active">智能电表</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>智能电表抄表与账单核验</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>当前电表读数</h2>
+        <div id="meter-reading">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <div class="card soft">
+        <h2>手动提交读数</h2>
+        <div class="form">
+            <label>电表读数 (kWh)</label>
+            <input id="new-reading" type="number" class="input" placeholder="例如: 12345.67">
+            
+            <button class="btn pri" style="margin-top:24px; width:100%" onclick="submitReading()">提交读数</button>
+        </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>历史账单与读数</h2>
+        <div id="bill-history-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- History loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">暂无历史账单</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadMeterData() {
+    const meterReadingDiv = document.getElementById('meter-reading');
+    const billHistoryList = document.getElementById('bill-history-list');
+    
+    try {
+      const env = await loadEnv();
+      const meter = env.meters?.meter_data || {
+          current_reading: 12345.67,
+          last_billed_reading: 12000.00,
+          last_bill_amount: 50.25,
+          last_bill_date: "2025-12-15"
+      };
+      const bills = env.meters?.bill_history || {};
+
+      meterReadingDiv.innerHTML = `
+          <div style="font-size:36px; font-weight:700">${parseFloat(meter.current_reading).toFixed(2)} kWh</div>
+          <div style="color:var(--muted); font-size:14px">上次计费读数: ${parseFloat(meter.last_billed_reading).toFixed(2)} kWh</div>
+          <div style="color:var(--muted); font-size:14px">上次账单金额: ¥${parseFloat(meter.last_bill_amount).toFixed(2)} (${meter.last_bill_date})</div>
+      `;
+
+      if (Object.keys(bills).length === 0) {
+        billHistoryList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">暂无历史账单</div></div>`;
+      } else {
+        billHistoryList.innerHTML = Object.entries(bills).map(([id, bill]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">账单 (${id})</h3>
+                <div style="color:var(--muted); font-size:14px">周期: ${bill.start_date} - ${bill.end_date}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:600">金额: ¥${parseFloat(bill.amount).toFixed(2)}</div>
+                <div style="color:var(--muted); font-size:13px">状态: <span class="badge ${bill.status === 'paid' ? 'ok' : 'warn'}">${bill.status}</span></div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      meterReadingDiv.innerHTML = '<div class="error">加载失败</div>';
+      billHistoryList.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  async function submitReading() {
+    const newReading = document.getElementById('new-reading').value;
+    
+    if (!newReading || parseFloat(newReading) <= 0) {
+      Toast.error("请输入有效读数");
+      return;
+    }
+    
+    await send('I4-2025-SMARTMETER', 'submit_meter_reading', {
+      reading: parseFloat(newReading)
+    });
+    
+    setTimeout(loadMeterData, 500);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadMeterData);
+  </script>
+</body>
+</html>

@@ -1,33 +1,18 @@
 {
-  "task_id": "C1-2025-001",
+  "task_id": "C1-2025-SUPPORT",
   "family": "C",
-  "episode_id": "ep-support",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-02T10:00:00Z",
-  "persona": {
-    "automation_preference": "medium"
-  },
-  "goal": "Submit a support ticket for delayed order #O-98321 on shop.local.",
+  "goal": "Submit a support ticket for delayed order O-98321.",
   "inputs": {
     "order_id": "O-98321",
-    "issue_type": "delayed"
+    "issue_type": "delayed",
+    "description": "My order has not arrived yet."
   },
-  "allowed_domains": [
-    "shop.local"
-  ],
   "preconditions": [],
-  "dependencies": [],
-  "memory_keys": [
-    "support.ticket.last.id",
-    "support.ticket.last.status"
-  ],
   "success_criteria": [
-    "ALL[url().includes('/shop.local/help'), mem('support.ticket.last.status') == 'open']"
-  ],
-  "rubrics": {
-    "SR": 1.0
-  },
-  "timeout": 180,
-  "step_timeout": 30
+    "url().includes('/shop.local/help.html?status=ticket_created')",
+    "json('env','orders.O-98321.state') == 'investigating'",
+    "mem('support.ticket.last.id') != ''",
+    "mem('support.ticket.last.order_id') == 'O-98321'",
+    "mem('support.ticket.last.status') == 'open'"
+  ]
 }

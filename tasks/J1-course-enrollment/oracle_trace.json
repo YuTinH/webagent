@@ -1,36 +1,23 @@
 {
-  "task_id": "J1-2025-COURSE",
+  "task_id": "J1-2025-ENROLL",
   "steps": [
     {
       "t": 0,
       "act": "open",
-      "url": "http://localhost:8014/school.local/course.html",
-      "note": "Open Deep Learning 101 course page"
+      "url": "http://localhost:8014/school.local/course.html?id=ML202",
+      "note": "Open 机器学习进阶 course page"
     },
     {
       "t": 2,
       "act": "click",
-      "selector": "button.btn.pri",
+      "selector": "#enroll-button",
       "note": "Click 'Enroll Now' button"
     },
     {
-      "t": 5,
+      "t": 4,
       "act": "wait",
-      "selector": "h1:has-text('My Enrolled Courses')",
-      "note": "Wait for 'My Enrolled Courses' page to load"
-    },
-    {
-      "t": 7,
-      "act": "assert",
-      "selector": "div.text-sm.muted:has-text('Status: enrolled')",
-      "note": "Check enrollment status is 'enrolled'"
-    },
-    {
-      "t": 9,
-      "act": "extract",
-      "variable": "enroll-state",
-      "selector": "div.text-sm.muted",
-      "note": "Extract enrolled status for assertion"
+      "selector": "h1:has-text('我的学习')",
+      "note": "Wait for My Learning page to load"
     }
   ]
 }

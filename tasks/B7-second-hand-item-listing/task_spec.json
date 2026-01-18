@@ -1,0 +1,19 @@
+{
+  "task_id": "B7-2025-MARKET",
+  "family": "B",
+  "goal": "List a second-hand item: 'Vintage Desk Lamp' for 50 in 'furniture' category.",
+  "inputs": {
+    "name": "Vintage Desk Lamp",
+    "description": "Working condition, minor scratches, includes bulb.",
+    "price": 50,
+    "category": "furniture",
+    "photo_name": ""
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/market.local/index.html?listed=true')",
+    "mem('market.listed_items.last.name') == 'Vintage Desk Lamp'",
+    "mem('market.listed_items.last.price') == '50.0'",
+    "mem('market.listed_items.last.category') == 'furniture'"
+  ]
+}

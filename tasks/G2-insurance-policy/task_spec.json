@@ -1,0 +1,17 @@
+{
+  "task_id": "G2-2025-INSURANCE",
+  "family": "G",
+  "goal": "Purchase the '全面医疗保障' insurance plan from '平安健康'. Verify the insurance status is active and the policy details are recorded.",
+  "inputs": {
+    "plan_name": "全面医疗保障",
+    "provider": "平安健康"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/health.local/insurance.html')",
+    "mem('health.insurance.active') == '1'",
+    "mem('health.insurance.plan_name') == '全面医疗保障'",
+    "mem('health.insurance.provider') == '平安健康'",
+    "mem('health.insurance.policy_number') != ''"
+  ]
+}

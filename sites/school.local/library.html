@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>school.local - 图书馆</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🎓 School.local</div>
+      <div class="navlinks">
+        <a href="../school.local/my-learning.html">我的课程</a>
+        <a href="../school.local/library.html" class="active">图书馆</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>图书馆办证与图书预约</h1>
+      <button class="btn pri" onclick="openApplyCardModal()">+ 申请图书证</button>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>我的图书证</h2>
+        <div id="library-card-info">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <h2>图书预约</h2>
+    <div class="card soft">
+        <div class="form">
+            <label>图书名称/作者</label>
+            <input id="book-query" class="input" placeholder="例如: 智能体的崛起, 刘慈欣">
+            
+            <button class="btn pri" style="margin-top:24px; width:100%" onclick="searchAndReserveBook()">搜索并预约</button>
+        </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>我的预约记录</h2>
+        <div id="reservations-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Reservations loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">暂无预约记录</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadLibraryInfo() {
+    const cardInfoDiv = document.getElementById('library-card-info');
+    const reservationsList = document.getElementById('reservations-list');
+    
+    try {
+      const env = await loadEnv();
+      const card = env.library?.card || {};
+      const reservations = env.library?.reservations || {};
+
+      if (card.status === 'active') {
+        cardInfoDiv.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center">
+                <div>
+                    <div style="font-size:18px; font-weight:600">图书证号: ${card.card_number}</div>
+                    <div style="color:var(--muted); font-size:14px">有效期至: ${card.expiry_date}</div>
+                </div>
+                <span class="badge ok">活跃</span>
+            </div>
+            <div style="margin-top:12px; font-size:14px">
+                <div>借阅限额: ${card.borrow_limit} 本</div>
+                <div>已借阅: ${card.borrowed_count} 本</div>
+            </div>
+        `;
+      } else {
+        cardInfoDiv.innerHTML = `<div style="color:var(--muted)">当前未申请图书证</div>`;
+      }
+
+      if (Object.keys(reservations).length === 0) {
+        reservationsList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">暂无预约记录</div></div>`;
+      } else {
+        reservationsList.innerHTML = Object.entries(reservations).map(([id, res]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">${res.book_title}</h3>
+                <div style="color:var(--muted); font-size:14px">预约日期: ${res.reserve_date}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:600">状态: <span class="badge ${res.status === 'ready' ? 'ok' : 'warn'}">${res.status === 'ready' ? '可取阅' : '待处理'}</span></div>
+                <div style="color:var(--muted); font-size:13px">取阅截止: ${res.pickup_deadline || 'N/A'}</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      cardInfoDiv.innerHTML = '<div class="error">加载失败</div>';
+      reservationsList.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openApplyCardModal() {
+    new Modal({
+      title: '申请图书证',
+      content: `
+        <div class="form">
+          <label>姓名</label>
+          <input id="applicant-name" class="input" placeholder="例如: 张三">
+          
+          <label>学号/工号</label>
+          <input id="student-id" class="input" placeholder="例如: S123456">
+        </div>
+      `,
+      confirmText: '提交申请',
+      onConfirm: async () => {
+        const name = document.getElementById('applicant-name').value;
+        const studentId = document.getElementById('student-id').value;
+        
+        if (!name || !studentId) {
+          Toast.error("请填写完整信息");
+          return;
+        }
+        
+        await send('J2-2025-LIBRARY', 'manage_library_service', {
+          action_type: 'apply_card',
+          applicant_name: name,
+          student_id: studentId
+        });
+        
+        setTimeout(loadLibraryInfo, 500);
+      }
+    }).open();
+  }
+
+  function searchAndReserveBook() {
+    const bookQuery = document.getElementById('book-query').value;
+    if (!bookQuery) {
+        Toast.error("请输入图书名称或作者进行搜索");
+        return;
+    }
+
+    new Modal({
+      title: `预约图书: ${bookQuery}`,
+      content: `
+        <div class="form">
+          <label>确认预约图书</label>
+          <input class="input" value="${bookQuery}" readonly>
+          <label>期望取阅日期</label>
+          <input id="pickup-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: '确认预约',
+      onConfirm: async () => {
+        const pickupDate = document.getElementById('pickup-date').value;
+        if (!pickupDate) {
+            Toast.error("请选择取阅日期");
+            return;
+        }
+        await send('J2-2025-LIBRARY', 'manage_library_service', {
+          action_type: 'reserve_book',
+          book_query: bookQuery,
+          pickup_date: pickupDate
+        });
+        setTimeout(loadLibraryInfo, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadLibraryInfo);
+  </script>
+</body>
+</html>

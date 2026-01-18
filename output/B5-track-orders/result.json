@@ -1,61 +1,39 @@
 {
-  "task_id": "B5-2025-005",
+  "task_id": "B5-2025-TRACKING",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 5,
-  "steps_total": 5,
-  "time_elapsed": 2.9170713424682617,
+  "steps_completed": 4,
+  "steps_total": 4,
+  "time_elapsed": 2.5509636402130127,
   "error": null,
   "trace": [
     {
       "t": 0,
-      "url": "https://shop.local/orders",
       "act": "open",
-      "note": "Navigate to orders"
+      "url": "http://localhost:8014/shop.local/orders.html",
+      "note": "Open orders list page"
     },
     {
       "t": 2,
       "act": "wait",
-      "selector": ".order-list"
+      "selector": ".order-card[data-order-id='O-93902']",
+      "note": "Wait for specific order to load"
     },
     {
-      "t": 3,
+      "t": 4,
       "act": "click",
-      "selector": ".order-item:first-child"
-    },
-    {
-      "t": 5,
-      "act": "wait",
-      "selector": "#order-id"
+      "selector": ".order-card[data-order-id='O-93902'] button:has-text('\u8ddf\u8e2a\u7269\u6d41')",
+      "note": "Click 'Track Order' button for O-93902"
     },
     {
       "t": 6,
-      "act": "verify_state",
-      "checks": [
-        {
-          "type": "url",
-          "contains": "/orders"
-        },
-        {
-          "type": "dom",
-          "selector": "#order-id",
-          "exists": true
-        },
-        {
-          "type": "dom",
-          "selector": "#delivery-status",
-          "exists": true
-        },
-        {
-          "type": "dom",
-          "selector": ".detail-panel",
-          "exists": true
-        }
-      ],
-      "note": "Verify order details panel loaded successfully"
+      "act": "wait",
+      "selector": "h1:has-text('\u8ba2\u5355\u8ddf\u8e2a')",
+      "note": "Wait for order tracking page to load"
     }
   ],
   "memory_updates": {},
   "artifacts": [],
-  "warnings": []
+  "warnings": [],
+  "extracted_data": {}
 }

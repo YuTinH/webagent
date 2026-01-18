@@ -1,18 +1,13 @@
 {
   "permits": {
     "RP-2024-77": {
-      "next_appointment": "2025-12-01T10:00"
+      "next_appointment": null
     }
   },
   "trips": {
     "PNR9ZZ": {
-      "status": "rebooked",
-      "history": [
-        {
-          "action": "rebook",
-          "ts": 1766200938.1114445
-        }
-      ]
+      "status": "ticketed",
+      "history": []
     },
     "flight": {
       "pnr": "PNR-0000",
@@ -29,21 +24,38 @@
   },
   "payments": {
     "cards": {
-      "active_last4": "7777",
+      "active_last4": "1234",
       "1234": {
-        "state": "blocked"
-      },
-      "****": {
-        "state": "blocked"
+        "state": "active"
       }
     },
     "merchant_bindings": {
       "map": {
-        "shop.local": "7777",
-        "ride.local": "7777",
-        "food.local": "7777",
-        "stream.local": "7777",
-        "cloud.local": "7777"
+        "shop.local": "1234",
+        "ride.local": "1234",
+        "food.local": "1234",
+        "stream.local": "1234",
+        "cloud.local": "1234"
+      }
+    }
+  },
+  "supply_chain": {
+    "disruptions": {
+      "DIS-001": {
+        "title": "物流罢工预警",
+        "description": "由于区域物流罢工，部分快递配送将延迟3-5天。",
+        "affected_areas": [
+          "市中心",
+          "高新区"
+        ]
+      }
+    },
+    "alternatives": {
+      "ALT-101": {
+        "item_name": "生鲜蔬菜包",
+        "alternative_source": "社区合作自提点",
+        "status": "available",
+        "action_needed": "建议切换为自提以避免延误"
       }
     }
   },
@@ -56,79 +68,58 @@
     "prescriptions": {
       "RX-1001": {
         "medication": "Amoxicillin 250mg",
-        "refills_left": 1,
-        "last_refill": "2025-12-21T06:45:28.217384"
+        "refills_left": 2,
+        "last_refill": null
       }
     },
-    "appointments": {
-      "last": {
-        "id": "APT-9001",
-        "doctor": "DR-001",
-        "slot": "2025-12-02T09:00"
-      }
-    },
-    "claims": {
-      "CLM-5501": {
-        "status": "processing",
-        "appointment_id": "APT-9001",
-        "amount": 250.0,
-        "state": "processing"
-      }
-    },
-    "vaccines": {
-      "VC-56333": {
-        "type": "flu",
-        "date": "2025-12-17",
-        "time": "09:00",
-        "clinic": "City Health Clinic",
-        "status": "booked",
-        "booked_at": "2025-12-17T08:57:23.992119"
-      },
-      "VC-47780": {
-        "type": "flu",
-        "date": "2025-12-17",
-        "time": "09:00",
-        "clinic": "City Health Clinic",
-        "status": "booked",
-        "booked_at": "2025-12-17T11:17:54.704888"
-      }
+    "appointments": {},
+    "claims": {}
+  },
+  "subscriptions": {
+    "SUB-001": {
+      "name": "Premium Plan",
+      "plan": "monthly",
+      "price": 50,
+      "frequency": "month",
+      "next_billing_date": "2026-01-20",
+      "status": "active"
     }
   },
   "meters": {
     "M-321": {
-      "plan": "green_offpeak"
+      "plan": "standard"
     }
   },
-  "orders": {
-    "O-98321": {
-      "current_price": 179,
-      "claims": {
-        "price_protect": {
-          "state": "none"
+  "shop": {
+    "orders": {
+      "O-98321": {
+        "current_price": 179,
+        "claims": {
+          "price_protect": {
+            "state": "none"
+          }
         }
+      },
+      "O-93902": {
+        "id": "O-93902",
+        "items": [
+          {
+            "product_id": 1,
+            "quantity": 1,
+            "name": "Wireless Mouse",
+            "price": 24.99
+          }
+        ],
+        "total": 29.99,
+        "state": "confirmed",
+        "shipping_speed": "standard",
+        "shipping_address": "123 Main St",
+        "date": "2026-01-01T10:00:00.000000"
       }
-    },
-    "O-58180": {
-      "state": "confirmed",
-      "total": 29.99
-    },
-    "last": {
-      "id": "O-93902",
-      "total": 29.99
-    },
-    "O-93902": {
-      "state": "confirmed",
-      "total": 29.99
     }
   },
   "merchant_bindings": {
-    "updated": [
-      "shop.local",
-      "ride.local",
-      "food.local",
-      "stream.local",
-      "cloud.local"
-    ]
+    "updated": []
   },
   "work": {
     "conference": {
@@ -138,241 +129,18 @@
   "expenses": {
     "reports": {}
   },
-  "finance": {
-    "budgets": {
-      "food": {
-        "limit": 600
+  "support": {
+    "chat_history": [
+      {
+        "role": "user",
+        "text": "请帮我查一下订单 O-93902 的状态",
+        "time": "2026-01-17T16:00:52.235527"
+      },
+      {
+        "role": "bot",
+        "text": "为您查询到订单 <b>O-93902</b> 的状态：已确认，正在为您准备发货。<br>总金额：¥29.99",
+        "time": "2026-01-17T16:00:52.235527"
       }
-    }
-  },
-  "courses": {
-    "DL101": {
-      "state": "enrolled",
-      "enrolled_at": "2025-12-21T05:26:59.989065"
-    }
-  },
-  "social": {
-    "groups": {
-      "GRP-001": {
-        "name": "Springfield Neighborhood",
-        "joined_at": "2025-12-17T02:30:50.687106"
-      }
-    }
-  },
-  "mobile": {
-    "subscription": {
-      "status": "active",
-      "plan_id": "unlimited",
-      "plan_name": "Unlimited Plan",
-      "phone_number": "555-219-8937",
-      "data_limit": "Unlimited",
-      "next_bill_date": "2026-01-16"
-    }
-  },
-  "identity": {
-    "address_verified": true,
-    "proof_doc": {
-      "type": "utility",
-      "file": "proof_of_address.pdf",
-      "uploaded_at": "2025-12-17T02:48:59.976337"
-    }
-  },
-  "market": {
-    "listings": {
-      "2H-4099": {
-        "name": "Vintage Desk Lamp",
-        "description": "Working condition, minor scratches, includes bulb.",
-        "price": 50,
-        "category": "home",
-        "seller": "current_user",
-        "status": "listed",
-        "listed_at": "2025-12-17T03:07:00.366468",
-        "photo": ""
-      }
-    }
-  },
-  "cloud": {
-    "documents": {
-      "DOC-41481": {
-        "name": "utility_bill_dec.pdf",
-        "type": "receipt",
-        "size": 0,
-        "uploaded_at": "2025-12-17T04:33:08.843208",
-        "tags": [
-          "receipt"
-        ]
-      }
-    }
-  },
-  "food": {
-    "orders": {
-      "ODR-28103": {
-        "restaurant": "Burger Kingpin",
-        "items": [
-          "Cheese Deluxe",
-          "Classic Burger"
-        ],
-        "total": 19.98,
-        "status": "pending",
-        "ordered_at": "2025-12-17T12:39:28.360579"
-      },
-      "ODR-43179": {
-        "restaurant": "Noodle House",
-        "items": [
-          "Beef Ramen",
-          "Pad Thai"
-        ],
-        "total": 26.98,
-        "status": "pending",
-        "ordered_at": "2025-12-17T12:40:16.515650"
-      },
-      "ODR-39658": {
-        "restaurant": "Burger Kingpin",
-        "items": [
-          "Cheese Deluxe",
-          "Fries"
-        ],
-        "total": 14.98,
-        "status": "pending",
-        "ordered_at": "2025-12-23T03:03:05.555556"
-      },
-      "ODR-13396": {
-        "restaurant": "Burger Kingpin",
-        "items": [
-          "Cheese Deluxe",
-          "Fries"
-        ],
-        "total": 14.98,
-        "status": "pending",
-        "ordered_at": "2025-12-23T03:08:26.709383"
-      },
-      "last": {
-        "id": "ODR-30026",
-        "restaurant": "Burger Kingpin",
-        "items": [
-          "Classic Burger",
-          "Cheese Deluxe"
-        ],
-        "total": 19.98,
-        "status": "pending",
-        "ordered_at": "2025-12-23T03:12:56.831750"
-      },
-      "ODR-29051": {
-        "restaurant": "Burger Kingpin",
-        "items": [
-          "Cheese Deluxe",
-          "Fries"
-        ],
-        "total": 14.98,
-        "status": "pending",
-        "ordered_at": "2025-12-23T03:09:06.491226"
-      },
-      "ODR-71915": {
-        "restaurant": "Burger Kingpin",
-        "items": [
-          "Cheese Deluxe",
-          "Fries"
-        ],
-        "total": 14.98,
-        "status": "pending",
-        "ordered_at": "2025-12-23T03:09:31.106797"
-      },
-      "ODR-71358": {
-        "restaurant": "Burger Kingpin",
-        "items": [
-          "Cheese Deluxe",
-          "Fries"
-        ],
-        "total": 14.98,
-        "status": "pending",
-        "ordered_at": "2025-12-23T03:10:52.386723"
-      },
-      "ODR-30026": {
-        "restaurant": "Burger Kingpin",
-        "items": [
-          "Classic Burger",
-          "Cheese Deluxe"
-        ],
-        "total": 19.98,
-        "status": "pending",
-        "ordered_at": "2025-12-23T03:12:56.831750"
-      }
-    }
-  },
-  "security": {
-    "last_rotation": {
-      "providers": [
-        "mail",
-        "cloud",
-        "dev"
-      ],
-      "timestamp": "2025-12-18T02:34:17.155550",
-      "status": "complete"
-    }
-  },
-  "contracts": {
-    "electricity": {
-      "status": "active",
-      "plan": "standard",
-      "address": "123 Main St, Springfield",
-      "start_date": "2025-12-20"
-    },
-    "water": {
-      "status": "active",
-      "plan": "standard",
-      "address": "123 Main St, Springfield",
-      "start_date": "2025-12-20"
-    },
-    "broadband": {
-      "status": "active",
-      "plan": "postpaid-auto",
-      "address": "123 Main St, Springfield",
-      "start_date": "2025-12-20"
-    }
-  },
-  "warranty": {
-    "TV-42-2025-XY9": {
-      "state": "RMA_issued",
-      "order_id": "O-10123",
-      "claimed_at": "2025-12-20T05:00:56.894821"
-    }
-  },
-  "invoices": {
-    "last": {
-      "conference": "CL-2026",
-      "invoice_title": "Your Lab",
-      "status": "paid",
-      "reg_id": "CONF-4152"
-    }
-  },
-  "settlements": {
-    "2025-10": {
-      "state": "settled",
-      "members": [
-        "Alice",
-        "Bob"
-      ],
-      "rules": "equal",
-      "settled_at": "2025-12-21T05:51:51.829388"
-    }
-  },
-  "autopay": {
-    "AP-6042": {
-      "payee": "Utilities",
-      "account_type": "checking",
-      "amount": 150.0,
-      "frequency": "monthly",
-      "next_date": "2025-12-20",
-      "state": "active"
-    },
-    "utility": {
-      "payee": "Utilities",
-      "account_type": "checking",
-      "amount": 150.0,
-      "frequency": "monthly",
-      "next_date": "2025-12-20",
-      "state": "active",
-      "status": "active"
-    }
+    ]
   }
 }

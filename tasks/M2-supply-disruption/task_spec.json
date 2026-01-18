@@ -1,0 +1,14 @@
+{
+  "task_id": "M2-2025-SUPPLY",
+  "family": "M",
+  "goal": "Due to a logistics strike notification, switch the delivery method for '生鲜蔬菜包' to local pickup to avoid delays.",
+  "inputs": {
+    "action": "switch_to_pickup"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/supply-disruption.html')",
+    "mem('supply_chain.last_action.type') == 'switch_to_pickup'",
+    "mem('supply_chain.alternatives.ALT-101.status') == 'switched_to_pickup'"
+  ]
+}

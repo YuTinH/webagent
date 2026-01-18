@@ -1,0 +1,49 @@
+{
+  "task_id": "C5-2025-REVIEWS",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/reviews.html",
+      "note": "Open reviews and blacklist management page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#merchant-name",
+      "value": "问题商家",
+      "note": "Enter merchant name to review and blacklist"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#rating-component .rating-star[data-value='1']",
+      "note": "Set 1-star rating"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#review-content",
+      "value": "差评，列入黑名单",
+      "note": "Enter review content"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#add-to-blacklist",
+      "note": "Check add to blacklist"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "#submit-btn",
+      "note": "Submit review and add to blacklist"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#blacklist-list .card",
+      "note": "Wait for blacklist to update"
+    }
+  ]
+}

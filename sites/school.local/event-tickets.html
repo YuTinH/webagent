@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>school.local - 活动票务</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🎓 School.local</div>
+      <div class="navlinks">
+        <a href="../school.local/my-learning.html">我的课程</a>
+        <a href="../school.local/library.html">图书馆</a>
+        <a href="../school.local/event-tickets.html" class="active">活动票务</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>活动票务购买/转赠/退票</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>近期活动</h2>
+        <div id="events-list" style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+            <!-- Events loaded here -->
+        </div>
+    </div>
+
+    <h2>我的门票</h2>
+    <div id="tickets-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Tickets loaded here -->
+      <div class="card soft" style="text-align:center; padding:24px">
+        <div style="color:var(--muted)">暂无门票</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadData() {
+    const eventsList = document.getElementById('events-list');
+    const ticketsList = document.getElementById('tickets-list');
+    
+    try {
+      const env = await loadEnv();
+      const tickets = env.tickets?.user_tickets || {};
+      
+      // Mock available events
+      const events = [
+          {id: "EVT-101", name: "校园音乐节", date: "2026-05-01", price: 50},
+          {id: "EVT-102", name: "科技创新讲座", date: "2026-04-15", price: 0},
+          {id: "EVT-103", name: "年度篮球赛", date: "2026-06-10", price: 30}
+      ];
+
+      eventsList.innerHTML = events.map(evt => `
+        <div class="card soft" style="border:1px solid var(--border)">
+          <h3 style="margin:0 0 8px 0">${evt.name}</h3>
+          <div style="color:var(--muted); font-size:14px; margin-bottom:4px">日期: ${evt.date}</div>
+          <div style="font-weight:600; color:var(--pri); margin-bottom:12px">¥${evt.price}</div>
+          <button class="btn pri" style="width:100%" onclick="buyTicket('${evt.id}', '${evt.name}', ${evt.price})">购买门票</button>
+        </div>
+      `).join('');
+
+      if (Object.keys(tickets).length === 0) {
+        ticketsList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">暂无门票</div></div>`;
+      } else {
+        ticketsList.innerHTML = Object.entries(tickets).map(([id, ticket]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+              <div>
+                <h3 style="margin:0 0 4px 0">${ticket.event_name} (#${id})</h3>
+                <div style="color:var(--muted); font-size:14px">价格: ¥${ticket.price}</div>
+              </div>
+              <div style="text-align:right">
+                <span class="badge ${ticket.status === 'active' ? 'ok' : (ticket.status === 'refunded' ? 'warn' : 'pri')}">${ticket.status}</span>
+              </div>
+            </div>
+            
+            <div style="display:flex; gap:8px">
+              <button class="btn" onclick="transferTicket('${id}')" ${ticket.status !== 'active' ? 'disabled' : ''}>转赠</button>
+              <button class="btn secondary" onclick="refundTicket('${id}')" ${ticket.status !== 'active' ? 'disabled' : ''}>退票</button>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function buyTicket(eventId, eventName, price) {
+    new Modal({
+      title: `购买门票: ${eventName}`,
+      content: `确认支付 ¥${price} 购买门票吗？`,
+      confirmText: '确认支付',
+      onConfirm: async () => {
+        await send('J3-2025-TICKETS', 'manage_tickets', {
+          action_type: 'buy',
+          event_id: eventId,
+          event_name: eventName,
+          price: price
+        });
+        setTimeout(loadData, 500);
+      }
+    }).open();
+  }
+
+  function transferTicket(ticketId) {
+    new Modal({
+      title: '转赠门票',
+      content: `
+        <div class="form">
+          <label>接收人学号/ID</label>
+          <input id="recipient-id" class="input" placeholder="例如: S987654">
+        </div>
+      `,
+      confirmText: '确认转赠',
+      onConfirm: async () => {
+        const recipient = document.getElementById('recipient-id').value;
+        if (!recipient) {
+            Toast.error("请输入接收人ID");
+            return;
+        }
+        await send('J3-2025-TICKETS', 'manage_tickets', {
+          action_type: 'transfer',
+          ticket_id: ticketId,
+          recipient_id: recipient
+        });
+        setTimeout(loadData, 500);
+      }
+    }).open();
+  }
+
+  function refundTicket(ticketId) {
+    new Modal({
+      title: '确认退票',
+      content: `您确定要退掉这张门票吗？退款将原路返回。`,
+      confirmText: '确认退票',
+      onConfirm: async () => {
+        await send('J3-2025-TICKETS', 'manage_tickets', {
+          action_type: 'refund',
+          ticket_id: ticketId
+        });
+        setTimeout(loadData, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>

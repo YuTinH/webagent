@@ -1,0 +1,17 @@
+{
+  "task_id": "D1-2025-BILLAGG",
+  "family": "D",
+  "goal": "Add a new utility bill source named '电力公司' with type 'utility' and account ID 'ACCT-12345'. Then synchronize this bill source.",
+  "inputs": {
+    "name": "电力公司",
+    "type": "utility",
+    "account_id": "ACCT-12345"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/bank.local/bill-aggregation.html')",
+    "mem('bills.sources.last.status') == 'active'",
+    "mem('bills.sources.last.name') == '电力公司'",
+    "mem('bills.sources.last.last_synced') != ''"
+  ]
+}

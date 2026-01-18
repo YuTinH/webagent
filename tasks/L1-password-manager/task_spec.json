@@ -1,0 +1,17 @@
+{
+  "task_id": "L1-2025-PASSMGR",
+  "family": "L",
+  "goal": "Add a new password for 'Google' with username 'test@google.com' and a strong password 'SecurePass!123'. Verify the password is added and visible in the manager.",
+  "inputs": {
+    "site": "Google",
+    "username": "test@google.com",
+    "password": "SecurePass!123"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/security.local/password-manager.html')",
+    "mem('security.passwords.last.site') == 'Google'",
+    "mem('security.passwords.last.username') == 'test@google.com'",
+    "count('#password-list .card') > 0"
+  ]
+}

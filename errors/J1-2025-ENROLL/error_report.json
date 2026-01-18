@@ -1,0 +1,22 @@
+{
+  "task_id": "J1-2025-ENROLL",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-27T08:30:16.877182Z",
+  "step_index": 1,
+  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#enroll-button\")\n    - locator resolved to <button disabled class=\"btn lg ok\" id=\"enroll-button\" onclick=\"enrollCourse()\">\u5df2\u62a5\u540d</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    58 \u00d7 waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n",
+  "context": {
+    "url": "http://localhost:8014/school.local/course.html?id=DL101",
+    "screenshot": "errors/J1-2025-ENROLL/error_step_1.png"
+  },
+  "step": {
+    "t": 2,
+    "act": "click",
+    "selector": "#enroll-button",
+    "note": "Click 'Enroll Now' button"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

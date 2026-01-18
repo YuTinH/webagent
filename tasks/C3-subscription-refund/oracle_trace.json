@@ -1,0 +1,37 @@
+{
+  "task_id": "C3-2025-REFUND",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/help-refund.html",
+      "note": "Open subscription refund page"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#subscription-select",
+      "value": "SUB-8821",
+      "note": "Select subscription SUB-8821"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#refund-reason",
+      "value": "服务不再需要",
+      "note": "Enter refund reason"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button:has-text('提交退款申请')",
+      "note": "Click submit button"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#refund-requests-list .card",
+      "note": "Wait for request to appear in list"
+    }
+  ]
+}

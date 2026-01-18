@@ -1,0 +1,78 @@
+{
+  "task_id": "A1-2025-HOME",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 10,
+  "steps_total": 10,
+  "time_elapsed": 3.672919750213623,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/housing.local/index.html",
+      "note": "Open housing search page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#location",
+      "value": "Springfield",
+      "note": "Enter location"
+    },
+    {
+      "t": 4,
+      "act": "select",
+      "selector": "#property-type",
+      "value": "apartment",
+      "note": "Select apartment type"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "button:has-text('\u641c\u7d22')",
+      "note": "Click search button"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": ".property-card",
+      "note": "Wait for property listings to load"
+    },
+    {
+      "t": 10,
+      "act": "click",
+      "selector": ".property-card:has(.property-title:has-text('\u4e2d\u592e\u5927\u8857101\u53f7'))",
+      "note": "Click property card for \u4e2d\u592e\u5927\u8857101\u53f7"
+    },
+    {
+      "t": 12,
+      "act": "wait",
+      "selector": "#lease-term",
+      "note": "Wait for property details page to load"
+    },
+    {
+      "t": 14,
+      "act": "select",
+      "selector": "#lease-term",
+      "value": "12 months",
+      "note": "Select 12 months lease term"
+    },
+    {
+      "t": 16,
+      "act": "click",
+      "selector": "button.apply-button:has-text('\u7533\u8bf7\u79df\u8d41')",
+      "note": "Click 'Apply to Rent' button"
+    },
+    {
+      "t": 18,
+      "act": "wait",
+      "selector": "h1:has-text('\u6211\u7684\u79df\u8d41')",
+      "note": "Wait for My Leasing page to load"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

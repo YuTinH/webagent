@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - 维修工单</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">购物</a>
+        <a href="../shop.local/orders.html">订单</a>
+        <a href="../shop.local/repairs.html" class="active">维修</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>房屋报修与家电维修工单</h1>
+      <button class="btn pri" onclick="openSubmitRepairModal()">+ 提交新工单</button>
+    </div>
+
+    <div id="repair-requests-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Repair requests loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadRepairRequests() {
+    const list = document.getElementById('repair-requests-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const requests = env.repairs?.requests || {};
+      
+      if (Object.keys(requests).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🛠️</div>
+            <div style="color:var(--muted)">暂无维修工单</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(requests).map(([id, req]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${req.item || '未知物品'} - ${req.problem || '未知问题'} (#${id})</h3>
+              <div style="color:var(--muted); font-size:14px">服务日期: ${req.service_date || 'N/A'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">状态: <span class="badge ${req.status === 'completed' ? 'ok' : 'warn'}">${req.status}</span></div>
+              <div style="color:var(--muted); font-size:13px">提交日期: ${req.submitted_at || 'N/A'}</div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="trackRequest('${id}')">追踪状态</button>
+            <button class="btn secondary" onclick="cancelRequest('${id}')" ${req.status === 'completed' || req.status === 'cancelled' ? 'disabled' : ''}>取消工单</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openSubmitRepairModal() {
+    new Modal({
+      title: '提交新维修工单',
+      content: `
+        <div class="form">
+          <label>报修物品</label>
+          <input id="item-name" class="input" placeholder="例如: 冰箱, 水龙头">
+          
+          <label>问题描述</label>
+          <textarea id="problem-description" class="input" rows="3" placeholder="例如: 冰箱不制冷"></textarea>
+          
+          <label>期望服务日期</label>
+          <input id="service-date" type="date" class="input">
+
+          <label>联系电话</label>
+          <input id="contact-phone" class="input" placeholder="例如: 138-XXXX-XXXX">
+        </div>
+      `,
+      confirmText: '提交工单',
+      onConfirm: async () => {
+        const item = document.getElementById('item-name').value;
+        const problem = document.getElementById('problem-description').value;
+        const serviceDate = document.getElementById('service-date').value;
+        const contactPhone = document.getElementById('contact-phone').value;
+        
+        if (!item || !problem || !serviceDate) {
+          Toast.error("请填写必填项");
+          return;
+        }
+        
+        await send('I1-2025-REPAIR', 'submit_repair_request', {
+          item: item,
+          problem: problem,
+          service_date: serviceDate,
+          contact_phone: contactPhone
+        });
+        
+        setTimeout(loadRepairRequests, 500);
+      }
+    }).open();
+  }
+
+  function trackRequest(id) {
+    Toast.info(`正在追踪工单 ${id} 的状态...`);
+  }
+
+  function cancelRequest(id) {
+    new Modal({
+      title: '确认取消工单',
+      content: `您确定要取消工单 ${id} 吗？`,
+      confirmText: '确认取消',
+      onConfirm: async () => {
+        await send('I1-2025-REPAIR', 'cancel_repair_request', {
+          request_id: id
+        });
+        setTimeout(loadRepairRequests, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadRepairRequests);
+  </script>
+</body>
+</html>

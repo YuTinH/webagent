@@ -1,11 +1,36 @@
 {
-  "task_id": "A6-2025-GEN",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "A6-2025-PROOF",
   "steps": [
-    {"t": 0, "act": "open", "url": "https://gov.local/profile.html", "note": "Open Profile"},
-    {"t": 1.0, "act": "select", "selector": "#doc-type", "value": "utility", "note": "Select Utility Bill"},
-    {"t": 2.0, "act": "upload", "selector": "#file-upload", "value": "proof_of_address.pdf", "note": "Upload file"},
-    {"t": 3.0, "act": "click", "selector": "button.pri", "note": "Submit"},
-    {"t": 4.0, "act": "wait", "selector": ".badge.ok", "note": "Wait for verified badge"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/profile.html",
+      "note": "Open user profile page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('上传地址证明')",
+      "note": "Click 'Upload Address Proof' button"
+    },
+    {
+      "t": 4,
+      "act": "select",
+      "selector": "#doc-type",
+      "value": "utility",
+      "note": "Select document type as 'Utility Bill'"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-overlay button:has-text('上传')",
+      "note": "Click 'Upload' button in modal"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#address-verification-status.verified",
+      "note": "Wait for address verification status to update to 'Verified'"
+    }
   ]
 }

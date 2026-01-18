@@ -1,0 +1,57 @@
+{
+  "task_id": "B2-2025-FRESHSUB",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/food.local/subscription.html",
+      "note": "Open fresh food subscription page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('订阅新计划')",
+      "note": "Click subscribe new plan button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-name",
+      "value": "每周生鲜组合",
+      "note": "Enter plan name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#new-items",
+      "value": "水果, 蔬菜, 鸡蛋",
+      "note": "Enter items"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#new-price",
+      "value": "120",
+      "note": "Enter price per delivery"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#new-delivery-date",
+      "value": "2026-01-10",
+      "note": "Enter next delivery date"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm subscription"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#subscriptions-list .card",
+      "note": "Wait for subscription to appear in list"
+    }
+  ]
+}

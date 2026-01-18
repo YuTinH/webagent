@@ -1,0 +1,20 @@
+{
+  "task_id": "B5-2025-COUPONS",
+  "family": "B",
+  "goal": "Add a new coupon 'NEWYEAR20' for a 20% discount on all orders, with no minimum spend and expiring on '2026-01-31'. Ensure the coupon is active and appears in the coupon list.",
+  "inputs": {
+    "name": "新年优惠",
+    "code": "NEWYEAR20",
+    "type": "percentage",
+    "value": 20,
+    "min_spend": null,
+    "expiry_date": "2026-01-31"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/coupons.html')",
+    "mem('shop.coupons.last.status') == 'active'",
+    "mem('shop.coupons.last.code') == 'NEWYEAR20'",
+    "mem('shop.coupons.last.expiry_date') == '2026-01-31'"
+  ]
+}

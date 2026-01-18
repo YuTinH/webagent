@@ -1,81 +1,155 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
+<script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Help Center - Nebula Shop</title>
+<title>客户服务 - Nebula商城</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
+<style>
+.help-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+</style>
 </head>
 <body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand">
-      <div class="logo"></div>
-      Nebula Shop
-    </div>
+    <div class="brand"><div class="logo"></div> Nebula商城</div>
     <div class="navlinks">
-      <a href="index.html">Home</a>
-      <a href="orders.html">Orders</a>
-      <a href="help.html" class="active">Help</a>
+      <a href="../shop.local/index.html">首页</a>
+      <a href="../shop.local/orders.html">订单</a>
+      <a href="../shop.local/help.html" class="active">帮助</a>
     </div>
   </div>
 </div>
 
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
 <div class="container">
-  
-  <div class="hero" style="padding:40px; text-align:center; background:var(--panel-elevated)">
-    <h1 style="margin-bottom:16px">How can we help you?</h1>
-    <div class="search" style="max-width:500px; margin:0 auto">
-      <input type="text" class="input" placeholder="Search for answers...">
+
+  <h1 style="text-align:center; font-size:28px; font-weight:700; margin:32px 0">提交工单</h1>
+
+  <div class="help-card">
+    <div class="form-group">
+      <label for="order-id">订单编号</label>
+      <input type="text" id="order-id" placeholder="例如: O-12345" value="O-98321">
     </div>
+    <div class="form-group">
+      <label for="issue-type">问题类型</label>
+      <select id="issue-type">
+        <option value="delayed">物流延误</option>
+        <option value="damaged">商品损坏</option>
+        <option value="missing">少件/漏发</option>
+        <option value="other">其他问题</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="description">详细描述</label>
+      <textarea id="description" rows="4" placeholder="请详细描述您遇到的问题..."></textarea>
+    </div>
+    <button class="btn pri lg" style="width:100%" onclick="submitTicket()">提交工单</button>
   </div>
 
-  <div class="grid cols-3 gap-6 mt-8">
-    <div class="card p-6" onclick="location.href='ticket.html?topic=delivery'" style="cursor:pointer">
-      <div style="font-size:32px; margin-bottom:12px">🚚</div>
-      <h3>Shipping & Delivery</h3>
-      <p class="muted">Where is my order? Delayed shipments.</p>
-    </div>
-    <div class="card p-6" onclick="location.href='ticket.html?topic=returns'" style="cursor:pointer">
-      <div style="font-size:32px; margin-bottom:12px">↩️</div>
-      <h3>Returns & Refunds</h3>
-      <p class="muted">Return items or get a refund.</p>
-    </div>
-    <div class="card p-6" onclick="location.href='ticket.html?topic=account'" style="cursor:pointer">
-      <div style="font-size:32px; margin-bottom:12px">👤</div>
-      <h3>Account Issues</h3>
-      <p class="muted">Login, password, and security.</p>
-    </div>
-  </div>
-
-  <h3 class="mt-8 mb-4">Recent Orders</h3>
-  <div id="recent-orders-list">
-    <div class="loading">Loading orders...</div>
-  </div>
-
+  <div class="footer">Nebula商城 · Synthetic UI for Web Agent Research</div>
 </div>
 
+<!-- JavaScript -->
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
-async function loadRecentOrders() {
-  // Mock data for now, or fetch from env
-  const list = document.getElementById('recent-orders-list');
-  list.innerHTML = `
-    <div class="card p-4 flex justify-between items-center mb-2">
-      <div>
-        <div style="font-weight:700">Order #O-98321</div>
-        <div class="text-sm muted">Placed on Dec 01, 2025</div>
-      </div>
-      <div class="badge warn">Delayed</div>
-      <button class="btn sm" onclick="location.href='ticket.html?order=O-98321'">Report Issue</button>
-    </div>
-  `;
+async function submitTicket() {
+  const orderId = document.getElementById('order-id').value;
+  const issueType = document.getElementById('issue-type').value;
+  const description = document.getElementById('description').value;
+
+  if (!orderId || !issueType) {
+    Toast.error('请填写必要信息');
+    return;
+  }
+
+  Toast.info('正在提交工单...');
+
+  try {
+    const response = await send('C1-2025-SUPPORT', 'submit_ticket', {
+      orderId: orderId,
+      type: issueType,
+      description: description
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('工单提交成功！');
+      // If server returns redirect, common.js handles it.
+      // Fallback reload if no redirect
+      if (!response.redirect) {
+          window.location.href = `${window.RelRoot}shop.local/help.html?status=ticket_created`;
+      }
+    } else {
+        console.warn('Response invalid, attempting fallback reload...');
+        window.location.href = `${window.RelRoot}shop.local/help.html?status=ticket_created`;
+    }
+  } catch (error) {
+    console.error('提交工单失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}shop.local/help.html?status=ticket_created`;
+    } else {
+        Toast.error('提交工单失败，请稍后再试');
+    }
+  }
 }
-loadRecentOrders();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('status') === 'ticket_created') {
+        document.querySelector('.help-card').innerHTML = `
+            <div style="text-align:center; padding:20px">
+                <div style="font-size:64px; margin-bottom:16px">✅</div>
+                <h3>工单已提交</h3>
+                <p style="color:var(--muted)">我们会尽快处理您的问题</p>
+                <button class="btn pri" style="margin-top:20px" onclick="window.location.href='../shop.local/index.html'">返回首页</button>
+            </div>
+        `;
+    }
+});
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
 
 </body>
 </html>

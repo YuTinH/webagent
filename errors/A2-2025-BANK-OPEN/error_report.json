@@ -1,0 +1,23 @@
+{
+  "task_id": "A2-2025-BANK-OPEN",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-30T03:59:58.769436Z",
+  "step_index": 1,
+  "error_message": "Page.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#fullname\")\n",
+  "context": {
+    "url": "chrome-error://chromewebdata/",
+    "screenshot": "errors/A2-2025-BANK-OPEN/error_step_1.png"
+  },
+  "step": {
+    "t": 1,
+    "act": "type",
+    "selector": "#fullname",
+    "value": "Alex Chen",
+    "note": "Enter full name"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

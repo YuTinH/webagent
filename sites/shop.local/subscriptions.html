@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - 我的订阅</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">购物</a>
+        <a href="../shop.local/orders.html">订单</a>
+        <a href="../shop.local/subscriptions.html" class="active">订阅管理</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>我的订阅管理</h1>
+    </div>
+
+    <div id="subscriptions-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Subscriptions loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadSubscriptions() {
+    const list = document.getElementById('subscriptions-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      // Example: subscriptions stored under env.user_subscriptions or similar
+      // For this task, let's assume `env.subscriptions` exists and stores subscription data
+      const subscriptions = env.subscriptions || {}; // Mocked for now
+      
+      if (Object.keys(subscriptions).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🗓️</div>
+            <div style="color:var(--muted)">暂无活跃订阅</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(subscriptions).map(([id, sub]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${sub.name || '订阅服务'} (#${id})</h3>
+              <div style="color:var(--muted); font-size:14px">
+                ${sub.plan || '标准计划'} | ¥${sub.price || 'N/A'} / ${sub.frequency || '月'}
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">下次扣费: ${sub.next_billing_date || 'N/A'}</div>
+              <div style="color:var(--muted); font-size:13px">状态: <span class="badge ${sub.status === 'active' ? 'ok' : 'warn'}">${sub.status === 'active' ? '活跃' : '已取消'}</span></div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="requestRefund('${id}')" ${sub.status !== 'active' ? 'disabled' : ''}>申请退款</button>
+            <button class="btn secondary" onclick="cancelSubscription('${id}')" ${sub.status !== 'active' ? 'disabled' : ''}>取消订阅</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function requestRefund(id) {
+    new Modal({
+      title: '订阅退款申请',
+      content: `
+        <div class="form">
+          <label>订阅ID</label>
+          <input class="input" value="${id}" readonly>
+          <label>退款原因</label>
+          <textarea id="refund-reason" class="input" rows="3" placeholder="例如: 提前终止服务, 服务不满意"></textarea>
+          <label>已使用天数 (用于按比例计算)</label>
+          <input id="days-used" type="number" class="input" value="0">
+        </div>
+      `,
+      confirmText: '提交退款申请',
+      onConfirm: async () => {
+        const reason = document.getElementById('refund-reason').value;
+        const daysUsed = parseInt(document.getElementById('days-used').value);
+        
+        if (!reason || isNaN(daysUsed)) {
+          Toast.error("请填写完整信息");
+          return;
+        }
+        
+        await send('C3-2025-SUBREFUND', 'request_subscription_refund', {
+          subscription_id: id,
+          reason: reason,
+          days_used: daysUsed
+        });
+        
+        setTimeout(loadSubscriptions, 500);
+      }
+    }).open();
+  }
+
+  function cancelSubscription(id) {
+    new Modal({
+      title: '确认取消订阅',
+      content: `您确定要取消订阅 ${id} 吗？取消后可能无法恢复。`,
+      confirmText: '确认取消',
+      onConfirm: async () => {
+        await send('C3-2025-SUBREFUND', 'cancel_subscription', {
+          subscription_id: id
+        });
+        setTimeout(loadSubscriptions, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadSubscriptions);
+  </script>
+</body>
+</html>

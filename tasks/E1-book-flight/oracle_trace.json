@@ -1,14 +1,70 @@
 {
-  "task_id": "E1-2025-201",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "E1-2025-FLIGHT",
   "steps": [
-    {"t": 0, "url": "https://trip.local/index.html", "frame": "main", "act": "open", "note": "Open flights search"},
-    {"t": 1.0, "act": "type", "selector": "#destination", "value": "Paris", "note": "Enter destination"},
-    {"t": 1.6, "act": "click", "selector": ".form-grid button.btn.pri", "note": "Search flights"},
-    {"t": 3.0, "act": "wait", "selector": ".flight-card button.btn.pri", "note": "Wait for flight results"},
-    {"t": 3.4, "act": "click", "selector": ".flight-card:first-of-type button.btn.pri", "note": "Pick first flight"},
-    {"t": 4.8, "act": "type", "selector": "#passport", "value": "X12345678", "note": "Fill passport"},
-    {"t": 5.2, "act": "click", "selector": "button.btn.pri", "note": "Confirm booking and trigger send()"},
-    {"t": 6.5, "act": "wait", "selector": ".trip-summary-card", "note": "Wait for confirmation page"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/flights.html",
+      "note": "Open flight booking page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#departure",
+      "value": "北京",
+      "note": "Enter departure city"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#destination",
+      "value": "上海",
+      "note": "Enter destination city"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#depart-date",
+      "value": "2025-12-31",
+      "note": "Enter departure date"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#passengers",
+      "value": "1",
+      "note": "Enter number of passengers"
+    },
+    {
+      "t": 10,
+      "act": "select",
+      "selector": "#class",
+      "value": "economy",
+      "note": "Select economy class"
+    },
+    {
+      "t": 12,
+      "act": "click",
+      "selector": "button.btn.pri.lg:has-text('搜索航班')",
+      "note": "Click search flights button"
+    },
+    {
+      "t": 14,
+      "act": "wait",
+      "selector": ".flight-item",
+      "note": "Wait for flight results to load"
+    },
+    {
+      "t": 16,
+      "act": "click",
+      "selector": ".flight-item:has(h3:has-text('CA1881')) button.btn.pri:has-text('预订')",
+      "note": "Click book button for flight CA1881"
+    },
+    {
+      "t": 18,
+      "act": "wait",
+      "selector": "h1:has-text('我的行程')",
+      "note": "Wait for trip management page to load"
+    }
   ]
 }

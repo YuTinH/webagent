@@ -10,21 +10,21 @@
     {
       "t": 2,
       "act": "select",
-      "selector": "#planSel",
-      "value": "green_offpeak",
-      "note": "Select 'green_offpeak' plan"
+      "selector": "#meter-id",
+      "value": "M-321",
+      "note": "Select meter M-321"
     },
     {
       "t": 4,
       "act": "click",
-      "selector": "button.btn.pri",
-      "note": "Click '切换' (Switch) button"
+      "selector": "#plan-green_offpeak button",
+      "note": "Click select button for Green Off-peak plan"
     },
     {
       "t": 6,
       "act": "wait",
-      "selector": "#plan:has-text('green_offpeak')",
-      "note": "Wait for plan to update on page"
+      "selector": "#plan-green_offpeak.active",
+      "note": "Wait for Green Off-peak plan to be active"
     }
   ]
 }

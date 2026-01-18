@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>gov.local - 停车许可</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🏛️ Gov.local</div>
+      <div class="navlinks">
+        <a href="../gov.local/profile.html">个人资料</a>
+        <a href="../gov.local/permits.html">许可证</a>
+        <a href="../gov.local/parking-permits.html" class="active">停车许可</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>停车许可申请与续费</h1>
+      <button class="btn pri" onclick="openApplyPermitModal()">+ 申请新许可</button>
+    </div>
+
+    <div id="permits-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Permits loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadPermits() {
+    const list = document.getElementById('permits-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const permits = env.gov?.parking_permits || {};
+      
+      if (Object.keys(permits).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🅿️</div>
+            <div style="color:var(--muted)">暂无停车许可</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(permits).map(([id, permit]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">许可 #${id}</h3>
+              <div style="color:var(--muted); font-size:14px">车牌: ${permit.plate_number || 'N/A'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">到期日: ${permit.expiry_date || 'N/A'}</div>
+              <div style="color:var(--muted); font-size:13px">状态: <span class="badge ${permit.status === 'active' ? 'ok' : 'warn'}">${permit.status === 'active' ? '活跃' : '已过期'}</span></div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="renewPermit('${id}')" ${permit.status !== 'active' ? 'disabled' : ''}>续费</button>
+            <button class="btn secondary" onclick="cancelPermit('${id}')">取消</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openApplyPermitModal() {
+    new Modal({
+      title: '申请新停车许可',
+      content: `
+        <div class="form">
+          <label>车牌号码</label>
+          <input id="plate-number" class="input" placeholder="例如: 沪A-12345">
+          
+          <label>申请类型</label>
+          <select id="permit-type" class="input">
+            <option value="residential">居住停车</option>
+            <option value="business">商业停车</option>
+          </select>
+
+          <label>有效期限 (月)</label>
+          <input id="duration-months" type="number" class="input" value="12">
+        </div>
+      `,
+      confirmText: '提交申请',
+      onConfirm: async () => {
+        const plateNumber = document.getElementById('plate-number').value;
+        const permitType = document.getElementById('permit-type').value;
+        const durationMonths = document.getElementById('duration-months').value;
+        
+        if (!plateNumber || !durationMonths) {
+          Toast.error("请填写必填项");
+          return;
+        }
+        
+        await send('H4-2025-PARKING', 'manage_parking_permit', {
+          action_type: 'apply',
+          plate_number: plateNumber,
+          permit_type: permitType,
+          duration_months: parseInt(durationMonths)
+        });
+        
+        setTimeout(loadPermits, 500);
+      }
+    }).open();
+  }
+
+  function renewPermit(id) {
+    new Modal({
+      title: `续费许可 #${id}`,
+      content: `
+        <div class="form">
+          <label>续费时长 (月)</label>
+          <input id="renew-duration-months" type="number" class="input" value="12">
+        </div>
+      `,
+      confirmText: '确认续费',
+      onConfirm: async () => {
+        const durationMonths = document.getElementById('renew-duration-months').value;
+        await send('H4-2025-PARKING', 'manage_parking_permit', {
+          action_type: 'renew',
+          permit_id: id,
+          duration_months: parseInt(durationMonths)
+        });
+        setTimeout(loadPermits, 500);
+      }
+    }).open();
+  }
+
+  function cancelPermit(id) {
+    new Modal({
+      title: '确认取消',
+      content: `您确定要取消许可 #${id} 吗？`,
+      confirmText: '确认取消',
+      onConfirm: async () => {
+        await send('H4-2025-PARKING', 'manage_parking_permit', {
+          action_type: 'cancel',
+          permit_id: id
+        });
+        setTimeout(loadPermits, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadPermits);
+  </script>
+</body>
+</html>

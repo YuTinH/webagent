@@ -1,35 +1,13 @@
 {
-  "task_id": "B6-2025-GEN",
+  "task_id": "B6-2025-PRICE",
   "family": "B",
-  "episode_id": "ep-gen",
-  "priority": 1,
-  "seed": 42,
-  "time": "2025-12-01T10:00:00Z",
-  "persona": {
-    "automation_preference": "medium"
-  },
-  "goal": "Apply for price protection on the last delivered order on shop.local, claiming a lower price of $25.00.",
+  "goal": "Submit a price protection claim for order O-98321.",
   "inputs": {
-      "lower_price": 25.00
+    "order_id": "O-98321"
   },
-  "allowed_domains": [
-    "shop.local"
-  ],
-  "preconditions": [
-    "mem('orders.last.id') != ''"
-  ],
-  "dependencies": [
-    "B1-shopping"
-  ],
-  "memory_keys": [
-    "claims.price_protection.last.id"
-  ],
+  "preconditions": [],
   "success_criteria": [
-    "ALL[url().includes('/price-protection.html'), mem('claims.price_protection.last.id') != '']"
-  ],
-  "rubrics": {
-    "SR": 1.0
-  },
-  "timeout": 300,
-  "step_timeout": 30
+    "text('.status-badge') == '申请已提交'",
+    "mem('orders.O-98321.claims.price_protect.state') == 'submitted'"
+  ]
 }

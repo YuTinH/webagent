@@ -1,0 +1,15 @@
+{
+  "task_id": "E4-2025-VISA",
+  "family": "E",
+  "goal": "Check visa requirements for traveling to 'Japan' with a 'China' passport. Verify the visa type includes '短期滞在' (Short-term stay).",
+  "inputs": {
+    "destination_country": "Japan",
+    "passport_country": "China"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/trip.local/visa-requirements.html')",
+    "mem('visa.search.last.destination') == 'Japan'",
+    "mem('visa.search.last.visa_type') == '短期滞在 (旅游)'"
+  ]
+}

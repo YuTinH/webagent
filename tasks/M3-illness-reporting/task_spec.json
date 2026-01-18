@@ -1,0 +1,17 @@
+{
+  "task_id": "M3-2025-ILLNESS",
+  "family": "M",
+  "goal": "Submit an illness report for '发烧' with an expected recovery date of '2026-01-10'. Verify the report is submitted and its status is 'pending'.",
+  "inputs": {
+    "report_type": "illness",
+    "reason": "发烧",
+    "end_date": "2026-01-10"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/health.local/illness-reporting.html')",
+    "mem('health.illness_reports.last.status') == 'pending'",
+    "mem('health.illness_reports.last.type') == 'illness'",
+    "mem('health.illness_reports.last.id') != ''"
+  ]
+}

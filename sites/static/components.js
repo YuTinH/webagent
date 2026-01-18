@@ -280,8 +280,10 @@ class CartDrawer {
     const cartData = localStorage.getItem('cart') || '[]';
     localStorage.setItem('checkout-items', cartData);
     console.log('Navigating to checkout...');
-    // Use absolute path
-    window.location.href = '/shop.local/checkout.html';
+    
+    // Use relative path via window.RelRoot or fallback
+    const root = window.RelRoot || '../';
+    window.location.href = root + 'shop.local/checkout.html';
   }
 
   loadCart() {

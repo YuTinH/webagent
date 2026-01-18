@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>health.local - 保险投保</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">⚕️ Health.local</div>
+      <div class="navlinks">
+        <a href="../health.local/index.html">首页</a>
+        <a href="../health.local/appointments.html">预约</a>
+        <a href="../health.local/records.html">病历</a>
+        <a href="../health.local/insurance.html" class="active">保险</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>医保与商业险投保</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>当前保险状态</h2>
+        <div id="current-policy">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <h2>推荐保险计划</h2>
+    <div id="insurance-plans-list" style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+      <!-- Plans loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadInsuranceData() {
+    const currentPolicyDiv = document.getElementById('current-policy');
+    const plansList = document.getElementById('insurance-plans-list');
+    
+    try {
+      const env = await loadEnv();
+      const current = env.health?.insurance || {};
+      
+      if (current.active) {
+        currentPolicyDiv.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center">
+                <div>
+                    <div style="font-size:18px; font-weight:600">${current.provider || '未知保险'} - ${current.plan_name || '标准计划'}</div>
+                    <div style="color:var(--muted); font-size:14px">保单号: ${current.policy_number || 'N/A'}</div>
+                </div>
+                <span class="badge ok">生效中</span>
+            </div>
+            <div style="margin-top:12px; font-size:14px">
+                <div>有效期至: ${current.expiry_date || '长期有效'}</div>
+                <div>权益: ${current.benefits ? current.benefits.join(', ') : '基础覆盖'}</div>
+            </div>
+        `;
+      } else {
+        currentPolicyDiv.innerHTML = `<div style="color:var(--muted)">当前未投保商业险</div>`;
+      }
+
+      // Mock available plans
+      const plans = [
+          {
+              id: "PLAN-A",
+              name: "全面医疗保障",
+              provider: "平安健康",
+              price: 500,
+              benefits: ["住院医疗", "门诊报销", "重疾保障"],
+              waiting_period: "30天"
+          },
+          {
+              id: "PLAN-B",
+              name: "意外伤害险",
+              provider: "中国人寿",
+              price: 200,
+              benefits: ["意外身故", "意外医疗"],
+              waiting_period: "无"
+          }
+      ];
+
+      plansList.innerHTML = plans.map(plan => `
+        <div class="card soft" style="border:1px solid var(--border)">
+          <h3 style="margin:0 0 8px 0">${plan.name}</h3>
+          <div style="color:var(--pri); font-weight:700; font-size:18px; margin-bottom:8px">¥${plan.price} / 年</div>
+          <div style="font-size:13px; color:var(--muted); margin-bottom:4px">提供商: ${plan.provider}</div>
+          <div style="font-size:13px; color:var(--muted); margin-bottom:12px">等待期: ${plan.waiting_period}</div>
+          <ul style="font-size:13px; padding-left:20px; margin-bottom:16px">
+            ${plan.benefits.map(b => `<li>${b}</li>`).join('')}
+          </ul>
+          <button class="btn pri" style="width:100%" onclick="purchaseInsurance('${plan.id}', '${plan.name}', '${plan.provider}')">立即投保</button>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function purchaseInsurance(planId, planName, provider) {
+    new Modal({
+      title: '确认投保',
+      content: `您确定要投保 <strong>${planName}</strong> 吗？<br><br>保费将在生效后从您的绑定账户扣除。`,
+      confirmText: '确认支付',
+      onConfirm: async () => {
+        await send('G2-2025-INSURANCE', 'purchase_insurance', {
+          plan_id: planId,
+          plan_name: planName,
+          provider: provider
+        });
+        setTimeout(loadInsuranceData, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadInsuranceData);
+  </script>
+</body>
+</html>

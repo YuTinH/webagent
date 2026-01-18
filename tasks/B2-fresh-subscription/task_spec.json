@@ -1,0 +1,17 @@
+{
+  "task_id": "B2-2025-FRESHSUB",
+  "family": "B",
+  "goal": "Subscribe to a fresh food plan named '每周生鲜组合' with a price of 120, next delivery date '2026-01-10', and items '水果, 蔬菜, 鸡蛋'. The subscription should be active.",
+  "inputs": {
+    "name": "每周生鲜组合",
+    "price": 120,
+    "next_delivery_date": "2026-01-10",
+    "items": ["水果", "蔬菜", "鸡蛋"]
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/food.local/subscription.html')",
+    "mem('food.subscriptions.last.status') == 'active'",
+    "mem('food.subscriptions.last.next_delivery_date') == '2026-01-10'"
+  ]
+}

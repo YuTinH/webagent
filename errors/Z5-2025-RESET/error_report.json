@@ -1,0 +1,24 @@
+{
+  "task_id": "Z5-2025-RESET",
+  "error_type": "KeyError",
+  "timestamp": "2026-01-16T14:14:40.616185Z",
+  "step_index": 9,
+  "error_message": "'selector'",
+  "context": {
+    "url": "http://localhost:8014/security.local/reset-password.html",
+    "screenshot": "errors/Z5-2025-RESET/error_step_9.png"
+  },
+  "step": {
+    "t": 9,
+    "act": "wait",
+    "args": {
+      "url": "**/login.html**"
+    },
+    "note": "Wait for redirect to login page"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "failed",
+  "metrics": {}
+}

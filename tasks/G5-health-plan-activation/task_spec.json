@@ -1,0 +1,14 @@
+{
+  "task_id": "G5-2025-HEALTH",
+  "family": "G",
+  "goal": "Activate the 'Premium Health Plan'.",
+  "inputs": {
+    "planId": "premium"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/health.local/plan.html?activated=true')",
+    "json('env','health.plan.name') == 'Premium Health Plan'",
+    "json('env','health.plan.status') == 'active'"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "task_id": "Z3-2025-AUCTION",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/auction.html",
+      "note": "Open auction page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#bid-amount",
+      "value": "150",
+      "note": "Enter bid amount"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('出价')",
+      "note": "Place bid"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#bidder-info:has-text('您 (领先)')",
+      "note": "Wait for confirmation"
+    }
+  ]
+}

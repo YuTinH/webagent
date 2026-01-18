@@ -1,0 +1,22 @@
+{
+  "task_id": "Z1-2025-ARRIVAL",
+  "error_type": "TimeoutError",
+  "timestamp": "2026-01-13T04:18:55.000967Z",
+  "step_index": 6,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".order-status:has-text('\u5df2\u9001\u8fbe')\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/shop.local/orders.html",
+    "screenshot": "errors/Z1-2025-ARRIVAL/error_step_6.png"
+  },
+  "step": {
+    "t": 7,
+    "act": "wait",
+    "selector": ".order-status:has-text('\u5df2\u9001\u8fbe')",
+    "note": "Wait for status update"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

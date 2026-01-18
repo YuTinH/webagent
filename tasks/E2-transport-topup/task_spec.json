@@ -1,0 +1,18 @@
+{
+  "task_id": "E2-2025-TOPUP",
+  "family": "E",
+  "goal": "Top up the transport card with 100 RMB and enable auto-recharge when the balance drops below 20 RMB (recharge amount 50 RMB). Verify the balance increases and auto-recharge is enabled.",
+  "inputs": {
+    "topup_amount": 100,
+    "auto_recharge_threshold": 20,
+    "auto_recharge_amount": 50
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/trip.local/transport-card.html')",
+    "mem('transport.card.last_topup_amount') == '100.0'",
+    "mem('transport.card.auto_recharge.enabled') == '1'",
+    "mem('transport.card.auto_recharge.threshold') == '20.0'",
+    "mem('transport.card.auto_recharge.amount') == '50.0'"
+  ]
+}

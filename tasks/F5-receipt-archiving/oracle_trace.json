@@ -1,0 +1,36 @@
+{
+  "task_id": "F5-2025-ARCHIVE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/cloud.local/index.html",
+      "note": "Open cloud documents page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": ".upload-area",
+      "note": "Click upload area"
+    },
+    {
+      "t": 4,
+      "act": "select",
+      "selector": "#doc-type",
+      "value": "receipt",
+      "note": "Select document type as receipt"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-overlay button:has-text('上传')",
+      "note": "Click 'Upload' button in modal"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": ".file-item:has(.file-name:has-text('monthly_expenses.pdf'))",
+      "note": "Wait for the uploaded file to appear in the list"
+    }
+  ]
+}

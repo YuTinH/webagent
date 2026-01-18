@@ -3,70 +3,146 @@
 <head>
 <script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
-<title>差旅报销 - Nebula Bank</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>费用报销 - Nebula Bank</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
 <style>
-.report-card { max-width: 820px; margin: 0 auto; background: var(--card); border:1px solid var(--border); border-radius: 12px; padding: 28px; }
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
 </style>
 </head>
 <body>
+
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
     <div class="brand"><div class="logo"></div> Nebula Bank</div>
     <div class="navlinks">
       <a href="../bank.local/dashboard.html">账户</a>
       <a href="../bank.local/transactions.html">交易</a>
-      <a href="../bank.local/cards.html">卡片</a>
-      <a href="../bank.local/expense-report.html" class="active">报销</a>
+      <a href="../bank.local/expense-report.html" class="active">费用报销</a>
     </div>
   </div>
 </div>
+
 <div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
 <div class="container">
-  <div class="breadcrumbs"><a href="../bank.local/dashboard.html">账户</a> / <span>差旅报销</span></div>
+
+  <h1 style="text-align:center; font-size:28px; font-weight:700; margin:32px 0">提交费用报销</h1>
 
   <div class="report-card">
-    <h2 style="margin-top:0">提交差旅报销</h2>
-    <div class="grid cols-2 mb-4">
-      <div>
-        <label class="muted">行程编号 (PNR)</label>
-        <input id="report-pnr" class="input mt-1" value="PNR-8891">
-      </div>
-      <div>
-        <label class="muted">酒店确认号</label>
-        <input id="report-hotel" class="input mt-1" value="HTL-77">
-      </div>
+    <div class="form-group">
+      <label for="report-id">报销单号</label>
+      <input type="text" id="report-id" value="EXP-3344">
     </div>
-    <div class="grid cols-2 mb-4">
-      <div>
-        <label class="muted">会议注册号</label>
-        <input id="report-conf" class="input mt-1" value="CONF-8801">
-      </div>
-      <div>
-        <label class="muted">总金额</label>
-        <input id="report-total" type="number" class="input mt-1" value="1200">
-      </div>
+    <div class="form-group">
+      <label for="total-amount">总金额</label>
+      <input type="number" id="total-amount" placeholder="例如：1200.00" value="1200">
     </div>
-    <div class="mb-4">
-      <label class="muted">费用明细</label>
-      <textarea id="report-notes" class="input mt-1" rows="3" placeholder="机票、酒店、会议注册..."></textarea>
+    <div class="form-group">
+      <label for="description">报销明细</label>
+      <textarea id="description" rows="4" placeholder="请详细填写报销明细..."></textarea>
     </div>
-    <div class="flex" style="justify-content:flex-end; gap:12px">
-      <button class="btn" onclick="Toast.info('Draft saved')">保存草稿</button>
-      <button class="btn pri" onclick="submitReport()">提交报销</button>
+    <div class="form-group">
+      <label for="linked-pnr">关联航班PNR (可选)</label>
+      <input type="text" id="linked-pnr" placeholder="例如：PNR-1234">
     </div>
+    <button class="btn pri lg" style="width:100%" onclick="submitReport()">提交报销</button>
   </div>
+
+  <div class="footer">Nebula Bank · Synthetic UI for Web Agent Research</div>
 </div>
+
+<!-- JavaScript -->
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
 async function submitReport() {
-  const pnr = document.getElementById('report-pnr').value || 'PNR-8891';
-  const total = document.getElementById('report-total').value || 1200;
-  await send('E5-2025-205','submit_expense',{pnr, total, reportId:'EXP-3344'});
+  const reportId = document.getElementById('report-id').value;
+  const totalAmount = document.getElementById('total-amount').value;
+  const description = document.getElementById('description').value;
+  const linkedPnr = document.getElementById('linked-pnr').value;
+
+  if (!reportId || !totalAmount) {
+    Toast.error('请填写报销单号和总金额');
+    return;
+  }
+
+  Toast.info('正在提交报销单...');
+
+  try {
+    const response = await send('E5-2025-EXPENSE', 'submit_expense', {
+      reportId: reportId,
+      total: parseFloat(totalAmount),
+      description: description,
+      pnr: linkedPnr || undefined // Only send if not empty
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('报销单提交成功！');
+      // Fallback reload if redirect doesn't happen automatically
+      if (!response.redirect) {
+          window.location.href = `${window.RelRoot}bank.local/expense-report.html?submitted=true`;
+      }
+    } else {
+        console.warn('Response invalid, attempting fallback reload...');
+        window.location.href = `${window.RelRoot}bank.local/expense-report.html?submitted=true`;
+    }
+  } catch (error) {
+    console.error('提交失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}bank.local/expense-report.html?submitted=true`;
+    } else {
+        Toast.error('提交失败，请稍后再试');
+    }
+  }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('submitted') === 'true') {
+        Toast.success('报销单提交成功！');
+    }
+});
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
 
 </body>
 </html>

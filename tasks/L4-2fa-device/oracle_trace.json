@@ -1,0 +1,37 @@
+{
+  "task_id": "L4-2025-2FA",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/2fa.html",
+      "note": "Open 2FA settings page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#new-device-name",
+      "value": "iPhone 15 Pro",
+      "note": "Enter new device name"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#verification-code",
+      "value": "123456",
+      "note": "Enter verification code"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button:has-text('验证并更换')",
+      "note": "Click verify and change button"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "//div[@id='2fa-status' and contains(., 'iPhone 15 Pro')]",
+      "note": "Wait for current device status to update"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "task_id": "Z4-2025-EMAIL",
+  "family": "Z",
+  "goal": "Read the 'Project Kickoff' email and add the event to the calendar with correct date, time and title.",
+  "inputs": {
+    "email_subject": "项目启动会邀请"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/work.local/calendar.html')",
+    "mem('calendar.events.last.title') == '项目启动会'",
+    "mem('calendar.events.last.date') == '2026-02-15'",
+    "mem('calendar.events.last.time') == '15:00'"
+  ]
+}

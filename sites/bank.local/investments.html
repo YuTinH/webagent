@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - 投资账户</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+      <div class="navlinks">
+        <a href="../bank.local/dashboard.html">账户</a>
+        <a href="../bank.local/transactions.html">交易</a>
+        <a href="../bank.local/investments.html" class="active">投资</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>投资账户管理</h1>
+      <button class="btn pri" onclick="openOpenAccountModal()">+ 开设新账户</button>
+    </div>
+
+    <div id="investment-accounts-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Accounts loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadInvestmentAccounts() {
+    const list = document.getElementById('investment-accounts-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const accounts = env.finance?.investment_accounts || {};
+      
+      if (Object.keys(accounts).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">📈</div>
+            <div style="color:var(--muted)">暂无投资账户</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(accounts).map(([id, account]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${account.name || '投资账户'} (#${id})</h3>
+              <div style="color:var(--muted); font-size:14px">类型: ${account.type || '股票'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">余额: ¥${account.balance ? parseFloat(account.balance).toFixed(2) : '0.00'}</div>
+              <div style="color:var(--muted); font-size:13px">状态: <span class="badge ${account.status === 'active' ? 'ok' : 'warn'}">${account.status === 'active' ? '活跃' : '关闭'}</span></div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="viewPortfolio('${id}')">查看投资组合</button>
+            <button class="btn secondary" onclick="closeAccount('${id}')">关闭账户</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openOpenAccountModal() {
+    new Modal({
+      title: '开设新投资账户',
+      content: `
+        <div class="form">
+          <label>账户名称</label>
+          <input id="new-name" class="input" placeholder="例如: 成长型投资组合">
+          
+          <label>账户类型</label>
+          <select id="new-type" class="input">
+            <option value="stocks">股票账户</option>
+            <option value="funds">基金账户</option>
+            <option value="retirement">养老金账户</option>
+          </select>
+
+          <label>初始投资金额</label>
+          <input id="initial-deposit" type="number" class="input" value="1000">
+        </div>
+      `,
+      confirmText: '开设账户',
+      onConfirm: async () => {
+        const name = document.getElementById('new-name').value;
+        const type = document.getElementById('new-type').value;
+        const initialDeposit = document.getElementById('initial-deposit').value;
+        
+        if (!name || !initialDeposit) {
+          Toast.error("请填写完整信息");
+          return;
+        }
+        
+        await send('D6-2025-INVESTMENT', 'manage_investment_account', {
+          action_type: 'open',
+          name: name,
+          type: type,
+          initial_deposit: parseFloat(initialDeposit)
+        });
+        
+        setTimeout(loadInvestmentAccounts, 500);
+      }
+    }).open();
+  }
+
+  function viewPortfolio(id) {
+    Toast.info(`正在查看账户 ${id} 的投资组合...`);
+  }
+
+  function closeAccount(id) {
+    new Modal({
+      title: '确认关闭账户',
+      content: `您确定要关闭投资账户 ${id} 吗？`,
+      confirmText: '确认关闭',
+      onConfirm: async () => {
+        await send('D6-2025-INVESTMENT', 'manage_investment_account', {
+          action_type: 'close',
+          account_id: id
+        });
+        setTimeout(loadInvestmentAccounts, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadInvestmentAccounts);
+  </script>
+  <script>
+  async function debugTimeTravel() {
+      await fetch('/api/debug/time_travel', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({days: 30})
+      });
+      loadInvestmentAccounts();
+      Toast.success("已模拟时间流逝: 30天");
+  }
+  </script>
+  <button onclick="debugTimeTravel()" style="opacity:0.1; position:fixed; bottom:0; right:0">Debug: +30 Days</button>
+</body>
+</html>

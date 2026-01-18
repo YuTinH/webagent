@@ -1,43 +1,42 @@
 {
-  "task_id": "A6-2025-GEN",
+  "task_id": "A6-2025-PROOF",
   "success": true,
   "final_state": "completed",
   "steps_completed": 5,
   "steps_total": 5,
-  "time_elapsed": 1.8380792140960693,
+  "time_elapsed": 1.631188154220581,
   "error": null,
   "trace": [
     {
       "t": 0,
       "act": "open",
-      "url": "https://gov.local/profile.html",
-      "note": "Open Profile"
+      "url": "http://localhost:8014/gov.local/profile.html",
+      "note": "Open user profile page"
     },
     {
-      "t": 1.0,
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('\u4e0a\u4f20\u5730\u5740\u8bc1\u660e')",
+      "note": "Click 'Upload Address Proof' button"
+    },
+    {
+      "t": 4,
       "act": "select",
       "selector": "#doc-type",
       "value": "utility",
-      "note": "Select Utility Bill"
+      "note": "Select document type as 'Utility Bill'"
     },
     {
-      "t": 2.0,
-      "act": "upload",
-      "selector": "#file-upload",
-      "value": "proof_of_address.pdf",
-      "note": "Upload file"
-    },
-    {
-      "t": 3.0,
+      "t": 6,
       "act": "click",
-      "selector": "button.pri",
-      "note": "Submit"
+      "selector": ".modal-overlay button:has-text('\u4e0a\u4f20')",
+      "note": "Click 'Upload' button in modal"
     },
     {
-      "t": 4.0,
+      "t": 8,
       "act": "wait",
-      "selector": ".badge.ok",
-      "note": "Wait for verified badge"
+      "selector": "#address-verification-status.verified",
+      "note": "Wait for address verification status to update to 'Verified'"
     }
   ],
   "memory_updates": {},

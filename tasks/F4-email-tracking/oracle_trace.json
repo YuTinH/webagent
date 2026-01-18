@@ -1,0 +1,50 @@
+{
+  "task_id": "F4-2025-EMAILTRACK",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/work.local/email-tracking.html",
+      "note": "Open email tracking page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('追踪新邮件')",
+      "note": "Click track new email button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#email-subject",
+      "value": "项目进度更新",
+      "note": "Enter email subject"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#email-sender",
+      "value": "manager@example.com",
+      "note": "Enter sender email"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#email-summary",
+      "value": "需要确认下周会议时间",
+      "note": "Enter email summary"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm tracking"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#email-list .card",
+      "note": "Wait for email to appear in list"
+    }
+  ]
+}

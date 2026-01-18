@@ -1,66 +1,204 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
+<script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Learning - EduNet</title>
+<title>我的学习 - Nebula学校</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
+<style>
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+.course-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.course-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent);
+  pointer-events: none;
+}
+.course-badge {
+  background: var(--ok);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+.course-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.course-instructor {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--pri);
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+}
+.progress-text {
+  font-size: 13px;
+  color: var(--muted);
+}
+.course-actions .btn {
+  margin-top: 20px;
+}
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+.empty-state-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+</style>
 </head>
 <body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand">
-      <div class="logo" style="background: linear-gradient(135deg, #8b5cf6, #d946ef)"></div>
-      EduNet
-    </div>
+    <div class="brand"><div class="logo"></div> Nebula学校</div>
     <div class="navlinks">
-      <a href="index.html">Courses</a>
-      <a href="my-learning.html" class="active">My Learning</a>
+      <a href="../school.local/index.html">首页</a>
+      <a href="../school.local/catalog.html">课程目录</a>
+      <a href="../school.local/my-learning.html" class="active">我的学习</a>
+    </div>
+    <div style="margin-left:auto">
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
     </div>
   </div>
 </div>
 
-<div class="container">
-  
-  <h1 style="margin-bottom: 24px">My Enrolled Courses</h1>
+<div id="__toast" class="toast"></div>
 
-  <div id="enrolled-courses-list">
-    <div class="text-center muted p-8">Loading courses...</div>
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">我的学习</h1>
+
+  <div id="enrolled-courses-grid" class="course-grid">
+    <div class="empty-state">
+      <div class="empty-state-icon">📚</div>
+      <div>正在加载课程...</div>
+    </div>
   </div>
 
+  <div class="footer">Nebula学校 · Synthetic UI for Web Agent Research</div>
 </div>
 
-<script>window.RelRoot = '../';</script>
+<!-- JavaScript -->
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
 async function loadEnrolledCourses() {
-  const env = await api(getApiRoot() + 'api/env');
-  const courses = env.courses || {};
-  const list = document.getElementById('enrolled-courses-list');
-  
-  const entries = Object.entries(courses);
-  
-  if (entries.length === 0) {
-    list.innerHTML = '<div class="text-center muted p-8">You are not enrolled in any courses yet.</div>';
-    return;
-  }
-
-  list.innerHTML = entries.map(([id, course]) => `
-    <div class="card p-4 flex justify-between items-center mb-2">
-      <div>
-        <div style="font-weight:700; font-size:18px">${id} - Deep Learning 101</div>
-        <div class="text-sm muted">Status: ${course.state}</div>
-      </div>
-      <span class="badge pri">Enrolled</span>
+  const gridContainer = document.getElementById('enrolled-courses-grid');
+  gridContainer.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-state-icon">📚</div>
+      <div>正在加载课程...</div>
     </div>
-  `).join('');
+  `;
+
+  const courseData = { // Mock data for now (should fetch from API in real app)
+    'DL101': {
+      title: 'Web Agent编程指南',
+      instructor: 'Masteryth',
+      progress: 75
+    },
+    'ML202': {
+      title: '机器学习进阶',
+      instructor: 'Alice',
+      progress: 0
+    }
+  };
+
+  try {
+    const env = await loadEnv();
+    const enrolledCourses = env.courses || {};
+
+    let coursesToRender = [];
+    for (const courseId in enrolledCourses) {
+      if (enrolledCourses[courseId].state === 'enrolled') {
+        const details = courseData[courseId] || { title: `未知课程 ${courseId}`, instructor: '未知', progress: 0 };
+        coursesToRender.push({ id: courseId, ...details });
+      }
+    }
+
+    if (coursesToRender.length > 0) {
+      gridContainer.innerHTML = coursesToRender.map(course => `
+        <div class="course-card">
+          <div class="course-badge">进行中</div>
+          <div class="course-title">${course.title}</div>
+          <div class="course-instructor">讲师: ${course.instructor}</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${course.progress}%"></div></div>
+          <div class="progress-text">进度: ${course.progress}%</div>
+          <div class="course-actions">
+            <button class="btn pri">继续学习</button>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      gridContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">📚</div>
+          <div>您还没有报名的课程</div>
+          <a href="${window.RelRoot}school.local/catalog.html" class="btn pri" style="margin-top:20px">浏览课程</a>
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.error("Failed to load enrolled courses:", e);
+    gridContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <div>加载课程失败，请稍后再试</div>
+      </div>
+    `;
+  }
 }
 
-loadEnrolledCourses();
+document.addEventListener('DOMContentLoaded', loadEnrolledCourses);
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
 
 </body>
 </html>

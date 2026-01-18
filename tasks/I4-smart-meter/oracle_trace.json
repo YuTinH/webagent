@@ -1,0 +1,30 @@
+{
+  "task_id": "I4-2025-SMARTMETER",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/energy.local/smart-meter.html",
+      "note": "Open smart meter page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#new-reading",
+      "value": "12500.50",
+      "note": "Enter new meter reading"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('提交读数')",
+      "note": "Submit reading"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#meter-reading:has-text('12500.50')",
+      "note": "Wait for current reading to update"
+    }
+  ]
+}

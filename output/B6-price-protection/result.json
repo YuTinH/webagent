@@ -1,69 +1,40 @@
 {
-  "task_id": "B6-2025-GEN",
+  "task_id": "B6-2025-PRICE",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 8,
-  "steps_total": 8,
-  "time_elapsed": 3.5851566791534424,
+  "steps_completed": 4,
+  "steps_total": 4,
+  "time_elapsed": 1.6393754482269287,
   "error": null,
   "trace": [
     {
       "t": 0,
       "act": "open",
-      "url": "https://shop.local/price-protection.html",
-      "note": "Open Price Protection page"
+      "url": "http://localhost:8014/shop.local/price-protection.html",
+      "note": "Open price protection page"
     },
     {
-      "t": 1.0,
-      "act": "wait",
-      "selector": "#orders-list button.btn.pri",
-      "note": "Wait for eligible orders"
-    },
-    {
-      "t": 2.0,
-      "act": "click",
-      "selector": "#orders-list .order-card:first-child button.btn.pri",
-      "note": "Click Apply on first eligible order"
-    },
-    {
-      "t": 2.5,
-      "act": "wait",
-      "selector": "#lower-price",
-      "note": "Wait for modal"
-    },
-    {
-      "t": 3.0,
+      "t": 2,
       "act": "type",
-      "selector": "#lower-price",
-      "value": "25.00",
-      "note": "Enter lower price"
+      "selector": "#order-id",
+      "value": "O-98321",
+      "note": "Enter order ID"
     },
     {
-      "t": 4.0,
+      "t": 4,
       "act": "click",
-      "selector": "#apply-modal button.pri",
-      "force": true,
-      "note": "Submit application"
+      "selector": "button.btn.pri.lg:has-text('\u63d0\u4ea4\u7533\u8bf7')",
+      "note": "Click submit button"
     },
     {
-      "t": 5.0,
+      "t": 6,
       "act": "wait",
-      "selector": "body",
-      "note": "Wait for submission"
-    },
-    {
-      "t": 6.0,
-      "act": "extract",
-      "selector": "body",
-      "variable": "claims.price_protection.last.id",
-      "value": "PP-1001",
-      "note": "Simulate claim ID extraction"
+      "selector": ".status-badge.submitted",
+      "note": "Wait for success status"
     }
   ],
   "memory_updates": {},
   "artifacts": [],
   "warnings": [],
-  "extracted_data": {
-    "claims.price_protection.last.id": "PP-1001"
-  }
+  "extracted_data": {}
 }

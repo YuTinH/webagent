@@ -1,0 +1,23 @@
+{
+  "task_id": "B7-2025-MARKET",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-27T13:23:40.667223Z",
+  "step_index": 1,
+  "error_message": "Page.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#item-name\")\n",
+  "context": {
+    "url": "chrome-error://chromewebdata/",
+    "screenshot": "errors/B7-2025-MARKET/error_step_1.png"
+  },
+  "step": {
+    "t": 2,
+    "act": "type",
+    "selector": "#item-name",
+    "value": "Vintage Desk Lamp",
+    "note": "Enter item name"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

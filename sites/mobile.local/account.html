@@ -1,57 +1,236 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
 <script>window.RelRoot = "../";</script>
-<!doctype html><meta charset="utf-8"><title>Nebula Mobile - My Account</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的账户 - Nebula移动</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
-<script src="../static/common.js"></script>
+<style>
+.account-header {
+  background: radial-gradient(100% 140% at 0% 0%, rgba(59, 130, 246, .12), transparent 40%), var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.account-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.plan-badge {
+  background: var(--pri);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.usage-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.plan-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.plan-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  cursor: pointer;
+  transition: .2s;
+  position: relative;
+}
+.plan-card:hover {
+  border-color: var(--pri);
+  transform: translateY(-4px);
+}
+.plan-card.active {
+  border-color: var(--ok);
+  background: rgba(16, 185, 129, 0.05);
+}
+.plan-card.active::after {
+  content: '当前计划';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--ok);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.plan-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.plan-price { font-size: 28px; font-weight: 700; color: var(--pri); margin-bottom: 16px; }
+.plan-features li { margin-bottom: 8px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand"><div class="logo"></div> Nebula Mobile</div>
+    <div class="brand"><div class="logo"></div> Nebula移动</div>
     <div class="navlinks">
-      <a href="index.html">Plans</a>
-      <a href="account.html" class="active">My Account</a>
+      <a href="../mobile.local/index.html">首页</a>
+      <a href="../mobile.local/account.html" class="active">我的账户</a>
+      <a href="../mobile.local/support.html">帮助中心</a>
     </div>
   </div>
 </div>
+
 <div id="__toast" class="toast"></div>
 
+<!-- Main Container -->
 <div class="container">
-  <h1 style="margin-bottom: 24px">My Account</h1>
-  
-  <div id="account-view">
-    <div class="card" style="text-align:center; padding:60px">
-      <div style="font-size:48px; margin-bottom:16px">📱</div>
-      <div style="color:var(--muted)">No active plan found.</div>
-      <a href="index.html" class="btn pri mt-4">Browse Plans</a>
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">账户概览</h1>
+
+  <div class="account-header">
+    <div class="account-info">
+      <div>
+        <h2 style="margin:0 0 8px 0">555-219-8937</h2>
+        <div style="color:var(--muted)">下一账单日: <span id="bill-date">2026-01-16</span></div>
+      </div>
+      <div class="plan-badge" id="current-plan-badge">Unlimited Plan</div>
     </div>
   </div>
+
+  <div class="usage-card">
+    <h3 style="margin:0 0 16px 0">本月用量</h3>
+    <div style="display:flex; gap:40px">
+      <div>
+        <div style="font-size:14px; color:var(--muted)">数据流量</div>
+        <div style="font-size:24px; font-weight:700">12.5 GB / <span id="data-limit">Unlimited</span></div>
+      </div>
+      <div>
+        <div style="font-size:14px; color:var(--muted)">通话时长</div>
+        <div style="font-size:24px; font-weight:700">145 分钟</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin:32px 0 16px 0">更换套餐</h2>
+  <div class="plan-options">
+    <div class="plan-card" id="plan-starter">
+      <div class="plan-name">入门套餐</div>
+      <div class="plan-price">¥39/月</div>
+      <ul class="plan-features">
+        <li>5GB 高速流量</li>
+        <li>200分钟通话</li>
+        <li>无限短信</li>
+      </ul>
+      <button class="btn" onclick="selectPlan('starter')">选择此套餐</button>
+    </div>
+
+    <div class="plan-card" id="plan-unlimited">
+      <div class="plan-name">无限畅享</div>
+      <div class="plan-price">¥99/月</div>
+      <ul class="plan-features">
+        <li>无限高速流量</li>
+        <li>无限通话</li>
+        <li>包含国际漫游</li>
+      </ul>
+      <button class="btn" onclick="selectPlan('unlimited')">选择此套餐</button>
+    </div>
+
+    <div class="plan-card" id="plan-pro">
+      <div class="plan-name">专业版</div>
+      <div class="plan-price">¥199/月</div>
+      <ul class="plan-features">
+        <li>无限流量 + 5G极速</li>
+        <li>家庭共享副卡</li>
+        <li>专属客服通道</li>
+      </ul>
+      <button class="btn" onclick="selectPlan('pro')">选择此套餐</button>
+    </div>
+  </div>
+
+  <div class="footer">Nebula移动 · Synthetic UI for Web Agent Research</div>
 </div>
 
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
-async function init() {
+let currentPlanId = 'unlimited';
+
+async function loadAccount() {
   try {
-    const env = await api('../api/env');
-    const mobile = env.mobile?.subscription;
-    
-    if (mobile && mobile.status === 'active') {
-      document.getElementById('account-view').innerHTML = `
-        <div class="card">
-          <div class="header">
-            <div class="title">Current Plan</div>
-            <span class="badge ok">Active</span>
-          </div>
-          <div class="kv">
-            <div class="key">Plan Name</div><div>${mobile.plan_name}</div>
-            <div class="key">Phone Number</div><div>${mobile.phone_number}</div>
-            <div class="key">Data Usage</div><div>0.5 GB / ${mobile.data_limit}</div>
-            <div class="key">Next Bill</div><div>${mobile.next_bill_date}</div>
-          </div>
-          <div class="hr"></div>
-          <button class="btn">Manage Plan</button>
-        </div>
-      `;
+    const env = await loadEnv();
+    const sub = env.mobile?.subscription;
+    if (sub) {
+      currentPlanId = sub.plan_id;
+      document.getElementById('current-plan-badge').textContent = sub.plan_name;
+      document.getElementById('data-limit').textContent = sub.data_limit;
+      document.getElementById('bill-date').textContent = sub.next_bill_date;
+      
+      // Update UI
+      document.querySelectorAll('.plan-card').forEach(card => {
+        card.classList.remove('active');
+        const btn = card.querySelector('button');
+        btn.disabled = false;
+        btn.textContent = '选择此套餐';
+      });
+
+      const activeCard = document.getElementById(`plan-${currentPlanId}`);
+      if (activeCard) {
+        activeCard.classList.add('active');
+        const btn = activeCard.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = '当前套餐';
+      }
     }
-  } catch(e) {}
+  } catch (e) {
+    console.error("Failed to load account info:", e);
+  }
 }
-init();
+
+async function selectPlan(planId) {
+  if (planId === currentPlanId) return;
+
+  Toast.info(`正在切换至 ${planId} 套餐...`);
+
+  try {
+    const response = await send('A4-2025-MOBILE', 'mobile_subscribe', {
+      planId: planId
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('套餐切换成功！');
+      // Fallback reload if redirect doesn't happen automatically
+      setTimeout(loadAccount, 500);
+    } else {
+        console.warn('Response invalid, attempting fallback reload...');
+        window.location.href = `${window.RelRoot}mobile.local/account.html?updated=true`;
+    }
+  } catch (error) {
+    console.error('切换套餐失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}mobile.local/account.html?updated=true`;
+    } else {
+        Toast.error('切换套餐失败，请稍后再试');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadAccount);
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "task_id": "E1-2025-FLIGHT",
+  "error_type": "TimeoutError",
+  "timestamp": "2025-12-24T12:11:12.159271Z",
+  "step_index": 9,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"h1:has-text('\u6211\u7684\u884c\u7a0b')\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/trip.local/flights.html",
+    "screenshot": "errors/E1-2025-FLIGHT/error_step_9.png"
+  },
+  "step": {
+    "t": 18,
+    "act": "wait",
+    "selector": "h1:has-text('\u6211\u7684\u884c\u7a0b')",
+    "note": "Wait for trip management page to load"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

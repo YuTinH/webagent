@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - 优惠券与满减</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">购物</a>
+        <a href="../shop.local/orders.html">订单</a>
+        <a href="../shop.local/coupons.html" class="active">优惠券</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>我的优惠券与满减</h1>
+      <button class="btn pri" onclick="openAddCouponModal()">+ 添加优惠券</button>
+    </div>
+
+    <div id="coupons-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Coupons loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadCoupons() {
+    const list = document.getElementById('coupons-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const coupons = env.shop?.coupons || {};
+      
+      if (Object.keys(coupons).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🎫</div>
+            <div style="color:var(--muted)">暂无可用优惠券</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(coupons).map(([id, coupon]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${coupon.name || '优惠券'} (${id})</h3>
+              <div style="color:var(--muted); font-size:14px">
+                ${coupon.type === 'discount' ? `¥${coupon.value} 优惠` : `${coupon.value}% 折扣`}
+                ${coupon.min_spend ? ` | 满 ¥${coupon.min_spend} 可用` : ''}
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">${coupon.code}</div>
+              <div style="color:var(--muted); font-size:13px">到期: ${coupon.expiry_date || '无'}</div>
+            </div>
+          </div>
+          
+          <div style="background:rgba(0,0,0,0.03); padding:16px; border-radius:8px; display:flex; justify-content:space-between; margin-bottom:16px; font-size:14px">
+            <div style="color:var(--muted)">状态: 
+              <span class="badge ${coupon.status === 'active' ? 'ok' : 'warn'}">${coupon.status === 'active' ? '可用' : '已过期'}</span>
+            </div>
+            <div style="color:var(--muted)">已使用: ${coupon.usage_count || 0} 次</div>
+          </div>
+
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="activateCoupon('${id}')" ${coupon.status !== 'active' ? 'disabled' : ''}>${coupon.status === 'active' ? '激活' : '已过期'}</button>
+            <button class="btn secondary" onclick="deleteCoupon('${id}')">删除</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openAddCouponModal() {
+    new Modal({
+      title: '添加新优惠券',
+      content: `
+        <div class="form">
+          <label>优惠券名称</label>
+          <input id="new-name" class="input" placeholder="例如: 双十一大促">
+          
+          <label>优惠码</label>
+          <input id="new-code" class="input" placeholder="例如: 20OFF">
+          
+          <label>类型</label>
+          <select id="new-type" class="input">
+            <option value="discount">金额优惠</option>
+            <option value="percentage">百分比折扣</option>
+          </select>
+
+          <label>优惠值 (金额或百分比)</label>
+          <input id="new-value" type="number" class="input" placeholder="20">
+          
+          <label>最低消费 (可选)</label>
+          <input id="new-min-spend" type="number" class="input" placeholder="100">
+
+          <label>过期日期 (可选)</label>
+          <input id="new-expiry-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: '添加',
+      onConfirm: async () => {
+        const name = document.getElementById('new-name').value;
+        const code = document.getElementById('new-code').value;
+        const type = document.getElementById('new-type').value;
+        const value = document.getElementById('new-value').value;
+        const minSpend = document.getElementById('new-min-spend').value;
+        const expiryDate = document.getElementById('new-expiry-date').value;
+        
+        if (!name || !code || !value) {
+          Toast.error("请填写必填项");
+          return;
+        }
+        
+        await send('B5-2025-COUPONS', 'manage_coupon', {
+          action_type: 'add',
+          name: name,
+          code: code,
+          type: type,
+          value: parseFloat(value),
+          min_spend: minSpend ? parseFloat(minSpend) : null,
+          expiry_date: expiryDate || null
+        });
+        
+        setTimeout(loadCoupons, 500);
+      }
+    }).open();
+  }
+
+  function activateCoupon(id) {
+    // In a real scenario, this would apply the coupon to the cart/account
+    Toast.info(`优惠券 ${id} 已激活，将在下次符合条件时自动使用。`);
+  }
+
+  function deleteCoupon(id) {
+    new Modal({
+      title: '确认删除',
+      content: `您确定要删除优惠券 ${id} 吗？`,
+      confirmText: '删除',
+      onConfirm: async () => {
+        await send('B5-2025-COUPONS', 'manage_coupon', {
+          action_type: 'delete',
+          coupon_id: id
+        });
+        setTimeout(loadCoupons, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadCoupons);
+  </script>
+</body>
+</html>

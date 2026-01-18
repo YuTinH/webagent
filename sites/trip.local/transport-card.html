@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>trip.local - 交通卡管理</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">✈️ Trip.local</div>
+      <div class="navlinks">
+        <a href="../trip.local/flights.html">航班</a>
+        <a href="../trip.local/hotels.html">酒店</a>
+        <a href="../trip.local/commute.html">通勤</a>
+        <a href="../trip.local/transport-card.html" class="active">交通卡</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>我的交通卡</h1>
+      <button class="btn pri" onclick="openTopUpModal()">+ 充值</button>
+    </div>
+
+    <div class="card soft">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <div>
+          <div style="font-size:14px; color:var(--muted)">卡号: <span id="card-number">...</span></div>
+          <div style="font-size:36px; font-weight:700; margin:8px 0">¥<span id="card-balance">0.00</span></div>
+          <div style="font-size:14px; color:var(--muted)">状态: <span id="card-status" class="badge ok">正常</span></div>
+        </div>
+        <div style="text-align:right">
+           <div style="margin-bottom:8px">自动充值: <span id="auto-recharge-status">已关闭</span></div>
+           <button class="btn secondary" onclick="openAutoRechargeModal()">设置自动充值</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>最近交易</h2>
+        <div id="transactions-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Transactions loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">暂无交易记录</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadCardInfo() {
+    try {
+      const env = await loadEnv();
+      const card = env.transport?.card || {
+          number: "TR-8888-8888",
+          balance: 25.50,
+          status: "active",
+          auto_recharge: { enabled: false, threshold: 20, amount: 50 }
+      };
+
+      document.getElementById('card-number').innerText = card.number;
+      document.getElementById('card-balance').innerText = parseFloat(card.balance).toFixed(2);
+      document.getElementById('card-status').innerText = card.status === 'active' ? '正常' : '异常';
+      
+      const ar = card.auto_recharge || {};
+      document.getElementById('auto-recharge-status').innerText = ar.enabled ? 
+          `已开启 (低于 ¥${ar.threshold} 充 ¥${ar.amount})` : '已关闭';
+      
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function openTopUpModal() {
+    new Modal({
+      title: '交通卡充值',
+      content: `
+        <div class="form">
+          <label>充值金额</label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px">
+             <button class="btn" onclick="setAmount(50)">¥50</button>
+             <button class="btn" onclick="setAmount(100)">¥100</button>
+             <button class="btn" onclick="setAmount(200)">¥200</button>
+          </div>
+          <input id="topup-amount" type="number" class="input" placeholder="输入金额">
+        </div>
+      `,
+      confirmText: '确认充值',
+      onConfirm: async () => {
+        const amount = document.getElementById('topup-amount').value;
+        if (!amount || amount <= 0) {
+          Toast.error("请输入有效金额");
+          return;
+        }
+        
+        await send('E2-2025-TOPUP', 'transport_topup', {
+          action_type: 'topup',
+          amount: parseFloat(amount)
+        });
+        
+        setTimeout(loadCardInfo, 500);
+      }
+    }).open();
+  }
+
+  window.setAmount = function(val) {
+      document.getElementById('topup-amount').value = val;
+  }
+
+  function openAutoRechargeModal() {
+    new Modal({
+      title: '设置自动充值',
+      content: `
+        <div class="form">
+          <div style="margin-bottom:16px; display:flex; align-items:center; gap:8px">
+            <input type="checkbox" id="ar-enable">
+            <label for="ar-enable" style="margin:0">开启自动充值</label>
+          </div>
+          <label>触发阈值 (余额低于)</label>
+          <input id="ar-threshold" type="number" class="input" value="20">
+          <label>充值金额</label>
+          <input id="ar-amount" type="number" class="input" value="50">
+        </div>
+      `,
+      confirmText: '保存设置',
+      onConfirm: async () => {
+        const enabled = document.getElementById('ar-enable').checked;
+        const threshold = document.getElementById('ar-threshold').value;
+        const amount = document.getElementById('ar-amount').value;
+        
+        await send('E2-2025-TOPUP', 'transport_topup', {
+          action_type: 'set_auto_recharge',
+          enabled: enabled,
+          threshold: parseFloat(threshold),
+          amount: parseFloat(amount)
+        });
+        
+        setTimeout(loadCardInfo, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadCardInfo);
+  </script>
+</body>
+</html>

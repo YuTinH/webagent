@@ -1,0 +1,61 @@
+{
+  "task_id": "E5-2025-EXPENSE",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 1.7505764961242676,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/expense-report.html",
+      "note": "Open expense report submission page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#report-id",
+      "value": "EXP-3344",
+      "note": "Enter report ID"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#total-amount",
+      "value": "1200",
+      "note": "Enter total amount"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#description",
+      "value": "Conference travel expenses",
+      "note": "Enter description"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#linked-pnr",
+      "value": "PNR-0000",
+      "note": "Enter linked PNR"
+    },
+    {
+      "t": 10,
+      "act": "click",
+      "selector": "button.btn.pri.lg:has-text('\u63d0\u4ea4\u62a5\u9500')",
+      "note": "Click 'Submit Report' button"
+    },
+    {
+      "t": 12,
+      "act": "wait",
+      "selector": "h1:has-text('\u63d0\u4ea4\u8d39\u7528\u62a5\u9500')",
+      "note": "Wait for confirmation message or page reload"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

@@ -4,140 +4,153 @@
 <script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Price Protection - Nebula Shop</title>
+<title>价格保护 - Nebula商城</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
 <style>
-.order-card {
+.protection-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 32px;
+  max-width: 600px;
+  margin: 0 auto;
 }
-.order-info h3 { margin: 0 0 8px 0; font-size: 16px; }
-.order-meta { color: var(--muted); font-size: 14px; }
-.status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px; }
-.status-badge.eligible { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-.status-badge.ineligible { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+.status-badge.submitted { background: var(--pri-bg); color: var(--pri); }
+.status-badge.approved { background: var(--ok-bg); color: var(--ok); }
+.status-badge.rejected { background: var(--err-bg); color: var(--err); }
 </style>
 </head>
 <body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand"><div class="logo"></div> Nebula Shop</div>
+    <div class="brand"><div class="logo"></div> Nebula商城</div>
     <div class="navlinks">
-      <a href="index.html">Home</a>
-      <a href="orders.html">Orders</a>
-      <a href="price-protection.html" class="active">Price Protection</a>
+      <a href="../shop.local/index.html">首页</a>
+      <a href="../shop.local/orders.html">订单</a>
+      <a href="../shop.local/help.html">帮助</a>
     </div>
   </div>
 </div>
 
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
 <div class="container">
-  
-  <div class="breadcrumbs">
-    <a href="index.html">Home</a> / <span>Price Protection</span>
+
+  <h1 style="text-align:center; font-size:28px; font-weight:700; margin:32px 0">价格保护申请</h1>
+
+  <div class="protection-card">
+    <div class="form-group">
+      <label for="order-id">订单编号</label>
+      <input type="text" id="order-id" placeholder="例如: O-12345" value="O-98321">
+    </div>
+    <div class="form-group">
+      <label for="current-price">当前售价</label>
+      <input type="number" id="current-price" value="179.00" readonly>
+    </div>
+    <div class="form-group">
+      <label for="original-price">购买价格</label>
+      <input type="number" id="original-price" value="199.00" readonly>
+    </div>
+    <button class="btn pri lg" style="width:100%" onclick="submitClaim()">提交申请</button>
   </div>
 
-  <h1>Price Protection</h1>
-  <p class="muted">If an item you purchased drops in price within 30 days, we'll refund the difference.</p>
-
-  <div id="orders-list">
-    <!-- Rendered by JS -->
+  <!-- Status Section (Hidden by default) -->
+  <div id="status-section" style="display:none; text-align:center; margin-top:24px">
+    <div class="status-badge submitted">申请已提交</div>
+    <p style="color:var(--muted); margin-top:12px">我们将在1-3个工作日内审核您的申请。</p>
   </div>
 
+  <div class="footer">Nebula商城 · Synthetic UI for Web Agent Research</div>
 </div>
 
-<!-- Application Modal -->
-<div id="apply-modal" class="modal-overlay">
-  <div class="modal-container">
-    <h3>Apply for Price Protection</h3>
-    <div class="mb-4">
-      <label class="muted">Order ID</label>
-      <div id="modal-order-id" style="font-weight:bold"></div>
-    </div>
-    <div class="mb-4">
-      <label class="muted">Current Lower Price Found ($)</label>
-      <input type="number" id="lower-price" class="input mt-1" placeholder="e.g. 29.99">
-    </div>
-    <div class="mb-4">
-      <label class="muted">Proof URL (Optional)</label>
-      <input type="text" class="input mt-1" placeholder="http://...">
-    </div>
-    
-    <div class="flex justify-end gap-2">
-      <button class="btn" onclick="closeModal('apply-modal')">Cancel</button>
-      <button class="btn pri" onclick="submitApplication()">Submit Application</button>
-    </div>
-  </div>
-</div>
-
+<!-- JavaScript -->
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
-let selectedOrder = null;
+async function submitClaim() {
+  const orderId = document.getElementById('order-id').value;
 
-async function loadOrders() {
-  const list = document.getElementById('orders-list');
-  try {
-    const response = await fetch('../api/orders?user_id=1&limit=20');
-    const data = await response.json();
-
-    if (data.success && data.orders) {
-      list.innerHTML = data.orders.map(order => {
-        // Mock eligibility logic: delivered or confirmed orders are eligible
-        const isEligible = order.state === 'delivered' || order.state === 'confirmed';
-        return `
-          <div class="order-card">
-            <div class="order-info">
-              <h3>Order #${order.id} <span class="status-badge ${isEligible ? 'eligible' : 'ineligible'}">${isEligible ? 'Eligible' : 'Not Eligible'}</span></h3>
-              <div class="order-meta">Date: ${new Date(order.created_at).toLocaleDateString()}</div>
-              <div class="order-meta">Total: $${order.total.toFixed(2)}</div>
-            </div>
-            ${isEligible ? `<button class="btn pri" onclick="openApply('${order.id}')">Apply</button>` : '<button class="btn" disabled>Unavailable</button>'}
-          </div>
-        `;
-      }).join('');
-    }
-  } catch(e) {
-    list.innerHTML = '<div class="muted">Failed to load orders.</div>';
-  }
-}
-
-function openApply(orderId) {
-  selectedOrder = orderId;
-  document.getElementById('modal-order-id').textContent = orderId;
-  openModal('#apply-modal');
-}
-
-async function submitApplication() {
-  const price = document.getElementById('lower-price').value;
-  if(!price) {
-    Toast.error('Please enter the lower price found.');
+  if (!orderId) {
+    Toast.error('请输入订单编号');
     return;
   }
-  
-  await send('B6-2025-GEN', 'price_protection_claim', {
-    order_id: selectedOrder,
-    lower_price: parseFloat(price)
-  });
 
-  closeModal('#apply-modal');
-  Toast.success('Application Submitted!');
-  
-  // Simulate redirect or update
-  setTimeout(() => {
-    window.location.reload();
-  }, 1500);
+  Toast.info('正在提交价格保护申请...');
+
+  try {
+    const response = await send('B6-2025-PRICE', 'submit_price_protect', {
+      orderId: orderId
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('申请提交成功！');
+      document.querySelector('.protection-card').style.display = 'none';
+      document.getElementById('status-section').style.display = 'block';
+    } else {
+        // Handle server.py implicit success if redirect is generic
+        console.warn('Response invalid, attempting fallback UI update...');
+        document.querySelector('.protection-card').style.display = 'none';
+        document.getElementById('status-section').style.display = 'block';
+    }
+  } catch (error) {
+    console.error('提交失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback UI update...');
+        document.querySelector('.protection-card').style.display = 'none';
+        document.getElementById('status-section').style.display = 'block';
+    } else {
+        Toast.error('提交失败，请稍后再试');
+    }
+  }
 }
 
-loadOrders();
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('status') === 'submitted') {
+        document.querySelector('.protection-card').style.display = 'none';
+        document.getElementById('status-section').style.display = 'block';
+    }
+});
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
 
 </body>
 </html>

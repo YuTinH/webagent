@@ -1,0 +1,33 @@
+{
+  "task_id": "A4-2025-MOBILE",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 3,
+  "steps_total": 3,
+  "time_elapsed": 1.7500464916229248,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/mobile.local/account.html",
+      "note": "Open mobile account page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#plan-pro button",
+      "note": "Click select button for Pro plan"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#plan-pro.active",
+      "note": "Wait for Pro plan to be active"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

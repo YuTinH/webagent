@@ -6,6 +6,25 @@ Provides REST API endpoints for all benchmark tasks.
 import http.server, socketserver, json, os, time, sys, sqlite3, urllib.parse, random, hashlib, re
 from datetime import datetime, timedelta
 
+# Import task handlers
+from task_handlers.utils import deep_merge
+from task_handlers.time_utils import advance_time
+from task_handlers.world_triggers import process_time_triggers
+from task_handlers.a_housing import handle_a_housing
+from task_handlers.b_consumption import handle_b_consumption
+from task_handlers.c_support import handle_c_support
+from task_handlers.d_finance import handle_d_finance
+from task_handlers.e_travel import handle_e_travel
+from task_handlers.f_work import handle_f_work
+from task_handlers.g_health import handle_g_health
+from task_handlers.h_government import handle_h_government
+from task_handlers.i_repair import handle_i_repair
+from task_handlers.j_learning import handle_j_learning
+from task_handlers.k_social import handle_k_social
+from task_handlers.l_privacy import handle_l_privacy
+from task_handlers.m_crisis import handle_m_crisis
+from task_handlers.z_advanced import handle_z_advanced
+
 ROOT = os.path.dirname(os.path.abspath(__file__))
 ENV_DIR = os.path.join(ROOT, 'env')
 STATE_PATH = os.path.join(ENV_DIR, 'state.json')
@@ -13,18 +32,9 @@ TRACE_PATH = os.path.join(ROOT, 'traces.jsonl')
 SITES_DIR = os.path.join(ROOT, 'sites')
 DB_PATH = os.path.join(ROOT, 'data.db')
 
-# ============================================================================
+# ============================================================================ 
 # Utility Functions
-# ============================================================================
-
-def deep_merge(a, b):
-    """Deep merge two dictionaries"""
-    if isinstance(a, dict) and isinstance(b, dict):
-        r = dict(a)
-        for k, v in b.items():
-            r[k] = deep_merge(r.get(k), v) if k in r else v
-        return r
-    return b
+# ============================================================================ 
 
 def load_env():
     """Load environment state from JSON file"""
@@ -77,7 +87,7 @@ def query_env_path(env, path):
             return None
 
         # Array index notation: items[0]
-        match = re.match(r'(\w+)\[(\d+)\]', part)
+        match = re.re.match(r'(\w+)\[(\d+)\]', part)
         if match:
             key, idx = match.groups()
             if isinstance(current, dict) and key in current:
@@ -101,596 +111,41 @@ def query_env_path(env, path):
     return current
 
 def mutate_env(task_id, action, payload, env):
-    # B1 - Shopping Checkout Logic
-    if task_id.startswith('B1') and action == 'checkout':
-        # 局部导入，防止全局未导入导致报错
-        import time
-        from datetime import datetime
-        
-        # 1. 创建订单
-        items = payload.get('items', [])
-        total = sum([float(i.get('price', 0)) * int(i.get('qty', 1)) for i in items])
-        order_id = "ORD-" + str(int(time.time()))[-6:]
-        
-        new_order = {
-            "id": order_id,
-            "items": items,
-            "total": total,
-            "status": "confirmed",
-            "date": datetime.now().isoformat()
-        }
-        
-        # 2. 更新环境：清空购物车，添加订单
-        shop_state = env.get('shop', {})
-        shop_state['cart'] = [] # Clear cart
-        if 'orders' not in shop_state: shop_state['orders'] = {}
-        shop_state['orders'][order_id] = new_order
-        env['shop'] = shop_state
-        
-        # 3. 关键：返回 redirect 字段，指示前端跳转
-        return env, {"redirect": "/shop.local/order.html"}
-
-    # 原有的日志逻辑 (保持与 if 同级缩进)
-    try:
-        import json
-        with open("server_debug.log", "a") as f:
-            f.write(f"MUTATE: {task_id} {action} {json.dumps(payload)}\n")
-    except: pass
-
-
-    # G1 - Doctor appointment booking
-    if task_id.startswith('G1') and action == 'book_doctor':
-        appt_id = payload.get('appointmentId', 'APT-9001')
-        doctor_id = payload.get('doctorId', 'DR-001')
-        slot = payload.get('slot', '2025-12-02T09:00')
-        env = deep_merge(env, {"health": {"appointments": {"last": {"id": appt_id, "doctor": doctor_id, "slot": slot}}}})
-        ts = datetime.now().isoformat()
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['health.appointment.last_id', appt_id, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['health.appointment.slot', slot, ts, task_id, 1.0])
-        except Exception:
-            pass
-        return env, {"redirect": "/health.local/index.html"}
-
-    # G2 - Prescription refill
-    if task_id.startswith('G2') and action == 'refill_rx':
-        rx_id = payload.get('prescriptionId', 'RX-1001')
-        medication = payload.get('medication', 'Amoxicillin 250mg')
-        prev_refills = env.get('health', {}).get('prescriptions', {}).get(rx_id, {}).get('refills_left', 2)
-        refills_left = max(prev_refills - 1, 0)
-        refill_ts = datetime.now().isoformat()
-        env = deep_merge(env, {"health": {"prescriptions": {rx_id: {"medication": medication, "refills_left": refills_left, "last_refill": refill_ts}}}})
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['health.rx.last_id', rx_id, refill_ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['health.rx.last_refill', refill_ts, refill_ts, task_id, 1.0])
-        except Exception:
-            pass
-        return env, {"redirect": "/health.local/records.html"}
-
-    # G3 - Medical insurance claim
-    if task_id.startswith('G3') and action == 'submit_claim':
-        claim_id = payload.get('claimId', 'CLM-5501')
-        appt_id = payload.get('appointmentId', 'APT-9001')
-        amount = float(payload.get('amount', 250))
-        env = deep_merge(env, {"health": {"claims": {claim_id: {"state": "processing", "appointment_id": appt_id, "amount": amount}}}})
-        ts = datetime.now().isoformat()
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['insurance.claim.last.id', claim_id, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['insurance.claim.last.status', 'processing', ts, task_id, 1.0])
-        except Exception:
-            pass
-        return env, {"redirect": f"/gov.local/applications/status.html?id={claim_id}"}
-
-    # E1 - Flight booking
-    if task_id.startswith('E1') and action == 'book_flight':
-        pnr = payload.get('pnr', f"PNR-{random.randint(8000, 8999)}")
-        destination = payload.get('destination', 'Paris')
-        date = payload.get('date', datetime.now().strftime('%Y-%m-%d'))
-        price = float(payload.get('price', 450))
-        env = deep_merge(env, {"trips": {"flight": {"pnr": pnr, "destination": destination, "date": date, "price": price}}})
-        ts = datetime.now().isoformat()
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['travel.flight.last.pnr', pnr, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['travel.flight.last.destination', destination, ts, task_id, 1.0])
-        except Exception:
-            pass
-        return env, {"redirect": f"/trip.local/manage.html?pnr={pnr}&status=confirmed&date={date}"}
-
-    # E2 - Hotel booking
-    if task_id.startswith('E2') and action == 'book_hotel':
-        booking_id = payload.get('bookingId', f"HTL-{random.randint(700,999)}")
-        city = payload.get('city', 'Paris')
-        checkin = payload.get('checkin', datetime.now().strftime('%Y-%m-%d'))
-        nights = int(payload.get('nights', 3))
-        env = deep_merge(env, {"trips": {"hotel": {"id": booking_id, "city": city, "checkin": checkin, "nights": nights}}})
-        ts = datetime.now().isoformat()
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['travel.hotel.last.id', booking_id, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['travel.hotel.last.checkin', checkin, ts, task_id, 1.0])
-        except Exception:
-            pass
-        return env, {"redirect": "/trip.local/manage.html?status=confirmed"}
-
-    # F2 - Conference registration
-    if task_id.startswith('F2') and action == 'conference_register':
-        conference_id = payload.get('conferenceId', 'CL-2026')
-        invoice_title = payload.get('invoiceTitle', 'Your Lab')
-        reg_id = f"CONF-{random.randint(1000, 9999)}"
-        ts = datetime.now().isoformat()
-        
-        env = deep_merge(env, {"invoices": {"last": {"conference": conference_id, "invoice_title": invoice_title, "status": "paid", "reg_id": reg_id}}})
-        
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['invoices.last.conference', conference_id, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['invoices.last.status', 'paid', ts, task_id, 1.0])
-        except Exception:
-            pass
-        
-        return env, {"redirect": f"/event.local/registration.html?state=confirmed&regId={reg_id}&eventName={conference_id}&invoiceTitle={invoice_title}"}
-
-    # E5 - Expense report
-    if task_id.startswith('E5') and action == 'submit_expense':
-        report_id = payload.get('reportId', "EXP-3344")
-        total = float(payload.get('total', 1200))
-        linked_pnr = payload.get('pnr', env.get('trips', {}).get('flight', {}).get('pnr', 'PNR-UNKNOWN'))
-        env = deep_merge(env, {"expenses": {"reports": {report_id: {"state": "submitted", "total": total, "pnr": linked_pnr}}}})
-        ts = datetime.now().isoformat()
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['expenses.last.id', report_id, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['expenses.last.total', str(total), ts, task_id, 1.0])
-        except Exception:
-            pass
-        return env, {"redirect": f"/bank.local/expense-report.html?report={report_id}"}
-
-    if task_id.startswith('B6') and action == 'submit_price_protect':
-        oid = payload.get('orderId', 'O-98321')
-        patch = {"orders": {oid: {"claims": {"price_protect": {"state":"submitted"}}}}}
-        return deep_merge(env, patch), {"redirect": "/shop.local/index.html"}
-    if task_id.startswith('D4') and action == 'rebind_confirm':
-        last4 = payload.get('newLast4', '7777')
-        env = deep_merge(env, {"payments":{"cards":{"active_last4": last4}}})
-        for m in ["shop.local","ride.local","food.local","stream.local","cloud.local"]:
-            env = deep_merge(env, {"payments":{"merchant_bindings":{"map":{m:last4}}}})
-        return env, {"redirect": "/pay.local/wallet/cards.html?rebind=true"}
-    if task_id.startswith('E6') and action == 'rebook_ok':
-        hist = {"action":"rebook","ts":time.time()}
-        env = deep_merge(env, {"trips":{"PNR9ZZ":{"status":"rebooked","history":[hist]}}})
-        return env, {"redirect": "/trip.local/manage/PNR9ZZ.html?status=rebooked"}
-    if task_id.startswith('H3') and action == 'book_permit':
-        slot = payload.get('slot', '2025-12-01T10:00')
-        env = deep_merge(env, {"permits":{"RP-2024-77":{"next_appointment":slot}}})
-        return env, {"redirect": f"/permit.local/RP-2024-77.html?next_appointment={slot}"}
-    if task_id.startswith('I5') and action == 'set_energy_plan':
-        plan = payload.get('plan','green_offpeak')
-        meter = payload.get('meterId','M-321')
-        env = deep_merge(env, {"meters":{meter:{"plan":plan}}})
-        return env, {"redirect": "/energy.local/plan.html"}
-    # M1 - Lost Bank Card
-    if task_id.startswith('M1') and action == 'block_card':
-        last4 = payload.get('last4','1234')
-        env = deep_merge(env, {"payments":{"cards":{last4:{"state":"blocked"}}}})
-        env = deep_merge(env, {"merchant_bindings":{"updated":["shop.local","ride.local","food.local","stream.local","cloud.local"]}}) 
-        
-        # Sync to SQLite DB for consistency with _env_api queries
-        try:
-            execute_db("UPDATE cards SET state = 'blocked' WHERE last4 = ?", (last4,))
-        except Exception: pass
-
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'payments.cards.{last4}.state', 'blocked', ts, task_id, 1.0])
-        except Exception:
-            pass 
-
-        return env, {"redirect": "/card.local/block.html"}
-
-    # A3 - Utility Setup
-    if task_id.startswith('A3') and action == 'setup_utility':
-        services = payload.get('services', [])
-        plans = payload.get('plans', {})
-        addr = payload.get('address', '')
-        ts = datetime.now().isoformat()
-        
-        # Update contracts in env
-        contracts = {}
-        for svc in services:
-            contracts[svc] = {"status": "active", "plan": plans.get(svc, "standard"), "address": addr, "start_date": payload.get('date')}
-            # Write to memory
-            try:
-                execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                           [f'contracts.{svc}.id', f'CTR-{svc.upper()}-{random.randint(1000,9999)}', ts, task_id, 1.0])
-                execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                           [f'contracts.{svc}.status', 'active', ts, task_id, 1.0])
-            except Exception:
-                pass
-        
-        env = deep_merge(env, {"contracts": contracts})
-        try:
-            with open("server_debug.log", "a") as f:
-                f.write(f"DEBUG_A3: Final ENV for A3: {json.dumps(env)}\n")
-        except: pass
-        return env, {"redirect": "/energy.local/plan.html?setup_success=true"}
-
-    # J1 - Course Enrollment
-    if task_id.startswith('J1') and action == 'enroll_course':
-        course_id = payload.get('courseId', 'DL101')
-        ts = datetime.now().isoformat()
-        
-        env = deep_merge(env, {"courses": {course_id: {"state": "enrolled", "enrolled_at": ts}}})
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'courses.{course_id}.state', 'enrolled', ts, task_id, 1.0])
-        except Exception:
-            pass
-        try:
-            with open("server_debug.log", "a") as f:
-                f.write(f"DEBUG_J1: Final ENV for J1: {json.dumps(env)}\n")
-        except: pass
-        return env, {"redirect": "/school.local/my-learning.html"}
-
-    # A1 - Find Home
-    if task_id.startswith('A1') and action == 'rent_property':
-        prop_id = payload.get('propertyId', 'PROP-101')
-        term = payload.get('leaseTerm', '12 months')
-        ts = datetime.now().isoformat()
-        
-        env = deep_merge(env, {"housing": {"leases": {prop_id: {"status": "signed", "term": term}}}})
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['housing.lease.last.id', prop_id, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['housing.lease.last.status', 'signed', ts, task_id, 1.0])
-        except Exception:
-            pass
-        return env, {"redirect": "/housing.local/index.html"}
-
-    # B4 - Food Delivery
-    if task_id.startswith('B4') and action == 'order_food':
-        order_id = f"ODR-{random.randint(10000, 99999)}"
-        restaurant = payload.get('restaurant', 'Unknown')
-        items = payload.get('items', [])
-        total = payload.get('total', 0.0)
-        ts = datetime.now().isoformat()
-
-        env = deep_merge(env, {"food": {"orders": {order_id: {"restaurant": restaurant, "items": items, "total": total, "status": "pending", "ordered_at": ts}}}})
-        env = deep_merge(env, {"food": {"orders": {"last": {"id": order_id, "restaurant": restaurant, "items": items, "total": total, "status": "pending", "ordered_at": ts}}}})
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['food.order.last.id', order_id, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['food.order.last.status', 'pending', ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['food.order.last.total', total, ts, task_id, 1.0])
-        except Exception:
-            pass
-        return env, {"redirect": "/food.local/orders.html"}
-
-    # C1 - Logistics Fix
-    if task_id.startswith('C1') and action == 'submit_ticket':
-        ticket_id = f"TKT-{random.randint(1000, 9999)}"
-        oid = payload.get('orderId', 'O-98321')
-        issue_type = payload.get('type', 'delayed')
-        ts = datetime.now().isoformat()
-
-        # Create ticket
-        env = deep_merge(env, {"support": {"tickets": {ticket_id: {"order_id": oid, "type": issue_type, "status": "open", "created_at": ts}}}})
-        
-        # Update order status (simulating agent intervention)
-        env = deep_merge(env, {"orders": {oid: {"state": "investigating"}}})
-
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['support.ticket.last.id', ticket_id, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['support.ticket.last.status', 'open', ts, task_id, 1.0])
-        except Exception:
-            pass
-        return env, {"redirect": "/shop.local/help.html?status=ticket_created"}
-
-    # D2 - Budget Report
-    if task_id.startswith('D2') and action == 'adjust_budget':
-        cat = payload.get('category', 'food')
-        limit = payload.get('limit', 500)
-        ts = datetime.now().isoformat()
-        
-        # Update env state for frontend persistence
-        env = deep_merge(env, {"finance": {"budgets": {cat: {"limit": limit}}}})
-        
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'budget.{cat}.limit', limit, ts, task_id, 1.0])
-        except: pass
-        return env, {"redirect": "/bank.local/budget.html"}
-
-    # A4 - Mobile Plan
-    if task_id.startswith('A4') and action == 'mobile_subscribe':
-        plan_id = payload.get('planId', 'starter')
-        plan_name = {'starter': 'Starter Plan', 'unlimited': 'Unlimited Plan', 'pro': 'Pro Plan'}.get(plan_id, 'Unknown Plan')
-        data_limit = {'starter': '5GB', 'unlimited': 'Unlimited', 'pro': 'Unlimited'}.get(plan_id, '5GB')
-        
-        phone_number = f"555-{random.randint(100,999)}-{random.randint(1000,9999)}"
-        next_bill = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
-        ts = datetime.now().isoformat()
-        
-        env = deep_merge(env, {"mobile": {"subscription": {
-            "status": "active",
-            "plan_id": plan_id,
-            "plan_name": plan_name,
-            "phone_number": phone_number,
-            "data_limit": data_limit,
-            "next_bill_date": next_bill
-        }}})
-        
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['mobile.subscription.status', 'active', ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['mobile.subscription.phone', phone_number, ts, task_id, 1.0])
-        except: pass
-        
-        return env, {"redirect": "/mobile.local/account.html"}
-
-    # K1 - Join Community
-    if task_id.startswith('K1') and action == 'join_group':
-        gid = payload.get('groupId')
-        gname = payload.get('groupName')
-        ts = datetime.now().isoformat()
-        
-        env = deep_merge(env, {"social": {"groups": {gid: {"name": gname, "joined_at": ts}}}})
-        
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'social.groups.{gid}.status', 'joined', ts, task_id, 1.0])
-        except: pass
-        
-        return env, {"redirect": "/social.local/my-groups.html"}
-
-    # A6 - Address Proof
-    if task_id.startswith('A6') and action == 'verify_address':
-        doc_type = payload.get('docType')
-        fn = payload.get('fileName')
-        ts = datetime.now().isoformat()
-        
-        env = deep_merge(env, {"identity": {"address_verified": True, "proof_doc": {"type": doc_type, "file": fn, "uploaded_at": ts}}})
-        
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['identity.address_verified', 'true', ts, task_id, 1.0])
-        except: pass
-        
-        return env, {"redirect": "/gov.local/profile.html?verified=true"} # Redirect to show update
-
-    # B7 - Second Hand Item Listing
-    if task_id.startswith('B7') and action == 'list_second_hand_item':
-        item_id = f"2H-{random.randint(1000, 9999)}"
-        name = payload.get('name')
-        desc = payload.get('description')
-        price = payload.get('price')
-        category = payload.get('category')
-        photo_name = payload.get('photo_name', '')
-        ts = datetime.now().isoformat()
-
-        env = deep_merge(env, {"market": {"listings": {item_id: {
-            "name": name, "description": desc, "price": price, "category": category,
-            "seller": "current_user", "status": "listed", "listed_at": ts, "photo": photo_name
-        }}}})
-        
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'market.listed_items.{item_id}.status', 'listed', ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'market.listed_items.{item_id}.name', name, ts, task_id, 1.0])
-        except: pass
-
-        return env, {"redirect": "/market.local/index.html?listed=true"}
-
-    # F5 - Receipt Archiving
-    if task_id.startswith('F5') and action == 'archive_document':
-        doc_id = f"DOC-{random.randint(10000, 99999)}"
-        name = payload.get('fileName', 'document.pdf')
-        doc_type = payload.get('docType', 'receipt')
-        size = payload.get('fileSize', 1024)
-        ts = datetime.now().isoformat()
-
-        env = deep_merge(env, {"cloud": {"documents": {doc_id: {
-            "name": name, "type": doc_type, "size": size,
-            "uploaded_at": ts, "tags": [doc_type]
-        }}}})
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'cloud.documents.{doc_id}.status', 'archived', ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'cloud.documents.{doc_id}.name', name, ts, task_id, 1.0])
-        except: pass
-        
-        return env, {"redirect": "/cloud.local/index.html?uploaded=true"}
-
-    # G5 - Health Plan Activation
-    if task_id.startswith('G5') and action == 'activate_health_plan':
-        plan_name = payload.get('planName', 'Standard Wellness')
-        focus = payload.get('focus', 'Weight Management')
-        calories = payload.get('calories', 1800)
-        exercise = payload.get('exercise', '30min daily')
-        ts = datetime.now().isoformat()
-
-        env = deep_merge(env, {"health": {"plan": {
-            "status": "active",
-            "name": plan_name,
-            "focus": focus,
-            "calories": calories,
-            "exercise": exercise,
-            "activated_at": ts
-        }}})
-        
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['health.plan.status', 'active', ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['health.plan.name', plan_name, ts, task_id, 1.0])
-        except: pass
-        
-        return env, {"redirect": "/health.local/plan.html?status=active"}
-
-    # G6 - Book Vaccination
-    if task_id.startswith('G6') and action == 'book_vaccine':
-        vaccine_type = payload.get('type')
-        appt_date = payload.get('date')
-        appt_time = payload.get('time')
-        clinic = payload.get('clinic', 'City Health Clinic')
-        ts = datetime.now().isoformat()
-        
-        vaccine_id = f"VC-{random.randint(10000, 99999)}"
-        env = deep_merge(env, {"health": {"vaccines": {vaccine_id: {
-            "type": vaccine_type, "date": appt_date, "time": appt_time,
-            "clinic": clinic, "status": "booked", "booked_at": ts
-        }}}})
-        
-        execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                   [f'health.vaccines.{vaccine_id}.status', 'booked', ts, task_id, 1.0])
-        execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                   [f'health.vaccines.{vaccine_id}.type', vaccine_type, ts, task_id, 1.0])
-        execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                   ['health.vaccines.last.status', 'booked', ts, task_id, 1.0])
-        execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                   ['health.vaccines.last.id', vaccine_id, ts, task_id, 1.0])
-        
-        return env, {"redirect": "/health.local/vaccine.html?booked=true"}
-
-    # L3 - Security Key Rotation
-    if task_id.startswith('L3') and action == 'rotate_keys':
-        providers = payload.get('providers', [])
-        ts = datetime.now().isoformat()
-        
-        env = deep_merge(env, {"security": {"last_rotation": {
-            "providers": providers,
-            "timestamp": ts,
-            "status": "complete"
-        }}})
-        
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['security.rotation.status', 'complete', ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['security.rotation.providers', json.dumps(providers), ts, task_id, 1.0])
-        except: pass
-        
-        return env, {"redirect": "/security.local/dashboard.html?rotated=true"}
-
-    # C4 - Warranty Claim
-    if task_id.startswith('C4') and action == 'submit_warranty_claim':
-        serial = payload.get('serial')
-        order_id = payload.get('orderId')
-        ts = datetime.now().isoformat()
-        
-        env = deep_merge(env, {"warranty": {serial: {"state": "RMA_issued", "order_id": order_id, "claimed_at": ts}}})
-        
-        return env, {"redirect": f"/shop.local/warranty.html?status=accepted&serial={serial}"}
-
-    # K2 - Roommate Split
-    if task_id.startswith('K2') and action == 'split_expenses':
-        month = payload.get('month')
-        members = payload.get('members', [])
-        rules = payload.get('rules')
-        ts = datetime.now().isoformat()
-        
-        # In a real app, this would calculate actual splits. Here we just set state.
-        settlement_id = f"{month}-{hashlib.md5(str(members).encode()).hexdigest()[:4]}"
-        env = deep_merge(env, {"settlements": {month: {"state": "settled", "members": members, "rules": rules, "settled_at": ts}}})
-        
-        try:
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'settlements.{month}.state', 'settled', ts, task_id, 1.0])
-        except Exception:
-            pass
-        
-        return env, {"redirect": f"/social.local/split.html?month={month}&state=settled"}
-
-    # D3 - Autopay Setup
-    if task_id.startswith('D3') and action == 'setup_autopay':
-        payee = payload.get('payee','Utilities')
-        account_type = payload.get('account_type','checking')
-        amount = float(payload.get('amount',0))
-        frequency = payload.get('frequency','monthly')
-        start_date = payload.get('start_date', datetime.now().strftime('%Y-%m-%d'))
-        # ap_id = f"AP-{random.randint(1000,9999)}" # Removed random ID
-        ts = datetime.now().isoformat()
-
-        env = deep_merge(env, {"autopay": {"utility": { # Use "utility" as fixed key
-            'payee': payee,
-            'account_type': account_type,
-            'amount': amount,
-            'frequency': frequency,
-            'next_date': start_date,
-            'status': 'active'
-        }}})
-        
-        try:
-            # Removed ap_id from memory_kv store as it's now fixed key
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['autopay.utility.status', 'active', ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['autopay.utility.amount', amount, ts, task_id, 1.0])
-            execute_db("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['autopay.utility.next_date', start_date, ts, task_id, 1.0])
-        except Exception:
-            pass
-
-        return env, {"redirect": f"/bank.local/autopay.html?state=active&payee={payee}&amount={amount}&frequency={frequency}&next_date={start_date}"}
+    # Dispatch to appropriate handler based on task family (A, B, C...)
     
-    # B1 - Create Order
-    if task_id.startswith('B1') and action == 'create_order':
-        user_id = 1 # Hardcoded for now
-        items = payload.get('items', [])
-        shipping_address = payload.get('shipping_address', '123 Main St')
-        shipping_speed = payload.get('shipping_speed', 'standard')
-        total = payload.get('total', 0.0)
+    # execute_db is defined below, but will be available at runtime
+    db_fn = execute_db 
 
-        if not items:
-            return env, {"error": "No items in order"}
-
-        # Generate order ID
-        order_id = payload.get('order_id', f'O-{random.randint(10001, 99999):05d}')
-        ts = datetime.now().isoformat()
-
-        # Create order in DB
-        execute_db(
-            "INSERT INTO orders (id, user_id, total, state, shipping_speed, shipping_address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [order_id, user_id, round(total, 2), 'confirmed', shipping_speed, shipping_address, ts]
-        )
-
-        # Create order items in DB
-        for item in items:
-            # Need to get SKU from product_id
-            product = query_db("SELECT id, sku, price FROM products WHERE id = ?", [item['product_id']], one=True)
-            if product:
-                execute_db(
-                    "INSERT INTO order_items (order_id, sku, quantity, price) VALUES (?, ?, ?, ?)",
-                    [order_id, product['sku'], item['quantity'], product['price']]
-                )
-
-        # Update env state
-        env = deep_merge(env, {"orders": {order_id: {"state": "confirmed", "total": total}}})
-        env = deep_merge(env, {"orders": {"last": {"id": order_id, "total": total}}})
-        
-        result_payload = {"redirect": f"/shop.local/order.html?order_id={order_id}&total={total}"}
-        print(f"DEBUG: mutate_env B1 returns: {result_payload}")
-        return env, result_payload
+    if task_id.startswith('A'):
+        return handle_a_housing(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('B'):
+        return handle_b_consumption(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('C'):
+        return handle_c_support(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('D'):
+        return handle_d_finance(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('E'):
+        return handle_e_travel(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('F'):
+        return handle_f_work(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('G'):
+        return handle_g_health(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('H'):
+        return handle_h_government(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('I'):
+        return handle_i_repair(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('J'):
+        return handle_j_learning(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('K'):
+        return handle_k_social(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('L'):
+        return handle_l_privacy(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('M'):
+        return handle_m_crisis(task_id, action, payload, env, db_fn)
+    elif task_id.startswith('Z'):
+        return handle_z_advanced(task_id, action, payload, env, db_fn)
     
-    return env, {} # Final return for mutate_env
+    return env, {}
 
 # Database helpers
 def get_db():
@@ -926,6 +381,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(data); return
 
         # Orders list API (GET /api/orders)
+
         if self.path.startswith('/api/orders'):
             parsed = urllib.parse.urlparse(self.path)
             params = urllib.parse.parse_qs(parsed.query)
@@ -1052,9 +508,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
 
-        # ========================================================================
+        # ======================================================================== 
         # User/Auth API
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/users/me') or self.path.startswith('/api/user'):
             # Get current user info (default user_id=1 for demo)
             user = query_db("SELECT id, username, email, created_at FROM users WHERE id = ?", [1], one=True)
@@ -1072,9 +528,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Appointments API
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/appointments'):
             parsed = urllib.parse.urlparse(self.path)
             path_parts = parsed.path.split('/')
@@ -1103,9 +559,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Settlements API (for expense splitting tasks)
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/settlements'):
             parsed = urllib.parse.urlparse(self.path)
             path_parts = parsed.path.split('/')
@@ -1141,9 +597,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Merchant Bindings API
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/merchant_bindings'):
             parsed = urllib.parse.urlparse(self.path)
             params = urllib.parse.parse_qs(parsed.query)
@@ -1164,9 +620,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Env JSON Path Query API
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/env/query'):
             parsed = urllib.parse.urlparse(self.path)
             params = urllib.parse.parse_qs(parsed.query)
@@ -1187,13 +643,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(data); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Task Executions API (for monitoring)
-        # ========================================================================
+        # ======================================================================== 
         
-        # ========================================================================
+        # ======================================================================== 
         # Marketing / Distractors API (Added by AI)
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/marketing/promos'):
             # Disabled by user request
             data = json.dumps({
@@ -1259,21 +715,145 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(json.dumps({"ok": True, "ts": ts}).encode('utf-8')); return
 
-        if '/api/mutate' in self.path:
+        if self.path.startswith('/api/debug/time_travel'):
+            days = int(data.get('days', 0))
+            hours = int(data.get('hours', 0))
+            
             env = load_env()
-            env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
-            try:
-                with open("server_debug.log", "a") as f:
-                    f.write(f"DEBUG_POST_ENV: Final env before save: {json.dumps(env, indent=2)}\n")
-            except Exception: pass # Using pass for consistency
+            # 1. Advance Time
+            env = advance_time(env, days=days, hours=hours)
+            
+            # Add debug logging for env state before world triggers
+            with open("trigger_debug.log", "a") as f:
+                f.write(f"DEBUG_SERVER: Env before triggers: {json.dumps(env.get('shop', {}).get('orders', {}))}\n")
+            
+            # 2. Process World Triggers (Simulate state evolution)
+            env = process_time_triggers(env, execute_db)
             save_env(env)
-            resp = {"ok": True}; resp.update(extra)
-            out = json.dumps(resp, ensure_ascii=False).encode('utf-8')
+            
+            self.send_response(200); self.send_header('Content-Type','application/json'); self.send_cors_headers(); self.end_headers()
+            self.wfile.write(json.dumps({"ok": True, "new_time": env['system_time']}).encode('utf-8')); return
+
+        if '/api/mutate' in self.path:
+            try:
+                env = load_env()
+                env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                # try:
+                #     with open("server_debug.log", "a") as f:
+                #         f.write(f"DEBUG_POST_ENV: Final env before save: {json.dumps(env, indent=2)}\n")
+                # except Exception: pass
+                save_env(env)
+                resp = {"ok": True}
+                resp.update(extra)
+                try:
+                    with open("server_debug.log", "a") as f:
+                        f.write(f"DEBUG_RESP: {json.dumps(resp)}\n")
+                except: pass
+                out = json.dumps(resp, ensure_ascii=False).encode('utf-8')
+                print(f"DEBUG: do_POST sending response: {resp}") # Added print
+                self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
+                self.wfile.write(out)
+            except Exception as e:
+                import traceback
+                tb = traceback.format_exc()
+                try:
+                    with open("server_debug.log", "a") as f:
+                        f.write(f"ERROR in do_POST /api/mutate: {str(e)}\n{tb}\n")
+                    with open("server_error.log", "a") as f:
+                        f.write(f"ERROR: {str(e)}\n{tb}\n")
+                except: pass
+                print(f"ERROR: {str(e)}")
+                err_msg = f"Mutate Error: {str(e)}"
+                self.send_response(500); self.send_header('Content-Type','application/json'); self.send_cors_headers(); self.end_headers()
+                self.wfile.write(json.dumps({'ok': False, 'error': err_msg}).encode('utf-8'))
+            return
+
+
+
+        # Flight Search API
+        if self.path.startswith('/api/flights/search'):
+            departure = data.get('departure', '北京')
+            destination = data.get('destination', '上海')
+            date = data.get('depart_date', '2025-12-31')
+            
+            # Mock flights
+            flights = [
+                {
+                    "airline": "Air China",
+                    "flight_number": "CA1881",
+                    "departure_airport": departure,
+                    "destination_airport": destination,
+                    "departure_time": "08:00",
+                    "arrival_time": "10:15",
+                    "price": 450.0
+                },
+                {
+                    "airline": "China Eastern",
+                    "flight_number": "MU5102",
+                    "departure_airport": departure,
+                    "destination_airport": destination,
+                    "departure_time": "14:30",
+                    "arrival_time": "16:45",
+                    "price": 520.0
+                }
+            ]
+            
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
-            self.wfile.write(out); return
+            self.wfile.write(json.dumps({'success': True, 'flights': flights}, ensure_ascii=False).encode('utf-8')); return
 
-
-
+        # Hotel Search API
+        if self.path.startswith('/api/hotels/search'):
+            city = data.get('city', '上海')
+            checkin = data.get('check_in_date', '2025-12-31')
+            checkout = data.get('check_out_date', '2026-01-03')
+            
+            # Mock hotels
+            hotels = [
+                {
+                    "id": "HTL-001",
+                    "name": "浦东香格里拉大酒店",
+                    "rating": 5,
+                    "city": city,
+                    "price": 1200.0
+                },
+                {
+                    "id": "HTL-002",
+                    "name": "外滩华尔道夫酒店",
+                    "rating": 5,
+                    "city": city,
+                    "price": 1500.0
+                }
+            ]
+            
+            self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
+            self.wfile.write(json.dumps({'success': True, 'hotels': hotels}, ensure_ascii=False).encode('utf-8')); return
+        
+        # Property Search API
+        if self.path.startswith('/api/properties/search'):
+            location = data.get('location', 'Springfield')
+            prop_type = data.get('type', 'apartment')
+            
+            # Mock properties
+            properties = [
+                {
+                    "id": "PROP-101",
+                    "address": "中央大街101号",
+                    "location": location,
+                    "type": "公寓",
+                    "price": 3500
+                },
+                {
+                    "id": "PROP-102",
+                    "address": "阳光海岸别墅区20号",
+                    "location": location,
+                    "type": "独栋别墅",
+                    "price": 8000
+                }
+            ]
+            
+            self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
+            self.wfile.write(json.dumps({'success': True, 'properties': properties}, ensure_ascii=False).encode('utf-8')); return
+        
         if self.path.startswith('/api/permits/apply'):
             application_id = f"APP-{random.randint(1000,9999)}"
             env = load_env()
@@ -1378,9 +958,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(json.dumps(result, ensure_ascii=False).encode('utf-8')); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Appointments POST - Create new appointment
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/appointments'):
             user_id = data.get('user_id', 1)
             application_id = data.get('application_id')
@@ -1406,9 +986,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(json.dumps(result, ensure_ascii=False).encode('utf-8')); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Settlements POST - Create expense settlement
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/settlements'):
             user_id = data.get('user_id', 1)
             period = data.get('period')
@@ -1434,9 +1014,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(json.dumps(result, ensure_ascii=False).encode('utf-8')); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Bills POST - Pay bill
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/bills/pay'):
             bill_id = data.get('bill_id')
             account_id = data.get('account_id', 1)
@@ -1467,13 +1047,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
             self.wfile.write(json.dumps(result, ensure_ascii=False).encode('utf-8')); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Task Execution POST - Start task execution
-        # ========================================================================
+        # ======================================================================== 
         
-        # ========================================================================
+        # ======================================================================== 
         # Marketing / Distractors API (Added by AI)
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/marketing/promos'):
             # Disabled by user request
             data = json.dumps({
@@ -1513,9 +1093,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except Exception:
             data = {}
 
-        # ========================================================================
+        # ======================================================================== 
         # Orders PUT - Update order status
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/orders/'):
             path_parts = self.path.split('/')
             if len(path_parts) >= 4:
@@ -1550,9 +1130,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
                 self.wfile.write(json.dumps(result, ensure_ascii=False).encode('utf-8')); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Task Executions PUT - Update execution status
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/task_executions/'):
             path_parts = self.path.split('/')
             if len(path_parts) >= 4:
@@ -1593,9 +1173,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()
                 self.wfile.write(json.dumps(result, ensure_ascii=False).encode('utf-8')); return
 
-        # ========================================================================
+        # ======================================================================== 
         # Appointments PUT - Update appointment
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/appointments/'):
             path_parts = self.path.split('/')
             if len(path_parts) >= 4:
@@ -1629,9 +1209,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def do_DELETE(self):
         """Handle DELETE requests for removing resources"""
-        # ========================================================================
+        # ======================================================================== 
         # Memory KV DELETE
-        # ========================================================================
+        # ======================================================================== 
         if self.path.startswith('/api/memory/'):
             path_parts = self.path.split('/')
             if len(path_parts) >= 4:

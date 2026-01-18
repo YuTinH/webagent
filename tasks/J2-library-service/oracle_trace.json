@@ -1,0 +1,75 @@
+{
+  "task_id": "J2-2025-LIBRARY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/library.html",
+      "note": "Open library page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('申请图书证')",
+      "note": "Click apply for library card button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#applicant-name",
+      "value": "张三",
+      "note": "Enter applicant name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#student-id",
+      "value": "S123456",
+      "note": "Enter student ID"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm application"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#library-card-info .badge.ok",
+      "note": "Wait for library card to be active"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#book-query",
+      "value": "智能体的崛起",
+      "note": "Enter book title to reserve"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": "button:has-text('搜索并预约')",
+      "note": "Click search and reserve button"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#pickup-date",
+      "value": "2026-03-15",
+      "note": "Enter pickup date"
+    },
+    {
+      "t": 9,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm book reservation"
+    },
+    {
+      "t": 10,
+      "act": "wait",
+      "selector": "#reservations-list .card",
+      "note": "Wait for reservation to appear in list"
+    }
+  ]
+}

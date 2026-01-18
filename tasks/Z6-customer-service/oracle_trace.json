@@ -1,0 +1,36 @@
+{
+  "task_id": "Z6-2025-CHAT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/support-chat.html",
+      "note": "Open support chat"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#msg-input",
+      "value": "请帮我查一下订单 O-93902 的状态",
+      "note": "Type query"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button:has-text('发送')",
+      "note": "Send message"
+    },
+    {
+      "t": 4,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/support-chat.html",
+      "note": "Reload page to display updated chat history"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": ".message.bot:has-text('O-93902')",
+      "note": "Wait for reply"
+    }
+  ]
+}

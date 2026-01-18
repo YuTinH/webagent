@@ -1,0 +1,19 @@
+{
+  "task_id": "J2-2025-LIBRARY",
+  "family": "J",
+  "goal": "Apply for a library card with name '张三' and ID 'S123456'. Then reserve the book '智能体的崛起' for pickup on '2026-03-15'. Verify the card is active and the book is reserved.",
+  "inputs": {
+    "applicant_name": "张三",
+    "student_id": "S123456",
+    "book_query": "智能体的崛起",
+    "pickup_date": "2026-03-15"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/school.local/library.html')",
+    "mem('library.card.status') == 'active'",
+    "mem('library.card.card_number') != ''",
+    "mem('library.reservations.last.status') == 'pending'",
+    "mem('library.reservations.last.book_title') == '智能体的崛起'"
+  ]
+}

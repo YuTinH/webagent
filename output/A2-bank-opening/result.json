@@ -1,0 +1,60 @@
+{
+  "task_id": "A2-2025-BANK-OPEN",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 1.779465675354004,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/open-account.html",
+      "note": "Open bank account opening page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#fullname",
+      "value": "Alex Chen",
+      "note": "Enter full name"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#phone",
+      "value": "+1-555-0102",
+      "note": "Enter phone number"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#address",
+      "value": "123 Main St, Anytown",
+      "note": "Enter address"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#enable2fa",
+      "note": "Enable 2FA"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "#submit-btn",
+      "note": "Submit application"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": ".dashboard-header",
+      "note": "Wait for dashboard"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

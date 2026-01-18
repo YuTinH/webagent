@@ -1,111 +1,312 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
+<script>window.RelRoot = "../";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hotels - SkyHigh Travel</title>
+<title>预订酒店 - Nebula出行</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
 <style>
-.hotel-card { display:flex; gap:20px; background: var(--card); border:1px solid var(--border); border-radius: var(--radius); padding:20px; margin-bottom:16px; align-items:center; }
-.hotel-img { width:120px; height:120px; border-radius: var(--radius); background-size: cover; background-position: center; flex-shrink:0; }
+.search-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+.hotel-results {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+.hotel-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+}
+.hotel-item:last-child {
+  border-bottom: none;
+}
+.hotel-details {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.hotel-icon {
+  font-size: 48px;
+  width: 60px;
+  text-align: center;
+}
+.hotel-info h3 {
+  font-size: 18px;
+  margin: 0 0 4px 0;
+}
+.hotel-meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+.hotel-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+.hotel-actions .btn {
+  padding: 10px 20px;
+  font-size: 15px;
+}
+.loading-message {
+  padding: 40px;
+  text-align: center;
+  color: var(--muted);
+}
 </style>
 </head>
 <body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand">
-      <div class="logo" style="background: linear-gradient(135deg, #0ea5e9, #22d3ee)"></div>
-      SkyHigh Travel
-    </div>
+    <div class="brand"><div class="logo"></div> Nebula出行</div>
     <div class="navlinks">
-      <a href="index.html">Flights</a>
-      <a href="hotels.html" class="active">Hotels</a>
-      <a href="manage.html">My Trips</a>
+      <a href="../trip.local/dashboard.html">首页</a>
+      <a href="../trip.local/flights.html">航班</a>
+      <a href="../trip.local/hotels.html" class="active">酒店</a>
+      <a href="../trip.local/manage.html">我的行程</a>
+    </div>
+    <div style="margin-left:auto">
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
     </div>
   </div>
 </div>
 
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
 <div class="container">
-  <div class="breadcrumbs">
-    <a href="index.html">Home</a> / <span>Hotels</span>
-  </div>
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">预订酒店</h1>
 
-  <div class="card" style="margin-bottom:20px">
-    <div class="flex" style="gap:12px; align-items:flex-end; flex-wrap:wrap">
-      <div>
-        <label class="muted">Destination</label>
-        <input id="hotel-city" class="input mt-1" placeholder="City" value="Paris">
+  <!-- Hotel Search Form -->
+  <div class="search-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="city">目的地城市</label>
+        <input type="text" id="city" value="上海">
       </div>
-      <div>
-        <label class="muted">Check-in</label>
-        <input id="hotel-checkin" type="date" class="input mt-1">
+      <div class="form-group">
+        <label for="check-in-date">入住日期</label>
+        <input type="date" id="check-in-date" value="2025-12-31">
       </div>
-      <div>
-        <label class="muted">Nights</label>
-        <select id="hotel-nights" class="input mt-1">
-          <option value="2">2</option>
-          <option value="3" selected>3</option>
-          <option value="4">4</option>
-        </select>
+      <div class="form-group">
+        <label for="check-out-date">退房日期</label>
+        <input type="date" id="check-out-date" value="2026-01-03">
       </div>
-      <button class="btn pri" onclick="searchHotels()">Search</button>
+      <div class="form-group">
+        <label for="guests">入住人数</label>
+        <input type="number" id="guests" value="1" min="1">
+      </div>
+    </div>
+    <div class="button-group">
+      <button class="btn pri lg" onclick="searchHotels()">搜索酒店</button>
     </div>
   </div>
 
-  <div id="hotel-list">
-    <div class="skeleton" style="height:140px; margin-bottom:12px"></div>
-    <div class="skeleton" style="height:140px; margin-bottom:12px"></div>
+  <!-- Hotel Search Results -->
+  <div id="hotel-results" class="hotel-results">
+    <div class="loading-message">请填写搜索条件以查找酒店</div>
   </div>
+
+  <div class="footer">Nebula出行 · Synthetic UI for Web Agent Research</div>
 </div>
 
+<!-- JavaScript -->
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
-const HOTELS = [
-  { id:'HTL-77', name:'Aurora Palace', price:220, rating:'4.7', img:'https://images.unsplash.com/photo-1501117716987-c8e1ecb210af?auto=format&fit=crop&w=800&q=80' },
-  { id:'HTL-88', name:'Riverfront Suites', price:180, rating:'4.5', img:'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80' },
-  { id:'HTL-99', name:'Garden Luxe', price:260, rating:'4.8', img:'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80' }
-];
+let currentHotels = [];
+let userMenuDropdown = null;
 
-function setDefaultDate() {
-  document.getElementById('hotel-checkin').value = "2025-12-12";
+// Initialize components on load
+window.addEventListener('DOMContentLoaded', () => {
+  // User menu dropdown
+  userMenuDropdown = new Dropdown(document.getElementById('user-menu-btn'), {
+    align: 'right',
+    items: [
+      { icon: '👤', label: '我的账户', value: 'account' },
+      { icon: '✈️', label: '我的行程', value: 'my_trips' },
+      { type: 'divider' },
+      { icon: '⚙️', label: '设置', value: 'settings' },
+      { icon: '🚪', label: '退出登录', value: 'logout' }
+    ],
+    onSelect: (item) => {
+      if (item.value === 'my_trips') window.location.href=window.RelRoot+'trip.local/manage.html';
+      else Toast.info(`${item.label}功能即将推出`);
+    }
+  });
+});
+
+
+async function searchHotels() {
+  const city = document.getElementById('city').value;
+  const checkInDate = document.getElementById('check-in-date').value;
+  const checkOutDate = document.getElementById('check-out-date').value;
+  const guests = document.getElementById('guests').value;
+
+  if (!city || !checkInDate || !checkOutDate || !guests) {
+    Toast.error('请填写所有必填项');
+    return;
+  }
+
+  const resultsContainer = document.getElementById('hotel-results');
+  resultsContainer.innerHTML = '<div class="loading-message">正在搜索酒店...</div>';
+
+  try {
+    const response = await fetch(`${window.RelRoot}api/hotels/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        city,
+        check_in_date: checkInDate,
+        check_out_date: checkOutDate,
+        guests: parseInt(guests)
+      })
+    });
+    const data = await response.json();
+
+    if (data.success && data.hotels.length > 0) {
+      currentHotels = data.hotels;
+      renderHotels(currentHotels);
+    } else {
+      resultsContainer.innerHTML = '<div class="loading-message">未找到符合条件的酒店</div>';
+    }
+  } catch (error) {
+    console.error('搜索酒店失败:', error);
+    resultsContainer.innerHTML = '<div class="loading-message">搜索酒店失败，请稍后再试</div>';
+    Toast.error('搜索酒店失败');
+  }
 }
 
-function renderHotels() {
-  const list = document.getElementById('hotel-list');
-  list.innerHTML = HOTELS.map(h => `
-    <div class="hotel-card">
-      <div class="hotel-img" style="background-image:url('${h.img}')"></div>
-      <div style="flex:1">
-        <h3 style="margin:0">${h.name}</h3>
-        <p class="muted" style="margin:4px 0">Rating ${h.rating} · Free breakfast · Near city center</p>
-        <div class="badge warn">Free cancellation</div>
+function renderHotels(hotels) {
+  const resultsContainer = document.getElementById('hotel-results');
+  resultsContainer.innerHTML = ''; // Clear loading message
+
+  hotels.forEach(hotel => {
+    const hotelItem = document.createElement('div');
+    hotelItem.className = 'hotel-item';
+    hotelItem.innerHTML = `
+      <div class="hotel-details">
+        <div class="hotel-icon">🏨</div>
+        <div class="hotel-info">
+          <h3>${hotel.name}</h3>
+          <div class="hotel-meta">${hotel.rating} 星 · ${hotel.city}</div>
+        </div>
       </div>
-      <div style="text-align:right">
-        <div style="font-size:24px; font-weight:800; color:var(--pri)">$${h.price}/night</div>
-        <button class="btn pri mt-2" onclick="bookHotel('${h.id}', ${h.price})">Book</button>
+      <div class="hotel-price">¥${hotel.price.toFixed(2)}</div>
+      <div class="hotel-actions">
+        <button class="btn pri" onclick="bookHotel('${hotel.id}', '${hotel.name}', '${hotel.price}')">预订</button>
       </div>
-    </div>
-  `).join('');
+    `;
+    resultsContainer.appendChild(hotelItem);
+  });
 }
 
-function searchHotels() {
-  Toast.info('Showing best matches');
-  renderHotels();
+async function bookHotel(hotelId, hotelName, price) {
+  const city = document.getElementById('city').value;
+  const checkInDate = document.getElementById('check-in-date').value;
+  const checkOutDate = document.getElementById('check-out-date').value;
+
+  const date1 = new Date(checkInDate);
+  const date2 = new Date(checkOutDate);
+  const diffTime = Math.abs(date2 - date1);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  const nights = diffDays > 0 ? diffDays : 1; // Ensure at least 1 night
+
+  Toast.info(`正在预订酒店 ${hotelName}...`);
+  try {
+    const response = await send('E2-2025-HOTEL', 'book_hotel', {
+      hotel_id: hotelId,
+      name: hotelName,
+      city: city,
+      checkin: checkInDate,
+      checkout: checkOutDate,
+      nights: nights, // Added nights
+      price: parseFloat(price)
+    });
+
+    if (response && response.success) {
+      Toast.success('酒店预订成功！');
+      window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    } else {
+      Toast.error('酒店预订失败: ' + (response ? response.error : '无响应'));
+      console.warn('Response invalid, attempting fallback redirect...');
+      window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    }
+  } catch (error) {
+    console.error('预订酒店失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    } else {
+        Toast.error('预订酒店失败，请稍后再试');
+    }
+  }
 }
 
-async function bookHotel(id, price) {
-  const city = document.getElementById('hotel-city').value || 'Paris';
-  const checkin = document.getElementById('hotel-checkin').value;
-  const nights = document.getElementById('hotel-nights').value || 3;
-  await send('E2-2025-202','book_hotel',{bookingId: id, city, checkin, nights, price});
-}
-
-setDefaultDate();
-renderHotels();
+// Initial search on load if params are present
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('city') && params.get('check_in_date')) {
+        document.getElementById('city').value = params.get('city');
+        document.getElementById('check-in-date').value = params.get('check_in_date');
+        // You might want to pre-fill check-out-date or other fields if needed
+        searchHotels();
+    }
+});
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
 
 </body>
 </html>

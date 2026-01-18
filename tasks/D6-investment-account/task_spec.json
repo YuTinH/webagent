@@ -1,0 +1,17 @@
+{
+  "task_id": "D6-2025-INVESTMENT",
+  "family": "D",
+  "goal": "Open a new investment account named '成长型投资组合' of type 'stocks' with an initial deposit of 1000. Ensure the account is active and its balance is 1000.",
+  "inputs": {
+    "name": "成长型投资组合",
+    "type": "stocks",
+    "initial_deposit": 1000
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/bank.local/investments.html')",
+    "mem('finance.investment_accounts.last.status') == 'active'",
+    "mem('finance.investment_accounts.last.name') == '成长型投资组合'",
+    "mem('finance.investment_accounts.last.balance') == '1000.0'"
+  ]
+}

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>续期许可 - 市政服务</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.renewal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      市政服务
+    </div>
+    <div class="navlinks">
+      <a href="../gov.local/index.html">首页</a>
+      <a href="../gov.local/permits.html" class="active">我的许可</a>
+      <a href="../gov.local/applications.html">我的申请</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">续期许可</h1>
+
+  <div class="renewal-card">
+    <div class="form-group">
+      <label for="permit-id">许可ID</label>
+      <input type="text" id="permit-id" readonly>
+    </div>
+    <div class="form-group">
+      <label for="current-expiry">当前到期日期</label>
+      <input type="date" id="current-expiry" readonly>
+    </div>
+    <div class="form-group">
+      <label for="new-expiry">新的到期日期</label>
+      <input type="date" id="new-expiry">
+    </div>
+    <div class="form-group">
+      <label for="payment-method">支付方式</label>
+      <select id="payment-method">
+        <option value="card">银行卡 (**** 7777)</option>
+        <option value="alipay">支付宝</option>
+        <option value="wechat">微信支付</option>
+      </select>
+    </div>
+    <button class="btn pri lg" onclick="submitRenewal()">提交续期</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    市政服务 · Synthetic UI for Web Agent Research
+  </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function loadRenewalInfo() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const permitId = urlParams.get('permit_id');
+
+  if (!permitId) {
+    Toast.error('缺少许可ID');
+    return;
+  }
+
+  document.getElementById('permit-id').value = permitId;
+
+  try {
+    const env = await loadEnv();
+    const permit = env.permits?.[permitId]; // Assuming permit is directly under env.permits
+    if (permit && permit.next_appointment) {
+      document.getElementById('current-expiry').value = permit.next_appointment.split('T')[0];
+      
+      // Suggest new expiry date (e.g., 1 year from current)
+      const currentExpiryDate = new Date(permit.next_appointment);
+      currentExpiryDate.setFullYear(currentExpiryDate.getFullYear() + 1);
+      document.getElementById('new-expiry').value = currentExpiryDate.toISOString().split('T')[0];
+    } else {
+      Toast.warn('无法加载许可详情');
+    }
+  } catch (e) {
+    console.error("Failed to load permit info:", e);
+    Toast.error('加载许可详情失败');
+  }
+}
+
+async function submitRenewal() {
+  const permitId = document.getElementById('permit-id').value;
+  const newExpiry = document.getElementById('new-expiry').value;
+  const paymentMethod = document.getElementById('payment-method').value;
+
+  if (!permitId || !newExpiry || !paymentMethod) {
+    Toast.error('请填写所有必填项');
+    return;
+  }
+
+  Toast.info(`正在提交许可 ${permitId} 续期...`);
+
+  try {
+    const response = await send('H3-2025-RENEW', 'book_permit', {
+      permit_id: permitId,
+      new_expiry: newExpiry,
+      payment_method: paymentMethod
+    });
+
+    if (response && response.success) {
+      Toast.success('许可续期成功！');
+      window.location.href = `${window.RelRoot}gov.local/permits.html?renewed=true`;
+    } else {
+      Toast.error('许可续期失败: ' + (response ? response.error : '无响应'));
+      console.warn('Response invalid, attempting fallback redirect...');
+      window.location.href = `${window.RelRoot}gov.local/permits.html?renewed=true`;
+    }
+  } catch (error) {
+    console.error('提交续期失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}gov.local/permits.html?renewed=true`;
+    } else {
+        Toast.error('提交续期失败，请稍后再试');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadRenewalInfo);
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

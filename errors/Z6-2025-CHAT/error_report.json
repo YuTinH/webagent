@@ -1,0 +1,22 @@
+{
+  "task_id": "Z6-2025-CHAT",
+  "error_type": "TimeoutError",
+  "timestamp": "2026-01-17T16:01:23.227294Z",
+  "step_index": 3,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".message.bot:has-text('O-93902')\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/shop.local/support-chat.html",
+    "screenshot": "errors/Z6-2025-CHAT/error_step_3.png"
+  },
+  "step": {
+    "t": 3,
+    "act": "wait",
+    "selector": ".message.bot:has-text('O-93902')",
+    "note": "Wait for reply"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

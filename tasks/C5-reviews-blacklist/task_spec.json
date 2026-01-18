@@ -1,0 +1,18 @@
+{
+  "task_id": "C5-2025-REVIEWS",
+  "family": "C",
+  "goal": "Submit a 5-star review for '美味餐厅' with content '非常棒的用餐体验，会再次光顾！'. Also, add '问题商家' to the blacklist and ensure the review is recorded and the merchant is blacklisted.",
+  "inputs": {
+    "review_merchant": "美味餐厅",
+    "review_rating": 5,
+    "review_content": "非常棒的用餐体验，会再次光顾！",
+    "blacklist_merchant": "问题商家"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/reviews.html')",
+    "mem('user_reviews.reviews.last.merchant') == '问题商家'",
+    "mem('user_reviews.reviews.last.rating') == '1'",
+    "mem('user_reviews.blacklist.问题商家.status') == 'blacklisted'"
+  ]
+}

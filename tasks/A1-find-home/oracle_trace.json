@@ -1,10 +1,68 @@
 {
-  "task_id": "A1-2025-001",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "A1-2025-HOME",
   "steps": [
-    {"t": 0, "act": "open", "url": "https://housing.local/index.html", "note": "Open housing search"},
-    {"t": 1.0, "act": "click", "selector": ".property-card:first-of-type button", "note": "View first property (mock selection)"},
-    {"t": 2.0, "act": "click", "selector": "button.btn.pri.w-full", "note": "Apply Now"},
-    {"t": 3.0, "act": "wait", "selector": "body", "note": "Wait for redirect"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/housing.local/index.html",
+      "note": "Open housing search page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#location",
+      "value": "Springfield",
+      "note": "Enter location"
+    },
+    {
+      "t": 4,
+      "act": "select",
+      "selector": "#property-type",
+      "value": "apartment",
+      "note": "Select apartment type"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "button:has-text('搜索')",
+      "note": "Click search button"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": ".property-card",
+      "note": "Wait for property listings to load"
+    },
+    {
+      "t": 10,
+      "act": "click",
+      "selector": ".property-card:has(.property-title:has-text('中央大街101号'))",
+      "note": "Click property card for 中央大街101号"
+    },
+    {
+      "t": 12,
+      "act": "wait",
+      "selector": "#lease-term",
+      "note": "Wait for property details page to load"
+    },
+    {
+      "t": 14,
+      "act": "select",
+      "selector": "#lease-term",
+      "value": "12 months",
+      "note": "Select 12 months lease term"
+    },
+    {
+      "t": 16,
+      "act": "click",
+      "selector": "button.apply-button:has-text('申请租赁')",
+      "note": "Click 'Apply to Rent' button"
+    },
+    {
+      "t": 18,
+      "act": "wait",
+      "selector": "h1:has-text('我的租赁')",
+      "note": "Wait for My Leasing page to load"
+    }
   ]
 }

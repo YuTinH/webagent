@@ -1,14 +1,30 @@
 {
-  "task_id": "B6-2025-GEN",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "B6-2025-PRICE",
   "steps": [
-    {"t": 0, "act": "open", "url": "https://shop.local/price-protection.html", "note": "Open Price Protection page"},
-    {"t": 1.0, "act": "wait", "selector": "#orders-list button.btn.pri", "note": "Wait for eligible orders"},
-    {"t": 2.0, "act": "click", "selector": "#orders-list .order-card:first-child button.btn.pri", "note": "Click Apply on first eligible order"},
-    {"t": 2.5, "act": "wait", "selector": "#lower-price", "note": "Wait for modal"},
-    {"t": 3.0, "act": "type", "selector": "#lower-price", "value": "25.00", "note": "Enter lower price"},
-    {"t": 4.0, "act": "click", "selector": "#apply-modal button.pri", "force": true, "note": "Submit application"},
-    {"t": 5.0, "act": "wait", "selector": "body", "note": "Wait for submission"},
-    {"t": 6.0, "act": "extract", "selector": "body", "variable": "claims.price_protection.last.id", "value": "PP-1001", "note": "Simulate claim ID extraction"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/price-protection.html",
+      "note": "Open price protection page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#order-id",
+      "value": "O-98321",
+      "note": "Enter order ID"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button.btn.pri.lg:has-text('提交申请')",
+      "note": "Click submit button"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": ".status-badge.submitted",
+      "note": "Wait for success status"
+    }
   ]
 }

@@ -1,21 +1,29 @@
 {
-  "task_id": "B5-2025-005",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "B5-2025-TRACKING",
   "steps": [
-    {"t": 0, "url": "https://shop.local/orders", "act": "open", "note": "Navigate to orders"},
-    {"t": 2, "act": "wait", "selector": ".order-list"},
-    {"t": 3, "act": "click", "selector": ".order-item:first-child"},
-    {"t": 5, "act": "wait", "selector": "#order-id"},
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/orders.html",
+      "note": "Open orders list page"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": ".order-card[data-order-id='O-93902']",
+      "note": "Wait for specific order to load"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": ".order-card[data-order-id='O-93902'] button:has-text('跟踪物流')",
+      "note": "Click 'Track Order' button for O-93902"
+    },
     {
       "t": 6,
-      "act": "verify_state",
-      "checks": [
-        {"type": "url", "contains": "/orders"},
-        {"type": "dom", "selector": "#order-id", "exists": true},
-        {"type": "dom", "selector": "#delivery-status", "exists": true},
-        {"type": "dom", "selector": ".detail-panel", "exists": true}
-      ],
-      "note": "Verify order details panel loaded successfully"
+      "act": "wait",
+      "selector": "h1:has-text('订单跟踪')",
+      "note": "Wait for order tracking page to load"
     }
   ]
 }

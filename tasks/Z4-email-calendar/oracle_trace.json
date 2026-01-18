@@ -1,0 +1,62 @@
+{
+  "task_id": "Z4-2025-EMAIL",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/work.local/email.html",
+      "note": "Open email inbox"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": ".list-item:has-text('项目启动会邀请')",
+      "note": "Open email"
+    },
+    {
+      "t": 2,
+      "act": "open",
+      "url": "http://localhost:8014/work.local/calendar.html",
+      "note": "Go to calendar"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button:has-text('+ 添加事件')",
+      "note": "Open add event modal"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#event-title",
+      "value": "项目启动会",
+      "note": "Enter title"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#event-date",
+      "value": "2026-02-15",
+      "note": "Enter date"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#event-time",
+      "value": "15:00",
+      "note": "Enter time"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Save event"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": ".card h3:has-text('项目启动会')",
+      "note": "Wait for event"
+    }
+  ]
+}

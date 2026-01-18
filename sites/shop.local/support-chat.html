@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Customer Support - Nebula Shop</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+  <style>
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 600px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+    }
+    .chat-header {
+        padding: 16px;
+        background: var(--pri-2);
+        color: white;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .chat-messages {
+        flex: 1;
+        padding: 16px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .message {
+        max-width: 80%;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    .message.bot {
+        align-self: flex-start;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid var(--border);
+        border-top-left-radius: 2px;
+    }
+    .message.user {
+        align-self: flex-end;
+        background: var(--pri);
+        color: white;
+        border-top-right-radius: 2px;
+    }
+    .chat-input-area {
+        padding: 16px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 12px;
+    }
+    .chat-input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.05);
+        color: var(--text);
+    }
+  </style>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">首页</a>
+        <a href="../shop.local/support-chat.html" class="active">在线客服</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <h1>在线客服</h1>
+    
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>🤖</span> 智能助手
+        </div>
+        <div class="chat-messages" id="messages">
+            <div class="message bot">您好！我是 Nebula 商城的智能助手。请问有什么可以帮您？<br>您可以问我关于订单状态的问题，例如：“查一下订单 O-12345”。</div>
+        </div>
+        <div class="chat-input-area">
+            <input id="msg-input" class="chat-input" placeholder="输入您的问题..." onkeypress="if(event.key==='Enter') sendMessage()">
+            <button class="btn pri" onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadChatHistory() {
+      try {
+          const env = await loadEnv();
+          const history = env.support?.chat_history || [];
+          
+          const container = document.getElementById('messages');
+          // Keep the welcome message, append history
+          // Or clear and prepend welcome? Let's just append history after welcome.
+          
+          history.forEach(msg => {
+              addMessage(msg.role, msg.text);
+          });
+      } catch (e) {
+          console.error("Failed to load chat history", e);
+      }
+  }
+
+  async function sendMessage() {
+      const input = document.getElementById('msg-input');
+      const text = input.value.trim();
+      if (!text) return;
+      
+      // Add user message immediately for responsiveness
+      addMessage('user', text);
+      input.value = '';
+      
+      // Send to backend
+      const resp = await send('Z6-2025-CHAT', 'send_chat_message', {
+          message: text
+      });
+      
+      if (resp && resp.reply) {
+          addMessage('bot', resp.reply);
+      } else {
+          addMessage('bot', "抱歉，系统暂时繁忙，请稍后再试。");
+      }
+  }
+  
+  function addMessage(type, text) {
+      const div = document.createElement('div');
+      div.className = `message ${type}`;
+      div.innerHTML = text; 
+      document.getElementById('messages').appendChild(div);
+      
+      const container = document.getElementById('messages');
+      container.scrollTop = container.scrollHeight;
+  }
+
+  document.addEventListener('DOMContentLoaded', loadChatHistory);
+  </script>
+</body>
+</html>

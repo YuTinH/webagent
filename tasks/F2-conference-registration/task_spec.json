@@ -1,17 +1,19 @@
 {
-  "task_id": "F2-2026-EVENT",
+  "task_id": "F2-2025-CONF",
   "family": "F",
-  "goal": "Register for the 'AI Summit Paris' conference and confirm it's paid, with invoice title 'Your Lab'.",
+  "goal": "Register for 'Web Agent未来峰会' (ID: CL-2026) with invoice title 'Your Lab'.",
   "inputs": {
-    "conference": "CL-2026",
-    "invoice_title": "Your Lab",
-    "email": "user@example.com",
-    "reg_id": "CONF-8801"
+    "conferenceId": "CL-2026",
+    "fullName": "Masteryth",
+    "email": "masteryth@example.com",
+    "invoiceTitle": "Your Lab",
+    "paymentMethod": "card"
   },
   "preconditions": [],
   "success_criteria": [
-    "text(\"#registration-status\") == \"paid\"",
-    "json(\"env\",\"invoices.last.conference\") == \"CL-2026\"",
-    "url().includes(\"state=confirmed\")"
+    "url().includes('/event.local/registration.html?state=confirmed')",
+    "json('env','invoices.last.conference') == 'CL-2026'",
+    "json('env','invoices.last.invoice_title') == 'Your Lab'",
+    "json('env','invoices.last.status') == 'paid'"
   ]
 }

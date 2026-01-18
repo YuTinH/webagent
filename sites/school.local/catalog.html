@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>课程目录 - Nebula学校</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+.book-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: .2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--pri);
+}
+.book-cover {
+  height: 200px;
+  background-color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+.book-info {
+  padding: 16px;
+}
+.book-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.book-author {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.book-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--pri);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula学校</div>
+    <div class="navlinks">
+      <a href="../school.local/index.html">首页</a>
+      <a href="../school.local/catalog.html" class="active">课程目录</a>
+      <a href="../school.local/my-learning.html">我的学习</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">教材与资源</h1>
+
+  <div id="catalog-list" class="catalog-grid">
+    <!-- Books injected here -->
+  </div>
+
+  <div class="footer">Nebula学校 · Synthetic UI for Web Agent Research</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function loadCatalog() {
+  const container = document.getElementById('catalog-list');
+  container.innerHTML = '<div class="card p-8 text-center muted">加载中...</div>';
+
+  const books = [
+    { id: 'BK-101', title: 'Web Agent原理', author: 'Masteryth', price: 49.99 },
+    { id: 'BK-102', title: 'Python数据分析', author: 'Alice', price: 59.99 },
+    { id: 'BK-103', title: '深度学习导论', author: 'Bob', price: 69.99 }
+  ];
+
+  container.innerHTML = books.map(book => `
+    <a href="${window.RelRoot}school.local/ebook.html?id=${book.id}" class="book-card">
+      <div class="book-cover">📘</div>
+      <div class="book-info">
+        <div class="book-title">${book.title}</div>
+        <div class="book-author">${book.author}</div>
+        <div class="book-price">¥${book.price}</div>
+      </div>
+    </a>
+  `).join('');
+}
+
+document.addEventListener('DOMContentLoaded', loadCatalog);
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

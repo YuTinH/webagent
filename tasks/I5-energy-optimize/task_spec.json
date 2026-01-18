@@ -3,12 +3,12 @@
   "family": "I",
   "goal": "Change the energy plan for meter M-321 to 'green_offpeak'.",
   "inputs": {
-    "plan": "green_offpeak",
-    "meter_id": "M-321"
+    "meterId": "M-321",
+    "plan": "green_offpeak"
   },
   "preconditions": [],
   "success_criteria": [
-    "text(\"#plan\") == \"green_offpeak\"",
-    "json(\"env\",\"meters.M-321.plan\") == \"green_offpeak\""
+    "url().includes('/energy.local/plan.html')",
+    "json('env','meters.M-321.plan') == 'green_offpeak'"
   ]
 }

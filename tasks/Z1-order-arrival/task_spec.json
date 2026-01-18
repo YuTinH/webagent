@@ -1,0 +1,13 @@
+{
+  "task_id": "Z1-2025-ARRIVAL",
+  "family": "Z",
+  "goal": "Buy 'Wireless Mouse', wait for 3 days (simulated), and verify the order status is 'delivered'.",
+  "inputs": {
+    "product_name": "Wireless Mouse"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/orders.html')",
+    "mem('shop.orders.last.state') == 'delivered'"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "task_id": "G2-2025-INSURANCE",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 4,
+  "steps_total": 4,
+  "time_elapsed": 1.6256701946258545,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/insurance.html",
+      "note": "Open insurance page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button[onclick*='\u5168\u9762\u533b\u7597\u4fdd\u969c']",
+      "note": "Click purchase button for '\u5168\u9762\u533b\u7597\u4fdd\u969c'"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm purchase"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#current-policy .badge.ok",
+      "note": "Wait for active policy badge"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

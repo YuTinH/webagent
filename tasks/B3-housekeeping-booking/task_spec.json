@@ -1,0 +1,19 @@
+{
+  "task_id": "B3-2025-HOUSEKEEPING",
+  "family": "B",
+  "goal": "Book a '日常保洁' (regular cleaning) service for '2026-01-15' at '09:00' with instructions '请携带吸尘器'.",
+  "inputs": {
+    "service_type": "regular_cleaning",
+    "service_date": "2026-01-15",
+    "service_time": "09:00",
+    "instructions": "请携带吸尘器"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/housekeeping.html')",
+    "mem('local_services.housekeeping_bookings.last.status') == 'confirmed'",
+    "mem('local_services.housekeeping_bookings.last.date') == '2026-01-15'",
+    "mem('local_services.housekeeping_bookings.last.time') == '09:00'",
+    "mem('local_services.housekeeping_bookings.last.type') == 'regular_cleaning'"
+  ]
+}

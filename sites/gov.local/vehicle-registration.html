@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>gov.local - 车辆与驾照管理</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🏛️ Gov.local</div>
+      <div class="navlinks">
+        <a href="../gov.local/profile.html">个人资料</a>
+        <a href="../gov.local/permits.html">许可证</a>
+        <a href="../gov.local/address-change.html">地址变更</a>
+        <a href="../gov.local/vehicle-registration.html" class="active">车辆管理</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>车辆与驾照地址更新</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>我的车辆</h2>
+        <div id="vehicle-list">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <div class="card soft">
+        <h2>更新登记地址</h2>
+        <div class="form">
+            <label>选择车辆</label>
+            <select id="vehicle-select" class="input">
+                <!-- Options populated by JS -->
+            </select>
+            
+            <label>新地址</label>
+            <textarea id="new-address" class="input" rows="3" placeholder="请输入新地址"></textarea>
+            
+            <div style="margin-top:16px; display:flex; align-items:center; gap:8px">
+              <input type="checkbox" id="notify-insurance">
+              <label for="notify-insurance" style="margin:0">同时通知保险公司更新地址</label>
+            </div>
+            
+            <button class="btn pri" style="margin-top:24px; width:100%" onclick="updateAddress()">提交更新</button>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadVehicles() {
+    const list = document.getElementById('vehicle-list');
+    const select = document.getElementById('vehicle-select');
+    
+    try {
+      const env = await loadEnv();
+      const vehicles = env.gov?.vehicles || {
+          "V-8821": { "plate": "沪A-12345", "model": "Tesla Model 3", "address": "旧地址..." }
+      };
+
+      list.innerHTML = Object.entries(vehicles).map(([id, v]) => `
+        <div style="padding:12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px">
+            <div style="font-weight:600">${v.plate} - ${v.model}</div>
+            <div style="font-size:13px; color:var(--muted)">当前登记地址: ${v.address}</div>
+        </div>
+      `).join('');
+
+      select.innerHTML = Object.entries(vehicles).map(([id, v]) => `
+        <option value="${id}">${v.plate} - ${v.model}</option>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  async function updateAddress() {
+    const vehicleId = document.getElementById('vehicle-select').value;
+    const newAddress = document.getElementById('new-address').value;
+    const notifyInsurance = document.getElementById('notify-insurance').checked;
+
+    if (!newAddress) {
+      Toast.error("请输入新地址");
+      return;
+    }
+    
+    await send('H2-2025-VEHICLEADDR', 'update_vehicle_address', {
+      vehicle_id: vehicleId,
+      new_address: newAddress,
+      notify_insurance: notifyInsurance
+    });
+    
+    setTimeout(loadVehicles, 500);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadVehicles);
+  </script>
+</body>
+</html>

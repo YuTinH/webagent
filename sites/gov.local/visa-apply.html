@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>gov.local - 签证申请</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🏛️ Gov.local</div>
+      <div class="navlinks">
+        <a href="../gov.local/index.html">首页</a>
+        <a href="../gov.local/visa-apply.html" class="active">签证服务</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>在线签证申请系统</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>我的申请状态</h2>
+        <div id="application-status">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <div class="card soft">
+        <h2>提交新申请</h2>
+        <div class="form">
+            <label>目的地国家</label>
+            <select id="destination" class="input">
+                <option value="Japan">日本</option>
+                <option value="France">法国</option>
+                <option value="USA">美国</option>
+            </select>
+            
+            <label>护照号码</label>
+            <input id="passport-number" class="input" placeholder="E.g., E12345678">
+            
+            <button class="btn pri" style="margin-top:24px; width:100%" onclick="submitVisa()">提交申请</button>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadStatus() {
+    const statusDiv = document.getElementById('application-status');
+    
+    try {
+      const env = await loadEnv();
+      const apps = env.gov?.visa_applications || {};
+      const lastApp = apps.last;
+
+      if (!lastApp || !lastApp.id) {
+        statusDiv.innerHTML = `<div style="padding:16px; color:var(--muted)">暂无申请记录</div>`;
+        return;
+      }
+
+      let statusColor = 'warn';
+      let statusText = '审核中';
+      if (lastApp.status === 'approved') {
+          statusColor = 'ok';
+          statusText = '已通过 ✅';
+      }
+
+      statusDiv.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center">
+              <div>
+                  <div style="font-size:18px; font-weight:600">申请目的地: ${lastApp.destination}</div>
+                  <div style="color:var(--muted); font-size:14px">申请单号: ${lastApp.id}</div>
+              </div>
+              <span class="badge ${statusColor}">${statusText}</span>
+          </div>
+      `;
+      
+    } catch (e) {
+      console.error(e);
+      statusDiv.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  async function submitVisa() {
+    const dest = document.getElementById('destination').value;
+    const passport = document.getElementById('passport-number').value;
+
+    if (!passport) {
+      Toast.error("请输入护照号码");
+      return;
+    }
+    
+    await send('E7-LONG-HAUL', 'apply_visa', {
+      destination: dest,
+      passport_number: passport
+    });
+    
+    setTimeout(loadStatus, 500);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadStatus);
+  </script>
+  <script>
+  async function debugTimeTravel() {
+      await fetch('/api/debug/time_travel', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({days: 5})
+      });
+      loadStatus();
+      Toast.success("已模拟时间流逝: 5天");
+  }
+  </script>
+  <button onclick="debugTimeTravel()" style="opacity:0.1; position:fixed; bottom:0; right:0">Debug: +5 Days</button>
+</body>
+</html>

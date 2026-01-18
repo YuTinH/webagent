@@ -51,7 +51,16 @@
         window.RelRoot = '../';
 
         const urlParams = new URLSearchParams(window.location.search);
-        const orderId = urlParams.get('order_id');
+        let orderId = urlParams.get('order_id');
+        
+        // Check path for order ID if not in query params
+        if (!orderId) {
+            const pathParts = window.location.pathname.split('/order/confirmation/');
+            if (pathParts.length > 1) {
+                orderId = pathParts[1].split('?')[0]; // Handle potential trailing query params
+            }
+        }
+
         const total = urlParams.get('total');
         const shippingAddress = urlParams.get('shipping_address') || 'N/A';
 

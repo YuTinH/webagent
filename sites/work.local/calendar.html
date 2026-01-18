@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>work.local - 日历</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+  <style>
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .calendar-header {
+      background: var(--card);
+      text-align: center;
+      padding: 10px 0;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .calendar-day {
+      background: var(--card);
+      min-height: 100px;
+      padding: 8px;
+      font-size: 14px;
+      position: relative;
+    }
+    .calendar-day.today {
+        border: 1px solid var(--pri);
+        box-shadow: 0 0 5px rgba(99,102,241,0.5);
+        z-index: 1;
+    }
+    .calendar-date {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+    .calendar-event {
+      background: var(--pri-2);
+      color: white;
+      border-radius: 4px;
+      padding: 4px 8px;
+      margin-bottom: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .calendar-event.conflict {
+      background: var(--error);
+    }
+    .calendar-event.personal {
+      background: var(--ok);
+    }
+    .month-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .month-nav h2 {
+      margin: 0;
+    }
+  </style>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">💼 Work.local</div>
+      <div class="navlinks">
+        <a href="../work.local/dashboard.html">仪表盘</a>
+        <a href="../work.local/calendar.html" class="active">日历</a>
+        <a href="../work.local/tasks.html">任务</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:1000px">
+    <div class="month-nav">
+      <button class="btn secondary" onclick="changeMonth(-1)">← 上月</button>
+      <h2 id="current-month"></h2>
+      <button class="btn secondary" onclick="changeMonth(1)">下月 →</button>
+    </div>
+
+    <div class="calendar-grid" id="calendar-grid">
+      <div class="calendar-header">周一</div>
+      <div class="calendar-header">周二</div>
+      <div class="calendar-header">周三</div>
+      <div class="calendar-header">周四</div>
+      <div class="calendar-header">周五</div>
+      <div class="calendar-header">周六</div>
+      <div class="calendar-header">周日</div>
+    </div>
+
+    <div style="margin-top:24px; display:flex; justify-content:space-between; align-items:center">
+      <h2>事件列表</h2>
+      <button class="btn pri" onclick="openAddEventModal()">+ 添加事件</button>
+    </div>
+    <div id="event-list" style="display:flex; flex-direction:column; gap:12px; margin-top:16px">
+      <!-- Event list loaded here -->
+    </div>
+  </div>
+
+  <script>
+  let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
+  const today = new Date();
+
+  const mockEvents = {
+      // Example event: conflict
+      "2026-01-15": [
+          {id: "EVE-001", title: "项目例会", time: "10:00", type: "work"},
+          {id: "EVE-002", title: "牙医预约", time: "10:30", type: "personal", conflict: true}
+      ],
+      "2026-01-20": [
+          {id: "EVE-003", title: "团队建设活动", time: "14:00", type: "work"}
+      ]
+  };
+
+  async function renderCalendar() {
+    const list = document.getElementById('calendar-grid');
+    const monthDisplay = document.getElementById('current-month');
+    
+    // Clear previous days (keep headers)
+    while (list.children.length > 7) {
+        list.removeChild(list.lastChild);
+    }
+
+    // Load events from env
+    let eventsData = {};
+    try {
+        const env = await loadEnv();
+        eventsData = env.calendar?.events || {};
+    } catch (e) {
+        console.error("Failed to load events", e);
+    }
+
+    const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+    const totalDays = lastDayOfMonth.getDate();
+    const startDayOfWeek = (firstDayOfMonth.getDay() + 6) % 7; // Adjust to start Monday = 0
+
+    monthDisplay.innerText = `${currentYear}年 ${currentMonth + 1}月`;
+
+    // Add empty days for the start of the week
+    for (let i = 0; i < startDayOfWeek; i++) {
+      const emptyDay = document.createElement('div');
+      emptyDay.className = 'calendar-day';
+      list.appendChild(emptyDay);
+    }
+
+    // Add days of the month
+    for (let day = 1; day <= totalDays; day++) {
+      const date = new Date(currentYear, currentMonth, day);
+      const dayDiv = document.createElement('div');
+      dayDiv.className = 'calendar-day';
+      if (date.toDateString() === today.toDateString()) {
+          dayDiv.classList.add('today');
+      }
+
+      dayDiv.innerHTML = `<div class="calendar-date">${day}</div>`;
+      
+      const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
+      
+      // Find events for this day
+      const dayEvents = Object.values(eventsData).filter(e => e.date === dateKey);
+      
+      dayEvents.forEach(event => {
+          const eventDiv = document.createElement('div');
+          eventDiv.className = `calendar-event ${event.conflict ? 'conflict' : event.type}`;
+          eventDiv.innerText = `${event.time} ${event.title}`;
+          dayDiv.appendChild(eventDiv);
+      });
+
+      list.appendChild(dayDiv);
+    }
+
+    await loadEventsList(eventsData);
+  }
+
+  async function loadEventsList(eventsData) {
+    const list = document.getElementById('event-list');
+    list.innerHTML = '';
+    
+    // If not provided (initial load), fetch again or use what we have
+    if (!eventsData) {
+        try {
+            const env = await loadEnv();
+            eventsData = env.calendar?.events || {};
+        } catch (e) {
+            eventsData = {};
+        }
+    }
+
+    const events = Object.entries(eventsData).map(([id, event]) => ({id, ...event}));
+
+    if (events.length === 0) {
+      list.innerHTML = `
+        <div class="card soft" style="text-align:center; padding:24px">
+          <div style="color:var(--muted)">暂无日历事件</div>
+        </div>
+      `;
+      return;
+    }
+
+    events.sort((a, b) => new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time));
+
+    list.innerHTML = events.map(event => `
+      <div class="card soft">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+          <div>
+            <h3 style="margin:0 0 4px 0">${event.title}</h3>
+            <div style="color:var(--muted); font-size:14px">${event.date} ${event.time}</div>
+          </div>
+          <div style="text-align:right">
+            <span class="badge ${event.conflict ? 'error' : (event.type === 'work' ? 'pri' : 'ok')}">${event.conflict ? '冲突' : event.type === 'work' ? '工作' : '个人'}</span>
+          </div>
+        </div>
+        <p>${event.description || ''}</p>
+        <button class="btn secondary" onclick="resolveConflict('${event.id}')" ${!event.conflict ? 'disabled' : ''}>解决冲突</button>
+      </div>
+    `).join('');
+  }
+
+
+  function changeMonth(delta) {
+    currentMonth += delta;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    } else if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    renderCalendar();
+  }
+
+  function openAddEventModal() {
+    new Modal({
+      title: '添加新事件',
+      content: `
+        <div class="form">
+          <label>事件标题</label>
+          <input id="event-title" class="input" placeholder="例如: 团队会议">
+          
+          <label>日期</label>
+          <input id="event-date" type="date" class="input">
+          
+          <label>时间</label>
+          <input id="event-time" type="time" class="input">
+
+          <label>类型</label>
+          <select id="event-type" class="input">
+            <option value="work">工作</option>
+            <option value="personal">个人</option>
+          </select>
+
+          <label>描述 (可选)</label>
+          <textarea id="event-description" class="input" rows="2"></textarea>
+        </div>
+      `,
+      confirmText: '添加事件',
+      onConfirm: async () => {
+        const title = document.getElementById('event-title').value;
+        const date = document.getElementById('event-date').value;
+        const time = document.getElementById('event-time').value;
+        const type = document.getElementById('event-type').value;
+        const description = document.getElementById('event-description').value;
+
+        if (!title || !date || !time) {
+          Toast.error("请填写完整事件信息");
+          return;
+        }
+
+        await send('F1-2025-CALENDAR', 'manage_calendar_event', {
+          action_type: 'add',
+          title: title,
+          date: date,
+          time: time,
+          type: type,
+          description: description
+        });
+        // Mock: Add event to local mockEvents for immediate display
+        const dateKey = date;
+        if (!mockEvents[dateKey]) mockEvents[dateKey] = [];
+        mockEvents[dateKey].push({
+            id: `EVE-${Math.floor(Math.random() * 1000)}`, 
+            title: title, 
+            time: time, 
+            type: type, 
+            description: description,
+            conflict: false // Conflicts handled by backend
+        });
+        setTimeout(renderCalendar, 500); // Re-render calendar and list
+      }
+    }).open();
+  }
+
+  function resolveConflict(id) {
+    new Modal({
+      title: '解决冲突',
+      content: `您确定要解决事件 ${id} 的冲突吗？这将优先此事件并可能调整其他事件。`,
+      confirmText: '确认解决',
+      onConfirm: async () => {
+        await send('F1-2025-CALENDAR', 'manage_calendar_event', {
+          action_type: 'resolve_conflict',
+          event_id: id
+        });
+        setTimeout(renderCalendar, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', renderCalendar);
+  </script>
+</body>
+</html>

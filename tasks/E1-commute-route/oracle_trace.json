@@ -1,0 +1,51 @@
+{
+  "task_id": "E1-2025-COMMUTE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/commute.html",
+      "note": "Open commute route comparison page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#origin",
+      "value": "家",
+      "note": "Enter origin"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#destination",
+      "value": "办公室",
+      "note": "Enter destination"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#commute-time",
+      "value": "08:00",
+      "note": "Enter commute time"
+    },
+    {
+      "t": 4,
+      "act": "select",
+      "selector": "#transport-mode",
+      "value": "all",
+      "note": "Select all transport modes"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "button:has-text('查询路线')",
+      "note": "Click search button"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#results-list .card",
+      "note": "Wait for search results to appear"
+    }
+  ]
+}

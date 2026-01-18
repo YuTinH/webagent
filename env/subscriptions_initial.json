@@ -1,0 +1,12 @@
+{
+  "subscriptions": {
+    "SUB-001": {
+      "name": "Premium Plan",
+      "plan": "monthly",
+      "price": 50,
+      "frequency": "month",
+      "next_billing_date": "2026-01-20",
+      "status": "active"
+    }
+  }
+}

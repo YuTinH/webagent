@@ -1,55 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
 <script>window.RelRoot = "../";</script>
-<!doctype html><meta charset="utf-8"><title>Nebula Market - Second Hand</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>二手市场 - Nebula社区</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
-<script src="../static/common.js"></script>
+<style>
+.hero-section {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(59, 130, 246, 0.1));
+  border-radius: var(--radius);
+  padding: 48px 32px;
+  margin-bottom: 32px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.hero-section h1 {
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  background: linear-gradient(135deg, #f97316, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.listing-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: .2s;
+  text-decoration: none;
+  color: inherit;
+}
+.listing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--pri);
+}
+.listing-image {
+  height: 200px;
+  background-color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  overflow: hidden;
+}
+.listing-info {
+  padding: 16px;
+}
+.listing-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--pri);
+  margin-bottom: 8px;
+}
+.listing-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.listing-category {
+  color: var(--muted);
+  font-size: 14px;
+}
+.action-buttons {
+  margin-top: 32px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand"><div class="logo"></div> Nebula Market</div>
+    <div class="brand">
+      <div class="logo"></div>
+      Nebula社区
+    </div>
     <div class="navlinks">
-      <a href="index.html" class="active">Browse</a>
-      <a href="list-item.html">Sell Item</a>
+      <a href="../social.local/index.html">社区首页</a>
+      <a href="../market.local/index.html" class="active">二手市场</a>
+      <a href="../market.local/my-listings.html">我的发布</a>
     </div>
   </div>
 </div>
+
 <div id="__toast" class="toast"></div>
 
+<!-- Main Container -->
 <div class="container">
-  <h1 style="margin-bottom: 24px">Second Hand Marketplace</h1>
-  
-  <div class="grid cols-3" id="items-list">
-    <!-- Rendered by JS -->
+
+  <div class="hero-section">
+    <h1>淘遍社区，买卖闲置</h1>
+    <p style="color:var(--muted); margin-bottom:24px">发布您的闲置物品，发现社区宝藏</p>
+    <div class="action-buttons">
+      <button class="btn pri lg" onclick="window.location.href=`${window.RelRoot}market.local/list-item.html`">发布闲置</button>
+    </div>
   </div>
+
+  <h2 style="font-size:24px; font-weight:700; margin-bottom:24px">最新发布</h2>
+
+  <div id="listing-list" class="listing-grid">
+    <!-- Listings injected here -->
+  </div>
+
+  <div class="footer">
+    Nebula社区 · Synthetic UI for Web Agent Research
+  </div>
+
 </div>
 
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
-const ITEMS = [
-  { id: 'ITEM-001', name: 'Used Laptop', price: 300.00, desc: 'Good condition, 8GB RAM, 256GB SSD.', seller: 'UserA', status: 'available' },
-  { id: 'ITEM-002', name: 'Vintage Bicycle', price: 150.00, desc: 'Classic model, some rust.', seller: 'UserB', status: 'available' },
-  { id: 'ITEM-003', name: 'Old Books Set', price: 20.00, desc: 'Various genres, good for reading.', seller: 'UserC', status: 'available' }
-];
+async function loadListings() {
+  const listContainer = document.getElementById('listing-list');
+  listContainer.innerHTML = '<div class="loading-message">正在加载发布...</div>';
 
-function renderItems() {
-  const list = document.getElementById('items-list');
-  list.innerHTML = ITEMS.map(item => `
-    <div class="card">
-      <div class="header">
-        <div class="title">${item.name}</div>
-        <span class="badge ok">$${item.price.toFixed(2)}</span>
+  try {
+    const env = await loadEnv();
+    const listings = env.market?.listings || {};
+
+    let content = '';
+    for (const itemId in listings) {
+      const item = listings[itemId];
+      content += `
+        <div class="listing-card">
+          <div class="listing-image">🛋️</div>
+          <div class="listing-info">
+            <div class="listing-price">¥${item.price.toFixed(2)}</div>
+            <div class="listing-title">${item.name}</div>
+            <div class="listing-category">${item.category}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    if (content) {
+      listContainer.innerHTML = content;
+    } else {
+      listContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">🛋️</div>
+          <div>暂无闲置物品</div>
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.error('加载发布失败:', e);
+    listContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <div>加载发布失败，请稍后再试</div>
       </div>
-      <p class="muted">${item.desc}</p>
-      <div class="flex justify-between items-center mt-4">
-        <span class="text-sm muted">Seller: ${item.seller}</span>
-        <button class="btn pri" onclick="viewItem('${item.id}')">View Details</button>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }
 }
 
-function viewItem(itemId) {
-  Toast.info('Details for ' + itemId + ' coming soon!');
-}
-
-renderItems();
+document.addEventListener('DOMContentLoaded', loadListings);
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

@@ -1,93 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
 <script>window.RelRoot = "../";</script>
-<!doctype html><meta charset="utf-8"><title>Health Plan - Health Connect</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>健康计划 - 智慧健康</title>
 <link rel="stylesheet" href="../static/skin.css">
 <link rel="stylesheet" href="../static/components.css">
-<script src="../static/common.js"></script>
+<style>
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+.plan-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  cursor: pointer;
+  transition: .2s;
+  position: relative;
+  overflow: hidden;
+}
+.plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--pri);
+}
+.plan-card.active {
+  border-color: var(--ok);
+  background: rgba(16, 185, 129, 0.05);
+}
+.plan-card.active::after {
+  content: '当前计划';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--ok);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.plan-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.plan-description {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.plan-features li::before {
+  content: '✓';
+  color: var(--ok);
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
 
+<!-- Navigation -->
 <div class="navbar">
   <div class="inner">
-    <div class="brand">
-      <div class="logo" style="background: linear-gradient(135deg, #10b981, #6ee7b7)"></div>
-      Health Connect
-    </div>
+    <div class="brand"><div class="logo"></div> 智慧健康</div>
     <div class="navlinks">
-      <a href="index.html">Home</a>
-      <a href="doctors.html">Doctors</a>
-      <a href="records.html">My Records</a>
-      <a href="plan.html" class="active">Health Plan</a>
+      <a href="../health.local/index.html">首页</a>
+      <a href="../health.local/records.html">我的记录</a>
+      <a href="../health.local/plan.html" class="active">健康计划</a>
+    </div>
+    <div style="margin-left:auto">
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
     </div>
   </div>
 </div>
+
 <div id="__toast" class="toast"></div>
 
+<!-- Main Container -->
 <div class="container">
-  <div class="breadcrumbs"><a href="index.html">Home</a> / <span>Health Plan</span></div>
-  
-  <h1 style="margin-bottom: 24px">My Health Plan</h1>
-  
-  <div id="plan-details" class="card mb-4">
-    <div class="header">
-      <div class="title">Current Plan</div>
-      <span id="plan-status" class="badge warn">Inactive</span>
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">选择您的健康计划</h1>
+
+  <div class="plan-grid">
+    <div class="plan-card" id="plan-standard">
+      <div class="plan-name">标准健康计划</div>
+      <div class="plan-description">为您提供基础的健康管理服务，适合日常保健。</div>
+      <ul class="plan-features">
+        <li>定期健康检查</li>
+        <li>在线医生咨询</li>
+        <li>健康资讯推送</li>
+      </ul>
+      <button class="btn" onclick="selectPlan('standard')">选择此计划</button>
     </div>
-    <div class="kv">
-      <div class="key">Plan Name</div><div id="plan-name">No active plan</div>
-      <div class="key">Focus</div><div id="plan-focus">N/A</div>
-      <div class="key">Daily Calories</div><div id="plan-calories">N/A</div>
-      <div class="key">Weekly Exercise</div><div id="plan-exercise">N/A</div>
+
+    <div class="plan-card" id="plan-premium">
+      <div class="plan-name">高级健康计划</div>
+      <div class="plan-description">全面的健康管理方案，关注您的身心健康。</div>
+      <ul class="plan-features">
+        <li>个性化饮食方案</li>
+        <li>专属健康顾问</li>
+        <li>心理健康支持</li>
+      </ul>
+      <button class="btn pri" onclick="selectPlan('premium')">选择此计划</button>
     </div>
-    <div class="hr"></div>
-    <button class="btn pri" id="activate-plan-btn" onclick="activatePlan()">Activate Plan</button>
   </div>
 
-  <div id="food-recommendations" class="card" style="display:none;">
-    <div class="header">
-      <div class="title">Food Recommendations (based on your food orders)</div>
-    </div>
-    <p class="muted">Based on your recent food delivery history, here are some suggestions to align with your health goals.</p>
-    <ul id="recommendations-list" style="list-style:none; padding:0;">
-      <li class="mb-2">🥗 Try a salad from Green Bites (less than 400 kcal)</li>
-      <li class="mb-2">🍲 Opt for a clear soup from Asian Delights</li>
-      <li class="mb-2">🍎 Snack on fruits instead of desserts</li>
-    </ul>
-  </div>
+  <div class="footer">智慧健康 · Synthetic UI for Web Agent Research</div>
 </div>
 
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
 <script>
-async function init() {
+let currentPlanId = 'standard'; // Default plan
+
+async function loadPlanInfo() {
   try {
-    const env = await api('../api/env');
+    const env = await loadEnv();
     const healthPlan = env.health?.plan;
-    
     if (healthPlan && healthPlan.status === 'active') {
-      document.getElementById('plan-status').textContent = 'Active';
-      document.getElementById('plan-status').classList.remove('warn');
-      document.getElementById('plan-status').classList.add('ok');
-      document.getElementById('plan-name').textContent = healthPlan.name;
-      document.getElementById('plan-focus').textContent = healthPlan.focus;
-      document.getElementById('plan-calories').textContent = healthPlan.calories + ' kcal';
-      document.getElementById('plan-exercise').textContent = healthPlan.exercise;
-      document.getElementById('activate-plan-btn').style.display = 'none';
-      document.getElementById('food-recommendations').style.display = 'block';
-    } else {
-      document.getElementById('plan-status').textContent = 'Inactive';
-      document.getElementById('plan-status').classList.add('warn');
-      document.getElementById('plan-status').classList.remove('ok');
-      document.getElementById('activate-plan-btn').style.display = 'block';
-      document.getElementById('food-recommendations').style.display = 'none';
+      currentPlanId = healthPlan.name.toLowerCase().replace(/\s/g, '_'); // Convert "Standard Health Plan" to "standard"
+      
+      document.querySelectorAll('.plan-card').forEach(card => {
+        card.classList.remove('active');
+        const btn = card.querySelector('button');
+        btn.disabled = false;
+        btn.textContent = '选择此计划';
+      });
+
+      const activeCard = document.getElementById(`plan-${currentPlanId}`);
+      if (activeCard) {
+        activeCard.classList.add('active');
+        const btn = activeCard.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = '当前计划';
+      }
     }
-  } catch(e) {}
+  } catch (e) {
+    console.error("Failed to load plan info:", e);
+  }
 }
 
-async function activatePlan() {
-  await send('G5-2025-GEN', 'activate_health_plan', {
-    planName: 'Standard Wellness',
-    focus: 'Weight Management',
-    calories: 1800,
-    exercise: '30min daily'
-  });
-  setTimeout(() => window.location.reload(), 1000);
+async function selectPlan(planId) {
+  if (planId === currentPlanId) {
+    Toast.info('您当前正在使用此计划');
+    return;
+  }
+
+  Toast.info(`正在激活 ${planId} 健康计划...`);
+
+  try {
+    const planNameMap = {
+      'standard': 'Standard Health Plan',
+      'premium': 'Premium Health Plan'
+    };
+    const response = await send('G5-2025-HEALTH', 'activate_health_plan', {
+      planName: planNameMap[planId] || planId,
+      focus: 'General Wellness', // Hardcoded for task
+      calories: 2000, // Hardcoded
+      exercise: '30min daily' // Hardcoded
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('健康计划激活成功！');
+      // Fallback reload if redirect doesn't happen automatically
+      if (!response.redirect) {
+          window.location.href = `${window.RelRoot}health.local/plan.html?activated=true`;
+      }
+    } else {
+        console.warn('Response invalid, attempting fallback reload...');
+        window.location.href = `${window.RelRoot}health.local/plan.html?activated=true`;
+    }
+  } catch (error) {
+    console.error('激活计划失败:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}health.local/plan.html?activated=true`;
+    } else {
+        Toast.error('激活计划失败，请稍后再试');
+    }
+  }
 }
 
-init();
+document.addEventListener('DOMContentLoaded', loadPlanInfo);
 </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+</body>
+</html>

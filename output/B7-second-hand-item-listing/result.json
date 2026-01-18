@@ -1,0 +1,61 @@
+{
+  "task_id": "B7-2025-MARKET",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 1.6480722427368164,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/market.local/list-item.html",
+      "note": "Open list item page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#item-name",
+      "value": "Vintage Desk Lamp",
+      "note": "Enter item name"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#description",
+      "value": "Working condition, minor scratches, includes bulb.",
+      "note": "Enter description"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#price",
+      "value": "50",
+      "note": "Enter price"
+    },
+    {
+      "t": 8,
+      "act": "select",
+      "selector": "#category",
+      "value": "furniture",
+      "note": "Select category"
+    },
+    {
+      "t": 10,
+      "act": "click",
+      "selector": "button.btn.pri.lg:has-text('\u786e\u8ba4\u53d1\u5e03')",
+      "note": "Click submit button"
+    },
+    {
+      "t": 12,
+      "act": "wait",
+      "selector": "h2:has-text('\u6700\u65b0\u53d1\u5e03')",
+      "note": "Wait for listings page to load"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

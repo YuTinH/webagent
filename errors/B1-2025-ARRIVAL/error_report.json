@@ -1,0 +1,22 @@
+{
+  "task_id": "B1-2025-ARRIVAL",
+  "error_type": "TimeoutError",
+  "timestamp": "2026-01-11T06:54:39.177790Z",
+  "step_index": 1,
+  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#add-to-cart\")\n",
+  "context": {
+    "url": "http://localhost:8014/shop.local/product.html?id=WM-5521",
+    "screenshot": "errors/B1-2025-ARRIVAL/error_step_1.png"
+  },
+  "step": {
+    "t": 1,
+    "act": "click",
+    "selector": "#add-to-cart",
+    "note": "Add to cart"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

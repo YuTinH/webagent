@@ -1,0 +1,53 @@
+{
+  "task_id": "H2-2025-VEHICLEADDR",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 6,
+  "steps_total": 6,
+  "time_elapsed": 2.15567684173584,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/vehicle-registration.html",
+      "note": "Open vehicle registration page"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#vehicle-select",
+      "value": "V-8821",
+      "note": "Select vehicle V-8821"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-address",
+      "value": "\u4e0a\u6d77\u5e02\u6d66\u4e1c\u65b0\u533a\u5f20\u6c5f\u9ad8\u79d1\u5f20\u8861\u8defXXX\u53f7",
+      "note": "Enter new address"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "#notify-insurance",
+      "note": "Check notify insurance"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button:has-text('\u63d0\u4ea4\u66f4\u65b0')",
+      "note": "Submit update"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#vehicle-list div:has-text('\u4e0a\u6d77\u5e02\u6d66\u4e1c\u65b0\u533a\u5f20\u6c5f\u9ad8\u79d1\u5f20\u8861\u8defXXX\u53f7')",
+      "note": "Wait for address to update in list"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

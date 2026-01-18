@@ -1,0 +1,67 @@
+{
+  "task_id": "D5-2025-TAXPREP",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 8,
+  "steps_total": 8,
+  "time_elapsed": 1.5960733890533447,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/taxes.html",
+      "note": "Open tax preparation page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('\u4e0a\u4f20\u51ed\u8bc1')",
+      "note": "Click upload document button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#doc-name",
+      "value": "\u529e\u516c\u7528\u54c1\u53d1\u7968",
+      "note": "Enter document name"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#doc-type",
+      "value": "invoice",
+      "note": "Select document type"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#doc-amount",
+      "value": "150.00",
+      "note": "Enter amount"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#doc-date",
+      "value": "2025-12-01",
+      "note": "Enter date"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm upload"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#tax-docs-list .card",
+      "note": "Wait for document to appear in list"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

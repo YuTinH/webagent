@@ -1,0 +1,62 @@
+{
+  "task_id": "Z2-2025-GROWTH",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/investments.html",
+      "note": "Open investments page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('开设新账户')",
+      "note": "Open new account modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-name",
+      "value": "My Growth Fund",
+      "note": "Enter account name"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#new-type",
+      "value": "funds",
+      "note": "Select Growth Fund"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#initial-deposit",
+      "value": "1000",
+      "note": "Enter deposit"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "button:has-text('开设账户')",
+      "note": "Confirm open"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": ".card:has-text('My Growth Fund')",
+      "note": "Wait for account to appear"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": "button:has-text('Debug: +30 Days')",
+      "note": "Trigger time travel"
+    },
+    {
+      "t": 9,
+      "act": "wait",
+      "selector": "div:has-text('余额: ¥1050.00')",
+      "note": "Wait for balance change"
+    }
+  ]
+}

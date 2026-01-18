@@ -1,0 +1,17 @@
+{
+  "task_id": "F1-2025-CALENDAR",
+  "family": "F",
+  "goal": "Add a work event '团队会议' for '2026-01-15' at '10:00'. Then, add a personal event '牙医预约' for the same date and time, which should trigger a conflict. Finally, resolve the conflict for '牙医预约'.",
+  "inputs": {
+    "work_title": "团队会议",
+    "personal_title": "牙医预约",
+    "date": "2026-01-15",
+    "time": "10:00"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/work.local/calendar.html')",
+    "mem('calendar.events.last.title') == '牙医预约'",
+    "mem('calendar.events.last.conflict') == '0'"
+  ]
+}

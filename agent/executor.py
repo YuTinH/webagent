@@ -150,10 +150,10 @@ class TaskExecutor:
         # For now, query database directly
 
         # Check JSON state first for new domains
-        json_domains = ("health", "trips", "work", "expenses", "meters", "permits", "security", "payments", "contracts", "warranty", "courses", "invoices", "settlements", "autopay", "accounts", "finance", "food")
+        json_domains = ("health", "trips", "work", "expenses", "meters", "permits", "security", "payments", "contracts", "warranty", "courses", "invoices", "settlements", "autopay", "accounts", "finance", "food", "mobile", "identity", "support", "housing", "market", "cloud", "devices")
         parts = path.split('.')
         
-        if parts[0] in json_domains:
+        if parts[0] in json_domains or parts[0] == 'market': # Explicitly reload for market due to nested structure
             from pathlib import Path
             print(f"DEBUG: TaskExecutor._env_api reading from: {Path(__file__).parent.parent / 'env' / 'state.json'}")
             state_path = Path(__file__).parent.parent / 'env' / 'state.json' # Explicitly target webagent_dynamic_suite_v2_skin/env/state.json

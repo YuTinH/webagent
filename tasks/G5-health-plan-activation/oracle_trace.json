@@ -1,0 +1,23 @@
+{
+  "task_id": "G5-2025-HEALTH",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/plan.html",
+      "note": "Open health plan selection page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#plan-premium button",
+      "note": "Click 'Select this plan' button for Premium Health Plan"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#plan-premium.active",
+      "note": "Wait for Premium plan to be active"
+    }
+  ]
+}

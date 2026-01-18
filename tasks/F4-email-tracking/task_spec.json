@@ -1,0 +1,17 @@
+{
+  "task_id": "F4-2025-EMAILTRACK",
+  "family": "F",
+  "goal": "Track a new email thread with subject '项目进度更新' from 'manager@example.com' and summary '需要确认下周会议时间'. Verify the thread is pending and last updated time is recorded.",
+  "inputs": {
+    "subject": "项目进度更新",
+    "sender": "manager@example.com",
+    "summary": "需要确认下周会议时间"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/work.local/email-tracking.html')",
+    "mem('work.email_threads.last.status') == 'pending'",
+    "mem('work.email_threads.last.subject') == '项目进度更新'",
+    "mem('work.email_threads.last.id') != ''"
+  ]
+}

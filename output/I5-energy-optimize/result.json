@@ -4,7 +4,7 @@
   "final_state": "completed",
   "steps_completed": 4,
   "steps_total": 4,
-  "time_elapsed": 1.7484502792358398,
+  "time_elapsed": 1.8336961269378662,
   "error": null,
   "trace": [
     {
@@ -16,21 +16,21 @@
     {
       "t": 2,
       "act": "select",
-      "selector": "#planSel",
-      "value": "green_offpeak",
-      "note": "Select 'green_offpeak' plan"
+      "selector": "#meter-id",
+      "value": "M-321",
+      "note": "Select meter M-321"
     },
     {
       "t": 4,
       "act": "click",
-      "selector": "button.btn.pri",
-      "note": "Click '\u5207\u6362' (Switch) button"
+      "selector": "#plan-green_offpeak button",
+      "note": "Click select button for Green Off-peak plan"
     },
     {
       "t": 6,
       "act": "wait",
-      "selector": "#plan:has-text('green_offpeak')",
-      "note": "Wait for plan to update on page"
+      "selector": "#plan-green_offpeak.active",
+      "note": "Wait for Green Off-peak plan to be active"
     }
   ],
   "memory_updates": {},

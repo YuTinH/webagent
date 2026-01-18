@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>work.local - 论文投稿</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">💼 Work.local</div>
+      <div class="navlinks">
+        <a href="../work.local/dashboard.html">仪表盘</a>
+        <a href="../work.local/calendar.html">日历</a>
+        <a href="../work.local/paper-submission.html" class="active">论文投稿</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>论文投稿与版面费支付</h1>
+      <button class="btn pri" onclick="openSubmitPaperModal()">+ 提交新论文</button>
+    </div>
+
+    <div id="submissions-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Submissions loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadSubmissions() {
+    const list = document.getElementById('submissions-list');
+    list.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const submissions = env.work?.paper_submissions || {};
+      
+      if (Object.keys(submissions).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">📄</div>
+            <div style="color:var(--muted)">暂无投稿记录</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(submissions).map(([id, submission]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${submission.title || '无标题论文'} (${id})</h3>
+              <div style="color:var(--muted); font-size:14px">期刊: ${submission.journal || '未知'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">状态: <span class="badge ${submission.status === 'accepted' ? 'ok' : (submission.status === 'rejected' ? 'error' : 'warn')}">${submission.status}</span>
+                ${submission.fees_paid ? '<span class="badge ok" style="margin-left:4px">已支付</span>' : ''}
+              </div>
+              <div style="color:var(--muted); font-size:13px">投稿日期: ${submission.submitted_at || 'N/A'}</div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn" onclick="trackSubmission('${id}')">追踪状态</button>
+            <button class="btn pri" onclick="payFees('${id}')" ${(submission.status !== 'accepted' && submission.status !== 'submitted') || submission.fees_paid ? 'disabled' : ''}>${submission.fees_paid ? '已支付' : '支付版面费'}</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  function openSubmitPaperModal() {
+    new Modal({
+      title: '提交新论文',
+      content: `
+        <div class="form">
+          <label>论文标题</label>
+          <input id="paper-title" class="input" placeholder="例如: 基于Transformer的图像识别">
+          
+          <label>目标期刊</label>
+          <input id="journal-name" class="input" placeholder="例如: Nature, IEEE Transactions">
+          
+          <label>作者 (逗号分隔)</label>
+          <input id="authors" class="input" placeholder="例如: 张三, 李四">
+
+          <label>文件 (模拟上传)</label>
+          <input id="paper-file" type="text" class="input" value="my_paper.pdf">
+        </div>
+      `,
+      confirmText: '提交',
+      onConfirm: async () => {
+        const title = document.getElementById('paper-title').value;
+        const journal = document.getElementById('journal-name').value;
+        const authors = document.getElementById('authors').value.split(',').map(s => s.trim());
+        const file = document.getElementById('paper-file').value;
+        
+        if (!title || !journal || !file) {
+          Toast.error("请填写必填项");
+          return;
+        }
+        
+        await send('F3-2025-PAPERSUB', 'submit_paper', {
+          title: title,
+          journal: journal,
+          authors: authors,
+          file: file
+        });
+        
+        setTimeout(loadSubmissions, 500);
+      }
+    }).open();
+  }
+
+  function trackSubmission(id) {
+    Toast.info(`正在追踪投稿 ${id} 的状态...`);
+    // In a real app, this would fetch latest status from backend
+  }
+
+  function payFees(id) {
+    new Modal({
+      title: '支付版面费',
+      content: `您确定要为投稿 ${id} 支付版面费吗？`,
+      confirmText: '确认支付',
+      onConfirm: async () => {
+        await send('F3-2025-PAPERSUB', 'pay_publication_fees', {
+          submission_id: id
+        });
+        setTimeout(loadSubmissions, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadSubmissions);
+  </script>
+</body>
+</html>

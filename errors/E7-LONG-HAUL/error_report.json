@@ -1,0 +1,22 @@
+{
+  "task_id": "E7-LONG-HAUL",
+  "error_type": "TimeoutError",
+  "timestamp": "2026-01-10T03:09:14.172561Z",
+  "step_index": 4,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#application-status .badge:has-text('\u5ba1\u6838\u4e2d')\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/gov.local/visa-apply.html",
+    "screenshot": "errors/E7-LONG-HAUL/error_step_4.png"
+  },
+  "step": {
+    "t": 4,
+    "act": "wait",
+    "selector": "#application-status .badge:has-text('\u5ba1\u6838\u4e2d')",
+    "note": "Wait for initial pending status"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "aborted",
+  "metrics": {}
+}

@@ -1,0 +1,57 @@
+{
+  "task_id": "D5-2025-TAXPREP",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/taxes.html",
+      "note": "Open tax preparation page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('上传凭证')",
+      "note": "Click upload document button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#doc-name",
+      "value": "办公用品发票",
+      "note": "Enter document name"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#doc-type",
+      "value": "invoice",
+      "note": "Select document type"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#doc-amount",
+      "value": "150.00",
+      "note": "Enter amount"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#doc-date",
+      "value": "2025-12-01",
+      "note": "Enter date"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm upload"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#tax-docs-list .card",
+      "note": "Wait for document to appear in list"
+    }
+  ]
+}

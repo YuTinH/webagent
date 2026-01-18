@@ -1,0 +1,51 @@
+{
+  "task_id": "B3-2025-HOUSEKEEPING",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/housekeeping.html",
+      "note": "Open housekeeping booking page"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#service-type",
+      "value": "regular_cleaning",
+      "note": "Select service type"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#service-date",
+      "value": "2026-01-15",
+      "note": "Enter service date"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#service-time",
+      "value": "09:00",
+      "note": "Select service time"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#instructions",
+      "value": "请携带吸尘器",
+      "note": "Enter special instructions"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "#book-btn",
+      "note": "Click book button"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#bookings-list .card",
+      "note": "Wait for booking to appear in list"
+    }
+  ]
+}

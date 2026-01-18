@@ -1,48 +1,33 @@
 {
-  "task_id": "J1-2025-COURSE",
+  "task_id": "J1-2025-ENROLL",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 5,
-  "steps_total": 5,
-  "time_elapsed": 1.5270261764526367,
+  "steps_completed": 3,
+  "steps_total": 3,
+  "time_elapsed": 1.5641942024230957,
   "error": null,
   "trace": [
     {
       "t": 0,
       "act": "open",
-      "url": "http://localhost:8014/school.local/course.html",
-      "note": "Open Deep Learning 101 course page"
+      "url": "http://localhost:8014/school.local/course.html?id=ML202",
+      "note": "Open \u673a\u5668\u5b66\u4e60\u8fdb\u9636 course page"
     },
     {
       "t": 2,
       "act": "click",
-      "selector": "button.btn.pri",
+      "selector": "#enroll-button",
       "note": "Click 'Enroll Now' button"
     },
     {
-      "t": 5,
+      "t": 4,
       "act": "wait",
-      "selector": "h1:has-text('My Enrolled Courses')",
-      "note": "Wait for 'My Enrolled Courses' page to load"
-    },
-    {
-      "t": 7,
-      "act": "assert",
-      "selector": "div.text-sm.muted:has-text('Status: enrolled')",
-      "note": "Check enrollment status is 'enrolled'"
-    },
-    {
-      "t": 9,
-      "act": "extract",
-      "variable": "enroll-state",
-      "selector": "div.text-sm.muted",
-      "note": "Extract enrolled status for assertion"
+      "selector": "h1:has-text('\u6211\u7684\u5b66\u4e60')",
+      "note": "Wait for My Learning page to load"
     }
   ],
   "memory_updates": {},
   "artifacts": [],
   "warnings": [],
-  "extracted_data": {
-    "enroll-state": "Status: enrolled"
-  }
+  "extracted_data": {}
 }

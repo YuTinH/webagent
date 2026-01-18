@@ -1,0 +1,50 @@
+{
+  "task_id": "D6-2025-INVESTMENT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/investments.html",
+      "note": "Open investment accounts management page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('开设新账户')",
+      "note": "Click open new account button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-name",
+      "value": "成长型投资组合",
+      "note": "Enter account name"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#new-type",
+      "value": "stocks",
+      "note": "Select account type"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#initial-deposit",
+      "value": "1000",
+      "note": "Enter initial deposit"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm opening account"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#investment-accounts-list .card",
+      "note": "Wait for account to appear in list"
+    }
+  ]
+}

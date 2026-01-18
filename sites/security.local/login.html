@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Login - Security</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page" style="display:flex; align-items:center; justify-content:center; min-height:100vh">
+  
+  <div class="card soft" style="width:400px">
+    <h1 style="text-align:center">登录</h1>
+    
+    <!-- Reset Success Message -->
+    <div id="reset-success" style="display:none; background:var(--ok-bg); color:var(--ok); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center">
+        密码重置成功，请重新登录
+    </div>
+
+    <div class="form">
+        <label>用户名</label>
+        <input id="username" class="input">
+        
+        <label>密码</label>
+        <input id="password" type="password" class="input">
+        
+        <button class="btn pri" style="width:100%; margin-top:24px">登录</button>
+        
+        <div style="text-align:center; margin-top:16px; display:flex; justify-content:space-between; font-size:14px">
+            <a href="forgot-password.html" style="color:var(--muted)">忘记密码?</a>
+            <a href="#" style="color:var(--pri)">注册账户</a>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  // Check URL params for reset success
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('reset') === 'success') {
+      document.getElementById('reset-success').style.display = 'block';
+  }
+  </script>
+</body>
+</html>

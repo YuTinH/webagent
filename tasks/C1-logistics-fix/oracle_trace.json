@@ -1,12 +1,44 @@
 {
-  "task_id": "C1-2025-001",
-  "agent_version": "oracle-v1.0.0",
+  "task_id": "C1-2025-SUPPORT",
   "steps": [
-    {"t": 0, "act": "open", "url": "https://shop.local/help.html", "note": "Open Help Center"},
-    {"t": 1.0, "act": "click", "selector": "#recent-orders-list .btn", "note": "Report issue for recent order"},
-    {"t": 2.0, "act": "select", "selector": "#issue-type", "value": "delayed", "note": "Select delayed type"},
-    {"t": 3.0, "act": "type", "selector": "#issue-desc", "value": "Package not received.", "note": "Enter description"},
-    {"t": 4.0, "act": "click", "selector": "button.btn.pri", "note": "Submit request"},
-    {"t": 5.0, "act": "wait", "selector": "body", "note": "Wait for redirect"}
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/help.html",
+      "note": "Open support page"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#order-id",
+      "value": "O-98321",
+      "note": "Enter order ID"
+    },
+    {
+      "t": 4,
+      "act": "select",
+      "selector": "#issue-type",
+      "value": "delayed",
+      "note": "Select issue type"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#description",
+      "value": "My order has not arrived yet.",
+      "note": "Enter description"
+    },
+    {
+      "t": 8,
+      "act": "click",
+      "selector": "button.btn.pri.lg:has-text('提交工单')",
+      "note": "Click submit button"
+    },
+    {
+      "t": 10,
+      "act": "wait",
+      "selector": "h3:has-text('工单已提交')",
+      "note": "Wait for success message"
+    }
   ]
 }

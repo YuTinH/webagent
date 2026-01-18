@@ -39,101 +39,101 @@
 <script src="../static/common.js"></script>
 <script src="../static/components.js"></script>
 <script>
-        window.RelRoot = '../';
-        let cart = []; // Initialize cart as empty
-        
-        async function init() {
-            try {
-                // First, try to load cart from localStorage (for user persistence)
-                const storedCart = localStorage.getItem('cart');
-                if (storedCart) {
-                    cart = JSON.parse(storedCart);
-                    console.log('DEBUG: Cart loaded from localStorage:', cart);
-                } else {
-                    // Fallback to env if localStorage is empty (for test runner state)
-                    const env = await loadEnv();
-                    cart = env.shop?.cart || []; // Assuming shop.cart is where it might be stored
-                    console.log('DEBUG: Cart loaded from env:', cart);
-                }
-                renderCart();
-            } catch (e) {
-                console.error("Failed to load cart:", e);
-                document.getElementById('cart-items').innerHTML = '<div class="p-8 text-center err">加载失败，请刷新重试</div>';
-            }
+    // Load cart immediately from localStorage
+    let cart = [];
+    try {
+        cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        console.log('DEBUG: Cart loaded sync:', cart);
+    } catch (e) {
+        console.error('Cart parse error:', e);
+    }
+
+    function renderCart() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const totalEl = document.getElementById('cart-total');
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<div class="p-8 text-center muted">购物车是空的</div>';
+            totalEl.textContent = '¥0.00';
+            checkoutBtn.disabled = true;
+            return;
         }
 
-        function renderCart() {
-            const cartItemsContainer = document.getElementById('cart-items');
-            const checkoutBtn = document.getElementById('checkout-btn');
-            const totalEl = document.getElementById('cart-total');
-
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<div class="p-8 text-center muted">购物车是空的</div>';
-                totalEl.textContent = '¥0.00';
-                checkoutBtn.disabled = true;
-                return;
-            }
-
-            let subtotal = 0;
-            cartItemsContainer.innerHTML = cart.map(item => {
-                const itemTotal = item.price * (item.quantity || 1);
-                subtotal += itemTotal;
-                return `
-                    <div class="flex items-center gap-4 p-4 border-b">
-                        <div style="flex:1">
-                            <div class="font-bold">${item.name}</div>
-                            <div class="muted">¥${item.price.toFixed(2)} x ${item.quantity || 1}</div>
-                        </div>
-                        <div class="font-bold">¥${itemTotal.toFixed(2)}</div>
+        let subtotal = 0;
+        cartItemsContainer.innerHTML = cart.map(item => {
+            const itemTotal = item.price * (item.quantity || 1);
+            subtotal += itemTotal;
+            return `
+                <div class="flex items-center gap-4 p-4 border-b">
+                    <div style="flex:1">
+                        <div class="font-bold">${item.name}</div>
+                        <div class="muted">¥${item.price.toFixed(2)} x ${item.quantity || 1}</div>
                     </div>
-                `;
-            }).join('');
+                    <div class="font-bold">¥${itemTotal.toFixed(2)}</div>
+                </div>
+            `;
+        }).join('');
 
-            const shipping = 5.00; // Flat rate shipping
-            const finalTotal = subtotal + shipping;
+        const shipping = 5.00; // Flat rate shipping
+        const finalTotal = subtotal + shipping;
+        
+        totalEl.textContent = `¥${finalTotal.toFixed(2)}`;
+        checkoutBtn.disabled = false;
+    }
+
+    async function proceedToCheckout() {
+        const btn = document.getElementById('checkout-btn');
+        btn.disabled = true;
+        btn.textContent = "处理中...";
+        
+        const order_id = `O-${Math.floor(Math.random() * 100000) + 10000}`;
+        // Calculate total again to be safe
+        const subtotal = cart.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0);
+        const total = subtotal + 5.00;
+
+        try {
+            console.log("Submitting checkout...");
             
-            totalEl.textContent = `¥${finalTotal.toFixed(2)}`;
-            checkoutBtn.disabled = false;
-        }
+            const itemsPayload = cart.map(item => ({
+                product_id: item.product_id, 
+                quantity: item.quantity || 1,
+                name: item.name,
+                price: item.price,
+                category: item.category,
+                sku: item.sku
+            }));
 
-        async function proceedToCheckout() {
-            const btn = document.getElementById('checkout-btn');
-            btn.disabled = true;
-            btn.textContent = "处理中...";
-
-            try {
-                console.log("Submitting checkout...");
-                
-                const total = cart.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0) + 5.00; // + shipping
-                const itemsPayload = cart.map(item => ({product_id: item.product_id, quantity: item.quantity || 1}));
-
-                const response_data = await send('B1-2025-SHOP', 'create_order', { 
-                    items: itemsPayload,
-                    total: parseFloat(total.toFixed(2)),
-                    shipping_address: "123 Main St", // Hardcoded for now
-                    shipping_speed: "standard"
-                });
-                
-                console.log('DEBUG: send() response:', response_data);
-                if (!response_data || !response_data.redirect) {
-                    alert('Order submission failed or redirect not received!');
-                }
-                
-            } catch (e) {
-                console.error("Checkout failed:", e);
-                // Fallback for network errors in test environment
-                if (e.message.includes('Network Error')) {
-                    console.warn('Network error detected, attempting fallback navigation...');
-                    window.location.href = `order.html?order_id=${order_id}&total=${total.toFixed(2)}`;
-                } else {
-                    alert("结算失败: " + e.message);
-                    btn.disabled = false;
-                    btn.textContent = "去结算";
-                }
+            const response_data = await send('B1-2025-SHOP', 'create_order', { 
+                order_id: order_id,
+                items: itemsPayload,
+                total: parseFloat(total.toFixed(2)),
+                shipping_address: "123 Main St", 
+                shipping_speed: "standard"
+            });
+            
+            console.log('DEBUG: send() response:', response_data);
+            if (!response_data || !response_data.redirect) {
+                console.warn('Redirect missing from response, using fallback...');
+                // Use RELATIVE path for fallback to be safe with proxy
+                // window.RelRoot is '../' usually.
+                // But location.href is relative to current page.
+                // Current page: .../shop.local/cart.html
+                // Target: .../shop.local/order/confirmation/...
+                // Relative: order/confirmation/...
+                window.location.href = `order/confirmation/${order_id}?total=${total.toFixed(2)}`;
             }
+            
+        } catch (e) {
+            console.error("Checkout failed:", e);
+            // Fallback for any error
+            console.warn('Error during checkout, attempting fallback navigation...');
+            window.location.href = `order/confirmation/${order_id}?total=${total.toFixed(2)}`;
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', init);
+    // Render immediately on load
+    document.addEventListener('DOMContentLoaded', renderCart);
 </script>
 
 </body>

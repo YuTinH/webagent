@@ -1,0 +1,59 @@
+{
+  "task_id": "E7-LONG-HAUL",
+  "success": true,
+  "final_state": "completed",
+  "steps_completed": 7,
+  "steps_total": 7,
+  "time_elapsed": 2.575772523880005,
+  "error": null,
+  "trace": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/visa-apply.html",
+      "note": "Open visa application page"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#destination",
+      "value": "Japan",
+      "note": "Select destination"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#passport-number",
+      "value": "E88888888",
+      "note": "Enter passport number"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button:has-text('\u63d0\u4ea4\u7533\u8bf7')",
+      "note": "Submit application"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#application-status .badge:has-text('\u5ba1\u6838\u4e2d')",
+      "note": "Wait for initial pending status"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "button:has-text('Debug: +5 Days')",
+      "note": "Trigger time travel (Simulate 5 days passing)"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#application-status .badge:has-text('\u5df2\u901a\u8fc7')",
+      "note": "Wait for status to change to Approved"
+    }
+  ],
+  "memory_updates": {},
+  "artifacts": [],
+  "warnings": [],
+  "extracted_data": {}
+}

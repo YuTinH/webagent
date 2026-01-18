@@ -1,0 +1,22 @@
+{
+  "task_id": "L4-2025-2FA",
+  "error_type": "Error",
+  "timestamp": "2026-01-07T11:23:10.271245Z",
+  "step_index": 4,
+  "error_message": "Page.wait_for_selector: SyntaxError: Failed to execute 'querySelectorAll' on 'Document': '#2fa-status' is not a valid selector.\n    at query (<anonymous>:5120:41)\n    at <anonymous>:5130:7\n    at SelectorEvaluatorImpl._cached (<anonymous>:4907:20)\n    at SelectorEvaluatorImpl._queryCSS (<anonymous>:5117:17)\n    at <anonymous>:5006:25\n    at SelectorEvaluatorImpl._cached (<anonymous>:4907:20)\n    at SelectorEvaluatorImpl._querySimple (<anonymous>:4998:17)\n    at <anonymous>:4945:29\n    at SelectorEvaluatorImpl._cached (<anonymous>:4907:20)\n    at SelectorEvaluatorImpl.query (<anonymous>:4938:19)\nCall log:\n  - waiting for locator(\"#2fa-status:has-text('iPhone 15 Pro')\") to be visible\n",
+  "context": {
+    "url": "http://localhost:8014/security.local/2fa.html",
+    "screenshot": "errors/L4-2025-2FA/error_step_4.png"
+  },
+  "step": {
+    "t": 4,
+    "act": "wait",
+    "selector": "#2fa-status:has-text('iPhone 15 Pro')",
+    "note": "Wait for current device status to update"
+  },
+  "recovery_attempted": false,
+  "recovery_strategy": "",
+  "recovery_success": false,
+  "final_state": "failed",
+  "metrics": {}
+}

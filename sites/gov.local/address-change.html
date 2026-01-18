@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>gov.local - 地址变更</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🏛️ Gov.local</div>
+      <div class="navlinks">
+        <a href="../gov.local/profile.html">个人资料</a>
+        <a href="../gov.local/permits.html">许可证</a>
+        <a href="../gov.local/address-change.html" class="active">地址变更</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>市政门户地址变更</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>当前注册地址</h2>
+        <div id="current-address">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <div class="card soft">
+        <h2>变更至新地址</h2>
+        <div class="form">
+            <label>新地址</label>
+            <textarea id="new-address" class="input" rows="3" placeholder="请输入详细新地址"></textarea>
+            
+            <label>邮政编码</label>
+            <input id="zip-code" class="input" placeholder="例如: 100000">
+
+            <label>上传地址证明 (模拟文件上传)</label>
+            <input id="proof-document" type="text" class="input" value="proof_of_address.pdf">
+            
+            <button class="btn pri" style="margin-top:24px; width:100%" onclick="submitAddressChange()">提交变更</button>
+        </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>变更历史</h2>
+        <div id="change-history-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- History loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">暂无变更记录</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadAddressInfo() {
+    const currentAddressDiv = document.getElementById('current-address');
+    const changeHistoryList = document.getElementById('change-history-list');
+    
+    try {
+      const env = await loadEnv();
+      const current = env.user_profile?.address || {
+          current_address: "北京市朝阳区某某街道某某小区1号楼101室",
+          zip_code: "100000"
+      };
+      const history = env.user_profile?.address_change_history || {};
+
+      currentAddressDiv.innerHTML = `
+          <p>${current.current_address}</p>
+          <p>邮政编码: ${current.zip_code}</p>
+      `;
+
+      if (Object.keys(history).length === 0) {
+        changeHistoryList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">暂无变更记录</div></div>`;
+      } else {
+        changeHistoryList.innerHTML = Object.entries(history).map(([id, record]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">变更至: ${record.new_address}</h3>
+                <div style="color:var(--muted); font-size:14px">邮编: ${record.zip_code}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:600">状态: <span class="badge ${record.status === 'approved' ? 'ok' : 'warn'}">${record.status === 'approved' ? '已批准' : '待审核'}</span></div>
+                <div style="color:var(--muted); font-size:13px">提交日期: ${record.submitted_at || 'N/A'}</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      currentAddressDiv.innerHTML = '<div class="error">加载失败</div>';
+      changeHistoryList.innerHTML = '<div class="error">加载失败</div>';
+    }
+  }
+
+  async function submitAddressChange() {
+    const newAddress = document.getElementById('new-address').value;
+    const zipCode = document.getElementById('zip-code').value;
+    const proofDocument = document.getElementById('proof-document').value;
+
+    if (!newAddress || !zipCode || !proofDocument) {
+      Toast.error("请填写完整信息和上传证明文件");
+      return;
+    }
+    
+    await send('H1-2025-ADDRCHANGE', 'change_municipal_address', {
+      new_address: newAddress,
+      zip_code: zipCode,
+      proof_document: proofDocument
+    });
+    
+    setTimeout(loadAddressInfo, 500);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadAddressInfo);
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{
+  "task_id": "H4-2025-PARKING",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/parking-permits.html",
+      "note": "Open parking permits page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('申请新许可')",
+      "note": "Click apply for new permit button"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#plate-number",
+      "value": "沪A-12345",
+      "note": "Enter plate number"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#permit-type",
+      "value": "residential",
+      "note": "Select permit type as residential"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#duration-months",
+      "value": "12",
+      "note": "Enter duration in months"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm application"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#permits-list .card",
+      "note": "Wait for permit to appear in list"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": "button:has-text('续费')",
+      "note": "Click renew permit button"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#renew-duration-months",
+      "value": "6",
+      "note": "Enter renewal duration"
+    },
+    {
+      "t": 9,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm renewal"
+    },
+    {
+      "t": 10,
+      "act": "wait",
+      "selector": "#permits-list .card .badge.ok",
+      "note": "Wait for permit status to become active after renewal"
+    }
+  ]
+}
