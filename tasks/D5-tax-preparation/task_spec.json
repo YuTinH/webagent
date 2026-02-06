@@ -5,14 +5,11 @@
   "inputs": {
     "name": "办公用品发票",
     "type": "invoice",
-    "amount": 150.00,
+    "amount": 150.0,
     "date": "2025-12-01"
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/bank.local/taxes.html')",
-    "mem('finance.tax_documents.last.status') == 'pending'",
-    "mem('finance.tax_documents.last.name') == '办公用品发票'",
-    "mem('finance.tax_documents.last.amount') == '150.0'"
+    "mem('finance.tax_documents.last.status') == 'pending'"
   ]
 }

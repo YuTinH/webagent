@@ -8,8 +8,7 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "text(\"#limit-food\") == \"$600.00\"",
-    "json(\"env\",\"finance.budgets.food.limit\") == 600",
-    "mem(\"budget.food.limit\") == \"600.0\""
+    "mem('finance.budgets.utilities.limit') == 200",
+    "json('env','finance.warnings.0') includes 'Budget Alert'"
   ]
 }

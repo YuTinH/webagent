@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>技能认证中心</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🎓 School.local</div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <h1>专业技能认证</h1>
+    <div class="card soft">
+        <h2>可用认证</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); padding:16px; margin-top:16px; border-radius:8px">
+            <div>
+                <h3>Certified Python Expert</h3>
+                <p style="color:var(--muted)">验证您的编程技能，提升职业竞争力。</p>
+            </div>
+            <button class="btn pri" onclick="applyCert()">立即申请</button>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function applyCert() {
+      try {
+          // Task ID J5
+          await send('J5-2025-CERT', 'issue_certificate', {
+              name: 'Certified Python Expert'
+          });
+          Toast.success("认证成功！证书已颁发。");
+      } catch(e) {
+          console.error(e);
+      }
+  }
+  </script>
+</body>
+</html>

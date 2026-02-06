@@ -7,7 +7,21 @@ def handle_j_learning(task_id, action, payload, env, execute_db_fn):
 
     # J1 - Course Enrollment
     if action == 'enroll_course':
+        # CHECK BUTTERFLY EFFECT: Health Status
+        health = env.get('world_state', {}).get('physical_context', {}).get('status', 'healthy')
+        if health == 'impaired':
+            return env, {"error": "无法报名：您当前的体力值不足，请先休息或咨询医生。", "success": False}
+
         course_id = payload.get('courseId', 'DL101')
+        
+        # BUTTERFLY EFFECT: Skill Quality based on Energy
+        energy = env.get('world_state', {}).get('physical_context', {}).get('energy_level', 100)
+        skill_level = 'advanced' if energy >= 50 else 'basic'
+        
+        if 'Writing' in course_id or 'Writing' in payload.get('courseName', ''):
+            if 'world_state' not in env: env['world_state'] = {}
+            if 'skills' not in env['world_state']: env['world_state']['skills'] = {}
+            env['world_state']['skills']['writing'] = skill_level
         
         env = deep_merge(env, {"courses": {course_id: {"state": "enrolled", "enrolled_at": ts}}})
         try:
@@ -175,6 +189,23 @@ def handle_j_learning(task_id, action, payload, env, execute_db_fn):
             return env, {"redirect": "/school.local/event-tickets.html"}
             
         return env, {}
+
+    # J4 - Certification / Hobby Gear (Merged Handler)
+    if action == 'issue_certificate':
+        cert_name = payload.get('name')
+        
+        # BUTTERFLY EFFECT: Skill Certification
+        if 'Certified' in cert_name:
+            if 'world_state' not in env: env['world_state'] = {}
+            if 'skills' not in env['world_state']: env['world_state']['skills'] = {}
+            env['world_state']['skills']['certified'] = True
+            
+            try:
+                execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                           ['world_state.skills.certified', 'True', ts, task_id, 1.0])
+            except: pass
+            
+        return env, {"status": "issued"}
 
     # J4 - Hobby Gear Rent/Sell
     if action == 'manage_gear_listing':

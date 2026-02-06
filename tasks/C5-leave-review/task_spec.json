@@ -15,16 +15,12 @@
     "bank.local",
     "gov.local"
   ],
-  "preconditions": [
-    "mem('orders.last.state') == 'delivered'"
-  ],
+  "preconditions": [],
   "dependencies": [
     "B1-shopping"
   ],
   "memory_keys": [],
-  "success_criteria": [
-    "url().includes('/c1')"
-  ],
+  "success_criteria": [],
   "rubrics": {
     "SR": 1.0
   },

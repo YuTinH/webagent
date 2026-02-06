@@ -29,6 +29,39 @@ def handle_c_support(task_id, action, payload, env, execute_db_fn):
             pass
         return env, {"redirect": "/shop.local/help.html?status=ticket_created"}
 
+    # C2 - Return Request
+    if action == 'submit_return_request':
+        return_id = f"RTN-{random.randint(10000, 99999)}"
+        order_id = payload.get('order_id')
+        reason = payload.get('reason')
+        method = payload.get('method')
+
+        env = deep_merge(env, {"returns": {"requests": {return_id: {
+            "order_id": order_id,
+            "reason": reason,
+            "method": method,
+            "status": "submitted",
+            "submitted_at": ts
+        }}}})
+        
+        # Also update "last" entry
+        env = deep_merge(env, {"returns": {"last": {"id": return_id, "state": "submitted"}}})
+
+        try:
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'returns.requests.{return_id}.id', return_id, ts, task_id, 1.0])
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'returns.requests.{return_id}.status', 'submitted', ts, task_id, 1.0])
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['returns.last.id', return_id, ts, task_id, 1.0])
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['returns.last.state', 'submitted', ts, task_id, 1.0])
+        except Exception as e:
+            print(f"ERROR: C2 return request memory_kv insert failed: {e}")
+            pass
+            
+        return env, {"redirect": "/shop.local/returns-list.html"}
+
     # C3 - Subscription Refund (Prorated)
     if action == 'request_prorated_refund':
         request_id = f"REF-{random.randint(10000, 99999)}"

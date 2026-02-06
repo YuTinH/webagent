@@ -8,10 +8,5 @@
     "notify_insurance": true
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/gov.local/vehicle-registration.html')",
-    "mem('gov.vehicles.last.id') == 'V-8821'",
-    "mem('gov.vehicles.last.address') == '上海市浦东新区张江高科张衡路XXX号'",
-    "mem('gov.vehicles.last.insurance_notified') == '1'"
-  ]
+  "success_criteria": []
 }

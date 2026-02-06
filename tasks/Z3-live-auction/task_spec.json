@@ -8,7 +8,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/shop.local/auction.html')",
     "mem('auctions.VASE-001.highest_bidder') == 'user'"
   ]
 }

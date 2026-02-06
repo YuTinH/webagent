@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Energy Dashboard</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">⚡ Energy.local</div>
+      <div class="navlinks">
+        <a href="index.html" class="active">概览</a>
+        <a href="plan.html">套餐</a>
+        <a href="smart-meter.html">读数</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <h1>能源概览</h1>
+    
+    <div class="card soft">
+        <h2>智能设备状态</h2>
+        <div id="devices-list">
+            <div class="loading">加载中...</div>
+        </div>
+        <div style="margin-top:16px">
+            <a href="bulb-setup.html" class="btn">添加新设备</a>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadDevices() {
+      const list = document.getElementById('devices-list');
+      try {
+          const env = await loadEnv();
+          const devices = env.devices || {};
+          
+          if (Object.keys(devices).length === 0) {
+              list.innerHTML = '<div>暂无设备</div>';
+              return;
+          }
+          
+          list.innerHTML = Object.entries(devices).map(([id, dev]) => `
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding:8px 0">
+                <div>${dev.type} (${dev.location})</div>
+                <div class="badge ${dev.status==='active'?'ok':'warn'}">${dev.status}</div>
+            </div>
+          `).join('');
+          
+      } catch(e) {
+          list.innerHTML = '加载失败';
+      }
+  }
+  
+  // Check URL params for success message
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('setup_success') === 'true') {
+      Toast.success("设备设置成功！");
+  }
+
+  document.addEventListener('DOMContentLoaded', loadDevices);
+  </script>
+</body>
+</html>

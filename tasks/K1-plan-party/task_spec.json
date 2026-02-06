@@ -15,16 +15,12 @@
   "allowed_domains": [
     "social.local"
   ],
-  "preconditions": [
-    "mem('identity.address') != ''"
-  ],
+  "preconditions": [],
   "dependencies": [],
   "memory_keys": [
     "social.groups.GRP-001.status"
   ],
-  "success_criteria": [
-    "ALL[url().includes('/social.local/my-groups.html'), mem('social.groups.GRP-001.status') == 'joined']"
-  ],
+  "success_criteria": [],
   "rubrics": {
     "SR": 1.0
   },

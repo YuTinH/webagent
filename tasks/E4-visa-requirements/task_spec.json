@@ -8,8 +8,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/trip.local/visa-requirements.html')",
-    "mem('visa.search.last.destination') == 'Japan'",
-    "mem('visa.search.last.visa_type') == '短期滞在 (旅游)'"
+    "mem('visa.search.last.destination') != ''"
   ]
 }

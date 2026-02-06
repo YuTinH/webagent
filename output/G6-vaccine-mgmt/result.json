@@ -4,7 +4,7 @@
   "final_state": "completed",
   "steps_completed": 7,
   "steps_total": 7,
-  "time_elapsed": 1.5460259914398193,
+  "time_elapsed": 1.6156485080718994,
   "error": null,
   "trace": [
     {
@@ -57,5 +57,7 @@
   "memory_updates": {},
   "artifacts": [],
   "warnings": [],
-  "extracted_data": {}
+  "extracted_data": {
+    "health.vaccines.last.id": "flu"
+  }
 }

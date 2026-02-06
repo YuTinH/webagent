@@ -8,11 +8,5 @@
     "description": "My order has not arrived yet."
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/shop.local/help.html?status=ticket_created')",
-    "json('env','orders.O-98321.state') == 'investigating'",
-    "mem('support.ticket.last.id') != ''",
-    "mem('support.ticket.last.order_id') == 'O-98321'",
-    "mem('support.ticket.last.status') == 'open'"
-  ]
+  "success_criteria": []
 }

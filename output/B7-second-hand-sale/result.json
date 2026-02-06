@@ -2,10 +2,31 @@
   "task_id": "B7-2025-GEN",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 8,
+  "steps_completed": 6,
   "steps_total": 8,
-  "time_elapsed": 1.5353927612304688,
-  "error": null,
+  "time_elapsed": 31.819669485092163,
+  "error": {
+    "task_id": "B7-2025-GEN",
+    "error_type": "TimeoutError",
+    "timestamp": "2026-02-06T03:06:02.163237Z",
+    "step_index": 6,
+    "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#items-list\") to be visible\n",
+    "context": {
+      "url": "http://localhost:8014/market.local/index.html?listed=true",
+      "screenshot": "errors/B7-2025-GEN/error_step_6.png"
+    },
+    "step": {
+      "t": 6.0,
+      "act": "wait",
+      "selector": "#items-list",
+      "note": "Wait for items list on index page"
+    },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
   "trace": [
     {
       "t": 0,
@@ -23,21 +44,21 @@
     {
       "t": 2.0,
       "act": "type",
-      "selector": "#item-desc",
+      "selector": "#description",
       "value": "Working condition, minor scratches, includes bulb.",
       "note": "Enter description"
     },
     {
       "t": 3.0,
       "act": "type",
-      "selector": "#item-price",
-      "value": "50.00",
+      "selector": "#price",
+      "value": "50",
       "note": "Enter price"
     },
     {
       "t": 4.0,
       "act": "select",
-      "selector": "#item-category",
+      "selector": "#category",
       "value": "home",
       "note": "Select category"
     },
@@ -46,25 +67,10 @@
       "act": "click",
       "selector": "button.pri",
       "note": "Submit listing"
-    },
-    {
-      "t": 6.0,
-      "act": "wait",
-      "selector": "#items-list",
-      "note": "Wait for items list on index page"
-    },
-    {
-      "t": 7.0,
-      "act": "extract",
-      "selector": "#items-list",
-      "variable": "market.listed_items.last.id",
-      "note": "Simulate item ID extraction (as ID not visible on page)"
     }
   ],
   "memory_updates": {},
   "artifacts": [],
   "warnings": [],
-  "extracted_data": {
-    "market.listed_items.last.id": "Used Laptop\n$300.00\n\nGood condition, 8GB RAM, 256GB SSD.\n\nSeller: UserA\nView Details\nVintage Bicycle\n$150.00\n\nClassic model, some rust.\n\nSeller: UserB\nView Details\nOld Books Set\n$20.00\n\nVarious genres, good for reading.\n\nSeller: UserC\nView Details"
-  }
+  "extracted_data": {}
 }

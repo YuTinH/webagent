@@ -91,6 +91,8 @@
           bid_amount: bid
       });
       
+      console.log('DEBUG: placeBid response:', JSON.stringify(resp));
+
       if (resp && resp.success) {
           currentPrice = bid;
           document.getElementById('bidder-info').textContent = "出价人: 您 (领先)";

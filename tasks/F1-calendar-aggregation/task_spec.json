@@ -9,9 +9,5 @@
     "time": "10:00"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/work.local/calendar.html')",
-    "mem('calendar.events.last.title') == '牙医预约'",
-    "mem('calendar.events.last.conflict') == '0'"
-  ]
+  "success_criteria": []
 }

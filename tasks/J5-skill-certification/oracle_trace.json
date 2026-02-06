@@ -1,0 +1,23 @@
+{
+  "task_id": "J5-2025-CERT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/certification.html",
+      "note": "Open certification page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button:has-text('立即申请')",
+      "note": "Click apply button"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": ".toast:has-text('认证成功')",
+      "note": "Wait for success message"
+    }
+  ]
+}

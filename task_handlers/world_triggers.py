@@ -12,9 +12,11 @@ def process_time_triggers(env, execute_db_fn=None):
     ts = current_time.isoformat()
     
     # Debug logging
-    with open("trigger_debug.log", "a") as f:
-        f.write(f"--- Trigger Check at {current_time} ---")
-        f.write(f"DEBUG_WORLD_TRIGGER: Initial env['shop']['orders']: {env.get('shop',{}).get('orders',{})}\n")
+    try:
+        with open("trigger_debug.log", "a") as f:
+            f.write(f"--- Trigger Check at {current_time} ---")
+            f.write(f"DEBUG_WORLD_TRIGGER: Initial env['shop']['orders']: {env.get('shop',{}).get('orders',{})}\n")
+    except: pass
     
     # --- Trigger 1: Visa Application Approval ---
     # Logic: If a visa application is 'pending' and submitted more than 3 days ago, approve it.
@@ -23,9 +25,6 @@ def process_time_triggers(env, execute_db_fn=None):
         for app_id, app in applications.items():
             if app_id == 'last': continue 
             
-            with open("trigger_debug.log", "a") as f:
-                f.write(f"Checking app {app_id}: {app}\n")
-
             if app.get('status') == 'pending':
                 submitted_at_str = app.get('submitted_at')
                 if submitted_at_str:
@@ -33,23 +32,17 @@ def process_time_triggers(env, execute_db_fn=None):
                         submitted_at = datetime.fromisoformat(submitted_at_str)
                         delta_days = (current_time - submitted_at).days
                         
-                        with open("trigger_debug.log", "a") as f:
-                            f.write(f"  Submitted: {submitted_at}, Delta days: {delta_days}\n")
-
                         if delta_days >= 3:
                             app['status'] = 'approved'
                             app['updated_at'] = ts
                             
-                            with open("trigger_debug.log", "a") as f:
-                                f.write(f"  -> APPROVED!\n")
-
                             # Update Memory KV
                             if execute_db_fn:
                                 try:
                                     execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                                                [f'gov.visa_applications.{app_id}.status', 'approved', ts, 'world_trigger', 1.0])
                                 except Exception as e:
-                                    with open("trigger_debug.log", "a") as f: f.write(f"DB Error: {e}\n")
+                                    pass
 
                             # Update 'last' pointer if needed
                             if env['gov']['visa_applications'].get('last', {}).get('id') == app_id:
@@ -60,10 +53,9 @@ def process_time_triggers(env, execute_db_fn=None):
                                                    ['gov.visa_applications.last.status', 'approved', ts, 'world_trigger', 1.0])
                                     except: pass
                     except Exception as e:
-                        with open("trigger_debug.log", "a") as f:
-                            f.write(f"  Error: {e}\n")
+                        pass
 
-    # --- Trigger 2: Order Delivery ---
+    # --- Trigger 2: Order Delivery (Shop) ---
     # Logic: If order is 'confirmed' and > 2 days old, mark as 'delivered'.
     if 'shop' in env and 'orders' in env['shop']:
         for oid, order in env['shop']['orders'].items():
@@ -82,8 +74,6 @@ def process_time_triggers(env, execute_db_fn=None):
                         order_date = datetime.fromisoformat(date_str)
                         if (current_time - order_date).days >= 2:
                             order[status_key] = 'delivered'
-                            with open("trigger_debug.log", "a") as f:
-                                f.write(f"  Order {oid} DELIVERED!\n")
                             
                             # Update Memory KV
                             if execute_db_fn:
@@ -122,9 +112,6 @@ def process_time_triggers(env, execute_db_fn=None):
                             acc['balance'] = new_bal
                             acc['interest_applied'] = True # Flag to prevent double application
                             
-                            with open("trigger_debug.log", "a") as f:
-                                f.write(f"  Investment {acc_id} GROWTH! {current_bal} -> {new_bal}\n")
-                            
                             if execute_db_fn:
                                 try:
                                     execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
@@ -132,12 +119,32 @@ def process_time_triggers(env, execute_db_fn=None):
                                 except: pass
                                 
                             if env['finance']['investment_accounts'].get('last', {}).get('id') == acc_id:
-                                env['finance']['investment_accounts']['last']['balance'] = str(new_bal) # specific logic uses str in memory
+                                env['finance']['investment_accounts']['last']['balance'] = str(new_bal)
                                 if execute_db_fn:
                                     try:
                                         execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                                                    ['finance.investment_accounts.last.balance', str(new_bal), ts, 'world_trigger', 1.0])
                                     except: pass
+                    except: pass
+
+    # --- Trigger 4: Food Order Delivery ---
+    if 'food' in env and 'orders' in env['food']:
+        for oid, order in env['food']['orders'].items():
+            if oid == 'last': continue
+            if order.get('status') == 'pending':
+                ordered_at_str = order.get('ordered_at')
+                if ordered_at_str:
+                    try:
+                        ordered_at = datetime.fromisoformat(ordered_at_str)
+                        # Food arrives faster (e.g. 1 hour simulation jump)
+                        # If time has passed at least 1 hour
+                        if (current_time - ordered_at).total_seconds() >= 3600:
+                            order['status'] = 'delivered'
+                            if execute_db_fn:
+                                try:
+                                    execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                                               ['food.order.last.status', 'delivered', ts, 'world_trigger', 1.0])
+                                except: pass
                     except: pass
 
     return env

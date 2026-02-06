@@ -68,6 +68,14 @@ def handle_i_repair(task_id, action, payload, env, execute_db_fn):
     if action == 'submit_appliance_repair':
         request_id = f"APR-{random.randint(10000, 99999)}"
         appliance = payload.get('appliance')
+        
+        # BUTTERFLY EFFECT: Vehicle Condition
+        if 'Car' in appliance or 'Vehicle' in appliance:
+            if 'world_state' not in env: env['world_state'] = {}
+            if 'vehicle_context' not in env['world_state']: env['world_state']['vehicle_context'] = {}
+            # Submitting a repair means it's broken, waiting for fix.
+            env['world_state']['vehicle_context']['condition'] = 'under_repair'
+        
         serial_number = payload.get('serial_number')
         problem = payload.get('problem')
         service_date = payload.get('service_date')
@@ -177,7 +185,24 @@ def handle_i_repair(task_id, action, payload, env, execute_db_fn):
     if action == 'set_energy_plan':
         plan = payload.get('plan','green_offpeak')
         meter = payload.get('meterId','M-321')
+        
+        # BUTTERFLY EFFECT: Cost Projection
+        if 'world_state' not in env: env['world_state'] = {}
+        if 'energy_context' not in env['world_state']: env['world_state']['energy_context'] = {}
+        
+        if plan == 'premium_flat_rate':
+            env['world_state']['energy_context']['projected_cost'] = 'high'
+        else:
+            env['world_state']['energy_context']['projected_cost'] = 'low'
+            
         env = deep_merge(env, {"meters":{meter:{"plan":plan}}})
+        
+        try:
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       [f'meters.{meter}.plan', plan, ts, task_id, 1.0])
+        except Exception:
+            pass
+            
         return env, {"redirect": "/energy.local/plan.html"}
 
     return env, {}

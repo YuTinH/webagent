@@ -59,6 +59,23 @@
       }
     }
   },
+  "world_state": {
+    "location_context": {
+      "tier": "city_center",
+      "description": "住在市中心，公共交通发达"
+    },
+    "financial_context": {
+      "liquidity": "active",
+      "credit_rating": "good"
+    },
+    "physical_context": {
+      "status": "healthy",
+      "energy_level": 100
+    },
+    "energy_context": {
+      "projected_cost": "low"
+    }
+  },
   "health": {
     "insurance": {
       "active": true,
@@ -87,7 +104,13 @@
   },
   "meters": {
     "M-321": {
-      "plan": "standard"
+      "plan": "green_offpeak"
+    },
+    "meter_data": {
+      "current_reading": 12500.5,
+      "last_billed_reading": 0.0,
+      "last_bill_amount": 0.0,
+      "last_bill_date": null
     }
   },
   "shop": {
@@ -111,7 +134,7 @@
           }
         ],
         "total": 29.99,
-        "state": "confirmed",
+        "state": "delivered",
         "shipping_speed": "standard",
         "shipping_address": "123 Main St",
         "date": "2026-01-01T10:00:00.000000"
@@ -129,18 +152,42 @@
   "expenses": {
     "reports": {}
   },
-  "support": {
-    "chat_history": [
-      {
-        "role": "user",
-        "text": "请帮我查一下订单 O-93902 的状态",
-        "time": "2026-01-17T16:00:52.235527"
+  "balance": 5000,
+  "energy_level": 100,
+  "food": {
+    "orders": {
+      "ODR-45165": {
+        "restaurant": "Burger Kingpin",
+        "items": [
+          "Classic Burger",
+          "Cheese Deluxe"
+        ],
+        "total": 19.98,
+        "status": "delivered",
+        "ordered_at": "2026-02-06T03:23:18.293943"
       },
-      {
-        "role": "bot",
-        "text": "为您查询到订单 <b>O-93902</b> 的状态：已确认，正在为您准备发货。<br>总金额：¥29.99",
-        "time": "2026-01-17T16:00:52.235527"
+      "last": {
+        "id": "ODR-45165",
+        "restaurant": "Burger Kingpin",
+        "items": [
+          "Classic Burger",
+          "Cheese Deluxe"
+        ],
+        "total": 19.98,
+        "status": "pending",
+        "ordered_at": "2026-02-06T03:23:18.293943"
       }
-    ]
+    }
+  },
+  "system_time": "2026-02-09T03:23:20.578493",
+  "autopay": {
+    "utility": {
+      "payee": "Utilities",
+      "account_type": "checking",
+      "amount": 150.0,
+      "frequency": "monthly",
+      "next_date": "2025-12-20",
+      "status": "active"
+    }
   }
 }

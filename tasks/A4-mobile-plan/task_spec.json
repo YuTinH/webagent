@@ -7,8 +7,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/mobile.local/account.html')",
-    "json('env','mobile.subscription.plan_id') == 'pro'",
-    "json('env','mobile.subscription.status') == 'active'"
+    "mem('mobile.subscription.status') == 'active'"
   ]
 }

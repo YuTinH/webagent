@@ -1,7 +1,7 @@
 {
   "task_id": "I1-2025-SMARTBULB",
   "error_type": "TimeoutError",
-  "timestamp": "2025-12-29T08:01:47.846317Z",
+  "timestamp": "2026-01-21T03:44:56.708259Z",
   "step_index": 5,
   "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"h1:has-text('\u667a\u80fd\u706f\u6ce1\u8bbe\u7f6e')\") to be visible\n",
   "context": {

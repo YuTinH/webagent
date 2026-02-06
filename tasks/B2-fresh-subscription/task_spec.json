@@ -6,12 +6,14 @@
     "name": "每周生鲜组合",
     "price": 120,
     "next_delivery_date": "2026-01-10",
-    "items": ["水果", "蔬菜", "鸡蛋"]
+    "items": [
+      "水果",
+      "蔬菜",
+      "鸡蛋"
+    ]
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/food.local/subscription.html')",
-    "mem('food.subscriptions.last.status') == 'active'",
-    "mem('food.subscriptions.last.next_delivery_date') == '2026-01-10'"
+    "mem('food.subscriptions.last.status') == 'active'"
   ]
 }

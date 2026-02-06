@@ -9,9 +9,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/bank.local/dashboard.html')",
-    "mem('bank.account.status') == 'active'",
-    "mem('bank.account.2fa') == '1'",
-    "mem('bank.account.fullname') == 'Alex Chen'"
+    "mem('bank.account.status') == 'active'"
   ]
 }

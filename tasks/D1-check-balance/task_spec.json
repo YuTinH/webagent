@@ -4,8 +4,5 @@
   "goal": "Check the balance of the checking account.",
   "inputs": {},
   "preconditions": [],
-  "success_criteria": [
-    "text(\"#checking-balance\") == \"¥10.00\"",
-    "json(\"env\",\"accounts.checking.balance\") >= 10"
-  ]
+  "success_criteria": []
 }

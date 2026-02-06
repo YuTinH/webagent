@@ -50,8 +50,23 @@ def handle_e_travel(task_id, action, payload, env, execute_db_fn):
     if action == 'search_commute_route':
         origin = payload.get('origin')
         destination = payload.get('destination')
-        commute_time = payload.get('commute_time')
         transport_mode = payload.get('transport_mode')
+
+        # BUTTERFLY EFFECT: Calculate costs based on Abstract World Attribute
+        location_tier = env.get('world_state', {}).get('location_context', {}).get('tier', 'city_center')
+        
+        # Base stats (City Center)
+        taxi_cost = 35.0
+        taxi_time = "20分钟"
+        subway_cost = 5.0
+        subway_time = "30分钟"
+        
+        # Logic: If address is Suburban, costs increase significantly
+        if location_tier == 'suburban':
+            taxi_cost = 120.0
+            taxi_time = "50分钟"
+            subway_cost = 15.0
+            subway_time = "70分钟"
 
         # Simulate route results based on mode
         results = {}
@@ -65,7 +80,7 @@ def handle_e_travel(task_id, action, payload, env, execute_db_fn):
             results['subway_route'] = {
                 "transport_mode_cn": "地铁", "route_name": "地铁2号线",
                 "origin": origin, "destination": destination,
-                "duration": "30分钟", "cost": 5.0, "details": "直达，早高峰人多"
+                "duration": subway_time, "cost": subway_cost, "details": "直达，早高峰人多"
             }
         if transport_mode == 'bike' or transport_mode == 'all':
             results['bike_route'] = {
@@ -77,7 +92,7 @@ def handle_e_travel(task_id, action, payload, env, execute_db_fn):
             results['car_hailing_route'] = {
                 "transport_mode_cn": "打车", "route_name": "出租车/网约车",
                 "origin": origin, "destination": destination,
-                "duration": "20分钟", "cost": 35.0, "details": "最快，费用高"
+                "duration": taxi_time, "cost": taxi_cost, "details": "最快，费用高"
             }
 
         env = deep_merge(env, {"commute": {"search_results": results}})
@@ -89,6 +104,8 @@ def handle_e_travel(task_id, action, payload, env, execute_db_fn):
                        ['commute.last_search.destination', destination, ts, task_id, 1.0])
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        ['commute.last_search.transport_mode', transport_mode, ts, task_id, 1.0])
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['commute.last_search.cost', str(taxi_cost), ts, task_id, 1.0])
         except Exception as e:
             print(f"ERROR: E1 commute search memory_kv insert failed: {e}")
             pass
@@ -183,6 +200,30 @@ def handle_e_travel(task_id, action, payload, env, execute_db_fn):
         except Exception:
             pass
         return env, {"redirect": "/trip.local/manage.html?status=confirmed"}
+
+    # E3 - Airport Transfer
+    if action == 'book_airport_transfer':
+        method = payload.get('method') # 'self_drive', 'taxi', 'shuttle'
+        
+        # BUTTERFLY EFFECT: Check Vehicle Condition
+        if method == 'self_drive':
+            condition = env.get('world_state', {}).get('vehicle_context', {}).get('condition', 'good')
+            if condition == 'under_repair' or condition == 'broken':
+                return env, {"error": "Cannot self-drive: Vehicle is currently under repair.", "success": False}
+
+        transfer_id = f"TRF-{random.randint(1000,9999)}"
+        env = deep_merge(env, {"trips": {"transfer": {"id": transfer_id, "method": method, "status": "booked"}}})
+        
+        try:
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['trips.transfer.id', transfer_id, ts, task_id, 1.0])
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['trips.transfer.method', method, ts, task_id, 1.0])
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['trips.transfer.status', 'booked', ts, task_id, 1.0])
+        except: pass
+        
+        return env, {"redirect": "/trip.local/transfer.html?booked=true"}
 
     # E4 - Visa Requirements Search
     if action == 'search_visa_requirements':

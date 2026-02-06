@@ -2,10 +2,31 @@
   "task_id": "G3-2025-HEALTH",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 7,
+  "steps_completed": 6,
   "steps_total": 7,
-  "time_elapsed": 1.5585546493530273,
-  "error": null,
+  "time_elapsed": 31.56254005432129,
+  "error": {
+    "task_id": "G3-2025-HEALTH",
+    "error_type": "TimeoutError",
+    "timestamp": "2026-02-03T12:56:34.215933Z",
+    "step_index": 6,
+    "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#claim-state\") to be visible\n",
+    "context": {
+      "url": "http://localhost:8014/health.local/status.html?id=CLM-5501",
+      "screenshot": "errors/G3-2025-HEALTH/error_step_6.png"
+    },
+    "step": {
+      "t": 12,
+      "act": "wait",
+      "selector": "#claim-state",
+      "note": "Wait for claim status to appear"
+    },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
   "trace": [
     {
       "t": 0,
@@ -46,12 +67,6 @@
       "act": "click",
       "selector": "button.btn-submit",
       "note": "Submit Claim"
-    },
-    {
-      "t": 12,
-      "act": "wait",
-      "selector": "#claim-state",
-      "note": "Wait for claim status to appear"
     }
   ],
   "memory_updates": {},

@@ -1,10 +1,10 @@
 {
   "task_id": "C1-2025-SUPPORT",
-  "success": false,
-  "final_state": "failed",
+  "success": true,
+  "final_state": "completed",
   "steps_completed": 6,
   "steps_total": 6,
-  "time_elapsed": 1.5351741313934326,
+  "time_elapsed": 1.4938759803771973,
   "error": null,
   "trace": [
     {

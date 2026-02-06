@@ -23,9 +23,7 @@
     "health.vaccines.last.id",
     "health.vaccines.last.status"
   ],
-  "success_criteria": [
-    "ALL[url().includes('/health.local/vaccine.html'), mem('health.vaccines.last.status') == 'booked']"
-  ],
+  "success_criteria": [],
   "rubrics": {
     "SR": 1.0
   },

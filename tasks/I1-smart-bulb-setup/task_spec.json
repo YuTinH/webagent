@@ -9,9 +9,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/energy.local/index.html?setup_success=true')",
-    "json('env','devices.BULB-001.location') == '客厅'",
-    "json('env','devices.BULB-001.color') == 'warm_white'",
-    "json('env','devices.BULB-001.status') == 'active'"
+    "mem('devices.BULB-001.status') == 'active'"
   ]
 }

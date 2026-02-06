@@ -35,10 +35,10 @@
       "note": "Click 'Complete Setup' button"
     },
     {
-      "t": 10,
+      "t": 6,
       "act": "wait",
-      "selector": "h1:has-text('智能灯泡设置')",
-      "note": "Wait for confirmation message or page reload"
+      "selector": "div:has-text('smart_bulb')",
+      "note": "Wait for device to appear in list"
     }
   ]
 }

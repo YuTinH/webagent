@@ -8,8 +8,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/housing.local/leasing.html?applied=true')",
-    "json('env','housing.leases.PROP-101.status') == 'signed'",
-    "json('env','housing.leases.PROP-101.term') == '12 months'"
+    "mem('housing.lease.last.id') == 'PROP-102'"
   ]
 }

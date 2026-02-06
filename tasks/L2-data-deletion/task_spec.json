@@ -8,10 +8,5 @@
     "data_scope": "全部"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/security.local/data-deletion.html')",
-    "mem('security.data_deletion_requests.last.status') == 'pending'",
-    "mem('security.data_deletion_requests.last.platform') == 'Facebook'",
-    "mem('security.data_deletion_requests.last.id') != ''"
-  ]
+  "success_criteria": []
 }

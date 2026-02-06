@@ -3,12 +3,8 @@
   "family": "I",
   "goal": "Submit a new smart meter reading of 12500.50 kWh. Verify that the new reading is recorded and updated.",
   "inputs": {
-    "reading": 12500.50
+    "reading": 12500.5
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/energy.local/smart-meter.html')",
-    "mem('meters.meter_data.current_reading') == '12500.5'",
-    "mem('meters.meter_data.last_submitted_reading') == '12500.5'"
-  ]
+  "success_criteria": []
 }

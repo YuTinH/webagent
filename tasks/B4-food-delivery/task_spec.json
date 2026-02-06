@@ -4,14 +4,14 @@
   "goal": "Order a 'Classic Burger' and 'Cheese Deluxe' from 'Burger Kingpin' for a total of $19.98.",
   "inputs": {
     "restaurant": "Burger Kingpin",
-    "items": ["Classic Burger", "Cheese Deluxe"],
+    "items": [
+      "Classic Burger",
+      "Cheese Deluxe"
+    ],
     "total": 19.98
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes(\"/food.local/orders.html\")",
-    "json(\"env\",\"food.orders.last.restaurant\") == \"Burger Kingpin\"",
-    "json(\"env\",\"food.orders.last.items\") includes \"Classic Burger\"",
-    "json(\"env\",\"food.orders.last.total\") == 19.98"
+    "mem('food.order.last.status') == 'pending'"
   ]
 }

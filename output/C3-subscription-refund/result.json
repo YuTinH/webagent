@@ -1,49 +1,43 @@
 {
-  "task_id": "C3-2025-SUBREFUND",
+  "task_id": "C3-2025-REFUND",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 6,
-  "steps_total": 6,
-  "time_elapsed": 1.7601299285888672,
+  "steps_completed": 5,
+  "steps_total": 5,
+  "time_elapsed": 1.5241568088531494,
   "error": null,
   "trace": [
     {
       "t": 0,
       "act": "open",
-      "url": "http://localhost:8014/shop.local/subscriptions.html",
-      "note": "Open subscriptions management page"
+      "url": "http://localhost:8014/shop.local/help-refund.html",
+      "note": "Open subscription refund page"
     },
     {
       "t": 1,
-      "act": "click",
-      "selector": "button:has-text('\u7533\u8bf7\u9000\u6b3e')",
-      "note": "Click request refund button for SUB-001"
+      "act": "select",
+      "selector": "#subscription-select",
+      "value": "SUB-8821",
+      "note": "Select subscription SUB-8821"
     },
     {
       "t": 2,
       "act": "type",
       "selector": "#refund-reason",
-      "value": "\u63d0\u524d\u7ec8\u6b62\u670d\u52a1",
+      "value": "\u670d\u52a1\u4e0d\u518d\u9700\u8981",
       "note": "Enter refund reason"
     },
     {
       "t": 3,
-      "act": "type",
-      "selector": "#days-used",
-      "value": "10",
-      "note": "Enter days used for prorated calculation"
+      "act": "click",
+      "selector": "button:has-text('\u63d0\u4ea4\u9000\u6b3e\u7533\u8bf7')",
+      "note": "Click submit button"
     },
     {
       "t": 4,
-      "act": "click",
-      "selector": ".modal-confirm",
-      "note": "Submit refund application"
-    },
-    {
-      "t": 5,
       "act": "wait",
-      "selector": "#subscriptions-list .card .badge.warn",
-      "note": "Wait for subscription status to change to refund_requested or similar indicator"
+      "selector": "#refund-requests-list .card",
+      "note": "Wait for request to appear in list"
     }
   ],
   "memory_updates": {},

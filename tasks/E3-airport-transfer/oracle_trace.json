@@ -1,5 +1,30 @@
 {
-  "task_id": "E3-2025-GEN",
-  "agent_version": "placeholder",
-  "steps": []
+  "task_id": "E3-2025-TRANSFER",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/transfer.html",
+      "note": "Open transfer booking page"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#transfer-method",
+      "value": "taxi",
+      "note": "Select transfer method"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('确认预订')",
+      "note": "Click confirm button"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "h1:has-text('预订成功')",
+      "note": "Wait for success message (H1 update)"
+    }
+  ]
 }

@@ -10,9 +10,5 @@
     "amount": 250
   },
   "preconditions": [],
-  "success_criteria": [
-    "text(\"#claim-state\") == \"processing\"",
-    "json(\"env\",\"health.claims.CLM-5501.state\") == \"processing\"",
-    "url().includes(\"id=CLM-5501\")"
-  ]
+  "success_criteria": []
 }

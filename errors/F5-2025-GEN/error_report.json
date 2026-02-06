@@ -1,19 +1,19 @@
 {
   "task_id": "F5-2025-GEN",
   "error_type": "TimeoutError",
-  "timestamp": "2025-12-17T04:31:50.316688Z",
-  "step_index": 2,
-  "error_message": "Page.set_input_files: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#file-upload\")\n    65 \u00d7 locator resolved to <input type=\"file\" id=\"file-upload\" class=\"input mt-1\"/>\n",
+  "timestamp": "2026-02-05T03:33:59.988560Z",
+  "step_index": 1,
+  "error_message": "Page.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#doc-type\")\n",
   "context": {
     "url": "http://localhost:8014/cloud.local/index.html",
-    "screenshot": "errors/F5-2025-GEN/error_step_2.png"
+    "screenshot": "errors/F5-2025-GEN/error_step_1.png"
   },
   "step": {
-    "t": 2.0,
-    "act": "upload",
-    "selector": "#file-upload",
-    "value": "utility_bill_dec.pdf",
-    "note": "Upload file"
+    "t": 1.0,
+    "act": "select",
+    "selector": "#doc-type",
+    "value": "receipt",
+    "note": "Select document type"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",

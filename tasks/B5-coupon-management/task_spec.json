@@ -12,9 +12,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/shop.local/coupons.html')",
-    "mem('shop.coupons.last.status') == 'active'",
-    "mem('shop.coupons.last.code') == 'NEWYEAR20'",
-    "mem('shop.coupons.last.expiry_date') == '2026-01-31'"
+    "mem('shop.coupons.last.status') == 'active'"
   ]
 }

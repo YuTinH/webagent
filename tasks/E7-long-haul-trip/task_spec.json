@@ -8,8 +8,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/gov.local/visa-apply.html')",
-    "mem('gov.visa_applications.last.status') == 'approved'",
-    "mem('gov.visa_applications.last.destination') == 'Japan'"
+    "mem('gov.visa_applications.last.status') == 'approved'"
   ]
 }

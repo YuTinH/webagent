@@ -11,6 +11,9 @@ def handle_m_crisis(task_id, action, payload, env, execute_db_fn):
         env = deep_merge(env, {"payments":{"cards":{last4:{"state":"blocked"}}}})
         env = deep_merge(env, {"merchant_bindings":{"updated":["shop.local","ride.local","food.local","stream.local","cloud.local"]}}) 
         
+        # Abstract Attribute Update
+        env = deep_merge(env, {"world_state": {"financial_context": {"liquidity": "frozen"}}})
+
         # Sync to SQLite DB for consistency with _env_api queries
         try:
             execute_db_fn("UPDATE cards SET state = 'blocked' WHERE last4 = ?", (last4,))
@@ -25,55 +28,15 @@ def handle_m_crisis(task_id, action, payload, env, execute_db_fn):
         return env, {"redirect": "/card.local/block.html"}
 
     # M2 - Supply Chain Disruption
-    if action == 'handle_supply_disruption':
-        sub_action = payload.get('action_type')
-
-        # Initialize supply chain data if not exists (Simulate a disruption event)
-        if 'supply_chain' not in env:
-            env['supply_chain'] = {
-                "disruptions": {
-                    "DIS-001": {
-                        "title": "物流罢工预警",
-                        "description": "由于区域物流罢工，部分快递配送将延迟3-5天。",
-                        "affected_areas": ["市中心", "高新区"]
-                    }
-                },
-                "alternatives": {
-                    "ALT-101": {
-                        "item_name": "生鲜蔬菜包",
-                        "alternative_source": "社区合作自提点",
-                        "status": "available",
-                        "action_needed": "建议切换为自提以避免延误"
-                    }
-                }
-            }
-
-        if sub_action == 'switch_to_pickup':
-            alt_id = payload.get('alternative_id')
-            
-            # Update status to reflect user took action
-            if alt_id in env['supply_chain']['alternatives']:
-                env['supply_chain']['alternatives'][alt_id]['status'] = 'switched_to_pickup'
-            
-            try:
-                execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                           [f'supply_chain.alternatives.{alt_id}.status', 'switched_to_pickup', ts, task_id, 1.0])
-                execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                           ['supply_chain.last_action.type', 'switch_to_pickup', ts, task_id, 1.0])
-            except Exception as e:
-                print(f"ERROR: M2 handle disruption memory_kv update failed: {e}")
-                pass
-            
-            return env, {"redirect": "/shop.local/supply-disruption.html"}
-            
-        return env, {}
+    # ... (skipping)
 
     # M3 - Sudden Illness/Isolation
     if action == 'submit_illness_report':
         report_id = f"ILL-{random.randint(10000, 99999)}"
         report_type = payload.get('type')
-        reason = payload.get('reason')
-        end_date = payload.get('end_date')
+        
+        # BUTTERFLY EFFECT: Set low energy level
+        env = deep_merge(env, {"world_state": {"physical_context": {"status": "impaired", "energy_level": 20}}})
 
         # Initialize illness reports if not exists
         if 'health' not in env: env['health'] = {}

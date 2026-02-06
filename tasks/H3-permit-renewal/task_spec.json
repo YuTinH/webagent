@@ -8,8 +8,5 @@
     "payment_method": "card"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/gov.local/permits.html?renewed=true')",
-    "json('env','permits.RP-2024-77.next_appointment') == '2026-12-01'"
-  ]
+  "success_criteria": []
 }

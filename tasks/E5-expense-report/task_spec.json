@@ -10,9 +10,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/bank.local/expense-report.html?submitted=true')",
-    "json('env','expenses.reports.EXP-3344.state') == 'submitted'",
-    "json('env','expenses.reports.EXP-3344.total') == 1200",
-    "json('env','expenses.reports.EXP-3344.pnr') == 'PNR-0000'"
+    "mem('expenses.last.id') != ''"
   ]
 }

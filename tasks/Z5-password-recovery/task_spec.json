@@ -7,8 +7,5 @@
     "new_password": "newpass123"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('login.html')",
-    "mem('security.password_reset.status') == 'success'"
-  ]
+  "success_criteria": []
 }

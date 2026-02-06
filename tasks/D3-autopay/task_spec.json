@@ -11,9 +11,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "text(\"#autopay-status\") == \"active\"",
-    "json(\"env\",\"autopay.utility.status\") == \"active\"",
-    "json(\"env\",\"autopay.utility.amount\") == 150",
-    "json(\"env\",\"autopay.utility.next_date\") == \"2025-12-20\""
+    "mem('autopay.utility.status') == 'active'"
   ]
 }

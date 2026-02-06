@@ -4,7 +4,7 @@
   "final_state": "completed",
   "steps_completed": 10,
   "steps_total": 10,
-  "time_elapsed": 3.672919750213623,
+  "time_elapsed": 3.6453301906585693,
   "error": null,
   "trace": [
     {
@@ -36,13 +36,13 @@
     {
       "t": 8,
       "act": "wait",
-      "selector": ".property-card",
+      "selector": ".property-card:has(.property-title:has-text('\u9633\u5149\u6d77\u5cb8\u522b\u5885\u533a20\u53f7'))",
       "note": "Wait for property listings to load"
     },
     {
-      "t": 10,
+      "t": 5,
       "act": "click",
-      "selector": ".property-card:has(.property-title:has-text('\u4e2d\u592e\u5927\u8857101\u53f7'))",
+      "selector": ".property-card:has(.property-title:has-text('\u9633\u5149\u6d77\u5cb8\u522b\u5885\u533a20\u53f7'))",
       "note": "Click property card for \u4e2d\u592e\u5927\u8857101\u53f7"
     },
     {

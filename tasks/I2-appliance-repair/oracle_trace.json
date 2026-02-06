@@ -17,7 +17,7 @@
       "t": 2,
       "act": "type",
       "selector": "#appliance-name",
-      "value": "洗衣机",
+      "value": "My Car",
       "note": "Enter appliance name"
     },
     {
@@ -31,7 +31,7 @@
       "t": 4,
       "act": "type",
       "selector": "#problem-description",
-      "value": "无法启动",
+      "value": "Engine noise",
       "note": "Enter problem description"
     },
     {

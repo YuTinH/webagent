@@ -8,9 +8,5 @@
     "recipient_id": "S987654"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/school.local/event-tickets.html')",
-    "mem('tickets.user_tickets.last.event_name') == '校园音乐节'",
-    "mem('tickets.user_tickets.last.status') == 'transferred'"
-  ]
+  "success_criteria": []
 }

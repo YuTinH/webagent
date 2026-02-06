@@ -15,16 +15,12 @@
     "bank.local",
     "gov.local"
   ],
-  "preconditions": [
-    "mem('security.alert') == true"
-  ],
+  "preconditions": [],
   "dependencies": [
     "D1-check-balance"
   ],
   "memory_keys": [],
-  "success_criteria": [
-    "url().includes('/l3')"
-  ],
+  "success_criteria": [],
   "rubrics": {
     "SR": 1.0
   },

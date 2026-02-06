@@ -2,10 +2,31 @@
   "task_id": "K1-2025-GEN",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 5,
+  "steps_completed": 2,
   "steps_total": 5,
-  "time_elapsed": 1.8343493938446045,
-  "error": null,
+  "time_elapsed": 30.568236827850342,
+  "error": {
+    "task_id": "K1-2025-GEN",
+    "error_type": "TimeoutError",
+    "timestamp": "2026-02-06T01:38:40.507229Z",
+    "step_index": 2,
+    "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#rules-check\")\n    - locator resolved to <input type=\"checkbox\" id=\"rules-check\"/>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    58 \u00d7 waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n",
+    "context": {
+      "url": "http://localhost:8014/social.local/index.html",
+      "screenshot": "errors/K1-2025-GEN/error_step_2.png"
+    },
+    "step": {
+      "t": 2.0,
+      "act": "click",
+      "selector": "#rules-check",
+      "note": "Agree to rules"
+    },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
   "trace": [
     {
       "t": 0,
@@ -18,24 +39,6 @@
       "act": "click",
       "selector": ".card:first-child .btn",
       "note": "Click Join on Springfield Neighborhood"
-    },
-    {
-      "t": 2.0,
-      "act": "click",
-      "selector": "#rules-check",
-      "note": "Agree to rules"
-    },
-    {
-      "t": 3.0,
-      "act": "click",
-      "selector": "#join-modal button.pri",
-      "note": "Confirm Join"
-    },
-    {
-      "t": 4.0,
-      "act": "wait",
-      "selector": ".badge.ok",
-      "note": "Wait for membership badge"
     }
   ],
   "memory_updates": {},

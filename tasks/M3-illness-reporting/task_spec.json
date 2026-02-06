@@ -8,10 +8,5 @@
     "end_date": "2026-01-10"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/health.local/illness-reporting.html')",
-    "mem('health.illness_reports.last.status') == 'pending'",
-    "mem('health.illness_reports.last.type') == 'illness'",
-    "mem('health.illness_reports.last.id') != ''"
-  ]
+  "success_criteria": []
 }

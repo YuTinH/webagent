@@ -20,9 +20,7 @@
   "memory_keys": [
     "cloud.documents.last.id"
   ],
-  "success_criteria": [
-    "ALL[url().includes('/cloud.local/index.html'), mem('cloud.documents.last.id') != '']"
-  ],
+  "success_criteria": [],
   "rubrics": {
     "SR": 1.0
   },

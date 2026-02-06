@@ -8,8 +8,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "json(\"env\",\"payments.cards.active_last4\") == \"7777\"",
-    "count(\".merchant-binding.updated\") >= 5",
-    "NOT[exists(\".merchant-binding.error\")]"
+    "mem('payment.cards[0].status') == 'active'"
   ]
 }

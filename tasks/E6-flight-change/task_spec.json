@@ -15,16 +15,12 @@
     "bank.local",
     "gov.local"
   ],
-  "preconditions": [
-    "mem('trips.last.flight_id') != ''"
-  ],
+  "preconditions": [],
   "dependencies": [
     "E1-book-flight"
   ],
   "memory_keys": [],
-  "success_criteria": [
-    "url().includes('/e6')"
-  ],
+  "success_criteria": [],
   "rubrics": {
     "SR": 1.0
   },

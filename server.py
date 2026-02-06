@@ -37,8 +37,11 @@ DB_PATH = os.path.join(ROOT, 'data.db')
 # ============================================================================ 
 
 def load_env():
-    """Load environment state from JSON file"""
-    return json.load(open(STATE_PATH, 'r', encoding='utf-8')) if os.path.exists(STATE_PATH) else {}
+    """Load environment state from JSON file, initializing if missing"""
+    if os.path.exists(STATE_PATH):
+        return json.load(open(STATE_PATH, 'r', encoding='utf-8'))
+    else:
+        return reset_env()
 
 def save_env(env):
     """Save environment state to JSON file"""
@@ -52,6 +55,7 @@ def reset_env():
         if fn.endswith('_initial.json'):
             env = deep_merge(env, json.load(open(os.path.join(ENV_DIR, fn), 'r', encoding='utf-8')))
     save_env(env)
+    return env
 
 def query_env_path(env, path):
     """
@@ -116,6 +120,11 @@ def mutate_env(task_id, action, payload, env):
     # execute_db is defined below, but will be available at runtime
     db_fn = execute_db 
 
+    # DEBUG Handler
+    if task_id == 'DEBUG':
+        if action == 'set_state':
+            return deep_merge(env, payload), {}
+
     if task_id.startswith('A'):
         return handle_a_housing(task_id, action, payload, env, db_fn)
     elif task_id.startswith('B'):
@@ -160,13 +169,20 @@ def query_db(query, args=(), one=False):
     conn.close()
     return (rv[0] if rv else None) if one else rv
 
-def execute_db(query, args=()):
-    conn = get_db()
-    cur = conn.execute(query, args)
-    conn.commit()
-    last_id = cur.lastrowid
-    conn.close()
-    return last_id
+def execute_db(sql, args=[]):
+    import time
+    for attempt in range(10):
+        try:
+            with sqlite3.connect(DB_PATH, timeout=30) as conn:
+                conn.execute(sql, args)
+                conn.commit()
+            return
+        except sqlite3.OperationalError as e:
+            if "locked" in str(e):
+                time.sleep(0.5)
+            else:
+                raise e
+    print(f"ERROR: Failed to execute DB after 10 attempts: {sql}")
 
 def row_to_dict(row):
     if not row:
@@ -935,6 +951,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             ts = datetime.now().isoformat()
             execute_db("INSERT OR REPLACE INTO memory_kv (key, value, ts, source, confidence) VALUES (?, ?, ?, ?, ?)",
                       ['returns.last.id', return_id, ts, 'server', 1.0])
+            execute_db("INSERT OR REPLACE INTO memory_kv (key, value, ts, source, confidence) VALUES (?, ?, ?, ?, ?)",
+                      ['returns.last.state', 'submitted', ts, 'server', 1.0])
 
             result = {'success': True, 'return_id': return_id, 'state': 'submitted'}
             self.send_response(200); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_cors_headers(); self.end_headers()

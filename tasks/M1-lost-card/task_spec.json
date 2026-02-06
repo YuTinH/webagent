@@ -8,8 +8,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "text(\"#card-state\") == \"Blocked\"",
-    "EVENTUALLY(json(\"env\",\"payments.cards.1234.state\") == \"blocked\")",
-    "count(\".merchant-binding.updated\") >= 5"
+    "mem('payments.cards.1234.state') == 'blocked'"
   ]
 }

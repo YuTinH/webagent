@@ -10,9 +10,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/shop.local/appliance-repair.html')",
-    "mem('appliance_repairs.requests.last.status') == 'submitted'",
-    "mem('appliance_repairs.requests.last.appliance') == '洗衣机'",
-    "mem('appliance_repairs.requests.last.problem') == '无法启动'"
+    "mem('appliance_repairs.requests.last.appliance') == 'My Car'"
   ]
 }

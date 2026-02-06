@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>机场接送预订</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">✈️ Trip.local</div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <h1>预订机场接送</h1>
+    <div class="card soft">
+        <label>选择交通方式</label>
+        <select id="transfer-method" class="input">
+            <option value="taxi">专车接送</option>
+            <option value="self_drive">自驾停车</option>
+            <option value="shuttle">机场大巴</option>
+        </select>
+        <button class="btn pri" onclick="bookTransfer()">确认预订</button>
+    </div>
+  </div>
+
+  <script>
+  async function bookTransfer() {
+      const method = document.getElementById('transfer-method').value;
+      
+      try {
+          await send('E3-2025-TRANSFER', 'book_airport_transfer', {
+              method: method
+          });
+      } catch(e) {
+          console.error(e);
+      }
+  }
+  
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('booked') === 'true') {
+      document.querySelector('h1').textContent = "预订成功！";
+      Toast.success("预订成功！");
+  }
+  </script>
+</body>
+</html>

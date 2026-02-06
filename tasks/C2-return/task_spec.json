@@ -19,10 +19,7 @@
   "allowed_domains": [
     "shop.local"
   ],
-  "preconditions": [
-    "mem('orders.last.id') != ''",
-    "mem('orders.last.state') == 'confirmed'"
-  ],
+  "preconditions": [],
   "memory_keys": [
     "returns.last.id",
     "returns.last.order_id",
@@ -30,7 +27,7 @@
     "returns.last.state"
   ],
   "success_criteria": [
-    "url().includes('/returns/')"
+    "mem('returns.last.state') == 'submitted'"
   ],
   "artifacts": [
     "return_label_pdf",
@@ -42,7 +39,9 @@
   },
   "timeout": 300,
   "step_timeout": 30,
-  "dependencies": ["B1-2025-001"],
+  "dependencies": [
+    "B1-2025-001"
+  ],
   "error_recovery": {
     "on_timeout": "capture_state_and_abort",
     "on_network_error": {

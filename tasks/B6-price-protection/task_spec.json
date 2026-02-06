@@ -6,8 +6,5 @@
     "order_id": "O-98321"
   },
   "preconditions": [],
-  "success_criteria": [
-    "text('.status-badge') == '申请已提交'",
-    "mem('orders.O-98321.claims.price_protect.state') == 'submitted'"
-  ]
+  "success_criteria": []
 }

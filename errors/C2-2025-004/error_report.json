@@ -1,39 +1,22 @@
 {
   "task_id": "C2-2025-004",
-  "error_type": "AssertionError",
-  "timestamp": "2025-11-30T04:28:21.884461Z",
-  "step_index": 2,
-  "error_message": "Element 'form.return-form' not found",
+  "error_type": "TimeoutError",
+  "timestamp": "2026-02-06T03:04:03.864700Z",
+  "step_index": 4,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".success-title:has-text('\u9000\u8d27\u7533\u8bf7\u5df2\u63d0\u4ea4')\") to be visible\n",
   "context": {
-    "url": "http://localhost:8014/shop.local/returns/new.html",
-    "screenshot": "errors/C2-2025-004/error_step_2.png"
+    "url": "http://localhost:8014/shop.local/orders.html",
+    "screenshot": "errors/C2-2025-004/error_step_4.png"
   },
   "step": {
-    "t": 3.0,
-    "url": "https://shop.local/returns/new.html",
-    "frame": "main",
-    "act": "verify_state",
-    "checks": [
-      {
-        "type": "url",
-        "contains": "/returns/new.html"
-      },
-      {
-        "type": "dom",
-        "selector": ".return-form-container",
-        "exists": true
-      },
-      {
-        "type": "dom",
-        "selector": "form.return-form",
-        "exists": true
-      }
-    ],
-    "note": "Verify return form page loaded successfully"
+    "t": 4,
+    "act": "wait",
+    "selector": ".success-title:has-text('\u9000\u8d27\u7533\u8bf7\u5df2\u63d0\u4ea4')",
+    "note": "Wait confirmation"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",
   "recovery_success": false,
-  "final_state": "failed",
+  "final_state": "aborted",
   "metrics": {}
 }

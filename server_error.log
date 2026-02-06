@@ -1,6 +1,6 @@
 ERROR: [Errno 32] Broken pipe
 Traceback (most recent call last):
-  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 747, in do_POST
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 766, in do_POST
     self.wfile.write(out)
     ~~~~~~~~~~~~~~~~^^^^^
   File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
@@ -10,7 +10,1027 @@ BrokenPipeError: [Errno 32] Broken pipe
 
 ERROR: [Errno 32] Broken pipe
 Traceback (most recent call last):
-  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 752, in do_POST
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 766, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 766, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
+    self.wfile.write(out)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+ERROR: name 'reason' is not defined
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 756, in do_POST
+    env, extra = mutate_env(data.get('task_id',''), data.get('action',''), data.get('payload',{}), env)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 153, in mutate_env
+    return handle_m_crisis(task_id, action, payload, env, db_fn)
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/task_handlers/m_crisis.py", line 48, in handle_m_crisis
+    "reason": reason,
+              ^^^^^^
+NameError: name 'reason' is not defined
+
+ERROR: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/inspire/hdd/project/exploration-topic/public/tyhuai/webagent_dynamic_suite_v2_skin/server.py", line 771, in do_POST
     self.wfile.write(out)
     ~~~~~~~~~~~~~~~~^^^^^
   File "/opt/conda/lib/python3.13/socketserver.py", line 845, in write

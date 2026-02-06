@@ -1,0 +1,32 @@
+# Runtime data
+data.db
+env/state.json
+*.log
+*.out
+*.err
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Output and temp
+output/
+test_results/
+downloads/
+screenshots/
+errors/
+sites_backup/
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Mac
+.DS_Store

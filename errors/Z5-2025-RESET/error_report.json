@@ -1,24 +1,22 @@
 {
   "task_id": "Z5-2025-RESET",
-  "error_type": "KeyError",
-  "timestamp": "2026-01-16T14:14:40.616185Z",
-  "step_index": 9,
-  "error_message": "'selector'",
+  "error_type": "TimeoutError",
+  "timestamp": "2026-02-05T17:29:06.938285Z",
+  "step_index": 4,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".card:has-text('Your verification code is 1234')\") to be visible\n",
   "context": {
-    "url": "http://localhost:8014/security.local/reset-password.html",
-    "screenshot": "errors/Z5-2025-RESET/error_step_9.png"
+    "url": "http://localhost:8014/mobile.local/messages.html",
+    "screenshot": "errors/Z5-2025-RESET/error_step_4.png"
   },
   "step": {
-    "t": 9,
+    "t": 4,
     "act": "wait",
-    "args": {
-      "url": "**/login.html**"
-    },
-    "note": "Wait for redirect to login page"
+    "selector": ".card:has-text('Your verification code is 1234')",
+    "note": "Read code"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",
   "recovery_success": false,
-  "final_state": "failed",
+  "final_state": "aborted",
   "metrics": {}
 }

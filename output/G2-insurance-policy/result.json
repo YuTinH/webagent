@@ -4,7 +4,7 @@
   "final_state": "completed",
   "steps_completed": 4,
   "steps_total": 4,
-  "time_elapsed": 1.6256701946258545,
+  "time_elapsed": 1.5667328834533691,
   "error": null,
   "trace": [
     {
@@ -16,20 +16,20 @@
     {
       "t": 1,
       "act": "click",
-      "selector": "button[onclick*='\u5168\u9762\u533b\u7597\u4fdd\u969c']",
-      "note": "Click purchase button for '\u5168\u9762\u533b\u7597\u4fdd\u969c'"
+      "selector": ".card:has(h3:has-text('\u5168\u9762\u533b\u7597\u4fdd\u969c')) button",
+      "note": "Click Purchase button for Comprehensive Plan"
     },
     {
       "t": 2,
       "act": "click",
       "selector": ".modal-confirm",
-      "note": "Confirm purchase"
+      "note": "Confirm purchase in modal"
     },
     {
       "t": 3,
       "act": "wait",
-      "selector": "#current-policy .badge.ok",
-      "note": "Wait for active policy badge"
+      "selector": ".badge.ok:has-text('\u751f\u6548\u4e2d')",
+      "note": "Wait for active status badge"
     }
   ],
   "memory_updates": {},

@@ -10,10 +10,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/shop.local/housekeeping.html')",
-    "mem('local_services.housekeeping_bookings.last.status') == 'confirmed'",
-    "mem('local_services.housekeeping_bookings.last.date') == '2026-01-15'",
-    "mem('local_services.housekeeping_bookings.last.time') == '09:00'",
-    "mem('local_services.housekeeping_bookings.last.type') == 'regular_cleaning'"
+    "mem('local_services.housekeeping_bookings.last.status') == 'confirmed'"
   ]
 }

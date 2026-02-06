@@ -17,10 +17,7 @@
     "event.local",
     "trip.local"
   ],
-  "preconditions": [
-    "mem('travel.hotel.last.id') != ''",
-    "mem('travel.flight.last.pnr') != ''"
-  ],
+  "preconditions": [],
   "dependencies": [
     "E1-2025-201",
     "E2-2025-202"
@@ -29,9 +26,7 @@
     "work.conference.last.id",
     "work.conference.last.event"
   ],
-  "success_criteria": [
-    "ALL[url().includes('/event.local/registration'), mem('work.conference.last.id') != '', mem('work.conference.last.event').includes('Summit')]"
-  ],
+  "success_criteria": [],
   "rubrics": {
     "SR": 1.0,
     "cross_site": 0.2

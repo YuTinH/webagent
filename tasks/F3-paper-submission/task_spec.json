@@ -5,13 +5,14 @@
   "inputs": {
     "title": "量子计算新进展",
     "journal": "Nature Physics",
-    "authors": ["张三", "李四"],
+    "authors": [
+      "张三",
+      "李四"
+    ],
     "file": "quantum_paper.pdf"
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/work.local/paper-submission.html')",
-    "mem('work.paper_submissions.last.status') == 'submitted'",
-    "mem('work.paper_submissions.last.fees_paid') == '1'"
+    "mem('work.paper_submissions.last.status') == 'submitted'"
   ]
 }

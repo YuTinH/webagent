@@ -10,20 +10,20 @@
     {
       "t": 1,
       "act": "click",
-      "selector": "button[onclick*='全面医疗保障']",
-      "note": "Click purchase button for '全面医疗保障'"
+      "selector": ".card:has(h3:has-text('全面医疗保障')) button",
+      "note": "Click Purchase button for Comprehensive Plan"
     },
     {
       "t": 2,
       "act": "click",
       "selector": ".modal-confirm",
-      "note": "Confirm purchase"
+      "note": "Confirm purchase in modal"
     },
     {
       "t": 3,
       "act": "wait",
-      "selector": "#current-policy .badge.ok",
-      "note": "Wait for active policy badge"
+      "selector": ".badge.ok:has-text('生效中')",
+      "note": "Wait for active status badge"
     }
   ]
 }

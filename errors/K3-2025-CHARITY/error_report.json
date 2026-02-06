@@ -1,18 +1,18 @@
 {
   "task_id": "K3-2025-CHARITY",
   "error_type": "TimeoutError",
-  "timestamp": "2026-01-07T06:53:37.745693Z",
-  "step_index": 4,
-  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#tax-deductible\")\n    - locator resolved to 2 elements. Proceeding with the first one: <div id=\"tax-deductible\">\u00a50.00</div>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <input class=\"input\" id=\"charity-name\" placeholder=\"\u4f8b\u5982: \u58f9\u57fa\u91d1\"/> from <div id=\"modal-1767768787715\" class=\"modal-overlay open\">\u2026</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <input class=\"input\" id=\"charity-name\" placeholder=\"\u4f8b\u5982: \u58f9\u57fa\u91d1\"/> from <div id=\"modal-1767768787715\" class=\"modal-overlay open\">\u2026</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    58 \u00d7 waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <input class=\"input\" id=\"charity-name\" placeholder=\"\u4f8b\u5982: \u58f9\u57fa\u91d1\"/> from <div id=\"modal-1767768787715\" class=\"modal-overlay open\">\u2026</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n",
+  "timestamp": "2026-02-01T07:22:15.319390Z",
+  "step_index": 6,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#donations-list .card .badge.ok\") to be visible\n",
   "context": {
     "url": "http://localhost:8014/social.local/charity.html",
-    "screenshot": "errors/K3-2025-CHARITY/error_step_4.png"
+    "screenshot": "errors/K3-2025-CHARITY/error_step_6.png"
   },
   "step": {
-    "t": 4,
-    "act": "click",
-    "selector": "#tax-deductible",
-    "note": "Check tax-deductible receipt option"
+    "t": 6,
+    "act": "wait",
+    "selector": "#donations-list .card .badge.ok",
+    "note": "Wait for donation to appear in list with tax deductible badge"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",

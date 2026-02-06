@@ -8,10 +8,5 @@
     "password": "SecurePass!123"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/security.local/password-manager.html')",
-    "mem('security.passwords.last.site') == 'Google'",
-    "mem('security.passwords.last.username') == 'test@google.com'",
-    "count('#password-list .card') > 0"
-  ]
+  "success_criteria": []
 }

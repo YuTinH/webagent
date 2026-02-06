@@ -132,6 +132,14 @@ def handle_f_work(task_id, action, payload, env, execute_db_fn):
     if action == 'submit_paper':
         submission_id = f"SUB-{random.randint(10000, 99999)}"
         title = payload.get('title')
+        
+        # BUTTERFLY EFFECT: Quality Gate
+        writing_skill = env.get('world_state', {}).get('skills', {}).get('writing', 'none')
+        status = "submitted"
+        if writing_skill != 'advanced':
+            # If skill is only 'basic' or 'none', quality is insufficient for top journal
+            status = "rejected_low_quality"
+
         journal = payload.get('journal')
         authors = payload.get('authors')
         file_name = payload.get('file')
@@ -141,7 +149,7 @@ def handle_f_work(task_id, action, payload, env, execute_db_fn):
             "journal": journal,
             "authors": authors,
             "file": file_name,
-            "status": "submitted",
+            "status": status,
             "submitted_at": ts,
             "fees_paid": False
         }}}})
@@ -152,7 +160,7 @@ def handle_f_work(task_id, action, payload, env, execute_db_fn):
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        [f'work.paper_submissions.{submission_id}.title', title, ts, task_id, 1.0])
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'work.paper_submissions.{submission_id}.status', 'submitted', ts, task_id, 1.0])
+                       [f'work.paper_submissions.{submission_id}.status', status, ts, task_id, 1.0])
             val_fees_paid = '0' # False
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        [f'work.paper_submissions.{submission_id}.fees_paid', val_fees_paid, ts, task_id, 1.0])

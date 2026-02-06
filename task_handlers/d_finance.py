@@ -78,11 +78,17 @@ def handle_d_finance(task_id, action, payload, env, execute_db_fn):
         cat = payload.get('category', 'food')
         limit = payload.get('limit', 500)
         
+        # BUTTERFLY EFFECT: Energy Cost Impact
+        energy_cost = env.get('world_state', {}).get('energy_context', {}).get('projected_cost', 'low')
+        if cat == 'utilities' and energy_cost == 'high' and limit < 300:
+             # If plan is high cost but budget is low, trigger warning
+             env = deep_merge(env, {"finance": {"warnings": ["Budget Alert: Your Premium Energy Plan exceeds the utility budget!"]}})
+        
         env = deep_merge(env, {"finance": {"budgets": {cat: {"limit": limit}}}})
         
         try:
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       [f'budget.{cat}.limit', limit, ts, task_id, 1.0])
+                       [f'finance.budgets.{cat}.limit', limit, ts, task_id, 1.0])
         except: pass
         return env, {"redirect": "/bank.local/budget.html"}
 
@@ -121,6 +127,17 @@ def handle_d_finance(task_id, action, payload, env, execute_db_fn):
         env = deep_merge(env, {"payments":{"cards":{"active_last4": last4}}})
         for m in ["shop.local","ride.local","food.local","stream.local","cloud.local"]:
             env = deep_merge(env, {"payments":{"merchant_bindings":{"map":{m:last4}}}})
+            
+        try:
+            # FIX: Write status to memory_kv
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['payment.cards[0].status', 'active', ts, task_id, 1.0])
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['payment.cards[0].last4', last4, ts, task_id, 1.0])
+        except Exception as e:
+            print(f"ERROR: D4 rebind memory_kv failed: {e}")
+            pass
+            
         return env, {"redirect": "/pay.local/wallet/cards.html?rebind=true"}
 
     # D5 - Tax Preparation

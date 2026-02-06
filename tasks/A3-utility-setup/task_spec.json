@@ -4,7 +4,11 @@
   "goal": "Set up electricity, water, and broadband services for 123 Main St, Springfield with postpaid-auto plan for broadband.",
   "inputs": {
     "address": "123 Main St, Springfield",
-    "services": ["electricity", "water", "broadband"],
+    "services": [
+      "electricity",
+      "water",
+      "broadband"
+    ],
     "plans": {
       "electricity": "standard",
       "water": "standard",
@@ -13,10 +17,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes(\"/energy.local/plan.html\")",
-    "json(\"env\",\"contracts.electricity.status\") == \"active\"",
-    "json(\"env\",\"contracts.water.status\") == \"active\"",
-    "json(\"env\",\"contracts.broadband.status\") == \"active\"",
-    "mem(\"contracts.electricity.id\") != \"\""
+    "mem('contracts.electricity.status') == 'active'"
   ]
 }

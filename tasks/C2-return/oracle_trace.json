@@ -1,44 +1,37 @@
 {
   "task_id": "C2-2025-004",
-  "agent_version": "oracle-v1.0.0",
+  "agent_version": "oracle-v1.1.0",
   "steps": [
     {
       "t": 0,
-      "url": "https://shop.local/returns/new.html",
-      "frame": "main",
       "act": "open",
+      "url": "http://localhost:8014/shop.local/returns/new.html?order_id=O-TEST",
       "note": "Navigate to return form"
     },
     {
-      "t": 2.0,
-      "url": "https://shop.local/returns/new.html",
-      "frame": "main",
-      "act": "wait",
-      "selector": ".return-form-container",
-      "note": "Wait for form to load"
+      "t": 1,
+      "act": "click",
+      "selector": ".reason-option:has-text('不想要了')",
+      "note": "Select reason"
     },
     {
-      "t": 3.0,
-      "url": "https://shop.local/returns/new.html",
-      "frame": "main",
-      "act": "verify_state",
-      "checks": [
-        {
-          "type": "url",
-          "contains": "/returns/new.html"
-        },
-        {
-          "type": "dom",
-          "selector": ".return-form-container",
-          "exists": true
-        },
-        {
-          "type": "dom",
-          "selector": "#order-summary",
-          "exists": true
-        }
-      ],
-      "note": "Verify return form page loaded successfully"
+      "t": 2,
+      "act": "type",
+      "selector": "#return-description",
+      "value": "Customer changed mind.",
+      "note": "Describe reason"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button.btn.ok",
+      "note": "Submit"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": ".success-title:has-text('退货申请已提交')",
+      "note": "Wait confirmation"
     }
   ]
 }

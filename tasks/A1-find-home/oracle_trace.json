@@ -30,13 +30,13 @@
     {
       "t": 8,
       "act": "wait",
-      "selector": ".property-card",
+      "selector": ".property-card:has(.property-title:has-text('阳光海岸别墅区20号'))",
       "note": "Wait for property listings to load"
     },
     {
-      "t": 10,
+      "t": 5,
       "act": "click",
-      "selector": ".property-card:has(.property-title:has-text('中央大街101号'))",
+      "selector": ".property-card:has(.property-title:has-text('阳光海岸别墅区20号'))",
       "note": "Click property card for 中央大街101号"
     },
     {

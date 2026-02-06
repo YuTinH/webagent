@@ -9,10 +9,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/trip.local/transport-card.html')",
-    "mem('transport.card.last_topup_amount') == '100.0'",
-    "mem('transport.card.auto_recharge.enabled') == '1'",
-    "mem('transport.card.auto_recharge.threshold') == '20.0'",
-    "mem('transport.card.auto_recharge.amount') == '50.0'"
+    "mem('transport.card.balance') > 25"
   ]
 }

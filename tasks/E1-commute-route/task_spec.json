@@ -10,10 +10,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/trip.local/commute.html')",
-    "mem('commute.last_search.origin') == '家'",
-    "mem('commute.last_search.destination') == '办公室'",
-    "mem('commute.last_search.transport_mode') == 'all'",
-    "count('#results-list .card') > 0"
+    "mem('commute.last_search.cost') == 35.0"
   ]
 }

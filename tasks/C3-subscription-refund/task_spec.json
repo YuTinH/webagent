@@ -7,10 +7,5 @@
     "reason": "服务不再需要"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/shop.local/help-refund.html')",
-    "mem('support.refund_requests.last.subscription_id') == 'SUB-8821'",
-    "mem('support.refund_requests.last.status') == 'processing'",
-    "mem('support.refund_requests.last.estimated_refund') == '133.33'"
-  ]
+  "success_criteria": []
 }

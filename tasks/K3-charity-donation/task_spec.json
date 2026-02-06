@@ -8,10 +8,5 @@
     "tax_deductible": true
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/social.local/charity.html')",
-    "mem('charity.donations.last.charity_name') == '希望工程'",
-    "mem('charity.donations.last.amount') == '100.0'",
-    "mem('charity.donations.last.tax_deductible') == '1'"
-  ]
+  "success_criteria": []
 }

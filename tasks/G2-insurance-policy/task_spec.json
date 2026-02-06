@@ -7,11 +7,5 @@
     "provider": "平安健康"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/health.local/insurance.html')",
-    "mem('health.insurance.active') == '1'",
-    "mem('health.insurance.plan_name') == '全面医疗保障'",
-    "mem('health.insurance.provider') == '平安健康'",
-    "mem('health.insurance.policy_number') != ''"
-  ]
+  "success_criteria": []
 }

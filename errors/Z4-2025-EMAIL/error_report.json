@@ -1,9 +1,9 @@
 {
   "task_id": "Z4-2025-EMAIL",
   "error_type": "TimeoutError",
-  "timestamp": "2026-01-16T14:13:55.527194Z",
+  "timestamp": "2026-02-01T07:37:07.076044Z",
   "step_index": 8,
-  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".event-item:has-text('\u9879\u76ee\u542f\u52a8\u4f1a')\") to be visible\n",
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".card h3:has-text('\u9879\u76ee\u542f\u52a8\u4f1a')\") to be visible\n",
   "context": {
     "url": "http://localhost:8014/work.local/calendar.html",
     "screenshot": "errors/Z4-2025-EMAIL/error_step_8.png"
@@ -11,7 +11,7 @@
   "step": {
     "t": 8,
     "act": "wait",
-    "selector": ".event-item:has-text('\u9879\u76ee\u542f\u52a8\u4f1a')",
+    "selector": ".card h3:has-text('\u9879\u76ee\u542f\u52a8\u4f1a')",
     "note": "Wait for event"
   },
   "recovery_attempted": false,

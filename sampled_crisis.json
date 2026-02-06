@@ -1,0 +1,7630 @@
+[
+  {
+    "chain_id": "SCENARIO-CRISIS-127",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "F2-conference-reg",
+        "instruction": "注册行业会议。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D6-investment-account",
+        "instruction": "开通投资账户。",
+        "success_criteria": [
+          "mem('finance.investment_accounts.last.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-346",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "E7-long-haul-trip",
+        "instruction": "预订长途旅行（含签证）。",
+        "success_criteria": [
+          "mem('gov.visa_applications.last.status') == 'approved'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-322",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-221",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-005",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "B5-coupon-management",
+        "instruction": "添加一张优惠券。",
+        "success_criteria": [
+          "mem('shop.coupons.last.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-381",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-271",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-033",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "F1-calendar-aggregation",
+        "instruction": "同步工作日历。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-060",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-199",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "E7-long-haul-trip",
+        "instruction": "预订长途旅行（含签证）。",
+        "success_criteria": [
+          "mem('gov.visa_applications.last.status') == 'approved'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-311",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-010",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-216",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-313",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-037",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-048",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-293",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-186",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "E3-airport-transfer",
+        "instruction": "预订机场专车。",
+        "success_criteria": [
+          "mem('trips.transfer.method') == 'taxi'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G6-vaccine-mgmt",
+        "instruction": "预约疫苗。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-295",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-373",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-262",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-209",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-451",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "F2-conference-reg",
+        "instruction": "注册行业会议。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-378",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I2-appliance-repair",
+        "instruction": "维修烤箱。",
+        "success_criteria": [
+          "mem('appliance_repairs.requests.last.appliance') == 'Oven'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-051",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-187",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-332",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-137",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-428",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "B1-shopping",
+        "instruction": "购买机械键盘。",
+        "success_criteria": [
+          "mem('shop.orders.last.total') == 94.99"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D6-investment-account",
+        "instruction": "开通投资账户。",
+        "success_criteria": [
+          "mem('finance.investment_accounts.last.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-400",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-288",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-316",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-337",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-188",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z6-customer-service",
+        "instruction": "咨询人工客服。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-115",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D1-check-balance",
+        "instruction": "查询余额。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-296",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-277",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z4-email-calendar",
+        "instruction": "从邮件同步日历。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-189",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-161",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-445",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-228",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-404",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G6-vaccine-mgmt",
+        "instruction": "预约疫苗。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-096",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "B5-coupon-management",
+        "instruction": "添加一张优惠券。",
+        "success_criteria": [
+          "mem('shop.coupons.last.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-126",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-064",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-326",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "F4-email-tracking",
+        "instruction": "追踪重要邮件。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-246",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-112",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-011",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "G2-insurance-policy",
+        "instruction": "购买健康保险。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-328",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "A5-lease-management",
+        "instruction": "续签租房合同。",
+        "success_criteria": [
+          "mem('housing.leases.PROP-101.end_date') != ''"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-323",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-390",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G6-vaccine-mgmt",
+        "instruction": "预约疫苗。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-443",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-257",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-426",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-026",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-434",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "B4-food-delivery",
+        "instruction": "点一份外卖。",
+        "success_criteria": [
+          "mem('food.order.last.status') == 'pending'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-420",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "B2-fresh-subscription",
+        "instruction": "订阅生鲜配送。",
+        "success_criteria": [
+          "mem('food.subscriptions.last.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-124",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G2-insurance-policy",
+        "instruction": "购买健康保险。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G3-medical-claim",
+        "instruction": "申请医疗理赔。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-042",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-241",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-408",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-084",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "F1-calendar-aggregation",
+        "instruction": "同步工作日历。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-251",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "H2-vehicle-address-update",
+        "instruction": "更新车辆注册地址。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-492",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-242",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-217",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-160",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D2-budget-report",
+        "instruction": "查看并确认预算。",
+        "success_criteria": [
+          "mem('finance.budgets.food.limit') == 500"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-327",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-344",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "B1-shopping",
+        "instruction": "购买机械键盘。",
+        "success_criteria": [
+          "mem('shop.orders.last.total') == 94.99"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-147",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-063",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-258",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "F3-paper-submission",
+        "instruction": "提交论文。",
+        "success_criteria": [
+          "mem('work.paper_submissions.last.status') == 'submitted'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-056",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D6-investment-account",
+        "instruction": "开通投资账户。",
+        "success_criteria": [
+          "mem('finance.investment_accounts.last.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-419",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "B5-coupon-management",
+        "instruction": "添加一张优惠券。",
+        "success_criteria": [
+          "mem('shop.coupons.last.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-123",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "A6-address-proof",
+        "instruction": "下载地址证明文件。",
+        "success_criteria": [
+          "mem('identity.address_verified') == 'true'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-353",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I2-appliance-repair",
+        "instruction": "维修烤箱。",
+        "success_criteria": [
+          "mem('appliance_repairs.requests.last.appliance') == 'Oven'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-205",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-348",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-047",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "B1-shopping",
+        "instruction": "购买机械键盘。",
+        "success_criteria": [
+          "mem('shop.orders.last.total') == 94.99"
+        ]
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-325",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "A5-lease-management",
+        "instruction": "续签租房合同。",
+        "success_criteria": [
+          "mem('housing.leases.PROP-101.end_date') != ''"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-132",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-043",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-040",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-255",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "B5-coupon-management",
+        "instruction": "添加一张优惠券。",
+        "success_criteria": [
+          "mem('shop.coupons.last.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-458",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-029",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-363",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-393",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "F1-calendar-aggregation",
+        "instruction": "同步工作日历。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "F4-email-tracking",
+        "instruction": "追踪重要邮件。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-306",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "F4-email-tracking",
+        "instruction": "追踪重要邮件。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-178",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-367",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D4-card-replacement",
+        "instruction": "补办银行卡。",
+        "success_criteria": [
+          "mem('payment.cards[0].status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-411",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-120",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "B1-shopping",
+        "instruction": "购买无线鼠标。",
+        "success_criteria": [
+          "mem('shop.orders.last.total') == 29.99"
+        ]
+      },
+      {
+        "task_id": "A6-address-proof",
+        "instruction": "下载地址证明文件。",
+        "success_criteria": [
+          "mem('identity.address_verified') == 'true'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-424",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "J5-skill-certification",
+        "instruction": "申请专业认证。",
+        "success_criteria": [
+          "mem('world_state.skills.certified') == 'True'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-379",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-249",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "B3-housekeeping-booking",
+        "instruction": "预约保洁服务。",
+        "success_criteria": [
+          "mem('local_services.housekeeping_bookings.last.status') == 'confirmed'"
+        ]
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-154",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M1-lost-card",
+        "instruction": "挂失银行卡。",
+        "success_criteria": [
+          "mem('payments.cards.1234.state') == 'blocked'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "D3-autopay",
+        "instruction": "设置自动缴费。",
+        "success_criteria": [
+          "mem('autopay.utility.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "L2-data-deletion",
+        "instruction": "请求数据删除。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "E7-long-haul-trip",
+        "instruction": "预订长途旅行（含签证）。",
+        "success_criteria": [
+          "mem('gov.visa_applications.last.status') == 'approved'"
+        ]
+      },
+      {
+        "task_id": "L1-password-manager",
+        "instruction": "更新密码管理器。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L4-2fa-device",
+        "instruction": "更换2FA设备。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-457",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "city",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换绿色套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'green_offpeak'"
+        ]
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G4-gym-membership",
+        "instruction": "按处方买药。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "F4-email-tracking",
+        "instruction": "追踪重要邮件。",
+        "success_criteria": []
+      }
+    ]
+  },
+  {
+    "chain_id": "SCENARIO-CRISIS-301",
+    "theme": "crisis",
+    "initial_state": {
+      "has_home": true,
+      "has_bank": true,
+      "has_mobile": true,
+      "has_utility": true,
+      "balance": 5000,
+      "orders": [],
+      "delivered_count": 0,
+      "orders_count": 0,
+      "is_sick": false,
+      "card_frozen": false,
+      "has_invest": false,
+      "location": "suburb",
+      "pending_order": false,
+      "energy_cost": "low",
+      "certified": false,
+      "energy_level": 100,
+      "trip_booked": false,
+      "commute_checked": false,
+      "has_sub": false,
+      "has_coupon": false,
+      "has_shop_delivered": false,
+      "last_order_type": null
+    },
+    "steps": [
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I5-energy-optimize",
+        "instruction": "切换全天候套餐。",
+        "success_criteria": [
+          "mem('meters.M-321.plan') == 'premium_flat_rate'"
+        ]
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      },
+      {
+        "task_id": "M3-illness-reporting",
+        "instruction": "上报生病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "Z5-password-recovery",
+        "instruction": "找回密码。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "L3-security-audit",
+        "instruction": "执行安全审计。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "G1-doctor-appt",
+        "instruction": "预约看病。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I4-smart-meter",
+        "instruction": "提交电表读数。",
+        "success_criteria": []
+      },
+      {
+        "task_id": "I1-smart-bulb-setup",
+        "instruction": "设置智能灯泡。",
+        "success_criteria": [
+          "mem('devices.BULB-001.status') == 'active'"
+        ]
+      }
+    ]
+  }
+]

@@ -10,14 +10,14 @@
     {
       "t": 2,
       "act": "click",
-      "selector": ".budget-item[data-category='food'] .btn-edit",
+      "selector": ".budget-item[data-category='utilities'] .btn-edit",
       "note": "Click 'Edit Limit' for Food"
     },
     {
       "t": 4,
       "act": "type",
       "selector": "#new-limit",
-      "value": "600",
+      "value": "200",
       "note": "Enter new limit"
     },
     {
@@ -29,7 +29,7 @@
     {
       "t": 8,
       "act": "wait",
-      "selector": "#limit-food:has-text('$600.00')",
+      "selector": "#limit-utilities:has-text('$200.00')",
       "note": "Wait for limit to update on page"
     }
   ]

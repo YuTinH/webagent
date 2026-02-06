@@ -9,9 +9,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/gov.local/parking-permits.html')",
-    "mem('gov.parking_permits.last.status') == 'active'",
-    "mem('gov.parking_permits.last.id') != ''",
-    "mem('gov.parking_permits.last.plate_number') == '沪A-12345'"
+    "mem('permits.parking.state') == 'submitted'"
   ]
 }

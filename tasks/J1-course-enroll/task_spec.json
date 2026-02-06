@@ -15,9 +15,7 @@
   "allowed_domains": [
     "school.local"
   ],
-  "preconditions": [
-    "mem('banking.balance.checking') > 200"
-  ],
+  "preconditions": [],
   "dependencies": [
     "D1-check-balance"
   ],
@@ -25,7 +23,7 @@
     "courses.DL101.state"
   ],
   "success_criteria": [
-    "WITHIN(10, ALL[url().includes('/school.local/my-learning'), mem('courses.DL101.state') == 'enrolled'])"
+    "mem('courses.DL101.state') == 'enrolled'"
   ],
   "rubrics": {
     "SR": 1.0

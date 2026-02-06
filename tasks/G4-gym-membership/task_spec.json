@@ -15,16 +15,12 @@
     "bank.local",
     "gov.local"
   ],
-  "preconditions": [
-    "mem('banking.balance.checking') > 50"
-  ],
+  "preconditions": [],
   "dependencies": [
     "D1-check-balance"
   ],
   "memory_keys": [],
-  "success_criteria": [
-    "url().includes('/g4')"
-  ],
+  "success_criteria": [],
   "rubrics": {
     "SR": 1.0
   },

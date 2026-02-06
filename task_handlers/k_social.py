@@ -13,6 +13,12 @@ def handle_k_social(task_id, action, payload, env, execute_db_fn):
         
         env = deep_merge(env, {"social": {"groups": {gid: {"name": gname, "joined_at": ts}}}})
         
+        # BUTTERFLY EFFECT: Social Bonus
+        if gid == 'GRP-COUPON' or '优惠' in gname or 'Coupon' in gname:
+            if 'world_state' not in env: env['world_state'] = {}
+            if 'social_context' not in env['world_state']: env['world_state']['social_context'] = {}
+            env['world_state']['social_context']['has_coupon_access'] = True
+        
         try:
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        [f'social.groups.{gid}.status', 'joined', ts, task_id, 1.0])

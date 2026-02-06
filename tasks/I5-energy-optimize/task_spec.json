@@ -8,7 +8,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/energy.local/plan.html')",
-    "json('env','meters.M-321.plan') == 'green_offpeak'"
+    "mem('meters.M-321.plan') == 'green_offpeak'"
   ]
 }

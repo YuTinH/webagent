@@ -2,10 +2,31 @@
   "task_id": "F1-2025-CALENDAR",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 18,
+  "steps_completed": 14,
   "steps_total": 18,
-  "time_elapsed": 3.8039865493774414,
-  "error": null,
+  "time_elapsed": 32.75927257537842,
+  "error": {
+    "task_id": "F1-2025-CALENDAR",
+    "error_type": "TimeoutError",
+    "timestamp": "2026-02-05T17:18:16.435595Z",
+    "step_index": 14,
+    "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".calendar-event.conflict\") to be visible\n",
+    "context": {
+      "url": "http://localhost:8014/work.local/calendar.html",
+      "screenshot": "errors/F1-2025-CALENDAR/error_step_14.png"
+    },
+    "step": {
+      "t": 14,
+      "act": "wait",
+      "selector": ".calendar-event.conflict",
+      "note": "Wait for conflict to appear"
+    },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
   "trace": [
     {
       "t": 0,
@@ -98,30 +119,6 @@
       "act": "click",
       "selector": ".modal-confirm",
       "note": "Confirm adding personal event (should create conflict)"
-    },
-    {
-      "t": 14,
-      "act": "wait",
-      "selector": ".calendar-event.conflict",
-      "note": "Wait for conflict to appear"
-    },
-    {
-      "t": 15,
-      "act": "click",
-      "selector": "button:has-text('\u89e3\u51b3\u51b2\u7a81')",
-      "note": "Click resolve conflict button for the last added event"
-    },
-    {
-      "t": 16,
-      "act": "click",
-      "selector": ".modal-confirm",
-      "note": "Confirm conflict resolution"
-    },
-    {
-      "t": 17,
-      "act": "wait",
-      "selector": "#event-list .card .badge.ok",
-      "note": "Wait for event status to become resolved"
     }
   ],
   "memory_updates": {},

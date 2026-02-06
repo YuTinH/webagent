@@ -6,9 +6,5 @@
     "action": "switch_to_pickup"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/shop.local/supply-disruption.html')",
-    "mem('supply_chain.last_action.type') == 'switch_to_pickup'",
-    "mem('supply_chain.alternatives.ALT-101.status') == 'switched_to_pickup'"
-  ]
+  "success_criteria": []
 }

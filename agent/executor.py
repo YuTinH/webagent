@@ -94,55 +94,74 @@ class TaskExecutor:
         self._load_memory()
 
     def _load_memory(self):
-        """Load memory from database"""
+        """Load memory from database with retry logic"""
         if not os.path.exists(self.database_path):
             print(f"⚠️  Database not found: {self.database_path}")
             return
 
-        try:
-            conn = sqlite3.connect(self.database_path)
-            cursor = conn.cursor()
-            cursor.execute("SELECT key, value FROM memory_kv")
+        for attempt in range(5):
+            try:
+                conn = sqlite3.connect(self.database_path, timeout=10)
+                cursor = conn.cursor()
+                cursor.execute("SELECT key, value FROM memory_kv")
 
-            for row in cursor.fetchall():
-                key, value = row
-                if 'courses.DL101.state' in key:
-                    print(f"DEBUG: Loaded key {key} = {value}")
-                try:
-                    self.memory[key] = json.loads(value)
-                except:
-                    self.memory[key] = value
+                for row in cursor.fetchall():
+                    key, value = row
+                    if 'courses.DL101.state' in key:
+                        print(f"DEBUG: Loaded key {key} = {value}")
+                    try:
+                        self.memory[key] = json.loads(value)
+                    except:
+                        self.memory[key] = value
 
-            conn.close()
-            print(f"✅ Loaded {len(self.memory)} memory entries from database")
-        except Exception as e:
-            print(f"⚠️  Error loading memory: {e}")
+                conn.close()
+                print(f"✅ Loaded {len(self.memory)} memory entries from database")
+                return
+            except sqlite3.OperationalError as e:
+                if "locked" in str(e):
+                    print(f"⚠️  Database locked loading memory, retrying ({attempt+1}/5)...")
+                    time.sleep(1)
+                else:
+                    print(f"⚠️  Error loading memory: {e}")
+                    return
+            except Exception as e:
+                print(f"⚠️  Error loading memory: {e}")
+                return
 
     def _save_memory(self, key: str, value: Any, source: str, confidence: float = 1.0):
-        """Save memory entry to database"""
+        """Save memory entry to database with retry logic"""
         if not os.path.exists(self.database_path):
             return
 
-        try:
-            conn = sqlite3.connect(self.database_path)
-            cursor = conn.cursor()
+        for attempt in range(5):
+            try:
+                conn = sqlite3.connect(self.database_path, timeout=10)
+                cursor = conn.cursor()
 
-            # Serialize value to JSON
-            value_json = json.dumps(value) if not isinstance(value, str) else value
+                # Serialize value to JSON
+                value_json = json.dumps(value) if not isinstance(value, str) else value
 
-            cursor.execute("""
-                INSERT OR REPLACE INTO memory_kv (key, value, ts, source, confidence)
-                VALUES (?, ?, ?, ?, ?)
-            """, (key, value_json, datetime.utcnow().isoformat() + "Z", source, confidence))
+                cursor.execute("""
+                    INSERT OR REPLACE INTO memory_kv (key, value, ts, source, confidence)
+                    VALUES (?, ?, ?, ?, ?)
+                """, (key, value_json, datetime.utcnow().isoformat() + "Z", source, confidence))
 
-            conn.commit()
-            conn.close()
+                conn.commit()
+                conn.close()
 
-            # Update in-memory copy
-            self.memory[key] = value
-
-        except Exception as e:
-            print(f"⚠️  Error saving memory: {e}")
+                # Update in-memory copy
+                self.memory[key] = value
+                return
+            except sqlite3.OperationalError as e:
+                if "locked" in str(e):
+                    print(f"⚠️  Database locked saving memory, retrying ({attempt+1}/5)...")
+                    time.sleep(1)
+                else:
+                    print(f"⚠️  Error saving memory: {e}")
+                    return
+            except Exception as e:
+                print(f"⚠️  Error saving memory: {e}")
+                return
 
     def _env_api(self, channel: str, path: str) -> Any:
         """Query environment API"""
@@ -800,38 +819,47 @@ class TaskExecutor:
                 print(f"  ✅ {key} = {value}")
 
     def _save_result(self, result: ExecutionResult):
-        """Save execution result to database"""
+        """Save execution result to database with retry logic"""
         if not os.path.exists(self.database_path):
             return
 
-        try:
-            conn = sqlite3.connect(self.database_path)
-            cursor = conn.cursor()
+        for attempt in range(5):
+            try:
+                conn = sqlite3.connect(self.database_path, timeout=10)
+                cursor = conn.cursor()
 
-            cursor.execute("""
-                INSERT INTO task_executions (
-                    task_id, agent_version, state, started_at, completed_at,
-                    error_type, error_message, steps_completed, steps_total
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                result.task_id,
-                "executor-v1.0.0",
-                result.final_state,
-                datetime.utcnow().isoformat(),
-                datetime.utcnow().isoformat(),
-                result.error.error_type if result.error else None,
-                result.error.error_message if result.error else None,
-                result.steps_completed,
-                result.steps_total
-            ))
+                cursor.execute("""
+                    INSERT INTO task_executions (
+                        task_id, agent_version, state, started_at, completed_at,
+                        error_type, error_message, steps_completed, steps_total
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    result.task_id,
+                    "executor-v1.0.0",
+                    result.final_state,
+                    datetime.utcnow().isoformat(),
+                    datetime.utcnow().isoformat(),
+                    result.error.error_type if result.error else None,
+                    result.error.error_message if result.error else None,
+                    result.steps_completed,
+                    result.steps_total
+                ))
 
-            conn.commit()
-            conn.close()
+                conn.commit()
+                conn.close()
 
-            print(f"✅ Execution result saved to database")
-
-        except Exception as e:
-            print(f"⚠️  Error saving result: {e}")
+                print(f"✅ Execution result saved to database")
+                return
+            except sqlite3.OperationalError as e:
+                if "locked" in str(e):
+                    print(f"⚠️  Database locked saving result, retrying ({attempt+1}/5)...")
+                    time.sleep(1)
+                else:
+                    print(f"⚠️  Error saving result: {e}")
+                    return
+            except Exception as e:
+                print(f"⚠️  Error saving result: {e}")
+                return
 
 
 # Convenience function

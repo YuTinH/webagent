@@ -11,7 +11,7 @@
       "t": 1,
       "act": "type",
       "selector": "#bid-amount",
-      "value": "150",
+      "value": "500",
       "note": "Enter bid amount"
     },
     {

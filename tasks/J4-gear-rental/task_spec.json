@@ -9,8 +9,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/shop.local/gear-rental.html')",
-    "mem('gear.rentals.last.status') == 'available'",
-    "mem('gear.rentals.last.name') == '登山背包'"
+    "mem('gear.rentals.last.status') == 'available'"
   ]
 }

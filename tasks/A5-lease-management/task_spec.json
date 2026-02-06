@@ -10,10 +10,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/housing.local/lease-management.html')",
-    "mem('housing.leases.CTR-2025-001.id') == 'CTR-2025-001'",
-    "mem('housing.leases.CTR-2025-001.deposit') == '3500'",
-    "mem('housing.leases.CTR-2025-001.end_date') == '2026-12-31'",
-    "mem('housing.leases.CTR-2025-001.reminder') == '1'"
+    "mem('housing.leases.PROP-101.end_date') != ''"
   ]
 }

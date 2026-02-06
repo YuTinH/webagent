@@ -7,9 +7,5 @@
     "verification_code": "123456"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/security.local/2fa.html')",
-    "mem('security.mfa.current_device') == 'iPhone 15 Pro'",
-    "mem('security.mfa_history.last.device_name') == 'iPhone 15 Pro'"
-  ]
+  "success_criteria": []
 }

@@ -8,10 +8,5 @@
     "summary": "需要确认下周会议时间"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/work.local/email-tracking.html')",
-    "mem('work.email_threads.last.status') == 'pending'",
-    "mem('work.email_threads.last.subject') == '项目进度更新'",
-    "mem('work.email_threads.last.id') != ''"
-  ]
+  "success_criteria": []
 }

@@ -7,7 +7,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/shop.local/orders.html')",
-    "mem('shop.orders.last.state') == 'delivered'"
+    "mem('food.order.last.status') == 'delivered'"
   ]
 }

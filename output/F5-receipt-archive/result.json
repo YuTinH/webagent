@@ -2,55 +2,42 @@
   "task_id": "F5-2025-GEN",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 6,
+  "steps_completed": 1,
   "steps_total": 6,
-  "time_elapsed": 1.5492830276489258,
-  "error": null,
-  "trace": [
-    {
-      "t": 0,
-      "act": "open",
-      "url": "https://cloud.local/index.html",
-      "note": "Open Cloud Archive"
+  "time_elapsed": 30.545225143432617,
+  "error": {
+    "task_id": "F5-2025-GEN",
+    "error_type": "TimeoutError",
+    "timestamp": "2026-02-05T03:33:59.988560Z",
+    "step_index": 1,
+    "error_message": "Page.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#doc-type\")\n",
+    "context": {
+      "url": "http://localhost:8014/cloud.local/index.html",
+      "screenshot": "errors/F5-2025-GEN/error_step_1.png"
     },
-    {
+    "step": {
       "t": 1.0,
       "act": "select",
       "selector": "#doc-type",
       "value": "receipt",
       "note": "Select document type"
     },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
+  "trace": [
     {
-      "t": 2.0,
-      "act": "upload",
-      "selector": "#file-upload",
-      "value": "utility_bill_dec.pdf",
-      "note": "Upload file"
-    },
-    {
-      "t": 3.0,
-      "act": "click",
-      "selector": "button.pri",
-      "note": "Submit"
-    },
-    {
-      "t": 4.0,
-      "act": "wait",
-      "selector": "#archived-files-list",
-      "note": "Wait for file to appear"
-    },
-    {
-      "t": 5.0,
-      "act": "extract",
-      "selector": "#archived-files-list .title",
-      "variable": "cloud.documents.last.id",
-      "note": "Extract document ID (first listed)"
+      "t": 0,
+      "act": "open",
+      "url": "https://cloud.local/index.html",
+      "note": "Open Cloud Archive"
     }
   ],
   "memory_updates": {},
   "artifacts": [],
   "warnings": [],
-  "extracted_data": {
-    "cloud.documents.last.id": "utility_bill_dec.pdf"
-  }
+  "extracted_data": {}
 }

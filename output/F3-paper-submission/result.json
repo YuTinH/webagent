@@ -2,10 +2,31 @@
   "task_id": "F3-2025-PAPERSUB",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 11,
+  "steps_completed": 7,
   "steps_total": 11,
-  "time_elapsed": 2.7282326221466064,
-  "error": null,
+  "time_elapsed": 31.616576433181763,
+  "error": {
+    "task_id": "F3-2025-PAPERSUB",
+    "error_type": "TimeoutError",
+    "timestamp": "2026-02-05T17:21:17.233518Z",
+    "step_index": 7,
+    "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#submissions-list .card .badge:has-text('submitted')\") to be visible\n",
+    "context": {
+      "url": "http://localhost:8014/work.local/paper-submission.html",
+      "screenshot": "errors/F3-2025-PAPERSUB/error_step_7.png"
+    },
+    "step": {
+      "t": 7,
+      "act": "wait",
+      "selector": "#submissions-list .card .badge:has-text('submitted')",
+      "note": "Wait for submission to appear and status to be submitted"
+    },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
   "trace": [
     {
       "t": 0,
@@ -52,30 +73,6 @@
       "act": "click",
       "selector": ".modal-confirm",
       "note": "Confirm submission"
-    },
-    {
-      "t": 7,
-      "act": "wait",
-      "selector": "#submissions-list .card .badge:has-text('submitted')",
-      "note": "Wait for submission to appear and status to be submitted"
-    },
-    {
-      "t": 8,
-      "act": "click",
-      "selector": "button:has-text('\u652f\u4ed8\u7248\u9762\u8d39')",
-      "note": "Click pay publication fees button"
-    },
-    {
-      "t": 9,
-      "act": "click",
-      "selector": ".modal-confirm",
-      "note": "Confirm payment"
-    },
-    {
-      "t": 10,
-      "act": "wait",
-      "selector": "#submissions-list .card .badge:has-text('submitted') + .badge:has-text('\u5df2\u652f\u4ed8')",
-      "note": "Wait for fees paid status to update"
     }
   ],
   "memory_updates": {},

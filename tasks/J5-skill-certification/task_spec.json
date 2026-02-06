@@ -1,0 +1,10 @@
+{
+  "task_id": "J5-2025-CERT",
+  "family": "J",
+  "goal": "Apply for the 'Certified Python Expert' certification to unlock advanced career opportunities.",
+  "inputs": {},
+  "preconditions": [],
+  "success_criteria": [
+    "mem('world_state.skills.certified') == 'True'"
+  ]
+}

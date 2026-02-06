@@ -1,23 +1,22 @@
 {
   "task_id": "A2-2025-BANK-OPEN",
-  "error_type": "TimeoutError",
-  "timestamp": "2025-12-30T03:59:58.769436Z",
-  "step_index": 1,
-  "error_message": "Page.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#fullname\")\n",
+  "error_type": "Error",
+  "timestamp": "2026-01-28T12:48:55.337151Z",
+  "step_index": 0,
+  "error_message": "Page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8014/bank.local/open-account.html\nCall log:\n  - navigating to \"http://localhost:8014/bank.local/open-account.html\", waiting until \"domcontentloaded\"\n",
   "context": {
-    "url": "chrome-error://chromewebdata/",
-    "screenshot": "errors/A2-2025-BANK-OPEN/error_step_1.png"
+    "url": "about:blank",
+    "screenshot": "errors/A2-2025-BANK-OPEN/error_step_0.png"
   },
   "step": {
-    "t": 1,
-    "act": "type",
-    "selector": "#fullname",
-    "value": "Alex Chen",
-    "note": "Enter full name"
+    "t": 0,
+    "act": "open",
+    "url": "http://localhost:8014/bank.local/open-account.html",
+    "note": "Open bank account opening page"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",
   "recovery_success": false,
-  "final_state": "aborted",
+  "final_state": "failed",
   "metrics": {}
 }

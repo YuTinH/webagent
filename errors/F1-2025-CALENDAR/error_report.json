@@ -1,18 +1,18 @@
 {
   "task_id": "F1-2025-CALENDAR",
   "error_type": "TimeoutError",
-  "timestamp": "2026-01-04T02:55:11.342355Z",
-  "step_index": 15,
-  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('\u89e3\u51b3\u51b2\u7a81')\")\n    - locator resolved to 3 elements. Proceeding with the first one: <button disabled class=\"btn secondary\" onclick=\"resolveConflict('EVE-001')\">\u89e3\u51b3\u51b2\u7a81</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    58 \u00d7 waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n",
+  "timestamp": "2026-02-05T17:18:16.435595Z",
+  "step_index": 14,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".calendar-event.conflict\") to be visible\n",
   "context": {
     "url": "http://localhost:8014/work.local/calendar.html",
-    "screenshot": "errors/F1-2025-CALENDAR/error_step_15.png"
+    "screenshot": "errors/F1-2025-CALENDAR/error_step_14.png"
   },
   "step": {
-    "t": 15,
-    "act": "click",
-    "selector": "button:has-text('\u89e3\u51b3\u51b2\u7a81')",
-    "note": "Click resolve conflict button for the last added event"
+    "t": 14,
+    "act": "wait",
+    "selector": ".calendar-event.conflict",
+    "note": "Wait for conflict to appear"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",

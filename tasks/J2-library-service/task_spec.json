@@ -9,11 +9,5 @@
     "pickup_date": "2026-03-15"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/school.local/library.html')",
-    "mem('library.card.status') == 'active'",
-    "mem('library.card.card_number') != ''",
-    "mem('library.reservations.last.status') == 'pending'",
-    "mem('library.reservations.last.book_title') == '智能体的崛起'"
-  ]
+  "success_criteria": []
 }

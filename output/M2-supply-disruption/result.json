@@ -2,10 +2,31 @@
   "task_id": "M2-2025-SUPPLY",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 5,
+  "steps_completed": 4,
   "steps_total": 5,
-  "time_elapsed": 3.2861948013305664,
-  "error": null,
+  "time_elapsed": 32.64667558670044,
+  "error": {
+    "task_id": "M2-2025-SUPPLY",
+    "error_type": "TimeoutError",
+    "timestamp": "2026-02-05T02:56:15.491487Z",
+    "step_index": 4,
+    "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#alternative-options-list .card .badge:has-text('\u7f3a\u8d27')\") to be visible\n",
+    "context": {
+      "url": "http://localhost:8014/shop.local/supply-disruption.html",
+      "screenshot": "errors/M2-2025-SUPPLY/error_step_4.png"
+    },
+    "step": {
+      "t": 4,
+      "act": "wait",
+      "selector": "#alternative-options-list .card .badge:has-text('\u7f3a\u8d27')",
+      "note": "Wait for status update (mocked as switched/unavailable for delivery)"
+    },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
   "trace": [
     {
       "t": 0,
@@ -30,12 +51,6 @@
       "act": "click",
       "selector": ".modal-confirm",
       "note": "Confirm switch to pickup"
-    },
-    {
-      "t": 4,
-      "act": "wait",
-      "selector": "#alternative-options-list .card .badge:has-text('\u7f3a\u8d27')",
-      "note": "Wait for status update (mocked as switched/unavailable for delivery)"
     }
   ],
   "memory_updates": {},

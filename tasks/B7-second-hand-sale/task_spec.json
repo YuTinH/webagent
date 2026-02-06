@@ -12,7 +12,7 @@
   "inputs": {
     "item_name": "Vintage Desk Lamp",
     "description": "Working condition, minor scratches, includes bulb.",
-    "price": 50.00,
+    "price": 50.0,
     "category": "home"
   },
   "allowed_domains": [
@@ -24,7 +24,7 @@
     "market.listed_items.last.id"
   ],
   "success_criteria": [
-    "ALL[url().includes('/market.local/index.html'), mem('market.listed_items.last.id') != '']"
+    "mem('market.listed_items.last.category') == 'home'"
   ],
   "rubrics": {
     "SR": 1.0

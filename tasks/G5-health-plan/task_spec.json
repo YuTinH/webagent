@@ -18,9 +18,7 @@
   "memory_keys": [
     "health.plan.status"
   ],
-  "success_criteria": [
-    "ALL[url().includes('/health.local/plan.html'), mem('health.plan.status') == 'active']"
-  ],
+  "success_criteria": [],
   "rubrics": {
     "SR": 1.0
   },

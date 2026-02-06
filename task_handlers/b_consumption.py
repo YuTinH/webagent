@@ -31,6 +31,12 @@ def handle_b_consumption(task_id, action, payload, env, execute_db_fn):
 
     # B1/Z1 - Create Order (Used by cart.html)
     if action == 'create_order':
+        # CHECK BUTTERFLY EFFECT: Financial Liquidity
+        liquidity = env.get('world_state', {}).get('financial_context', {}).get('liquidity', 'active')
+        if liquidity == 'frozen':
+            # Simulation of payment declined due to card block (M1)
+            return env, {"error": "Payment Declined: Your payment methods are currently restricted.", "success": False}
+
         order_id = payload.get('order_id', f'O-{random.randint(10001, 99999)}')
         items = payload.get('items', [])
         total = payload.get('total', 0.0)
@@ -60,6 +66,20 @@ def handle_b_consumption(task_id, action, payload, env, execute_db_fn):
             f.write(f"DEBUG_B_CONSUMPTION: Order {order_id} created. Env['shop']['orders']: {env.get('shop',{}).get('orders',{})}\n")
 
         try:
+            # FIX: Insert into SQL DB for API access (C2 Return flow)
+            execute_db_fn("INSERT INTO orders (id, user_id, total, state, shipping_speed, shipping_address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                       [order_id, 1, total, "confirmed", shipping_speed, shipping_address, ts])
+            
+            for item in items:
+                # items is list of dicts or strings? Payload usually has dicts with name, price?
+                # Need to map item name to SKU if possible, or just insert dummy SKU
+                # Simplified: insert with dummy SKU if not present
+                sku = item.get('id', 'GENERIC')
+                qty = item.get('qty', 1)
+                price = item.get('price', 0)
+                execute_db_fn("INSERT INTO order_items (order_id, sku, quantity, price) VALUES (?, ?, ?, ?)",
+                           [order_id, sku, qty, price])
+
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        ['shop.orders.last.id', order_id, ts, task_id, 1.0])
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
@@ -197,7 +217,7 @@ def handle_b_consumption(task_id, action, payload, env, execute_db_fn):
         return env, {"redirect": "/shop.local/housekeeping.html"}
 
     # B4 - Food Delivery
-    if action == 'order_food':
+    if action == 'order_food' or action == 'order_food_with_promo':
         order_id = f"ODR-{random.randint(10000, 99999)}"
         restaurant = payload.get('restaurant', 'Unknown')
         items = payload.get('items', [])
@@ -211,7 +231,7 @@ def handle_b_consumption(task_id, action, payload, env, execute_db_fn):
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        ['food.order.last.status', 'pending', ts, task_id, 1.0])
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
-                       ['food.order.last.total', total, ts, task_id, 1.0])
+                       ['food.order.last.total', str(total), ts, task_id, 1.0])
         except Exception:
             pass
         return env, {"redirect": "/food.local/orders.html"}
@@ -224,6 +244,13 @@ def handle_b_consumption(task_id, action, payload, env, execute_db_fn):
             coupon_id = f"CPN-{random.randint(1000, 9999)}"
             name = payload.get('name')
             code = payload.get('code')
+            
+            # BUTTERFLY EFFECT CHECK: VIP Coupons
+            if 'VIP' in code:
+                has_access = env.get('world_state', {}).get('social_context', {}).get('has_coupon_access', False)
+                if not has_access:
+                    return env, {"error": "Coupon Invalid: You are not a member of the required community.", "success": False}
+
             coupon_type = payload.get('type')
             value = payload.get('value')
             min_spend = payload.get('min_spend')
@@ -291,9 +318,14 @@ def handle_b_consumption(task_id, action, payload, env, execute_db_fn):
         item_id = f"2H-{random.randint(1000, 9999)}"
         name = payload.get('name')
         desc = payload.get('description')
-        price = payload.get('price')
+        price = float(payload.get('price', 0))
         category = payload.get('category')
         photo_name = payload.get('photo_name', '')
+
+        # BUTTERFLY EFFECT: Expert Value
+        is_certified = env.get('world_state', {}).get('skills', {}).get('certified', False)
+        if is_certified and category == 'service': # Assuming 'service' category for gigs
+            price *= 2.0
 
         env = deep_merge(env, {"market": {"listings": {item_id: {
             "name": name, "description": desc, "price": price, "category": category,

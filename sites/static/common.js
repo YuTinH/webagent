@@ -66,6 +66,7 @@ async function send(taskId, action, payload){
           // 重新渲染页面
           if(typeof render === 'function') await render();
       }
+      return data;
   } catch (e) {
       console.error('Mutation failed', e);
       alert('操作失败: ' + e.message);

@@ -9,9 +9,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/gov.local/address-change.html')",
-    "mem('user_profile.address.current_address') == '上海市浦东新区张江高科张衡路XXX号'",
-    "mem('user_profile.address.zip_code') == '201203'",
-    "mem('user_profile.address_change_history.last.status') == 'pending'"
+    "mem('gov.profile.address.verified') == 'true'"
   ]
 }

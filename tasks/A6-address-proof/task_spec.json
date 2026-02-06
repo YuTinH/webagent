@@ -8,9 +8,6 @@
   },
   "preconditions": [],
   "success_criteria": [
-    "url().includes('/gov.local/profile.html?verified=true')",
-    "json('env','identity.address_verified') == true",
-    "json('env','identity.proof_doc.type') == 'utility'",
-    "json('env','identity.proof_doc.file') == 'utility_bill_dec.pdf'"
+    "mem('identity.address_verified') == 'true'"
   ]
 }

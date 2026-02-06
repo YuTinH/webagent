@@ -1,52 +1,61 @@
 {
   "task_id": "C2-2025-004",
-  "success": true,
-  "final_state": "completed",
-  "steps_completed": 3,
-  "steps_total": 3,
-  "time_elapsed": 1.8627402782440186,
-  "error": null,
+  "success": false,
+  "final_state": "failed",
+  "steps_completed": 4,
+  "steps_total": 5,
+  "time_elapsed": 31.638035535812378,
+  "error": {
+    "task_id": "C2-2025-004",
+    "error_type": "TimeoutError",
+    "timestamp": "2026-02-06T03:04:03.864700Z",
+    "step_index": 4,
+    "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".success-title:has-text('\u9000\u8d27\u7533\u8bf7\u5df2\u63d0\u4ea4')\") to be visible\n",
+    "context": {
+      "url": "http://localhost:8014/shop.local/orders.html",
+      "screenshot": "errors/C2-2025-004/error_step_4.png"
+    },
+    "step": {
+      "t": 4,
+      "act": "wait",
+      "selector": ".success-title:has-text('\u9000\u8d27\u7533\u8bf7\u5df2\u63d0\u4ea4')",
+      "note": "Wait confirmation"
+    },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
   "trace": [
     {
       "t": 0,
-      "url": "https://shop.local/returns/new.html",
-      "frame": "main",
       "act": "open",
+      "url": "http://localhost:8014/shop.local/returns/new.html?order_id=O-TEST",
       "note": "Navigate to return form"
     },
     {
-      "t": 2.0,
-      "url": "https://shop.local/returns/new.html",
-      "frame": "main",
-      "act": "wait",
-      "selector": ".return-form-container",
-      "note": "Wait for form to load"
+      "t": 1,
+      "act": "click",
+      "selector": ".reason-option:has-text('\u4e0d\u60f3\u8981\u4e86')",
+      "note": "Select reason"
     },
     {
-      "t": 3.0,
-      "url": "https://shop.local/returns/new.html",
-      "frame": "main",
-      "act": "verify_state",
-      "checks": [
-        {
-          "type": "url",
-          "contains": "/returns/new.html"
-        },
-        {
-          "type": "dom",
-          "selector": ".return-form-container",
-          "exists": true
-        },
-        {
-          "type": "dom",
-          "selector": "#order-summary",
-          "exists": true
-        }
-      ],
-      "note": "Verify return form page loaded successfully"
+      "t": 2,
+      "act": "type",
+      "selector": "#return-description",
+      "value": "Customer changed mind.",
+      "note": "Describe reason"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button.btn.ok",
+      "note": "Submit"
     }
   ],
   "memory_updates": {},
   "artifacts": [],
-  "warnings": []
+  "warnings": [],
+  "extracted_data": {}
 }

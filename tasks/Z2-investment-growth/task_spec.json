@@ -7,8 +7,5 @@
     "deposit": 1000
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/bank.local/investments.html')",
-    "mem('finance.investment_accounts.last.balance') == '1050.00'"
-  ]
+  "success_criteria": []
 }

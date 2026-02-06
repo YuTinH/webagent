@@ -10,12 +10,38 @@ def handle_a_housing(task_id, action, payload, env, execute_db_fn):
         prop_id = payload.get('propertyId', 'PROP-101')
         term = payload.get('leaseTerm', '12 months')
         
+        # Define address based on property ID
+        address_map = {
+            'PROP-101': '中央大街101号',
+            'PROP-102': '阳光海岸别墅区20号'
+        }
+        new_address = address_map.get(prop_id, '未知地址')
+
+        # Update leases
         env = deep_merge(env, {"housing": {"leases": {prop_id: {"status": "signed", "term": term}}}})
+        
+        # BUTTERFLY EFFECT: Update global user profile address
+        if 'user_profile' not in env: env['user_profile'] = {}
+        if 'address' not in env['user_profile']: env['user_profile']['address'] = {}
+        env['user_profile']['address']['current_address'] = new_address
+        
+        # New Abstract Attribute Update
+        if 'world_state' not in env: env['world_state'] = {}
+        if 'location_context' not in env['world_state']: env['world_state']['location_context'] = {}
+        
+        if prop_id == 'PROP-102': # Suburban Villa
+            env['world_state']['location_context']['tier'] = 'suburban'
+        else:
+            env['world_state']['location_context']['tier'] = 'city_center'
+        
         try:
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        ['housing.lease.last.id', prop_id, ts, task_id, 1.0])
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        ['housing.lease.last.status', 'signed', ts, task_id, 1.0])
+            # Also record address change for consistency
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['user_profile.address.current_address', new_address, ts, task_id, 1.0])
         except Exception:
             pass
         return env, {"redirect": "/housing.local/index.html"}

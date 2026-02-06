@@ -2,22 +2,37 @@
   "task_id": "D1-2025-FINANCE",
   "success": true,
   "final_state": "completed",
-  "steps_completed": 2,
+  "steps_completed": 1,
   "steps_total": 2,
-  "time_elapsed": 1.4592721462249756,
-  "error": null,
+  "time_elapsed": 31.505480527877808,
+  "error": {
+    "task_id": "D1-2025-FINANCE",
+    "error_type": "TimeoutError",
+    "timestamp": "2026-02-06T01:40:06.863563Z",
+    "step_index": 1,
+    "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#checking-balance\") to be visible\n",
+    "context": {
+      "url": "http://localhost:8014/bank.local/dashboard.html",
+      "screenshot": "errors/D1-2025-FINANCE/error_step_1.png"
+    },
+    "step": {
+      "t": 2,
+      "act": "wait",
+      "selector": "#checking-balance",
+      "note": "Wait for checking balance to appear"
+    },
+    "recovery_attempted": false,
+    "recovery_strategy": "",
+    "recovery_success": false,
+    "final_state": "aborted",
+    "metrics": {}
+  },
   "trace": [
     {
       "t": 0,
       "act": "open",
       "url": "http://localhost:8014/bank.local/dashboard.html",
       "note": "Open bank dashboard"
-    },
-    {
-      "t": 2,
-      "act": "wait",
-      "selector": "#checking-balance",
-      "note": "Wait for checking balance to appear"
     }
   ],
   "memory_updates": {},

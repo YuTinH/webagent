@@ -4,7 +4,7 @@
   "final_state": "completed",
   "steps_completed": 8,
   "steps_total": 8,
-  "time_elapsed": 1.8464350700378418,
+  "time_elapsed": 1.617708444595337,
   "error": null,
   "trace": [
     {
@@ -23,7 +23,7 @@
       "t": 2,
       "act": "type",
       "selector": "#appliance-name",
-      "value": "\u6d17\u8863\u673a",
+      "value": "My Car",
       "note": "Enter appliance name"
     },
     {
@@ -37,7 +37,7 @@
       "t": 4,
       "act": "type",
       "selector": "#problem-description",
-      "value": "\u65e0\u6cd5\u542f\u52a8",
+      "value": "Engine noise",
       "note": "Enter problem description"
     },
     {

@@ -1,18 +1,18 @@
 {
   "task_id": "J1-2025-GEN",
   "error_type": "TimeoutError",
-  "timestamp": "2025-12-15T08:47:50.901863Z",
-  "step_index": 1,
-  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".course-card:first-of-type .btn\")\n",
+  "timestamp": "2026-02-05T17:19:36.955701Z",
+  "step_index": 2,
+  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button.btn.pri\")\n",
   "context": {
-    "url": "chrome-error://chromewebdata/",
-    "screenshot": "errors/J1-2025-GEN/error_step_1.png"
+    "url": "http://localhost:8014/school.local/course.html?id=DL101",
+    "screenshot": "errors/J1-2025-GEN/error_step_2.png"
   },
   "step": {
-    "t": 1.0,
+    "t": 3.0,
     "act": "click",
-    "selector": ".course-card:first-of-type .btn",
-    "note": "View Deep Learning 101"
+    "selector": "button.btn.pri",
+    "note": "Enroll Now"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",

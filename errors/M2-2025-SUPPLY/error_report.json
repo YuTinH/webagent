@@ -1,18 +1,18 @@
 {
   "task_id": "M2-2025-SUPPLY",
   "error_type": "TimeoutError",
-  "timestamp": "2026-01-07T11:48:04.414354Z",
-  "step_index": 2,
-  "error_message": "Page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('\u786e\u8ba4\u6539\u4e3a\u81ea\u63d0/\u66ff\u4ee3')\")\n",
+  "timestamp": "2026-02-05T02:56:15.491487Z",
+  "step_index": 4,
+  "error_message": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#alternative-options-list .card .badge:has-text('\u7f3a\u8d27')\") to be visible\n",
   "context": {
     "url": "http://localhost:8014/shop.local/supply-disruption.html",
-    "screenshot": "errors/M2-2025-SUPPLY/error_step_2.png"
+    "screenshot": "errors/M2-2025-SUPPLY/error_step_4.png"
   },
   "step": {
-    "t": 2,
-    "act": "click",
-    "selector": "button:has-text('\u786e\u8ba4\u6539\u4e3a\u81ea\u63d0/\u66ff\u4ee3')",
-    "note": "Click confirm alternative button"
+    "t": 4,
+    "act": "wait",
+    "selector": "#alternative-options-list .card .badge:has-text('\u7f3a\u8d27')",
+    "note": "Wait for status update (mocked as switched/unavailable for delivery)"
   },
   "recovery_attempted": false,
   "recovery_strategy": "",

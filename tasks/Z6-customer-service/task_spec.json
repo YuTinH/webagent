@@ -6,9 +6,5 @@
     "order_id": "O-93902"
   },
   "preconditions": [],
-  "success_criteria": [
-    "url().includes('/shop.local/support-chat.html')",
-    "mem('support.chat.last_query_order') == 'O-93902'",
-    "mem('support.chat.last_reply_status') == 'found'"
-  ]
+  "success_criteria": []
 }

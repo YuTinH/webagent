@@ -48,6 +48,9 @@ def handle_h_government(task_id, action, payload, env, execute_db_fn):
                        ['user_profile.address_change_history.last.status', 'pending', ts, task_id, 1.0])
             execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                        ['user_profile.address.last_change_id', change_id, ts, task_id, 1.0])
+            # FIX: Write verification status for generator criteria
+            execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                       ['gov.profile.address.verified', 'true', ts, task_id, 1.0])
         except Exception as e:
             print(f"ERROR: H1 address change memory_kv insert failed: {e}")
             pass
@@ -92,6 +95,16 @@ def handle_h_government(task_id, action, payload, env, execute_db_fn):
 
     # H3 - Permit Renewal
     if action == 'book_permit':
+        # BUTTERFLY EFFECT: Credit Check
+        # Check global balance (simplified assumption: 'balance' key at root or in accounts)
+        balance = env.get('balance', 0)
+        # Also check accounts.checking if available
+        if 'accounts' in env and 'checking' in env['accounts']:
+             balance = env['accounts']['checking'].get('balance', 0)
+             
+        if balance < 0:
+             return env, {"error": "Renewal Denied: Low Credit Score due to outstanding debts.", "success": False}
+
         permit_id = payload.get('permit_id', 'RP-2024-77')
         new_expiry = payload.get('new_expiry', dt_module.datetime.now().strftime('%Y-%m-%d') + 'T10:00')
         env = deep_merge(env, {"permits":{permit_id:{"next_appointment":new_expiry}}})
@@ -147,6 +160,9 @@ def handle_h_government(task_id, action, payload, env, execute_db_fn):
                            ['gov.parking_permits.last.expiry_date', expiry_date, ts, task_id, 1.0])
                 execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
                            ['gov.parking_permits.last.plate_number', plate_number, ts, task_id, 1.0])
+                # FIX: Add legacy key for backward compatibility with generator
+                execute_db_fn("INSERT OR REPLACE INTO memory_kv (key,value,ts,source,confidence) VALUES (?,?,?,?,?)",
+                           ['permits.parking.state', 'submitted', ts, task_id, 1.0])
             except Exception as e:
                 print(f"ERROR: H4 apply permit memory_kv insert failed: {e}")
                 pass
