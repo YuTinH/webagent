@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-CRISIS-0201",
+  "theme": "crisis",
+  "difficulty": 8,
+  "instruction": "Finish the intake-liquidity crisis workflow only after access is contained, crisis intake is logged, the account balance is reviewed, and emergency liquidity is secured.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "crisis_intake_completed",
+      "account_access_contained",
+      "emergency_liquidity_secured",
+      "account_balance_reviewed"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "password_reset_completed",
+    "crisis_intake_completed",
+    "account_access_contained",
+    "emergency_liquidity_secured",
+    "account_balance_reviewed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 6,
+  "notes": "Generated from BP_CRISIS_ZTRAIN_01_INTAKE_LIQUIDITY_DUAL; intake-liquidity crisis workflows should include a balance-review checkpoint before final liquidity closure."
+}

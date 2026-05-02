@@ -1,0 +1,82 @@
+{
+  "task_id": "L2-2025-DSR",
+  "family": "L",
+  "goal": "Submit an export request to Facebook covering posts, photos, and messages.",
+  "inputs": {
+    "platform": "Facebook",
+    "request_type": "export",
+    "data_scope": "posts, photos, messages"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('security.data_deletion_requests.last.id') includes 'DSR-'",
+    "mem('security.data_deletion_requests.last.platform') == 'Facebook'",
+    "mem('security.data_deletion_requests.last.request_type') == 'export'",
+    "mem('security.data_deletion_requests.last.data_scope') == 'posts, photos, messages'",
+    "mem('security.data_deletion_requests.last.status') == 'pending'",
+    "exists(\"#requests-list .card:has-text('Facebook')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_l2_1",
+      "name": "cp_l2 checkpoint 1",
+      "assertion": "mem('security.data_deletion_requests.last.id') includes 'DSR-'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l2_2",
+      "name": "cp_l2 checkpoint 2",
+      "assertion": "mem('security.data_deletion_requests.last.platform') == 'Facebook'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l2_3",
+      "name": "cp_l2 checkpoint 3",
+      "assertion": "mem('security.data_deletion_requests.last.request_type') == 'export'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l2_4",
+      "name": "cp_l2 checkpoint 4",
+      "assertion": "mem('security.data_deletion_requests.last.data_scope') == 'posts, photos, messages'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l2_5",
+      "name": "cp_l2 checkpoint 5",
+      "assertion": "mem('security.data_deletion_requests.last.status') == 'pending'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l2_6",
+      "name": "cp_l2 checkpoint 6",
+      "assertion": "exists(\"#requests-list .card:has-text('Facebook')\")",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "security.local"
+  ],
+  "module_group": "data_deletion",
+  "canonical_task_dir": "L2-data-deletion",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

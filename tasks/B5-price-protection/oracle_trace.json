@@ -1,0 +1,26 @@
+{
+  "task_id": "B5-2025-PRICE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/price-protection.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#order-id",
+      "value": "O-10002"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button.btn.pri.lg"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": ".status-badge.submitted"
+    }
+  ]
+}

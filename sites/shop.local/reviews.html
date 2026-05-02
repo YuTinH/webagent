@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - </title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">Storefront</a>
+        <a href="../shop.local/orders.html">Orders</a>
+        <a href="../shop.local/reviews.html" class="active">Reviews</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <h1 style="margin-bottom:24px">Reviews and Merchant Blacklist</h1>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>Submit</h2>
+        <div class="form">
+            <label>Merchant Name</label>
+            <input id="merchant-name" class="input" placeholder="Details: ">
+            <label>Rating</label>
+            <div id="rating-component" style="margin-bottom:16px"></div>
+            <select id="review-rating" class="input" style="margin-bottom:16px">
+              <option value="">Select rating</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <label>Review Content</label>
+            <textarea id="review-content" class="input" rows="3" placeholder="..."></textarea>
+            <div style="margin-top:16px; display:flex; align-items:center; gap:8px">
+              <input type="checkbox" id="add-to-blacklist">
+              <label for="add-to-blacklist" style="margin:0">Add merchant to blacklist</label>
+            </div>
+            <button id="submit-btn" class="btn pri" style="margin-top:24px; width:100%" onclick="submitReview()">Submit</button>
+        </div>
+    </div>
+
+    <div style="margin-bottom:24px">
+        <h2>Review History</h2>
+        <div id="review-history-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Review history loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">No reviews have been submitted yet.</div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h2>Merchant Blacklist</h2>
+        <div id="blacklist-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Blacklist loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">The blacklist is currently empty.</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  const reviewsParams = new URLSearchParams(window.location.search);
+  const requestedReviewsTaskId = reviewsParams.get('task') || 'C5-2025-REVIEWS';
+  const reviewsTaskId = resolveTaskId(requestedReviewsTaskId);
+  let currentRating = 0;
+  let ratingInstance;
+
+  async function loadReviewsAndBlacklist() {
+    const reviewsList = document.getElementById('review-history-list');
+    const blacklistList = document.getElementById('blacklist-list');
+    reviewsList.innerHTML = '<div class="loading">Loading......</div>';
+    blacklistList.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const reviews = env.user_reviews?.reviews || {};
+      const blacklist = env.user_reviews?.blacklist || {};
+
+      // Render reviews
+      if (Object.keys(reviews).length === 0) {
+        reviewsList.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">No review records found.</div>
+          </div>
+        `;
+      } else {
+        reviewsList.innerHTML = Object.entries(reviews).map(([id, review]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">${review.merchant}</h3>
+                <div style="font-size:14px">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</div>
+              </div>
+              <div style="color:var(--muted); font-size:13px">${review.date}</div>
+            </div>
+            <p>${review.content}</p>
+          </div>
+        `).join('');
+      }
+
+      // Render blacklist
+      if (Object.keys(blacklist).length === 0) {
+        blacklistList.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">No merchants are blacklisted.</div>
+          </div>
+        `;
+      } else {
+        blacklistList.innerHTML = Object.entries(blacklist).map(([merchant, status]) => `
+          <div class="card soft" style="display:flex; justify-content:space-between; align-items:center">
+            <h3>${merchant}</h3>
+            <button id="remove-blacklist-${merchant.replace(/[^a-zA-Z0-9_-]/g, '-')}" class="btn secondary" onclick="removeFromBlacklist('${merchant}')">Remove from Blacklist</button>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      reviewsList.innerHTML = '<div class="error">Load failed</div>';
+      blacklistList.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function setupRating() {
+    ratingInstance = new Rating('rating-component', {
+      value: 0,
+      onChange: (value) => {
+        currentRating = value;
+        document.getElementById('review-rating').value = String(value);
+      }
+    });
+    document.getElementById('review-rating').addEventListener('change', (event) => {
+      currentRating = Number(event.target.value || 0);
+      if (ratingInstance && typeof ratingInstance.setValue === 'function') {
+        ratingInstance.setValue(currentRating);
+      }
+    });
+  }
+
+  async function submitReview() {
+    const merchantName = document.getElementById('merchant-name').value;
+    const reviewContent = document.getElementById('review-content').value;
+    const addToBlacklist = document.getElementById('add-to-blacklist').checked;
+
+    if (!merchantName || !reviewContent || currentRating === 0) {
+      Toast.error("");
+      return;
+    }
+    
+    await send(reviewsTaskId, 'submit_review', {
+      merchant: merchantName,
+      rating: currentRating,
+      content: reviewContent,
+      add_to_blacklist: addToBlacklist
+    });
+
+    setTimeout(loadReviewsAndBlacklist, 500);
+  }
+
+  async function removeFromBlacklist(merchant) {
+    new Modal({
+      title: '',
+      content: ` ${merchant} ？`,
+      confirmText: 'Confirm',
+      onConfirm: async () => {
+        await send(reviewsTaskId, 'manage_blacklist', {
+          merchant: merchant,
+          action_type: 'remove'
+        });
+        setTimeout(loadReviewsAndBlacklist, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupRating();
+    loadReviewsAndBlacklist();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

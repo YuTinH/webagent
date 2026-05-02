@@ -1,0 +1,38 @@
+{
+  "goal_id": "WFG-COMPOSITE-0049",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Finish the subscription-payment packet only after the subscription exit is processed, the payment stack is prepared, the calendar is synced, and the exit record is archived.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "subscription_exit_processed",
+      "payment_stack_prepared",
+      "calendar_event_synced",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active",
+    "subscription_active"
+  ],
+  "target_state": [
+    "subscription_exit_processed",
+    "payment_stack_prepared",
+    "calendar_event_synced",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_SUBSCRIPTION_PAYMENT_EXIT; subscription-exit composite workflows should end with an explicit record-archival step after calendar sync."
+}

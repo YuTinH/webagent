@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Nebula Bank - Dashboard</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">Nebula Bank</div>
+    <div class="navlinks">
+      <a href="dashboard.html" class="active">Accounts</a>
+      <a href="cards.html">Cards</a>
+      <a href="autopay.html">Autopay</a>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <h1>My Accounts</h1>
+  <div class="card soft">
+    <div style="display:flex; justify-content:space-between; align-items:center">
+      <div>
+        <div style="color:var(--muted); font-size:14px">Total Balance</div>
+        <div id="balance-display" style="font-size:32px; font-weight:700">$0.00</div>
+        <div id="balance-view-label" style="color:var(--muted); font-size:13px; margin-top:6px">Viewing total balance</div>
+      </div>
+      <button class="btn pri" onclick="location.href=withDashboardTask('transactions.html')">View Activity</button>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:18px">
+      <button id="view-total" class="btn secondary" onclick="selectBalanceView('total')">View Total</button>
+      <button id="view-checking" class="btn secondary" onclick="selectBalanceView('checking')">View Checking</button>
+      <button id="view-savings" class="btn secondary" onclick="selectBalanceView('savings')">View Savings</button>
+    </div>
+  </div>
+  
+  <div style="margin-top:32px">
+    <h2>Quick Actions</h2>
+    <div class="grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
+      <div class="card soft clickable" onclick="location.href=withDashboardTask('budget.html')">
+        <h3>Budgeting</h3>
+        <p style="font-size:14px; color:var(--muted)">Set utility and spending limits.</p>
+      </div>
+      <div class="card soft clickable" onclick="location.href=withDashboardTask('taxes.html')">
+        <h3>Taxes</h3>
+        <p style="font-size:14px; color:var(--muted)">Manage tax documents.</p>
+      </div>
+      <div class="card soft clickable" onclick="location.href=withDashboardTask('investments.html')">
+        <h3>Investments</h3>
+        <p style="font-size:14px; color:var(--muted)">Grow your wealth.</p>
+      </div>
+      <div class="card soft clickable" id="urgent-loan-card" onclick="openUrgentLoanModal()">
+        <h3>Emergency Loan</h3>
+        <p style="font-size:14px; color:var(--muted)">Open the emergency-loan request form.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const bankDashboardParams = new URLSearchParams(window.location.search);
+const requestedBankDashboardTaskId = bankDashboardParams.get('task') || '';
+const bankDashboardTaskId = resolveTaskId(requestedBankDashboardTaskId || '');
+
+function withDashboardTask(url) {
+  const parsed = new URL(url, window.location.href);
+  if (bankDashboardTaskId) {
+    parsed.searchParams.set('task', bankDashboardTaskId);
+  }
+  return parsed.pathname + parsed.search + parsed.hash;
+}
+
+async function loadDashboard() {
+  const env = await loadEnv();
+  selectBalanceView((env.banking?.balance_view?.account_type) || 'total', false);
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('loan') === 'submitted') {
+    Toast.success('Emergency loan request submitted');
+  }
+
+  document.querySelectorAll('.navlinks a').forEach((link) => {
+    link.href = withDashboardTask(link.getAttribute('href'));
+  });
+}
+
+function balanceBreakdown(total) {
+  const totalAmount = Number(total || 0);
+  const checking = Number((totalAmount * 0.64).toFixed(2));
+  const savings = Number((totalAmount - checking).toFixed(2));
+  return { total: totalAmount, checking, savings };
+}
+
+async function selectBalanceView(accountType, sync=true) {
+  const env = await loadEnv();
+  const breakdown = balanceBreakdown(env.balance || 0);
+  const amount = breakdown[accountType] ?? breakdown.total;
+  document.getElementById('balance-display').textContent = '$' + amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById('balance-view-label').textContent = `Viewing ${accountType} balance`;
+  for (const id of ['total','checking','savings']) {
+    const btn = document.getElementById(`view-${id}`);
+    btn.classList.toggle('pri', id === accountType);
+    btn.classList.toggle('secondary', id !== accountType);
+  }
+  if (sync) {
+    await send(bankDashboardTaskId || 'D1-2025-FINANCE', 'check_balance', { account_type: accountType });
+  }
+}
+
+function openUrgentLoanModal() {
+  new Modal({
+    title: 'Emergency Loan Request',
+    content: `
+      <div class="form">
+        <div class="form-group">
+          <label>Requested Amount</label>
+          <input id="urgent-loan-amount" type="number" class="input" min="1" placeholder="500">
+        </div>
+        <div class="form-group">
+          <label>Purpose</label>
+          <textarea id="urgent-loan-purpose" class="input" rows="3" placeholder="Explain why you need the emergency loan."></textarea>
+        </div>
+      </div>
+    `,
+    confirmText: 'Submit Request',
+    onConfirm: async () => {
+      const amount = Number(document.getElementById('urgent-loan-amount').value);
+      const purpose = document.getElementById('urgent-loan-purpose').value.trim();
+      if (!Number.isFinite(amount) || amount <= 0) {
+        Toast.error('Enter a valid loan amount.');
+        return;
+      }
+      if (!purpose) {
+        Toast.error('Enter a purpose for the emergency loan.');
+        return;
+      }
+      await send(bankDashboardTaskId || 'M4-2025-EMERGENCYLOAN', 'apply_urgent_loan', {
+        amount,
+        purpose
+      });
+    }
+  }).open();
+}
+document.addEventListener('DOMContentLoaded', loadDashboard);
+</script>

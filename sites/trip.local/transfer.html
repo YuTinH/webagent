@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Airport Transfer Booking</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">✈️ Trip.local</div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <h1>Airport Transfer Booking</h1>
+    <div id="booking-status" class="badge ok" style="display:none; margin-bottom:12px">booked</div>
+    <div class="card soft">
+        <label for="transfer-method">Choose Transfer Method</label>
+        <select id="transfer-method" class="input">
+            <option value="taxi">Taxi pickup</option>
+            <option value="self_drive">Self drive</option>
+            <option value="shuttle">Airport shuttle</option>
+        </select>
+        <div style="font-size:13px; color:var(--muted); margin:8px 0 16px">
+          Choose the correct transfer method for the current vehicle condition, then confirm the booking.
+        </div>
+        <button id="confirm-transfer-btn" class="btn pri" onclick="bookTransfer()">Book Airport Transfer</button>
+    </div>
+  </div>
+
+  <script>
+  async function bookTransfer() {
+      const method = document.getElementById('transfer-method').value;
+      
+      try {
+          await send(resolveTaskId('E3-2025-TRANSFER'), 'book_airport_transfer', {
+              method: method
+          });
+      } catch(e) {
+          console.error(e);
+      }
+  }
+  
+const params = new URLSearchParams(window.location.search);
+if (params.get('booked') === 'true') {
+    document.querySelector('h1').textContent = "Airport Transfer Booked";
+    document.getElementById('booking-status').style.display = 'inline-flex';
+    Toast.success("Airport transfer booked.");
+}
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

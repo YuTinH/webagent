@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-SECURITY-0312",
+  "theme": "security",
+  "difficulty": 6,
+  "instruction": "Finish the security-audit packet only after the access surface is reviewed, 2FA is enabled, the 2FA device is updated, security hardening is completed, and the audit is closed.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "access_surface_reviewed",
+      "two_factor_enabled",
+      "two_factor_device_updated",
+      "security_hardening_completed",
+      "security_audit_completed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "access_surface_reviewed",
+    "two_factor_enabled",
+    "two_factor_device_updated",
+    "security_hardening_completed",
+    "security_audit_completed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_ZTRAIN_12_AUDIT_HARDEN_DUAL; audit-hardening security workflows should include explicit 2FA-device maintenance before the final audit closeout."
+}

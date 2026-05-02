@@ -1,0 +1,26 @@
+{
+  "task_id": "E10-2025-VISA",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/visa-requirements.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#destination-country",
+      "value": "France"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#search-btn"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#visa-result .card"
+    }
+  ]
+}

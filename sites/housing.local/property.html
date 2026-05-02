@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Property Details</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.property-details-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+.main-image { width: 100%; height: 350px; background: #334155; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 100px; }
+.detail-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.price-tag { font-size: 32px; font-weight: 800; color: var(--pri); margin-bottom: 10px; }
+.feature-list { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.feature-list li { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; font-size: 14px; }
+</style>
+</head>
+<body class="page">
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">🏠 Nebula Housing</div>
+    <div class="navlinks"><a href="index.html">Back to List</a></div>
+  </div>
+</div>
+
+<div class="container">
+  <div id="loading-state" class="loading">Loading property details...</div>
+  
+  <div id="content-area" style="display:none">
+    <div class="property-details-grid">
+      <div>
+        <div class="main-image">🏠</div>
+        <div class="detail-card">
+          <h1 id="prop-title" style="margin-top:0">Property Title</h1>
+          <p id="prop-meta" style="color:var(--muted)">Meta Info</p>
+          <hr style="border:0; border-top:1px solid var(--border); margin:20px 0">
+          <h3>Description</h3>
+          <p>This premium property offers a modern living experience in a prime location. Fully furnished with high-end appliances and close to public transport.</p>
+        </div>
+        <div class="detail-card">
+          <h3>Key Features</h3>
+          <ul class="feature-list">
+            <li>✨ Modern Interior</li>
+            <li>🅿️ Dedicated Parking</li>
+            <li>🚇 Near Subway</li>
+            <li>🌳 Park View</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="detail-card">
+          <div class="price-tag" id="current-rent" aria-label="Current monthly rent">$0/mo</div>
+          <div class="form">
+            <div class="form-group">
+              <label for="lease-term">Lease Term</label>
+              <select id="lease-term" class="input" aria-label="Lease term" onchange="renderApplyButtonLabel()">
+                <option value="">Select lease term</option>
+                <option value="12">12 Months</option>
+                <option value="6">6 Months</option>
+                <option value="24">24 Months</option>
+              </select>
+            </div>
+            <p id="apply-hint" style="margin:0 0 12px; color:var(--muted); font-size:13px">Step 2: choose a lease term. Step 3: click Submit Rental Application.</p>
+            <button class="btn pri lg" style="width:100%; display:none" id="apply-btn" aria-label="Submit rental application" onclick="applyToRent()">Submit Rental Application</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+let currentProp = null;
+const housingPropertyParams = new URLSearchParams(window.location.search);
+const requestedHousingTaskId = housingPropertyParams.get('task') || 'A1-2025-HOME';
+const housingPropertyTaskId = resolveTaskId(requestedHousingTaskId);
+
+function renderApplyButtonLabel() {
+  const leaseSelect = document.getElementById('lease-term');
+  const applyBtn = document.getElementById('apply-btn');
+  const hint = document.getElementById('apply-hint');
+  if (!leaseSelect || !applyBtn) return;
+  const term = (leaseSelect.value || '').trim();
+  if (!term) {
+    applyBtn.style.display = 'none';
+    applyBtn.disabled = true;
+    applyBtn.textContent = 'Submit Rental Application';
+    if (hint) hint.textContent = 'Step 2: choose a lease term. Step 3: click Submit Rental Application.';
+    return;
+  }
+  applyBtn.style.display = 'block';
+  applyBtn.disabled = false;
+  applyBtn.textContent = `Submit ${term}-Month Rental Application`;
+  if (hint) hint.textContent = `Final step: click Submit ${term}-Month Rental Application.`;
+}
+
+async function init() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get('id');
+  
+  const env = await loadEnv();
+  const properties = env.housing?.properties || [];
+  currentProp = properties.find(p => p.id === id);
+
+  if (!currentProp) {
+    // Fallback for default IDs
+    if (id === 'PROP-101') currentProp = { id: 'PROP-101', title: "Downtown Apartment", price: 3500, meta: "1BR | 50sqm" };
+    else if (id === 'PROP-102') currentProp = { id: 'PROP-102', title: "Suburban House", price: 8000, meta: "4BR | 200sqm" };
+  }
+
+  if (currentProp) {
+    document.getElementById('prop-title').textContent = currentProp.title;
+    document.getElementById('current-rent').textContent = `$${currentProp.price}/mo`;
+    document.getElementById('prop-meta').textContent = currentProp.meta || "Available Now";
+    renderApplyButtonLabel();
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('content-area').style.display = 'block';
+  } else {
+    document.getElementById('loading-state').innerHTML = "<h2>Property not found</h2>";
+  }
+}
+
+async function applyToRent() {
+  const btn = document.getElementById('apply-btn');
+  const leaseTerm = document.getElementById('lease-term').value;
+  if (!leaseTerm) {
+    Toast.error("Select a lease term before submitting.");
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = "Processing...";
+  
+  await send(housingPropertyTaskId, 'rent_property', {
+    property_id: currentProp?.id || 'unknown',
+    term: leaseTerm
+  });
+  
+  Toast.success("Application Submitted!");
+  setTimeout(() => location.href = 'lease-management.html?applied=true', 1500);
+}
+
+init();
+</script>
+</body>
+</html>

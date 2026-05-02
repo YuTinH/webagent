@@ -1,0 +1,43 @@
+{
+  "task_id": "L3-2025-SEC",
+  "family": "L",
+  "goal": "Check the security dashboard for compromised accounts and rotate keys for all affected providers.",
+  "inputs": {
+    "providers": [
+      "mail",
+      "cloud",
+      "dev"
+    ],
+    "rotate": "mfa+api"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "count(\".rotation-complete\") >= 3",
+    "json(\"env\",\"security.last_rotation.providers\") == [\"mail\",\"cloud\",\"dev\"]"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "count(\".rotation-complete\") >= 3",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "json(\"env\",\"security.last_rotation.providers\") == [\"mail\",\"cloud\",\"dev\"]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "security.local"
+  ],
+  "module_group": "security_rotation",
+  "canonical_task_dir": "L3-security-rotation",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,40 @@
+{
+  "goal_id": "WFG-EDUCATION-0087",
+  "theme": "education",
+  "difficulty": 7,
+  "instruction": "Close the resource-rental workflow by securing study resources, activating the rental listing, downloading the certificate artifact, submitting the assignment, and ending with the calendar synced.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "assignment_resources_provisioned",
+      "rental_listing_active",
+      "certificate_downloaded",
+      "assignment_submitted",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "education_account_activated",
+    "course_enrolled"
+  ],
+  "target_state": [
+    "assignment_resources_provisioned",
+    "rental_listing_active",
+    "certificate_downloaded",
+    "assignment_submitted",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_EDUCATION_RESOURCE_RENTAL_BRIDGE; resource-rental education workflows should close with a calendar handoff after assignment submission."
+}

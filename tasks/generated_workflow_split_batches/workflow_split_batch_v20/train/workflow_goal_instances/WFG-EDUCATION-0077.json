@@ -1,0 +1,40 @@
+{
+  "goal_id": "WFG-EDUCATION-0077",
+  "theme": "education",
+  "difficulty": 7,
+  "instruction": "Finish the study-event packet only after study resources are provisioned, the assignment is submitted, the certificate is downloaded, event access is booked, and the calendar is synced.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "assignment_resources_provisioned",
+      "assignment_submitted",
+      "certificate_downloaded",
+      "event_ticket_booked",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "education_account_activated",
+    "course_enrolled"
+  ],
+  "target_state": [
+    "assignment_resources_provisioned",
+    "assignment_submitted",
+    "certificate_downloaded",
+    "event_ticket_booked",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_EDUCATION_STUDY_EVENT_BRIDGE; study-event education workflows should include certificate capture before the final event and calendar closure."
+}

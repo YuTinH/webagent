@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowGoal",
+  "description": "High-level compositional workflow goal shown to the agent.",
+  "type": "object",
+  "required": [
+    "goal_id",
+    "theme",
+    "instruction",
+    "visible_constraints",
+    "initial_world_state",
+    "target_state"
+  ],
+  "properties": {
+    "goal_id": {
+      "type": "string",
+      "description": "Stable workflow goal ID, e.g. WF-NEWCOMER-001"
+    },
+    "episode_id": {
+      "type": "string",
+      "description": "Optional grouping key for related workflow goals."
+    },
+    "theme": {
+      "type": "string",
+      "description": "Scenario theme, e.g. newcomer/daily/crisis."
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "default": 3
+    },
+    "instruction": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Natural language objective shown to the agent."
+    },
+    "visible_constraints": {
+      "type": "object",
+      "description": "Budget, deadline, preferences, avoid-list and other constraints exposed to the agent.",
+      "properties": {
+        "budget_limit": {
+          "type": "number"
+        },
+        "deadline_days": {
+          "type": "number"
+        },
+        "must_avoid": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "preferred_outcomes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "initial_world_state": {
+      "type": "object",
+      "description": "Structured initial conditions for this workflow instance.",
+      "additionalProperties": true
+    },
+    "target_state": {
+      "type": "array",
+      "description": "Normalized predicates that define success.",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "counterfactual_axes": {
+      "type": "array",
+      "description": "Allowed world-state perturbation knobs for paired evaluation.",
+      "items": {
+        "type": "object",
+        "required": ["path", "type"],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["toggle", "numeric_shift", "entity_swap", "enum_swap"]
+          },
+          "values": {
+            "type": "array",
+            "items": {}
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "max_steps": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 80
+    },
+    "max_module_invocations": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 6
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

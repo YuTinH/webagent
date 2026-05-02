@@ -1,0 +1,38 @@
+{
+  "task_id": "C4-2025-WARRANTY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/warranty.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#serial",
+      "value": "TV-42-2025-XY9"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#orderId",
+      "value": "O-10123"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#issue",
+      "value": "Screen flickering intermittently"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#submit-warranty-claim"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#claim-status"
+    }
+  ]
+}

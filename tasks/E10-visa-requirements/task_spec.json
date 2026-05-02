@@ -1,0 +1,51 @@
+{
+  "task_id": "E10-2025-VISA",
+  "family": "E",
+  "goal": "Check the visa requirements for France.",
+  "inputs": {
+    "destination_country": "France",
+    "passport_country": "China"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('visa.search.last.destination') == 'France'",
+    "mem('visa.search.last.visa_type') == '申根签证 (Type C)'",
+    "mem('visa.search.last.stay_duration') == '最长90天 (180天内)'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_e4_1",
+      "name": "cp_e4 checkpoint 1",
+      "assertion": "mem('visa.search.last.destination') == 'France'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e4_2",
+      "name": "cp_e4 checkpoint 2",
+      "assertion": "mem('visa.search.last.visa_type') == '申根签证 (Type C)'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e4_3",
+      "name": "cp_e4 checkpoint 3",
+      "assertion": "mem('visa.search.last.stay_duration') == '最长90天 (180天内)'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "trip.local"
+  ],
+  "module_group": "visa_requirements",
+  "canonical_task_dir": "E10-visa-requirements",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

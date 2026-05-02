@@ -1,0 +1,51 @@
+{
+  "task_id": "A6-2025-PROOF",
+  "family": "A",
+  "goal": "Upload a utility bill named utility_bill_dec.pdf as address proof.",
+  "inputs": {
+    "docType": "utility",
+    "fileName": "utility_bill_dec.pdf"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('identity.address_verified') == 'true'",
+    "mem('identity.address_proof.doc_type') == 'utility_bill'",
+    "mem('identity.address_proof.file_name') == 'utility_bill_dec.pdf'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_a6_1",
+      "name": "cp_a6 checkpoint 1",
+      "assertion": "mem('identity.address_verified') == 'true'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a6_2",
+      "name": "cp_a6 checkpoint 2",
+      "assertion": "mem('identity.address_proof.doc_type') == 'utility_bill'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a6_3",
+      "name": "cp_a6 checkpoint 3",
+      "assertion": "mem('identity.address_proof.file_name') == 'utility_bill_dec.pdf'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "gov.local"
+  ],
+  "module_group": "address_proof",
+  "canonical_task_dir": "A6-address-proof",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

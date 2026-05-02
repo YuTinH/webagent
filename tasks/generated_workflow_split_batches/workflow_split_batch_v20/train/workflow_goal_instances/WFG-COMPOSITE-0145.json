@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-COMPOSITE-0145",
+  "theme": "composite",
+  "difficulty": 5,
+  "instruction": "Finish the composite workflow with the bills reviewed, the payment stack prepared, and the calendar reminder already synced.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "bills_reviewed",
+      "payment_stack_prepared",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bills_reviewed",
+    "payment_stack_prepared",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_PAYMENT_SYNC; payment synchronization should first gather and review the bills, then build the payment stack, and only then sync the reminder."
+}

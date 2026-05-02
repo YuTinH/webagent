@@ -1,0 +1,52 @@
+{
+  "issue": "insurance_policy_param_drift",
+  "binding_id": "BIND_G2_INSURANCE_POLICY",
+  "batch_root": "/Users/masteryth/Documents/webagent/tasks/generated_workflow_split_batches/workflow_split_batch_v20",
+  "pre_repair": {
+    "count_by_split": {
+      "train": 30
+    },
+    "goal_ids_by_split": {
+      "train": [
+        "WFG-HEALTH-0001",
+        "WFG-HEALTH-0002",
+        "WFG-HEALTH-0003",
+        "WFG-HEALTH-0004",
+        "WFG-HEALTH-0005",
+        "WFG-HEALTH-0006",
+        "WFG-HEALTH-0007",
+        "WFG-HEALTH-0008",
+        "WFG-HEALTH-0009",
+        "WFG-HEALTH-0010",
+        "WFG-HEALTH-0021",
+        "WFG-HEALTH-0022",
+        "WFG-HEALTH-0023",
+        "WFG-HEALTH-0024",
+        "WFG-HEALTH-0025",
+        "WFG-HEALTH-0026",
+        "WFG-HEALTH-0027",
+        "WFG-HEALTH-0028",
+        "WFG-HEALTH-0029",
+        "WFG-HEALTH-0030",
+        "WFG-HEALTH-0031",
+        "WFG-HEALTH-0032",
+        "WFG-HEALTH-0033",
+        "WFG-HEALTH-0034",
+        "WFG-HEALTH-0035",
+        "WFG-HEALTH-0036",
+        "WFG-HEALTH-0037",
+        "WFG-HEALTH-0038",
+        "WFG-HEALTH-0039",
+        "WFG-HEALTH-0040"
+      ]
+    }
+  },
+  "post_repair": {
+    "count_by_split": {},
+    "goal_ids_by_split": {}
+  },
+  "notes": [
+    "The affected invocations used BIND_G2_INSURANCE_POLICY but carried non-canonical plan_name/provider values.",
+    "The repair locked this binding to its canonical defaults and removed residual drift from workflow_split_batch_v20."
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-COMPOSITE-0127",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Close the visibility-sync composite workflow by confirming the order path first, opening tracking, syncing the calendar, creating the job follow-up, and ending with a concrete profile update.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "delivery_visibility_confirmed",
+      "order_tracking_opened",
+      "order_followup_prepared",
+      "calendar_event_synced",
+      "job_application_followup_created",
+      "professional_profile_updated"
+    ]
+  },
+  "initial_world_state": [
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "delivery_visibility_confirmed",
+    "order_tracking_opened",
+    "order_followup_prepared",
+    "calendar_event_synced",
+    "job_application_followup_created",
+    "professional_profile_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_WORKFLOW_FOLLOWUP_SYNC; visibility-sync composite workflows should not stop at job search and must continue into an explicit profile-update closure."
+}

@@ -1,0 +1,1326 @@
+{
+  "version": 2,
+  "description": "Catalog of active atomic tasks grouped by workflow-relevant module semantics.",
+  "groups": [
+    {
+      "module_group": "2fa_device",
+      "canonical_task_dir": "L4-2fa-device",
+      "members": [
+        {
+          "task_dir": "L4-2fa-device",
+          "task_id": "L4-2025-2FA",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "2fa_setup",
+      "canonical_task_dir": "L8-2fa-setup",
+      "members": [
+        {
+          "task_dir": "L8-2fa-setup",
+          "task_id": "L8-2025-2FASETUP",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "address_change",
+      "canonical_task_dir": "H1-address-change",
+      "members": [
+        {
+          "task_dir": "H1-address-change",
+          "task_id": "H1-2025-ADDRCHANGE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "address_proof",
+      "canonical_task_dir": "A6-address-proof",
+      "members": [
+        {
+          "task_dir": "A6-address-proof",
+          "task_id": "A6-2025-PROOF",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "airport_transfer",
+      "canonical_task_dir": "E3-airport-transfer",
+      "members": [
+        {
+          "task_dir": "E3-airport-transfer",
+          "task_id": "E3-2025-TRANSFER",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "autopay",
+      "canonical_task_dir": "D3-autopay",
+      "members": [
+        {
+          "task_dir": "D3-autopay",
+          "task_id": "D3-2025-AUTOPAY",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "bank_opening",
+      "canonical_task_dir": "A2-bank-opening",
+      "members": [
+        {
+          "task_dir": "A2-bank-opening",
+          "task_id": "A2-2025-BANK-OPEN",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "bill_aggregation",
+      "canonical_task_dir": "D8-bill-aggregation",
+      "members": [
+        {
+          "task_dir": "D8-bill-aggregation",
+          "task_id": "D8-2025-BILLAGG",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "billing_review",
+      "canonical_task_dir": "H5-library-card",
+      "members": [
+        {
+          "task_dir": "H5-library-card",
+          "task_id": "H5-2025-BILLVIEW",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        },
+        {
+          "task_dir": "H6-check-bill",
+          "task_id": "H6-2025-003",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "book_flight",
+      "canonical_task_dir": "E1-book-flight",
+      "members": [
+        {
+          "task_dir": "E1-book-flight",
+          "task_id": "E1-2025-FLIGHT",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "book_hotel",
+      "canonical_task_dir": "E2-book-hotel",
+      "members": [
+        {
+          "task_dir": "E2-book-hotel",
+          "task_id": "E2-2025-HOTEL",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "budget_limit_update",
+      "canonical_task_dir": "D2-budget-report",
+      "members": [
+        {
+          "task_dir": "D2-budget-report",
+          "task_id": "D2-2025-BUDGET",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        },
+        {
+          "task_dir": "D7-update-profile",
+          "task_id": "D7-2025-SPENDPROFILE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "buy_ebook",
+      "canonical_task_dir": "J2-buy-ebook",
+      "members": [
+        {
+          "task_dir": "J2-buy-ebook",
+          "task_id": "J2-2025-EBOOK",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "calendar_aggregation",
+      "canonical_task_dir": "F6-calendar-aggregation",
+      "members": [
+        {
+          "task_dir": "F6-calendar-aggregation",
+          "task_id": "F6-2025-CALENDAR",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "camera_check",
+      "canonical_task_dir": "I3-camera-check",
+      "members": [
+        {
+          "task_dir": "I3-camera-check",
+          "task_id": "I3-2025-CAMERASETUP",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "cancel_subscription",
+      "canonical_task_dir": "C8-cancel-subscription",
+      "members": [
+        {
+          "task_dir": "C8-cancel-subscription",
+          "task_id": "C8-2025-CANCELSUB",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "card_replacement",
+      "canonical_task_dir": "D4-card-replacement",
+      "members": [
+        {
+          "task_dir": "D4-card-replacement",
+          "task_id": "D4-2025-CARD",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "charity_donation",
+      "canonical_task_dir": "K3-charity-donation",
+      "members": [
+        {
+          "task_dir": "K3-charity-donation",
+          "task_id": "K3-2025-CHARITY",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "check_balance",
+      "canonical_task_dir": "D1-check-balance",
+      "members": [
+        {
+          "task_dir": "D1-check-balance",
+          "task_id": "D1-2025-FINANCE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "check_in",
+      "canonical_task_dir": "E4-check-in",
+      "members": [
+        {
+          "task_dir": "E4-check-in",
+          "task_id": "E4-2025-CHECKIN",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "commute_route",
+      "canonical_task_dir": "E8-commute-route",
+      "members": [
+        {
+          "task_dir": "E8-commute-route",
+          "task_id": "E8-2025-COMMUTE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "complex_autopay",
+      "canonical_task_dir": "Z7-complex-autopay",
+      "members": [
+        {
+          "task_dir": "Z7-complex-autopay",
+          "task_id": "Z7-complex-autopay",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "conference_reg",
+      "canonical_task_dir": "F2-conference-reg",
+      "members": [
+        {
+          "task_dir": "F2-conference-reg",
+          "task_id": "F2-2025-CONFREG",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "conference_registration",
+      "canonical_task_dir": "F7-conference-registration",
+      "members": [
+        {
+          "task_dir": "F7-conference-registration",
+          "task_id": "F7-2025-CONFINVOICE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "contact_support",
+      "canonical_task_dir": "C6-contact-support",
+      "members": [
+        {
+          "task_dir": "C6-contact-support",
+          "task_id": "C6-2025-SUPPORTCONTACT",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "coupon_management",
+      "canonical_task_dir": "B10-coupon-management",
+      "members": [
+        {
+          "task_dir": "B10-coupon-management",
+          "task_id": "B10-2025-COUPONS",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "course_enrollment",
+      "canonical_task_dir": "J1-course-enrollment",
+      "members": [
+        {
+          "task_dir": "J1-course-enrollment",
+          "task_id": "J1-2025-ENROLL",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "customer_service",
+      "canonical_task_dir": "Z6-customer-service",
+      "members": [
+        {
+          "task_dir": "Z6-customer-service",
+          "task_id": "Z6-2025-CHAT",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "data_deletion",
+      "canonical_task_dir": "L2-data-deletion",
+      "members": [
+        {
+          "task_dir": "L2-data-deletion",
+          "task_id": "L2-2025-DSR",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "dispute_transaction",
+      "canonical_task_dir": "D10-dispute-transaction",
+      "members": [
+        {
+          "task_dir": "D10-dispute-transaction",
+          "task_id": "D10-2025-DISPUTEDOC",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "doctor_appt",
+      "canonical_task_dir": "G1-doctor-appt",
+      "members": [
+        {
+          "task_dir": "G1-doctor-appt",
+          "task_id": "G1-2025-HEALTH",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "download_cert",
+      "canonical_task_dir": "J8-download-cert",
+      "members": [
+        {
+          "task_dir": "J8-download-cert",
+          "task_id": "J8-2025-CERTISSUE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "download_data",
+      "canonical_task_dir": "L6-download-data",
+      "members": [
+        {
+          "task_dir": "L6-download-data",
+          "task_id": "L6-2025-DATAEXPORT",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "email_calendar",
+      "canonical_task_dir": "Z4-email-calendar",
+      "members": [
+        {
+          "task_dir": "Z4-email-calendar",
+          "task_id": "Z4-2025-EMAIL",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "email_tracking",
+      "canonical_task_dir": "F9-email-tracking",
+      "members": [
+        {
+          "task_dir": "F9-email-tracking",
+          "task_id": "F9-2025-EMAILTRACK",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "energy_optimize",
+      "canonical_task_dir": "I5-energy-optimize",
+      "members": [
+        {
+          "task_dir": "I5-energy-optimize",
+          "task_id": "I5-2025-ENERGY",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "event_tickets",
+      "canonical_task_dir": "J3-event-tickets",
+      "members": [
+        {
+          "task_dir": "J3-event-tickets",
+          "task_id": "J3-2025-TICKETS",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "expense_report",
+      "canonical_task_dir": "E5-expense-report",
+      "members": [
+        {
+          "task_dir": "E5-expense-report",
+          "task_id": "E5-2025-EXPENSE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "file_taxes",
+      "canonical_task_dir": "F4-file-taxes",
+      "members": [
+        {
+          "task_dir": "F4-file-taxes",
+          "task_id": "F4-2025-TAXFILE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "find_home",
+      "canonical_task_dir": "A1-find-home",
+      "members": [
+        {
+          "task_dir": "A1-find-home",
+          "task_id": "A1-2025-HOME",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "firmware_update",
+      "canonical_task_dir": "I8-firmware-update",
+      "members": [
+        {
+          "task_dir": "I8-firmware-update",
+          "task_id": "I8-2025-FWREPAIR",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "flight_rebooking",
+      "canonical_task_dir": "E6-flight-change",
+      "members": [
+        {
+          "task_dir": "E6-flight-change",
+          "task_id": "E6-2025-FLIGHTCHANGE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "food_delivery",
+      "canonical_task_dir": "B3-food-delivery",
+      "members": [
+        {
+          "task_dir": "B3-food-delivery",
+          "task_id": "B3-2025-FOOD-PROMO",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "fresh_subscription",
+      "canonical_task_dir": "B2-fresh-subscription",
+      "members": [
+        {
+          "task_dir": "B2-fresh-subscription",
+          "task_id": "B2-2025-FRESHSUB",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "gear_rental",
+      "canonical_task_dir": "J4-gear-rental",
+      "members": [
+        {
+          "task_dir": "J4-gear-rental",
+          "task_id": "J4-2025-GEAR",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "gift_pooling",
+      "canonical_task_dir": "K5-gift-pooling",
+      "members": [
+        {
+          "task_dir": "K5-gift-pooling",
+          "task_id": "K5-2025-GIFTPOOL",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "grocery_run",
+      "canonical_task_dir": "B7-grocery-run",
+      "members": [
+        {
+          "task_dir": "B7-grocery-run",
+          "task_id": "B7-2025-GROCERYSUB",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "health_plan_activation",
+      "canonical_task_dir": "G5-health-plan",
+      "members": [
+        {
+          "task_dir": "G5-health-plan",
+          "task_id": "G5-2025-PLAN",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "house_repair",
+      "canonical_task_dir": "I1-house-repair",
+      "members": [
+        {
+          "task_dir": "I1-house-repair",
+          "task_id": "I1-2025-REPAIR",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "housekeeping_booking",
+      "canonical_task_dir": "B8-housekeeping-booking",
+      "members": [
+        {
+          "task_dir": "B8-housekeeping-booking",
+          "task_id": "B8-2025-HOUSEKEEPING",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "illness_reporting",
+      "canonical_task_dir": "M3-illness-reporting",
+      "members": [
+        {
+          "task_dir": "M3-illness-reporting",
+          "task_id": "M3-2025-ILLNESS",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "insurance_policy",
+      "canonical_task_dir": "G2-insurance-policy",
+      "members": [
+        {
+          "task_dir": "G2-insurance-policy",
+          "task_id": "G2-2025-INSURANCE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "investment_account",
+      "canonical_task_dir": "D11-investment-account",
+      "members": [
+        {
+          "task_dir": "D11-investment-account",
+          "task_id": "D11-2025-INVESTMENT",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "investment_growth",
+      "canonical_task_dir": "Z2-investment-growth",
+      "members": [
+        {
+          "task_dir": "Z2-investment-growth",
+          "task_id": "Z2-2025-GROWTH",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "job_search",
+      "canonical_task_dir": "F1-job-search",
+      "members": [
+        {
+          "task_dir": "F1-job-search",
+          "task_id": "F1-2025-JOBSEARCH",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "lease_contract_registration",
+      "canonical_task_dir": "A5-lease-management",
+      "members": [
+        {
+          "task_dir": "A5-lease-management",
+          "task_id": "A5-2025-LEASE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "lease_management_review",
+      "canonical_task_dir": "A10-neighbor-complaint",
+      "members": [
+        {
+          "task_dir": "A10-neighbor-complaint",
+          "task_id": "A10-2025-LEASECHECK",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        },
+        {
+          "task_dir": "A7-maintenance-request",
+          "task_id": "A7-2025-LEASEVIEW",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        },
+        {
+          "task_dir": "A9-rent-payment",
+          "task_id": "A9-2025-LEASEOPEN",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "leave_review",
+      "canonical_task_dir": "C7-leave-review",
+      "members": [
+        {
+          "task_dir": "C7-leave-review",
+          "task_id": "C7-2025-REVIEW",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "library_service",
+      "canonical_task_dir": "J6-library-service",
+      "members": [
+        {
+          "task_dir": "J6-library-service",
+          "task_id": "J6-2025-LIBRARY",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "live_auction",
+      "canonical_task_dir": "Z3-live-auction",
+      "members": [
+        {
+          "task_dir": "Z3-live-auction",
+          "task_id": "Z3-2025-AUCTION",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "logistics_fix",
+      "canonical_task_dir": "C1-logistics-fix",
+      "members": [
+        {
+          "task_dir": "C1-logistics-fix",
+          "task_id": "C1-2025-SUPPORT",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "long_haul_trip",
+      "canonical_task_dir": "E7-long-haul-trip",
+      "members": [
+        {
+          "task_dir": "E7-long-haul-trip",
+          "task_id": "E7-LONG-HAUL",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "lost_card_freeze",
+      "canonical_task_dir": "M1-lost-card",
+      "members": [
+        {
+          "task_dir": "M1-lost-card",
+          "task_id": "M1-2025-CARD",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "medical_claim",
+      "canonical_task_dir": "G3-medical-claim",
+      "members": [
+        {
+          "task_dir": "G3-medical-claim",
+          "task_id": "G3-2025-HEALTH",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "mobile_plan_signup",
+      "canonical_task_dir": "A8-internet-upgrade",
+      "members": [
+        {
+          "task_dir": "A8-internet-upgrade",
+          "task_id": "A8-2025-MOBILESUB",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "mobile_plan_switch",
+      "canonical_task_dir": "A4-mobile-plan",
+      "members": [
+        {
+          "task_dir": "A4-mobile-plan",
+          "task_id": "A4-2025-MOBILE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "movie_tickets",
+      "canonical_task_dir": "B9-movie-tickets",
+      "members": [
+        {
+          "task_dir": "B9-movie-tickets",
+          "task_id": "B9-2025-EVENTBOOKING",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "order_arrival",
+      "canonical_task_dir": "Z1-order-arrival",
+      "members": [
+        {
+          "task_dir": "Z1-order-arrival",
+          "task_id": "Z1-2025-ARRIVAL",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "paper_submission",
+      "canonical_task_dir": "F8-paper-submission",
+      "members": [
+        {
+          "task_dir": "F8-paper-submission",
+          "task_id": "F8-2025-PAPERSUB",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "parking_permit_application",
+      "canonical_task_dir": "H4-parking-permit",
+      "members": [
+        {
+          "task_dir": "H4-parking-permit",
+          "task_id": "H4-2025-PARKING",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "password_manager",
+      "canonical_task_dir": "L1-password-manager",
+      "members": [
+        {
+          "task_dir": "L1-password-manager",
+          "task_id": "L1-2025-PASSMGR",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "password_recovery_e2e",
+      "canonical_task_dir": "Z5-password-recovery",
+      "members": [
+        {
+          "task_dir": "Z5-password-recovery",
+          "task_id": "Z5-2025-RESET",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "password_reset_completion",
+      "canonical_task_dir": "M6-account-recovery",
+      "members": [
+        {
+          "task_dir": "M6-account-recovery",
+          "task_id": "M6-2025-PWRECOVERY",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "password_reset_request",
+      "canonical_task_dir": "M5-reset-password",
+      "members": [
+        {
+          "task_dir": "M5-reset-password",
+          "task_id": "M5-2025-RESETCODE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "permit_app",
+      "canonical_task_dir": "H2-permit-app",
+      "members": [
+        {
+          "task_dir": "H2-permit-app",
+          "task_id": "H2-2025-PERMITAPP",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "permit_renewal",
+      "canonical_task_dir": "H3-permit-renewal",
+      "members": [
+        {
+          "task_dir": "H3-permit-renewal",
+          "task_id": "H3-2025-RENEWAL",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "prescription_refill",
+      "canonical_task_dir": "G7-prescription-refill",
+      "members": [
+        {
+          "task_dir": "G7-prescription-refill",
+          "task_id": "G7-2025-HEALTH",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "price_protection",
+      "canonical_task_dir": "B5-price-protection",
+      "members": [
+        {
+          "task_dir": "B5-price-protection",
+          "task_id": "B5-2025-PRICE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "privacy_settings",
+      "canonical_task_dir": "L5-privacy-settings",
+      "members": [
+        {
+          "task_dir": "L5-privacy-settings",
+          "task_id": "L5-2025-CREDENTIALADD",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "receipt_archiving",
+      "canonical_task_dir": "F5-receipt-archive",
+      "members": [
+        {
+          "task_dir": "F5-receipt-archive",
+          "task_id": "F5-2025-ARCHIVE2",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "renew_permit",
+      "canonical_task_dir": "H8-renew-permit",
+      "members": [
+        {
+          "task_dir": "H8-renew-permit",
+          "task_id": "H8-2025-RENEW2",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "return",
+      "canonical_task_dir": "C2-return",
+      "members": [
+        {
+          "task_dir": "C2-return",
+          "task_id": "C2-2025-004",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "reviews_blacklist",
+      "canonical_task_dir": "C5-reviews-blacklist",
+      "members": [
+        {
+          "task_dir": "C5-reviews-blacklist",
+          "task_id": "C5-2025-REVIEWS",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "roommate_expense_split",
+      "canonical_task_dir": "K2-aa-split",
+      "members": [
+        {
+          "task_dir": "K2-aa-split",
+          "task_id": "K2-2025-010",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "rsvp_event",
+      "canonical_task_dir": "K4-rsvp-event",
+      "members": [
+        {
+          "task_dir": "K4-rsvp-event",
+          "task_id": "K4-2025-RSVPGROUP",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "second_hand_item_listing",
+      "canonical_task_dir": "B6-second-hand-item-listing",
+      "members": [
+        {
+          "task_dir": "B6-second-hand-item-listing",
+          "task_id": "B6-2025-MARKET",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "second_hand_sale",
+      "canonical_task_dir": "B11-second-hand-sale",
+      "members": [
+        {
+          "task_dir": "B11-second-hand-sale",
+          "task_id": "B11-2025-GIGLISTING",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "security_audit",
+      "canonical_task_dir": "L7-security-audit",
+      "members": [
+        {
+          "task_dir": "L7-security-audit",
+          "task_id": "L7-2025-CLOUDROTATE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "security_rotation",
+      "canonical_task_dir": "L3-security-rotation",
+      "members": [
+        {
+          "task_dir": "L3-security-rotation",
+          "task_id": "L3-2025-SEC",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "shopping",
+      "canonical_task_dir": "B1-shopping",
+      "members": [
+        {
+          "task_dir": "B1-shopping",
+          "task_id": "B1-2025-001",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "skill_certification",
+      "canonical_task_dir": "J5-skill-certification",
+      "members": [
+        {
+          "task_dir": "J5-skill-certification",
+          "task_id": "J5-2025-CERT",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "smart_bulb_setup",
+      "canonical_task_dir": "I6-smart-bulb-setup",
+      "members": [
+        {
+          "task_dir": "I6-smart-bulb-setup",
+          "task_id": "I6-2025-SMARTBULB",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "smart_meter",
+      "canonical_task_dir": "I4-smart-meter",
+      "members": [
+        {
+          "task_dir": "I4-smart-meter",
+          "task_id": "I4-2025-SMARTMETER",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "submit_assignment",
+      "canonical_task_dir": "J7-submit-assignment",
+      "members": [
+        {
+          "task_dir": "J7-submit-assignment",
+          "task_id": "J7-2025-HANDBOOKRES",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "subscription_refund",
+      "canonical_task_dir": "C3-subscription-refund",
+      "members": [
+        {
+          "task_dir": "C3-subscription-refund",
+          "task_id": "C3-2025-REFUND",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "supply_disruption",
+      "canonical_task_dir": "M2-supply-disruption",
+      "members": [
+        {
+          "task_dir": "M2-supply-disruption",
+          "task_id": "M2-2025-SUPPLY",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "tax_preparation",
+      "canonical_task_dir": "D5-tax-preparation",
+      "members": [
+        {
+          "task_dir": "D5-tax-preparation",
+          "task_id": "D5-2025-TAXPREP",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "thermostat_schedule",
+      "canonical_task_dir": "I7-thermostat-schedule",
+      "members": [
+        {
+          "task_dir": "I7-thermostat-schedule",
+          "task_id": "I7-2025-THERMOSTAT",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "track_orders",
+      "canonical_task_dir": "B4-track-orders",
+      "members": [
+        {
+          "task_dir": "B4-track-orders",
+          "task_id": "B4-2025-TRACKING",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "transfer_funds",
+      "canonical_task_dir": "D9-transfer-funds",
+      "members": [
+        {
+          "task_dir": "D9-transfer-funds",
+          "task_id": "D9-2025-TRANSPORTBUDGET",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "transport_topup",
+      "canonical_task_dir": "E9-transport-topup",
+      "members": [
+        {
+          "task_dir": "E9-transport-topup",
+          "task_id": "E9-2025-TOPUP",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "update_linkedin",
+      "canonical_task_dir": "F3-update-linkedin",
+      "members": [
+        {
+          "task_dir": "F3-update-linkedin",
+          "task_id": "F3-2025-LINKEDIN",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "urgent_loan",
+      "canonical_task_dir": "M4-urgent-loan",
+      "members": [
+        {
+          "task_dir": "M4-urgent-loan",
+          "task_id": "M4-2025-EMERGENCYLOAN",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "utility_setup",
+      "canonical_task_dir": "A3-utility-setup",
+      "members": [
+        {
+          "task_dir": "A3-utility-setup",
+          "task_id": "A3-2025-UTIL",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "vaccine_mgmt",
+      "canonical_task_dir": "G6-vaccine-mgmt",
+      "members": [
+        {
+          "task_dir": "G6-vaccine-mgmt",
+          "task_id": "G6-2025-VACCINE",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "vehicle_address_update",
+      "canonical_task_dir": "H7-vehicle-address-update",
+      "members": [
+        {
+          "task_dir": "H7-vehicle-address-update",
+          "task_id": "H7-2025-VEHICLEADDR",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "visa_requirements",
+      "canonical_task_dir": "E10-visa-requirements",
+      "members": [
+        {
+          "task_dir": "E10-visa-requirements",
+          "task_id": "E10-2025-VISA",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    },
+    {
+      "module_group": "warranty_claim",
+      "canonical_task_dir": "C4-warranty-claim",
+      "members": [
+        {
+          "task_dir": "C4-warranty-claim",
+          "task_id": "C4-2025-WARRANTY",
+          "variant_kind": "distinct",
+          "lifecycle_status": "active"
+        }
+      ]
+    }
+  ]
+}

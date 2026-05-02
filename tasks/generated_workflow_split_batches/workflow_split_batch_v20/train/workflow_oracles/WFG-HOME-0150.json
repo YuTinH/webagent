@@ -1,0 +1,417 @@
+{
+  "goal_id": "WFG-HOME-0150",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full home-control route to completion and do not stop before a synced service follow-up calendar."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CAMERA_CHECK",
+      "role": "required",
+      "produces": [
+        "camera_config_verified",
+        "home_service_monitored"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_FIRMWARE_UPDATE",
+      "role": "alternative",
+      "produces": [
+        "firmware_updated",
+        "home_device_readiness_confirmed",
+        "home_service_monitored"
+      ]
+    },
+    {
+      "module_id": "MODULE_HOUSE_REPAIR",
+      "role": "required",
+      "produces": [
+        "home_repair_requested"
+      ]
+    },
+    {
+      "module_id": "MODULE_SMART_BULB_SETUP",
+      "role": "alternative",
+      "produces": [
+        "home_device_readiness_confirmed",
+        "smart_bulb_configured"
+      ]
+    },
+    {
+      "module_id": "MODULE_UTILITY_SETUP",
+      "role": "required",
+      "produces": [
+        "address_confirmation_verified",
+        "electricity_active",
+        "residency_record_verified",
+        "utilities_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_CAMERA_CHECK",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_CAMERA_CHECK",
+      "to": "MODULE_SMART_BULB_SETUP",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FIRMWARE_UPDATE",
+      "to": "MODULE_CAMERA_CHECK",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_HOUSE_REPAIR",
+      "to": "MODULE_CAMERA_CHECK",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_HOUSE_REPAIR",
+      "to": "MODULE_FIRMWARE_UPDATE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SMART_BULB_SETUP",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_HOUSE_REPAIR",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_utility_repair_camera_bulb_extended",
+      "required_modules": [
+        "MODULE_UTILITY_SETUP",
+        "MODULE_HOUSE_REPAIR",
+        "MODULE_CAMERA_CHECK",
+        "MODULE_SMART_BULB_SETUP",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HOME-0150-M1",
+        "WFG-HOME-0150-M2",
+        "WFG-HOME-0150-M3",
+        "WFG-HOME-0150-M4",
+        "WFG-HOME-0150-M5"
+      ],
+      "terminal_predicates": [
+        "utilities_active",
+        "home_repair_requested",
+        "camera_config_verified",
+        "home_device_readiness_confirmed",
+        "home_service_monitored",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_utility_repair_firmware_camera_extended",
+      "required_modules": [
+        "MODULE_UTILITY_SETUP",
+        "MODULE_HOUSE_REPAIR",
+        "MODULE_FIRMWARE_UPDATE",
+        "MODULE_CAMERA_CHECK",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HOME-0150-M6",
+        "WFG-HOME-0150-M7",
+        "WFG-HOME-0150-M8",
+        "WFG-HOME-0150-M9",
+        "WFG-HOME-0150-M10"
+      ],
+      "terminal_predicates": [
+        "utilities_active",
+        "home_repair_requested",
+        "camera_config_verified",
+        "home_device_readiness_confirmed",
+        "home_service_monitored",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-HOME-0150-M1",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "88 River Rd, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0150-M2",
+      "module_id": "MODULE_HOUSE_REPAIR",
+      "binding_id": "BIND_I1_HOUSE_REPAIR",
+      "binding_task_id": "I1-2025-REPAIR",
+      "parameter_values": {
+        "item": "冰箱",
+        "problem": "不制冷",
+        "service_date": "2026-02-10"
+      },
+      "description": "Submit a repair request for '冰箱' with problem '不制冷' and desired service date '2026-02-10'. Verify the request is submitted and its status is 'submitted'.",
+      "expected_observables": [
+        "url().includes('/shop.local/repairs.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "home_repair_requested"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0150-M3",
+      "module_id": "MODULE_CAMERA_CHECK",
+      "binding_id": "BIND_I3_CAMERA_CHECK",
+      "binding_task_id": "I3-2025-CAMERASETUP",
+      "parameter_values": {
+        "deviceId": "CAM-001",
+        "location": "玄关",
+        "color": "white"
+      },
+      "description": "Add a camera device and verify it appears online in the home dashboard.",
+      "expected_observables": [
+        "exists(\"div:has-text('玄关')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "camera_config_verified",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0150-M4",
+      "module_id": "MODULE_SMART_BULB_SETUP",
+      "binding_id": "BIND_I6_SMART_BULB_SETUP",
+      "binding_task_id": "I6-2025-SMARTBULB",
+      "parameter_values": {
+        "deviceId": "BULB-101",
+        "location": "Bedroom",
+        "color": "rgb"
+      },
+      "description": "Set up smart bulb BULB-101 in the Bedroom using RGB mode.",
+      "expected_observables": [
+        "json('env','devices.BULB-101.color') == 'rgb'",
+        "exists(\"#devices-list:has-text('Bedroom')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "home_device_readiness_confirmed",
+          "smart_bulb_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0150-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0150-M6",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "88 River Rd, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0150-M7",
+      "module_id": "MODULE_HOUSE_REPAIR",
+      "binding_id": "BIND_I1_HOUSE_REPAIR",
+      "binding_task_id": "I1-2025-REPAIR",
+      "parameter_values": {
+        "item": "冰箱",
+        "problem": "不制冷",
+        "service_date": "2026-02-10"
+      },
+      "description": "Submit a repair request for '冰箱' with problem '不制冷' and desired service date '2026-02-10'. Verify the request is submitted and its status is 'submitted'.",
+      "expected_observables": [
+        "url().includes('/shop.local/repairs.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "home_repair_requested"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0150-M8",
+      "module_id": "MODULE_FIRMWARE_UPDATE",
+      "binding_id": "BIND_I8_FIRMWARE_UPDATE",
+      "binding_task_id": "I8-2025-FWREPAIR",
+      "parameter_values": {
+        "appliance": "Smart Thermostat",
+        "serial_number": "FW-001-8899",
+        "problem": "Firmware update failed and device keeps rebooting",
+        "service_date": "2026-02-28"
+      },
+      "description": "Report a failed thermostat firmware update and submit a repair request.",
+      "expected_observables": [
+        "exists(\"#appliance-repair-requests-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "firmware_updated",
+          "home_device_readiness_confirmed",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0150-M9",
+      "module_id": "MODULE_CAMERA_CHECK",
+      "binding_id": "BIND_I3_CAMERA_CHECK",
+      "binding_task_id": "I3-2025-CAMERASETUP",
+      "parameter_values": {
+        "deviceId": "CAM-001",
+        "location": "玄关",
+        "color": "white"
+      },
+      "description": "Add a camera device and verify it appears online in the home dashboard.",
+      "expected_observables": [
+        "exists(\"div:has-text('玄关')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "camera_config_verified",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0150-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "utilities_active",
+      "home_repair_requested",
+      "camera_config_verified",
+      "home_device_readiness_confirmed",
+      "home_service_monitored",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "address_confirmation_verified",
+      "calendar_event_synced",
+      "camera_config_verified",
+      "electricity_active",
+      "firmware_updated",
+      "home_device_readiness_confirmed",
+      "home_repair_requested",
+      "home_service_monitored",
+      "residency_record_verified",
+      "smart_bulb_configured",
+      "utilities_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

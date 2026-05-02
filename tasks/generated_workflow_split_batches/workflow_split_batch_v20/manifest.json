@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "batch_name": "workflow_split_batch_v20",
+  "blueprints": "/Users/masteryth/Documents/webagent/tasks/workflow_generation_blueprints.json",
+  "splits": "/Users/masteryth/Documents/webagent/tasks/workflow_blueprint_splits.json",
+  "requirements": "/Users/masteryth/Documents/webagent/tasks/workflow_quality_requirements.json",
+  "count_per_blueprint": 10,
+  "seed": 0,
+  "summary": {
+    "train": {
+      "blueprint_count": 476,
+      "goal_count": 4760,
+      "multi_path_goals": 4070,
+      "multi_path_ratio": 0.8550420168067226,
+      "batch_root": "/Users/masteryth/Documents/webagent/tasks/generated_workflow_split_batches/workflow_split_batch_v20/train",
+      "seed": 0
+    },
+    "dev": {
+      "blueprint_count": 14,
+      "goal_count": 140,
+      "multi_path_goals": 100,
+      "multi_path_ratio": 0.7142857142857143,
+      "batch_root": "/Users/masteryth/Documents/webagent/tasks/generated_workflow_split_batches/workflow_split_batch_v20/dev",
+      "seed": 1
+    },
+    "test": {
+      "blueprint_count": 14,
+      "goal_count": 140,
+      "multi_path_goals": 120,
+      "multi_path_ratio": 0.8571428571428571,
+      "batch_root": "/Users/masteryth/Documents/webagent/tasks/generated_workflow_split_batches/workflow_split_batch_v20/test",
+      "seed": 2
+    }
+  }
+}

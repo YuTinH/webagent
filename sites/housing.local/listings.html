@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nebula Housing - Listings</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🏠 Nebula Housing</div>
+      <div class="navlinks">
+        <a href="index.html">Find Home</a>
+        <a href="listings.html" class="active">Listings</a>
+        <a href="lease-management.html">My Lease</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <div>
+        <h1 style="margin:0 0 8px">Filtered Listings</h1>
+        <p id="listing-summary" style="margin:0; color:var(--muted)">Searching for a matching home...</p>
+      </div>
+      <div style="display:flex; gap:12px; align-items:center">
+        <input id="search-price" class="input" type="number" min="0" step="50" style="width:150px" placeholder="Max price" aria-label="Maximum monthly rent" oninput="renderListings()">
+        <select id="sort-order" class="input" style="width:auto" onchange="renderListings()">
+          <option value="default">Default</option>
+          <option value="price_low">Price: Low to High</option>
+          <option value="price_high">Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+    <div id="property-list" class="grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:24px">
+      <div class="loading">Loading filtered properties...</div>
+    </div>
+  </div>
+
+  <script>
+  let allProperties = [];
+  const listingsParams = new URLSearchParams(window.location.search);
+  const requestedListingsTaskId = listingsParams.get('task') || 'A1-2025-HOME';
+  const listingsTaskId = resolveTaskId(requestedListingsTaskId);
+
+  function getQueryFilters() {
+    const priceInput = document.getElementById('search-price');
+    const typedPrice = priceInput ? Number(priceInput.value || 0) : 0;
+    return {
+      location: listingsParams.get('location') || '',
+      price: typedPrice || Number(listingsParams.get('price') || 0),
+      bedrooms: listingsParams.get('bedrooms') || '',
+      sort: listingsParams.get('sort') || ''
+    };
+  }
+
+  function applyListingFilters(properties) {
+    const filters = getQueryFilters();
+    let next = [...properties];
+    if (filters.price) {
+      next = next.filter((item) => Number(item.price || 0) <= filters.price);
+    }
+    return next;
+  }
+
+  function propertyUrl(propertyId) {
+    const cleanMode = listingsParams.get('clean') === 'true';
+    return `property.html?id=${propertyId}${cleanMode ? '&clean=true' : ''}&task=${encodeURIComponent(listingsTaskId)}`;
+  }
+
+  async function loadProperties() {
+    const list = document.getElementById('property-list');
+    try {
+      const env = await loadEnv();
+      allProperties = applyListingFilters(env.housing?.properties || []);
+      renderListings();
+    } catch (error) {
+      console.error(error);
+      list.innerHTML = '<div class="card soft" style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted)">Unable to load listings.</div>';
+    }
+  }
+
+  function renderListings() {
+    const list = document.getElementById('property-list');
+    const summary = document.getElementById('listing-summary');
+    const sort = document.getElementById('sort-order').value;
+    let properties = [...allProperties];
+    if (sort === 'price_low') properties.sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
+    if (sort === 'price_high') properties.sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
+    if (summary) {
+      summary.textContent = `Showing ${properties.length} listing${properties.length === 1 ? '' : 's'} under the current filters.`;
+    }
+    if (!properties.length) {
+      list.innerHTML = '<div class="card soft" style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted)">No listings matched the current filters.</div>';
+      return;
+    }
+    list.innerHTML = properties.map((p) => `
+      <div class="property-card" onclick="window.location.href='${propertyUrl(p.id)}'" style="border:1px solid var(--border); border-radius:12px; overflow:hidden; cursor:pointer; background:var(--card)">
+        <div style="height:160px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; font-size:40px">🏠</div>
+        <div style="padding:16px">
+          <div style="font-weight:700; font-size:18px">${p.title}</div>
+          <div style="color:var(--muted); font-size:14px; margin:4px 0">${p.meta || ''}</div>
+          <div style="color:var(--pri); font-weight:700; font-size:20px; margin-top:8px">$${p.price}/mo</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadProperties();
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "task_id": "M2-2025-SUPPLY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/supply-disruption.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#action-cancel-ALT-303"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#alternative-options-list .card:has-text('refund_pending')"
+    }
+  ]
+}

@@ -1,0 +1,368 @@
+{
+  "goal_id": "WFG-SECURITY-0085",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full hardening route to completion and do not stop before the second-factor device is updated and the final audit is completed."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_2FA_DEVICE",
+      "role": "required",
+      "produces": [
+        "two_factor_device_updated"
+      ]
+    },
+    {
+      "module_id": "MODULE_2FA_SETUP",
+      "role": "required",
+      "produces": [
+        "two_factor_enabled"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_MANAGER",
+      "role": "alternative",
+      "produces": [
+        "access_surface_reviewed",
+        "credential_vault_updated",
+        "security_hardening_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_PRIVACY_SETTINGS",
+      "role": "alternative",
+      "produces": [
+        "access_surface_reviewed",
+        "account_exit_prepared",
+        "privacy_settings_updated"
+      ]
+    },
+    {
+      "module_id": "MODULE_SECURITY_AUDIT",
+      "role": "required",
+      "produces": [
+        "security_audit_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_SECURITY_ROTATION",
+      "role": "required",
+      "produces": [
+        "secret_rotated",
+        "security_hardening_completed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_2FA_DEVICE",
+      "to": "MODULE_SECURITY_AUDIT",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_2FA_SETUP",
+      "to": "MODULE_SECURITY_ROTATION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_PASSWORD_MANAGER",
+      "to": "MODULE_2FA_SETUP",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_PRIVACY_SETTINGS",
+      "to": "MODULE_2FA_SETUP",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SECURITY_ROTATION",
+      "to": "MODULE_2FA_DEVICE",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_privacy_twofa_rotation_device_audit",
+      "required_modules": [
+        "MODULE_PRIVACY_SETTINGS",
+        "MODULE_2FA_SETUP",
+        "MODULE_SECURITY_ROTATION",
+        "MODULE_2FA_DEVICE",
+        "MODULE_SECURITY_AUDIT"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-SECURITY-0085-M1",
+        "WFG-SECURITY-0085-M2",
+        "WFG-SECURITY-0085-M3",
+        "WFG-SECURITY-0085-M4",
+        "WFG-SECURITY-0085-M5"
+      ],
+      "terminal_predicates": [
+        "access_surface_reviewed",
+        "two_factor_enabled",
+        "security_hardening_completed",
+        "security_audit_completed",
+        "two_factor_device_updated"
+      ]
+    },
+    {
+      "path_id": "path_password_twofa_rotation_device_audit",
+      "required_modules": [
+        "MODULE_PASSWORD_MANAGER",
+        "MODULE_2FA_SETUP",
+        "MODULE_SECURITY_ROTATION",
+        "MODULE_2FA_DEVICE",
+        "MODULE_SECURITY_AUDIT"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-SECURITY-0085-M6",
+        "WFG-SECURITY-0085-M7",
+        "WFG-SECURITY-0085-M8",
+        "WFG-SECURITY-0085-M9",
+        "WFG-SECURITY-0085-M10"
+      ],
+      "terminal_predicates": [
+        "access_surface_reviewed",
+        "two_factor_enabled",
+        "security_hardening_completed",
+        "security_audit_completed",
+        "two_factor_device_updated"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-SECURITY-0085-M1",
+      "module_id": "MODULE_PRIVACY_SETTINGS",
+      "binding_id": "BIND_L5_PRIVACY_SETTINGS",
+      "binding_task_id": "L5-2025-CREDENTIALADD",
+      "parameter_values": {
+        "site": "SocialHub",
+        "username": "privacy_user"
+      },
+      "description": "Add a new privacy credential entry in password manager.",
+      "expected_observables": [
+        "exists(\"#password-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "access_surface_reviewed",
+          "account_exit_prepared",
+          "privacy_settings_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0085-M2",
+      "module_id": "MODULE_2FA_SETUP",
+      "binding_id": "BIND_L8_2FA_SETUP",
+      "binding_task_id": "L8-2025-2FASETUP",
+      "parameter_values": {},
+      "description": "Set up 2FA with a new primary device.",
+      "expected_observables": [
+        "exists(\"div[id='2fa-status']\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "two_factor_enabled"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0085-M3",
+      "module_id": "MODULE_SECURITY_ROTATION",
+      "binding_id": "BIND_L3_SECURITY_ROTATION",
+      "binding_task_id": "L3-2025-SEC",
+      "parameter_values": {
+        "providers": [
+          "mail",
+          "cloud",
+          "dev"
+        ],
+        "rotate": "mfa+api"
+      },
+      "description": "Check the security dashboard for compromised accounts and rotate keys for all affected providers.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "secret_rotated",
+          "security_hardening_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0085-M4",
+      "module_id": "MODULE_2FA_DEVICE",
+      "binding_id": "BIND_L4_2FA_DEVICE",
+      "binding_task_id": "L4-2025-2FA",
+      "parameter_values": {
+        "new_device_name": "Galaxy Fold 7",
+        "verification_code": "778899"
+      },
+      "description": "Move 2FA to the device Galaxy Fold 7.",
+      "expected_observables": [
+        "exists(\"#twofa-history-list .card:has-text('Galaxy Fold 7')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "two_factor_device_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0085-M5",
+      "module_id": "MODULE_SECURITY_AUDIT",
+      "binding_id": "BIND_L7_SECURITY_AUDIT",
+      "binding_task_id": "L7-2025-CLOUDROTATE",
+      "parameter_values": {},
+      "description": "Rotate credentials for Cloud Storage and Dev Platform using API-only rotation.",
+      "expected_observables": [
+        "json('env','security.last_rotation.providers.0') == 'cloud'",
+        "json('env','security.last_rotation.providers.1') == 'dev'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "security_audit_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0085-M6",
+      "module_id": "MODULE_PASSWORD_MANAGER",
+      "binding_id": "BIND_L1_PASSWORD_MANAGER",
+      "binding_task_id": "L1-2025-PASSMGR",
+      "parameter_values": {
+        "site": "Overleaf",
+        "username": "paper.drafts@example.com",
+        "password": "Overleaf$Draft6"
+      },
+      "description": "Add a password manager entry for Overleaf using username paper.drafts@example.com.",
+      "expected_observables": [
+        "exists(\"#password-list .card:has-text('Overleaf')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "access_surface_reviewed",
+          "credential_vault_updated",
+          "security_hardening_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0085-M7",
+      "module_id": "MODULE_2FA_SETUP",
+      "binding_id": "BIND_L8_2FA_SETUP",
+      "binding_task_id": "L8-2025-2FASETUP",
+      "parameter_values": {},
+      "description": "Set up 2FA with a new primary device.",
+      "expected_observables": [
+        "exists(\"div[id='2fa-status']\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "two_factor_enabled"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0085-M8",
+      "module_id": "MODULE_SECURITY_ROTATION",
+      "binding_id": "BIND_L3_SECURITY_ROTATION",
+      "binding_task_id": "L3-2025-SEC",
+      "parameter_values": {
+        "providers": [
+          "mail",
+          "cloud",
+          "dev"
+        ],
+        "rotate": "mfa+api"
+      },
+      "description": "Check the security dashboard for compromised accounts and rotate keys for all affected providers.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "secret_rotated",
+          "security_hardening_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0085-M9",
+      "module_id": "MODULE_2FA_DEVICE",
+      "binding_id": "BIND_L4_2FA_DEVICE",
+      "binding_task_id": "L4-2025-2FA",
+      "parameter_values": {
+        "new_device_name": "Galaxy Fold 7",
+        "verification_code": "778899"
+      },
+      "description": "Move 2FA to the device Galaxy Fold 7.",
+      "expected_observables": [
+        "exists(\"#twofa-history-list .card:has-text('Galaxy Fold 7')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "two_factor_device_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0085-M10",
+      "module_id": "MODULE_SECURITY_AUDIT",
+      "binding_id": "BIND_L7_SECURITY_AUDIT",
+      "binding_task_id": "L7-2025-CLOUDROTATE",
+      "parameter_values": {},
+      "description": "Rotate credentials for Cloud Storage and Dev Platform using API-only rotation.",
+      "expected_observables": [
+        "json('env','security.last_rotation.providers.0') == 'cloud'",
+        "json('env','security.last_rotation.providers.1') == 'dev'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "security_audit_completed"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "access_surface_reviewed",
+      "two_factor_enabled",
+      "security_hardening_completed",
+      "security_audit_completed",
+      "two_factor_device_updated"
+    ],
+    "checkpoint_predicates": [
+      "access_surface_reviewed",
+      "account_exit_prepared",
+      "credential_vault_updated",
+      "privacy_settings_updated",
+      "secret_rotated",
+      "security_audit_completed",
+      "security_hardening_completed",
+      "two_factor_device_updated",
+      "two_factor_enabled"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

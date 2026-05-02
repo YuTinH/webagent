@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - Login</title>
+  <link rel="stylesheet" href="../static/skin.css">
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+    </div>
+  </div>
+  <div class="container" style="max-width:480px">
+    <h1 style="margin-bottom:24px">Login</h1>
+    <div class="card soft">
+      <div class="form">
+        <label>Username</label>
+        <input id="username" class="input" placeholder="Username">
+        <label>Password</label>
+        <input id="password" type="password" class="input" placeholder="Password">
+        <button class="btn pri" type="submit" style="margin-top:16px" onclick="login()">Login</button>
+      </div>
+    </div>
+  </div>
+  <script>
+  function login() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    localStorage.setItem('bank.user', u);
+    window.location.href = 'dashboard.html';
+  }
+  </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

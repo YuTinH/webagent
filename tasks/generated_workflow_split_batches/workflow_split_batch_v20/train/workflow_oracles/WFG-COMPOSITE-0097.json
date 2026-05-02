@@ -1,0 +1,400 @@
+{
+  "goal_id": "WFG-COMPOSITE-0097",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either use the transfer-based route before rebooking and expense submission, or use the tax-preparation route before the same rebooking and expense closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_BANK_OPENING",
+      "role": "required",
+      "produces": [
+        "bank_account_active",
+        "payment_method_available"
+      ]
+    },
+    {
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "travel_booking_confirmed"
+      ]
+    },
+    {
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "role": "required",
+      "produces": [
+        "expense_report_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "role": "required",
+      "produces": [
+        "itinerary_rebooked"
+      ]
+    },
+    {
+      "module_id": "MODULE_LONG_HAUL_TRIP",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "mobility_clearance_verified",
+        "travel_booking_confirmed",
+        "trip_booked",
+        "visa_approved"
+      ]
+    },
+    {
+      "module_id": "MODULE_TAX_PREPARATION",
+      "role": "alternative",
+      "produces": [
+        "tax_documents_prepared",
+        "tax_funding_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_TRANSFER_FUNDS",
+      "role": "alternative",
+      "produces": [
+        "payment_stack_prepared",
+        "tax_funding_prepared",
+        "transfer_completed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_BANK_OPENING",
+      "to": "MODULE_TAX_PREPARATION",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_BANK_OPENING",
+      "to": "MODULE_TRANSFER_FUNDS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_BOOK_FLIGHT",
+      "to": "MODULE_FLIGHT_REBOOKING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FLIGHT_REBOOKING",
+      "to": "MODULE_EXPENSE_REPORT",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_LONG_HAUL_TRIP",
+      "to": "MODULE_FLIGHT_REBOOKING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_TAX_PREPARATION",
+      "to": "MODULE_LONG_HAUL_TRIP",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_TRANSFER_FUNDS",
+      "to": "MODULE_BOOK_FLIGHT",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_transfer_then_rebook_expense",
+      "required_modules": [
+        "MODULE_BANK_OPENING",
+        "MODULE_TRANSFER_FUNDS",
+        "MODULE_BOOK_FLIGHT",
+        "MODULE_FLIGHT_REBOOKING",
+        "MODULE_EXPENSE_REPORT"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-COMPOSITE-0097-M1",
+        "WFG-COMPOSITE-0097-M2",
+        "WFG-COMPOSITE-0097-M3",
+        "WFG-COMPOSITE-0097-M4",
+        "WFG-COMPOSITE-0097-M5"
+      ],
+      "terminal_predicates": [
+        "tax_funding_prepared",
+        "itinerary_rebooked",
+        "expense_report_submitted"
+      ]
+    },
+    {
+      "path_id": "path_prepare_then_longhaul_rebook_expense",
+      "required_modules": [
+        "MODULE_BANK_OPENING",
+        "MODULE_TAX_PREPARATION",
+        "MODULE_LONG_HAUL_TRIP",
+        "MODULE_FLIGHT_REBOOKING",
+        "MODULE_EXPENSE_REPORT"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-COMPOSITE-0097-M6",
+        "WFG-COMPOSITE-0097-M7",
+        "WFG-COMPOSITE-0097-M8",
+        "WFG-COMPOSITE-0097-M9",
+        "WFG-COMPOSITE-0097-M10"
+      ],
+      "terminal_predicates": [
+        "tax_funding_prepared",
+        "itinerary_rebooked",
+        "expense_report_submitted"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M1",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M2",
+      "module_id": "MODULE_TRANSFER_FUNDS",
+      "binding_id": "BIND_D9_TRANSFER_FUNDS",
+      "binding_task_id": "D9-2025-TRANSPORTBUDGET",
+      "parameter_values": {
+        "category": "transport",
+        "limit": "150"
+      },
+      "description": "Adjust transport budget after a funds transfer decision.",
+      "expected_observables": [
+        "url().includes('/bank.local/budget.html?updated=true')",
+        "text('#limit-transport') includes '150'",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "payment_stack_prepared",
+          "tax_funding_prepared",
+          "transfer_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M3",
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "binding_id": "BIND_E1_BOOK_FLIGHT",
+      "binding_task_id": "E1-2025-FLIGHT",
+      "parameter_values": {
+        "departure": "北京",
+        "destination": "上海",
+        "depart_date": "2025-12-31",
+        "passengers": "1",
+        "class": "economy",
+        "flight_number": "CA1881",
+        "price": 450.0
+      },
+      "description": "Book a flight from 北京 to 上海 on 2025-12-31 for 1 passenger.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M4",
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "binding_id": "BIND_E6_FLIGHT_CHANGE",
+      "binding_task_id": "E6-2025-FLIGHTCHANGE",
+      "parameter_values": {},
+      "description": "Rebook flight PNR9ZZ with the flexible change policy for 2025-01-18.",
+      "expected_observables": [
+        "text('#ticket-status') == 'Rebooked'",
+        "text('#status-message') includes '2025-01-18'",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "itinerary_rebooked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M5",
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "binding_id": "BIND_E5_EXPENSE_REPORT",
+      "binding_task_id": "E5-2025-EXPENSE",
+      "parameter_values": {
+        "reportId": "EXP-6631",
+        "total": "860",
+        "description": "Hotel and taxi reimbursement",
+        "pnr": "PNR-6631"
+      },
+      "description": "Submit travel expense report EXP-6631 for 860 linked to PNR-6631.",
+      "expected_observables": [
+        "url().includes('/bank.local/expense-report.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "expense_report_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M6",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M7",
+      "module_id": "MODULE_TAX_PREPARATION",
+      "binding_id": "BIND_D5_TAX_PREPARATION",
+      "binding_task_id": "D5-2025-TAXPREP",
+      "parameter_values": {
+        "name": "Office Supply Invoice",
+        "type": "invoice",
+        "amount": "150.0",
+        "date": "2025-12-01"
+      },
+      "description": "Upload the tax document Office Supply Invoice as an invoice for 150.0 dated 2025-12-01.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "tax_documents_prepared",
+          "tax_funding_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M8",
+      "module_id": "MODULE_LONG_HAUL_TRIP",
+      "binding_id": "BIND_E7_LONG_HAUL_TRIP",
+      "binding_task_id": "E7-LONG-HAUL",
+      "parameter_values": {
+        "destination": "Japan",
+        "passport_number": "J24681012"
+      },
+      "description": "Apply for a Japan visa with passport J24681012, wait for approval, then book the Japan flight from Shenzhen on 2026-05-09.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "mobility_clearance_verified",
+          "travel_booking_confirmed",
+          "trip_booked",
+          "visa_approved"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M9",
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "binding_id": "BIND_E6_FLIGHT_CHANGE",
+      "binding_task_id": "E6-2025-FLIGHTCHANGE",
+      "parameter_values": {},
+      "description": "Rebook flight PNR9ZZ with the flexible change policy for 2025-01-18.",
+      "expected_observables": [
+        "text('#ticket-status') == 'Rebooked'",
+        "text('#status-message') includes '2025-01-18'",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "itinerary_rebooked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0097-M10",
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "binding_id": "BIND_E5_EXPENSE_REPORT",
+      "binding_task_id": "E5-2025-EXPENSE",
+      "parameter_values": {
+        "reportId": "EXP-6631",
+        "total": "860",
+        "description": "Hotel and taxi reimbursement",
+        "pnr": "PNR-6631"
+      },
+      "description": "Submit travel expense report EXP-6631 for 860 linked to PNR-6631.",
+      "expected_observables": [
+        "url().includes('/bank.local/expense-report.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "expense_report_submitted"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "tax_funding_prepared",
+      "itinerary_rebooked",
+      "expense_report_submitted"
+    ],
+    "checkpoint_predicates": [
+      "bank_account_active",
+      "expense_report_submitted",
+      "flight_booked",
+      "itinerary_rebooked",
+      "mobility_clearance_verified",
+      "payment_method_available",
+      "payment_stack_prepared",
+      "tax_documents_prepared",
+      "tax_funding_prepared",
+      "transfer_completed",
+      "travel_booking_confirmed",
+      "trip_booked",
+      "visa_approved"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

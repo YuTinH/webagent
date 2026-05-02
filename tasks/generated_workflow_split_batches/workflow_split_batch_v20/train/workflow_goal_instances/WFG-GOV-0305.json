@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-GOV-0305",
+  "theme": "government",
+  "difficulty": 7,
+  "instruction": "Finish the government compliance packet only after address verification is complete, address records are aligned, the parking permit is active, and the renewal-driven compliance review is finished.",
+  "visible_constraints": {
+    "deadline_days": 6,
+    "preferred_outcomes": [
+      "address_confirmation_verified",
+      "address_records_aligned",
+      "parking_permit_active",
+      "permit_renewed",
+      "local_vehicle_compliance_verified"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_confirmation_verified",
+    "address_records_aligned",
+    "parking_permit_active",
+    "permit_renewed",
+    "local_vehicle_compliance_verified"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        5,
+        6
+      ]
+    }
+  ],
+  "max_steps": 70,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_GOVERNMENT_ZTRAIN_11_BP_GOV_PERMIT_ADDRESS_DUAL; address-compliance government workflows should continue through permit activation and renewal rather than ending after address alignment."
+}

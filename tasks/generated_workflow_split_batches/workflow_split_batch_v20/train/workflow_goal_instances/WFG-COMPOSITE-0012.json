@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-COMPOSITE-0012",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Finish the access-portfolio packet only after password reset is completed, investment growth is verified, the calendar event is synced, and the access surface and credential vault are reviewed.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "investment_growth_verified",
+      "calendar_event_synced",
+      "access_surface_reviewed",
+      "credential_vault_updated"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "password_reset_completed",
+    "investment_growth_verified",
+    "calendar_event_synced",
+    "access_surface_reviewed",
+    "credential_vault_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_ACCESS_PORTFOLIO_READINESS; access-portfolio composite workflows should continue into credential-surface maintenance after growth verification and calendar sync."
+}

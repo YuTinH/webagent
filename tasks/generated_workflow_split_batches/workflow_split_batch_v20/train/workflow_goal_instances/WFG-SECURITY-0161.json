@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-SECURITY-0161",
+  "theme": "security",
+  "difficulty": 8,
+  "instruction": "Finish the device-hardening workflow only after the account surface is reviewed, two-factor is enabled, the second-factor device is updated, secrets are rotated, and the final security audit is completed.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "two_factor_enabled",
+      "two_factor_device_updated",
+      "security_hardening_completed",
+      "security_audit_completed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "two_factor_enabled",
+    "two_factor_device_updated",
+    "security_hardening_completed",
+    "security_audit_completed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_DEVICE_HARDEN; device-hardening workflows should include both surface review and device remediation before the final audit."
+}

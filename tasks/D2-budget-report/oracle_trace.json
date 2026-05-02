@@ -1,0 +1,31 @@
+{
+  "task_id": "D2-2025-BUDGET",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/budget.html?clean=true&task=D2-2025-BUDGET"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": ".budget-item[data-category='utilities'] .btn-edit"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-limit",
+      "value": "200"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": ".btn-save"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#limit-utilities"
+    }
+  ]
+}

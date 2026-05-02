@@ -1,0 +1,40 @@
+{
+  "goal_id": "WFG-FINANCE-0003",
+  "theme": "finance",
+  "difficulty": 7,
+  "instruction": "Close the recurring-payment workflow by reviewing the bill stack, activating the account, enabling autopay, and ending with the setup record archived.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "must_avoid": [
+      "autopay_left_disabled"
+    ],
+    "preferred_outcomes": [
+      "bills_reviewed",
+      "bank_account_active",
+      "autopay_enabled",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bills_reviewed",
+    "bank_account_active",
+    "autopay_enabled",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_AUTOPAY_READINESS; autopay-readiness workflows should archive the setup record after the autopay step."
+}

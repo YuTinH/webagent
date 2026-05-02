@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-SUPPORT-0331",
+  "theme": "support",
+  "difficulty": 7,
+  "instruction": "Resolve the support case end to end: verify the order status, confirm delivery visibility, contact support, and finish with a concrete remedy request, and finish with the support follow-up synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "order_followup_prepared",
+      "delivery_visibility_confirmed",
+      "support_contacted",
+      "post_purchase_remedy_requested",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "order_followup_prepared",
+    "delivery_visibility_confirmed",
+    "support_contacted",
+    "post_purchase_remedy_requested",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 75,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SUPPORT_ZTRAIN_14_REMEDY_SUPPORT_DUAL; support workflows should end with an explicit follow-up scheduling step."
+}

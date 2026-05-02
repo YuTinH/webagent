@@ -1,0 +1,234 @@
+{
+  "goal_id": "WFG-FINANCE-0004",
+  "composition": {
+    "composition_type": "single_path",
+    "num_semantically_distinct_paths": 1,
+    "distinctness_rule": "Complete aggregate the bills, then review current bills, then activate the bank account, then tighten the budget limit, then finish complex autopay setup to reach the target."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_BANK_OPENING",
+      "role": "required",
+      "produces": [
+        "bank_account_active",
+        "payment_method_available"
+      ]
+    },
+    {
+      "module_id": "MODULE_BILLING_REVIEW",
+      "role": "required",
+      "produces": [
+        "bills_reviewed",
+        "permit_readiness_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_BILL_AGGREGATION",
+      "role": "required",
+      "produces": [
+        "account_issue_triaged",
+        "bills_aggregated"
+      ]
+    },
+    {
+      "module_id": "MODULE_BUDGET_LIMIT_UPDATE",
+      "role": "required",
+      "produces": [
+        "budget_limit_updated"
+      ]
+    },
+    {
+      "module_id": "MODULE_COMPLEX_AUTOPAY",
+      "role": "required",
+      "produces": [
+        "autopay_enabled",
+        "payment_stack_prepared"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_BANK_OPENING",
+      "to": "MODULE_BUDGET_LIMIT_UPDATE",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_BILLING_REVIEW",
+      "to": "MODULE_BANK_OPENING",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_BILL_AGGREGATION",
+      "to": "MODULE_BILLING_REVIEW",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_BUDGET_LIMIT_UPDATE",
+      "to": "MODULE_COMPLEX_AUTOPAY",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_aggregate_complex_pay",
+      "required_modules": [
+        "MODULE_BILL_AGGREGATION",
+        "MODULE_BILLING_REVIEW",
+        "MODULE_BANK_OPENING",
+        "MODULE_BUDGET_LIMIT_UPDATE",
+        "MODULE_COMPLEX_AUTOPAY"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-FINANCE-0004-M1",
+        "WFG-FINANCE-0004-M2",
+        "WFG-FINANCE-0004-M3",
+        "WFG-FINANCE-0004-M4",
+        "WFG-FINANCE-0004-M5"
+      ],
+      "terminal_predicates": [
+        "bills_reviewed",
+        "budget_limit_updated",
+        "bank_account_active",
+        "autopay_enabled"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-FINANCE-0004-M1",
+      "module_id": "MODULE_BILL_AGGREGATION",
+      "binding_id": "BIND_D8_BILL_AGGREGATION",
+      "binding_task_id": "D8-2025-BILLAGG",
+      "parameter_values": {
+        "name": "City Utilities",
+        "type": "rent",
+        "account_id": "ACCT-31577"
+      },
+      "description": "Add a new rent bill source named 'City Utilities' with type 'rent' and account ID 'ACCT-31577'. Then synchronize this bill source.",
+      "expected_observables": [
+        "url().includes('/bank.local/bill-aggregation.html')",
+        "exists(\"#bill-sources-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_issue_triaged",
+          "bills_aggregated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-FINANCE-0004-M2",
+      "module_id": "MODULE_BILLING_REVIEW",
+      "binding_id": "BIND_H6_CHECK_BILL",
+      "binding_task_id": "H6-2025-003",
+      "parameter_values": {
+        "utility_types": [
+          "electricity",
+          "water"
+        ]
+      },
+      "description": "Login to utility portal, check current electricity and water bill amounts and due dates",
+      "expected_observables": [
+        "url().includes('/gov.local/billing/index.html')",
+        "exists(\".bill-item\")",
+        "exists(\".bills-summary\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "bills_reviewed",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-FINANCE-0004-M3",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Casey Lin",
+        "phone": "555-0146",
+        "address": "92 Willow Creek Dr, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-FINANCE-0004-M4",
+      "module_id": "MODULE_BUDGET_LIMIT_UPDATE",
+      "binding_id": "BIND_D7_UPDATE_PROFILE",
+      "binding_task_id": "D7-2025-SPENDPROFILE",
+      "parameter_values": {
+        "category": "transport",
+        "limit": "650"
+      },
+      "description": "Update spending profile by tightening transport budget.",
+      "expected_observables": [
+        "url().includes('/bank.local/budget.html?updated=true')",
+        "text('#limit-transport') includes '650'",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "budget_limit_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-FINANCE-0004-M5",
+      "module_id": "MODULE_COMPLEX_AUTOPAY",
+      "binding_id": "BIND_Z7_COMPLEX_AUTOPAY",
+      "binding_task_id": "Z7-complex-autopay",
+      "parameter_values": {},
+      "description": "Search your email for the enterprise Electricity Dept bill with account UTIL-7710, then enable autopay for that exact account with a monthly limit of 310.",
+      "expected_observables": [
+        "text('#success-summary') includes 'UTIL-7710'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "autopay_enabled",
+          "payment_stack_prepared"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "bills_reviewed",
+      "budget_limit_updated",
+      "bank_account_active",
+      "autopay_enabled"
+    ],
+    "checkpoint_predicates": [
+      "account_issue_triaged",
+      "autopay_enabled",
+      "bank_account_active",
+      "bills_aggregated",
+      "bills_reviewed",
+      "budget_limit_updated",
+      "payment_method_available",
+      "payment_stack_prepared",
+      "permit_readiness_verified"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

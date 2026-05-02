@@ -1,0 +1,106 @@
+[
+  {
+    "slug": "mlgym",
+    "title": "MLGym: A New Framework and Benchmark for Advancing AI Research Agents",
+    "year": 2025,
+    "category": "agent-benchmark",
+    "source_url": "https://arxiv.org/abs/2502.14499",
+    "pdf_url": "https://arxiv.org/pdf/2502.14499.pdf"
+  },
+  {
+    "slug": "mle_dojo",
+    "title": "MLE-Dojo: Interactive Environments for Empowering LLM Agents in Machine Learning Engineering",
+    "year": 2025,
+    "category": "agent-benchmark",
+    "source_url": "https://arxiv.org/abs/2505.07782",
+    "pdf_url": "https://arxiv.org/pdf/2505.07782.pdf"
+  },
+  {
+    "slug": "mlagentbench",
+    "title": "MLAgentBench: Evaluating Language Agents on Machine Learning Experimentation",
+    "year": 2024,
+    "category": "agent-benchmark",
+    "source_url": "https://arxiv.org/abs/2310.03302",
+    "pdf_url": "https://arxiv.org/pdf/2310.03302.pdf"
+  },
+  {
+    "slug": "mle_bench",
+    "title": "MLE-bench: Evaluating Machine Learning Agents on Machine Learning Engineering",
+    "year": 2024,
+    "category": "agent-benchmark",
+    "source_url": "https://arxiv.org/abs/2410.07095",
+    "pdf_url": "https://arxiv.org/pdf/2410.07095.pdf"
+  },
+  {
+    "slug": "ml_dev_bench",
+    "title": "ML-Dev-Bench: Comparative Analysis of AI Agents on ML development workflows",
+    "year": 2025,
+    "category": "agent-benchmark",
+    "source_url": "https://arxiv.org/abs/2502.00964",
+    "pdf_url": "https://arxiv.org/pdf/2502.00964.pdf"
+  },
+  {
+    "slug": "ml_bench",
+    "title": "ML-Bench: Evaluating Large Language Models and Agents for Machine Learning Tasks on Repository-Level Code",
+    "year": 2023,
+    "category": "agent-benchmark",
+    "source_url": "https://arxiv.org/abs/2311.09835",
+    "pdf_url": "https://arxiv.org/pdf/2311.09835.pdf"
+  },
+  {
+    "slug": "tml_bench",
+    "title": "TML-Bench: Benchmark for Data Science Agents on Tabular ML Tasks",
+    "year": 2026,
+    "category": "agent-benchmark",
+    "source_url": "https://arxiv.org/abs/2603.05764",
+    "pdf_url": "https://arxiv.org/pdf/2603.05764.pdf"
+  },
+  {
+    "slug": "agenthpo",
+    "title": "AgentHPO: Large Language Model Agent for Hyper-Parameter Optimization",
+    "year": 2025,
+    "category": "agent-hpo",
+    "source_url": "https://proceedings.mlr.press/v280/liu25c.html",
+    "pdf_url": "https://raw.githubusercontent.com/mlresearch/v280/main/assets/liu25c/liu25c.pdf"
+  },
+  {
+    "slug": "budgetmlagent",
+    "title": "BudgetMLAgent: A Cost-Effective LLM Multi-Agent System for Automating Machine Learning Tasks",
+    "year": 2024,
+    "category": "agent-hpo",
+    "source_url": "https://arxiv.org/abs/2411.07464",
+    "pdf_url": "https://arxiv.org/pdf/2411.07464.pdf"
+  },
+  {
+    "slug": "hpobench",
+    "title": "HPOBench: A Collection of Reproducible Multi-Fidelity Benchmark Problems for HPO",
+    "year": 2021,
+    "category": "traditional-hpo",
+    "source_url": "https://arxiv.org/abs/2109.06716",
+    "pdf_url": "https://arxiv.org/pdf/2109.06716.pdf"
+  },
+  {
+    "slug": "yahpo_gym",
+    "title": "YAHPO Gym - An Efficient Multi-Objective Multi-Fidelity Benchmark for Hyperparameter Optimization",
+    "year": 2022,
+    "category": "traditional-hpo",
+    "source_url": "https://proceedings.mlr.press/v188/pfisterer22a.html",
+    "pdf_url": "https://proceedings.mlr.press/v188/pfisterer22a/pfisterer22a.pdf"
+  },
+  {
+    "slug": "hpo_b",
+    "title": "HPO-B: A Large-Scale Reproducible Benchmark for Black-Box HPO based on OpenML",
+    "year": 2021,
+    "category": "traditional-hpo",
+    "source_url": "https://arxiv.org/abs/2106.06257",
+    "pdf_url": "https://arxiv.org/pdf/2106.06257.pdf"
+  },
+  {
+    "slug": "bo_vs_random",
+    "title": "Bayesian Optimization is Superior to Random Search for Machine Learning Hyperparameter Tuning: Analysis of the Black-Box Optimization Challenge 2020",
+    "year": 2021,
+    "category": "traditional-hpo",
+    "source_url": "https://proceedings.mlr.press/v133/turner21a.html",
+    "pdf_url": "https://proceedings.mlr.press/v133/turner21a/turner21a.pdf"
+  }
+]

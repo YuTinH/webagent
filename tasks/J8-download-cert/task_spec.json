@@ -1,0 +1,74 @@
+{
+  "task_id": "J8-2025-CERTISSUE",
+  "family": "J",
+  "goal": "Issue and verify a course completion certificate.",
+  "inputs": {},
+  "preconditions": [],
+  "success_criteria": [
+    "mem('world_state.skills.certified') == 'True'",
+    "url().includes('/school.local/certification.html')",
+    "exists(\"button:has-text('Apply Now')\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('world_state.skills.certified') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('world_state.skills.certified') == 'True'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "url().includes('/school.local/certification.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"button:has-text('Apply Now')\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "school.local"
+  ],
+  "module_group": "download_cert",
+  "canonical_task_dir": "J8-download-cert",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

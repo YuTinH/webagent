@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - Open Account</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+    </div>
+  </div>
+  <div class="container" style="max-width:480px">
+    <h1 style="margin-bottom:24px">Open Account</h1>
+    <div id="account-success-card" class="card ok" style="display:none; margin-bottom:16px">
+      <div style="font-weight:700; margin-bottom:6px">Account Opened</div>
+      <div id="account-success-summary" style="color:var(--muted)"></div>
+    </div>
+    <div class="card soft">
+      <div class="form">
+        <label>Name / Full Name</label>
+        <input id="fullname" class="input" placeholder="Full legal name">
+        
+        <label>Phone Number</label>
+        <input id="phone" class="input" placeholder="555-0102">
+        
+        <label>Address / Address</label>
+        <textarea id="address" class="input" rows="3" placeholder="123 Main St, Springfield"></textarea>
+        
+        <div style="margin-top:16px; display:flex; align-items:center; gap:8px">
+          <input type="checkbox" id="enable2fa">
+          <label for="enable2fa" style="margin:0">Enable two-factor authentication (2FA)</label>
+        </div>
+        
+        <button id="submit-btn" class="btn pri" style="margin-top:24px; width:100%" onclick="submitApp()">Open Account</button>
+      </div>
+    </div>
+  </div>
+  <script>
+  const bankOpenParams = new URLSearchParams(window.location.search);
+  const requestedBankOpenTaskId = bankOpenParams.get('task') || 'A2-2025-BANK-OPEN';
+  const bankOpenTaskId = resolveTaskId(requestedBankOpenTaskId);
+  let bankOpenCompleted = false;
+
+  function renderCompletedButtons() {
+    const submitBtn = document.getElementById('submit-btn');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Account Opened';
+      submitBtn.onclick = () => Toast.success('The verified account is already open.');
+    }
+  }
+
+  async function submitApp() {
+    if (bankOpenCompleted) {
+      renderCompletedButtons();
+      return;
+    }
+    const fullname = document.getElementById('fullname').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const enable2fa = document.getElementById('enable2fa').checked;
+    
+    if (!fullname || !phone || !address) {
+      Toast.error("Enter your full name, phone number, and address.");
+      return;
+    }
+    
+    document.getElementById('submit-btn').disabled = true;
+    document.getElementById('submit-btn').innerText = "Submit...";
+    
+    await send(bankOpenTaskId, 'open_account', { fullname, phone, address, enable2fa });
+  }
+
+  async function renderOpenAccountSuccessIfReady() {
+    const successCard = document.getElementById('account-success-card');
+    const summary = document.getElementById('account-success-summary');
+    const paramsHolder = bankOpenParams.get('holder') || '';
+    const paramsTwoFa = bankOpenParams.get('twofa') || '';
+
+    let env = null;
+    try {
+      env = await loadEnv();
+    } catch (e) {
+      env = null;
+    }
+    const account = env?.bank?.account || {};
+    const holderName = paramsHolder || account.holder_name || '';
+    const twoFaEnabled = paramsTwoFa || (account['2fa_enabled'] ? '1' : '0');
+    const isOpen = bankOpenParams.get('opened') === 'true' || account.status === 'active';
+    if (!isOpen) return;
+
+    bankOpenCompleted = true;
+    successCard.style.display = 'block';
+    summary.textContent = `${holderName || 'Account holder'} · 2FA ${String(twoFaEnabled) === '1' ? 'enabled' : 'disabled'}`;
+    renderCompletedButtons();
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await renderOpenAccountSuccessIfReady();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Security.local - Data Requests</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🔒 Security.local</div>
+      <div class="navlinks">
+        <a href="../security.local/dashboard.html">Dashboard</a>
+        <a href="../security.local/password-manager.html">Passwords</a>
+        <a href="../security.local/data-deletion.html" class="active">Data Requests</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Data Requests</h1>
+      <button id="open-data-request-btn" class="btn pri" onclick="openRequestModal()">Submit Request</button>
+    </div>
+
+    <div id="requests-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Requests loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const dataDeletionParams = new URLSearchParams(window.location.search);
+  const requestedDataDeletionTaskId = dataDeletionParams.get('task') || 'L2-2025-DSR';
+  const dataDeletionTaskId = resolveTaskId(requestedDataDeletionTaskId);
+
+  async function submitDataRequest(payload) {
+    await send(dataDeletionTaskId, 'manage_data_request', {
+      action_type: 'submit',
+      request_type: payload.request_type,
+      platform: payload.platform,
+      data_scope: payload.data_scope || ''
+    });
+    setTimeout(loadDeletionRequests, 500);
+  }
+
+  async function loadDeletionRequests() {
+    const list = document.getElementById('requests-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const requests = env.security?.data_deletion_requests || {};
+      
+      if (Object.keys(requests).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🗂️</div>
+            <div style="color:var(--muted)">No data requests have been submitted yet.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(requests).map(([id, req]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${req.platform}</h3>
+              <div style="color:var(--muted); font-size:14px">Request Type: ${req.request_type}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">Status: <span class="badge ${req.status === 'completed' ? 'ok' : 'warn'}">${req.status}</span></div>
+              <div style="color:var(--muted); font-size:13px">Submitted: ${req.submitted_at || 'N/A'}</div>
+            </div>
+          </div>
+          <div style="font-size:13px; color:var(--muted); margin-bottom:8px">Data Scope: ${req.data_scope || ''}</div>
+          
+          <div style="display:flex; gap:8px">
+            <button id="track-request-${id}" class="btn" onclick="trackRequest('${id}')">View Status</button>
+            <button id="cancel-request-${id}" class="btn secondary" onclick="cancelRequest('${id}')" ${req.status === 'completed' || req.status === 'cancelled' ? 'disabled' : ''}>Cancel Request</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openRequestModal() {
+    const modal = new Modal({
+      title: 'Submit Data Request',
+      content: `
+        <div class="form">
+          <label>Request Type</label>
+          <select id="request-type" class="input">
+            <option value="deletion">Delete My Data</option>
+            <option value="export">Export My Data</option>
+          </select>
+          
+          <label>Platform</label>
+          <input id="platform-name" class="input" placeholder="e.g. Facebook, Google, NebulaCloud">
+          
+          <label>Data Scope</label>
+          <input id="data-scope" class="input" placeholder="e.g. posts, photos, messages">
+        </div>
+      `,
+      confirmText: 'Submit Request',
+      onConfirm: async () => {
+        const requestType = document.getElementById('request-type').value;
+        const platform = document.getElementById('platform-name').value;
+        const dataScope = document.getElementById('data-scope').value;
+        
+        if (!platform) {
+          Toast.error("Enter the platform for this request.");
+          return;
+        }
+        
+        await submitDataRequest({
+          request_type: requestType,
+          platform: platform,
+          data_scope: dataScope || ''
+        });
+      }
+    });
+    modal.open();
+  }
+
+  function trackRequest(id) {
+    Toast.info(`Request ${id} is being processed.`);
+  }
+
+  function cancelRequest(id) {
+    new Modal({
+      title: 'Cancel Data Request',
+      content: `Cancel request ${id}?`,
+      confirmText: 'Confirm Cancellation',
+      onConfirm: async () => {
+        await send(dataDeletionTaskId, 'manage_data_request', {
+          action_type: 'cancel',
+          request_id: id
+        });
+        setTimeout(loadDeletionRequests, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadDeletionRequests();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

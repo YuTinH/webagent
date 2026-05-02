@@ -1,0 +1,33 @@
+{
+  "goal_id": "WFG-NEWCOMER-0049",
+  "theme": "newcomer",
+  "difficulty": 7,
+  "instruction": "Finish the newcomer connectivity-switch packet only after address confirmation is established, the mobile plan is updated, and the address record is aligned.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "address_confirmation_verified",
+      "mobile_plan_updated",
+      "address_records_aligned"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_confirmation_verified",
+    "mobile_plan_updated",
+    "address_records_aligned"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 65,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_NEWCOMER_PROOF_CONNECTIVITY_SWITCH; connectivity-switch newcomer workflows should not stop at the mobile switch and must close with address-record alignment."
+}

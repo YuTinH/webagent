@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-NEWCOMER-0080",
+  "theme": "newcomer",
+  "difficulty": 7,
+  "instruction": "Close the housing-utility onboarding workflow by finding housing first, preparing the housing-finance path, activating utilities, opening the bank account, and ending with live mobile service.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "lease_active",
+      "housing_finance_prepared",
+      "utilities_active",
+      "bank_account_active",
+      "residency_record_verified",
+      "mobile_service_active"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "lease_active",
+    "housing_finance_prepared",
+    "utilities_active",
+    "bank_account_active",
+    "residency_record_verified",
+    "mobile_service_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 70,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_NEWCOMER_HOUSING_UTILITY_FINANCE; housing-utility newcomer flows should continue into live connectivity after utilities and banking are established."
+}

@@ -1,0 +1,57 @@
+{
+  "task_id": "F7-2025-CONFINVOICE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/taxes.html?clean=true&task=F7-2025-CONFINVOICE",
+      "note": "Open tax docs"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Open upload modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#doc-name",
+      "value": "Conference-Invoice",
+      "note": "Document name"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#doc-type",
+      "value": "invoice",
+      "note": "Document type"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#doc-amount",
+      "value": "980",
+      "note": "Amount"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#doc-date",
+      "value": "2025-12-31",
+      "note": "Date"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Upload"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#tax-docs-list .card",
+      "note": "Wait rendered list"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "task_id": "M4-2025-EMERGENCYLOAN",
+  "family": "M",
+  "goal": "Submit an emergency loan request from bank dashboard.",
+  "inputs": {
+    "amount": 500
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('banking.loans.urgent.last.status') == 'submitted'",
+    "url().includes('/bank.local/dashboard.html?loan=submitted')",
+    "exists(\"#balance-display\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('banking.loans.urgent.last.status') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('banking.loans.urgent.last.status') == 'submitted'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "url().includes('/bank.local/dashboard.html?loan=submitted')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"#balance-display\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "urgent_loan",
+  "canonical_task_dir": "M4-urgent-loan",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

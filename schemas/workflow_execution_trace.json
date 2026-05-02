@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowExecutionTrace",
+  "description": "Episode trace used to evaluate a workflow run against a goal/oracle pair.",
+  "type": "object",
+  "required": ["executed_modules"],
+  "properties": {
+    "starting_state_override": {
+      "description": "Optional state override; either a predicate list or a boolean map.",
+      "oneOf": [
+        {"type": "array", "items": {"type": "string"}},
+        {"type": "object", "additionalProperties": {"type": "boolean"}}
+      ]
+    },
+    "final_state_override": {
+      "description": "Optional evaluated final state from a future runtime.",
+      "oneOf": [
+        {"type": "array", "items": {"type": "string"}},
+        {"type": "object", "additionalProperties": {"type": "boolean"}}
+      ]
+    },
+    "actual_step_count": {"type": "number", "minimum": 0},
+    "actual_budget_spend": {"type": "number"},
+    "actual_elapsed_hours": {"type": "number", "minimum": 0},
+    "executed_modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["module_id"],
+        "properties": {
+          "module_id": {"type": "string"},
+          "binding_id": {"type": "string"},
+          "status": {"type": "string", "enum": ["success", "failed", "skipped"], "default": "success"},
+          "parameter_values": {"type": "object"},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

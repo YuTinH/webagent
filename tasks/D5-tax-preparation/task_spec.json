@@ -1,0 +1,73 @@
+{
+  "task_id": "D5-2025-TAXPREP",
+  "family": "D",
+  "goal": "Complete the following task: upload the tax document Office Supply Invoice as an invoice for 150.0 dated 2025-12-01.",
+  "inputs": {
+    "name": "Office Supply Invoice",
+    "type": "invoice",
+    "amount": 150.0,
+    "date": "2025-12-01"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('finance.tax_documents.last.status') == 'pending'",
+    "mem('finance.tax_documents.last.name') == 'Office Supply Invoice'",
+    "mem('finance.tax_documents.last.type') == 'invoice'",
+    "mem('finance.tax_documents.last.amount') == '150.0'",
+    "mem('finance.tax_documents.last.date') == '2025-12-01'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_d5_1",
+      "name": "cp_d5 checkpoint 1",
+      "assertion": "mem('finance.tax_documents.last.status') == 'pending'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d5_2",
+      "name": "cp_d5 checkpoint 2",
+      "assertion": "mem('finance.tax_documents.last.name') == 'Office Supply Invoice'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d5_3",
+      "name": "cp_d5 checkpoint 3",
+      "assertion": "mem('finance.tax_documents.last.type') == 'invoice'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d5_4",
+      "name": "cp_d5 checkpoint 4",
+      "assertion": "mem('finance.tax_documents.last.amount') == '150.0'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d5_5",
+      "name": "cp_d5 checkpoint 5",
+      "assertion": "mem('finance.tax_documents.last.date') == '2025-12-01'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "tax_preparation",
+  "canonical_task_dir": "D5-tax-preparation",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

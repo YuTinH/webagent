@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> - </title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.leasing-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.leasing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--border);
+}
+.leasing-title {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text);
+}
+.leasing-status {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.leasing-status.signed { background: var(--ok-bg); color: var(--ok); }
+.leasing-status.pending { background: var(--warn-bg); color: var(--warn); }
+.leasing-details div {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+.empty-state-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      
+    </div>
+    <div class="navlinks">
+      <a href="../housing.local/index.html">Home</a>
+      <a href="../housing.local/applications.html">Information</a>
+      <a href="../housing.local/leasing.html" class="active">Information</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">Information</h1>
+
+  <div id="leasing-list">
+    <div class="empty-state">
+      <div class="empty-state-icon">🏡</div>
+      <div>...</div>
+    </div>
+  </div>
+
+  <div class="footer">
+     · Synthetic UI for Web Agent Research
+  </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function loadLeasingInfo() {
+  const listContainer = document.getElementById('leasing-list');
+  listContainer.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-state-icon">🏡</div>
+      <div>...</div>
+    </div>
+  `;
+
+  try {
+    const env = await loadEnv();
+    const leases = env.housing?.leases || {};
+
+    let content = '';
+    for (const propId in leases) {
+      const lease = leases[propId];
+      if (lease.status === 'signed') {
+        content += `
+          <div class="leasing-card">
+            <div class="leasing-header">
+              <div class="leasing-title">Details: ${propId}</div>
+              <div class="leasing-status signed">Information</div>
+            </div>
+            <div class="leasing-details">
+              <div>Address: 123 Main St, Springfield</div>
+              <div>Details: ${lease.term}</div>
+              <div>Date: ${lease.signed_date || 'N/A'}</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    if (content) {
+      listContainer.innerHTML = content;
+    } else {
+      listContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">🏡</div>
+          <div>Information</div>
+          <a href="${window.RelRoot}housing.local/index.html" class="btn pri" style="margin-top:20px">Information</a>
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.error('Details:', e);
+    listContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <div>Error, please try again.</div>
+      </div>
+    `;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadLeasingInfo);
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

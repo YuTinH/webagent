@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-SUPPORT-0310",
+  "theme": "support",
+  "difficulty": 7,
+  "instruction": "Close the support route by checking the order, confirming delivery, opening the support channel, and leaving with the remedy request already submitted, and finish with the support follow-up synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 6,
+    "preferred_outcomes": [
+      "order_followup_prepared",
+      "delivery_visibility_confirmed",
+      "support_contacted",
+      "post_purchase_remedy_requested",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "order_followup_prepared",
+    "delivery_visibility_confirmed",
+    "support_contacted",
+    "post_purchase_remedy_requested",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        5,
+        6
+      ]
+    }
+  ],
+  "max_steps": 75,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SUPPORT_ZTRAIN_11_REMEDY_SUPPORT_DUAL; support workflows should end with an explicit follow-up scheduling step."
+}

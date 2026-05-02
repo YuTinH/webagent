@@ -1,0 +1,50 @@
+{
+  "task_id": "M2-2025-SUPPLY",
+  "family": "M",
+  "goal": "Resolve the disruption by cancelling the Spare Water Filter order and requesting a refund.",
+  "inputs": {
+    "action": "cancel_order"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('supply_chain.alternatives.last.id') == 'ALT-303'",
+    "mem('supply_chain.alternatives.last.status') == 'refund_pending'",
+    "exists(\"#alternative-options-list .card:has-text('Spare Water Filter')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_m2_1",
+      "name": "cp_m2 checkpoint 1",
+      "assertion": "mem('supply_chain.alternatives.last.id') == 'ALT-303'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m2_2",
+      "name": "cp_m2 checkpoint 2",
+      "assertion": "mem('supply_chain.alternatives.last.status') == 'refund_pending'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m2_3",
+      "name": "cp_m2 checkpoint 3",
+      "assertion": "exists(\"#alternative-options-list .card:has-text('Spare Water Filter')\")",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "supply_disruption",
+  "canonical_task_dir": "M2-supply-disruption",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

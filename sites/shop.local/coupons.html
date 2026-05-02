@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - </title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">Home</a>
+        <a href="../shop.local/orders.html">Orders</a>
+        <a href="../shop.local/coupons.html" class="active">Coupons</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Coupon Management</h1>
+      <button class="btn pri" id="open-add-coupon" onclick="openAddCouponModal()">Add Coupon</button>
+    </div>
+
+    <div id="coupons-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Coupons loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const couponParams = new URLSearchParams(window.location.search);
+  const requestedCouponTaskId = couponParams.get('task') || 'B10-2025-COUPONS';
+  const couponTaskId = resolveTaskId(requestedCouponTaskId);
+
+  async function loadCoupons() {
+    const list = document.getElementById('coupons-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const coupons = env.shop?.coupons || {};
+      
+      if (Object.keys(coupons).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🎫</div>
+            <div style="color:var(--muted)">No coupons created yet.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(coupons).map(([id, coupon]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${coupon.name || ''} (${id})</h3>
+              <div style="color:var(--muted); font-size:14px">
+                ${coupon.type === 'discount' ? `¥${coupon.value} ` : `${coupon.value}% `}
+                ${coupon.min_spend ? ` |  ¥${coupon.min_spend} ` : ''}
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">${coupon.code}</div>
+              <div style="color:var(--muted); font-size:13px">Details: ${coupon.expiry_date || ''}</div>
+            </div>
+          </div>
+          
+          <div style="background:rgba(0,0,0,0.03); padding:16px; border-radius:8px; display:flex; justify-content:space-between; margin-bottom:16px; font-size:14px">
+            <div style="color:var(--muted)">Status: 
+              <span class="badge ${coupon.status === 'active' ? 'ok' : 'warn'}">${coupon.status === 'active' ? 'Active' : 'Inactive'}</span>
+            </div>
+            <div style="color:var(--muted)">Details: ${coupon.usage_count || 0} </div>
+          </div>
+
+          <div style="display:flex; gap:8px">
+            <button class="btn" id="copy-coupon-${id}" onclick="activateCoupon('${id}')" ${coupon.status !== 'active' ? 'disabled' : ''}>${coupon.status === 'active' ? 'Copy Code' : 'Inactive'}</button>
+            <button class="btn secondary" id="delete-coupon-${id}" onclick="deleteCoupon('${id}')">Delete Coupon</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openAddCouponModal() {
+    new Modal({
+      title: 'Create Coupon',
+      content: `
+        <div class="form">
+          <label>Coupon Name</label>
+          <input id="new-name" class="input" placeholder="e.g. Spring Saver">
+          
+          <label>Coupon Code</label>
+          <input id="new-code" class="input" placeholder="e.g. SAVE20">
+          
+          <label>Coupon Type</label>
+          <select id="new-type" class="input">
+            <option value="discount">Fixed Discount</option>
+            <option value="percentage">Percentage</option>
+          </select>
+
+          <label>Coupon Value</label>
+          <input id="new-value" type="number" class="input" placeholder="20">
+          
+          <label>Minimum Spend</label>
+          <input id="new-min-spend" type="number" class="input" placeholder="100">
+
+          <label>Expiry Date</label>
+          <input id="new-expiry-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: 'Create Coupon',
+      onConfirm: async () => {
+        const name = document.getElementById('new-name').value;
+        const code = document.getElementById('new-code').value;
+        const type = document.getElementById('new-type').value;
+        const value = document.getElementById('new-value').value;
+        const minSpend = document.getElementById('new-min-spend').value;
+        const expiryDate = document.getElementById('new-expiry-date').value;
+        
+        if (!name || !code || !value) {
+          Toast.error("Enter a name, code, and value.");
+          return;
+        }
+
+        await send(couponTaskId, 'manage_coupon', {
+          action_type: 'add',
+          name: name,
+          code: code,
+          type: type,
+          value: parseFloat(value),
+          min_spend: minSpend ? parseFloat(minSpend) : null,
+          expiry_date: expiryDate || null
+        });
+        
+        setTimeout(loadCoupons, 500);
+      }
+    }).open();
+  }
+
+  function activateCoupon(id) {
+    // In a real scenario, this would apply the coupon to the cart/account
+    Toast.info(`Coupon ${id} is ready to use.`);
+  }
+
+  function deleteCoupon(id) {
+    new Modal({
+      title: 'Delete Coupon',
+      content: `Delete coupon ${id}?`,
+      confirmText: 'Delete Coupon',
+      onConfirm: async () => {
+        await send(couponTaskId, 'manage_coupon', {
+          action_type: 'delete',
+          coupon_id: id
+        });
+        setTimeout(loadCoupons, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadCoupons);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

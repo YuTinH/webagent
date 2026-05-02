@@ -1,0 +1,98 @@
+{
+  "task_id": "D10-2025-DISPUTEDOC",
+  "family": "D",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Upload the supporting statement document 'Dispute Evidence' on the bank tax documents page with amount 89.90 dated 2025-12-03.",
+  "inputs": {
+    "name": "Dispute Evidence",
+    "type": "statement",
+    "amount": 89.9,
+    "date": "2025-12-03"
+  },
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "preconditions": [
+    "mem('banking.balance.checking') > 0"
+  ],
+  "dependencies": [
+    "D1-check-balance"
+  ],
+  "memory_keys": [
+    "finance.tax_documents.last.status"
+  ],
+  "success_criteria": [
+    "url().includes('/bank.local/taxes.html')",
+    "mem('finance.tax_documents.last.status') == 'pending'",
+    "exists(\"#tax-docs-list .card:has-text('Dispute Evidence')\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Tax documents page opened",
+      "assertion": "url().includes('/bank.local/taxes.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Tax document status populated",
+      "assertion": "mem('finance.tax_documents.last.status') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Tax document pending",
+      "assertion": "mem('finance.tax_documents.last.status') == 'pending'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Named dispute document visible",
+      "assertion": "exists(\"#tax-docs-list .card:has-text('Dispute Evidence')\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Not blank page",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Not chrome error",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "module_group": "dispute_transaction",
+  "canonical_task_dir": "D10-dispute-transaction",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

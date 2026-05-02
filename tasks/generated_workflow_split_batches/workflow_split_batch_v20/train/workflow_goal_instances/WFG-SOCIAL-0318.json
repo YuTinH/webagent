@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-SOCIAL-0318",
+  "theme": "social",
+  "difficulty": 7,
+  "instruction": "Close the workflow by opening the payment rail first, then completing the contribution branch, recording the RSVP commitment, and ending with expense settlement, and finish with event access booked.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "bank_account_active",
+      "event_rsvp_completed",
+      "social_commitment_recorded",
+      "social_contribution_completed",
+      "shared_expenses_settled",
+      "event_ticket_booked"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bank_account_active",
+    "event_rsvp_completed",
+    "social_commitment_recorded",
+    "social_contribution_completed",
+    "shared_expenses_settled",
+    "event_ticket_booked"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SOCIAL_ZTRAIN_12_CONTRIBUTION_ACCOUNT_DUAL; account-backed contribution workflows should continue into explicit event access booking."
+}

@@ -1,0 +1,43 @@
+{
+  "task_id": "C7-2025-REVIEW",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/reviews.html?clean=true&task=C7-2025-REVIEW",
+      "note": "Open reviews page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#merchant-name",
+      "value": "美味餐厅",
+      "note": "Fill merchant"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#rating-component .rating-star[data-value='5']",
+      "note": "Set 5-star rating"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#review-content",
+      "value": "非常棒的用餐体验，会再次光顾！",
+      "note": "Fill review content"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#submit-btn",
+      "note": "Submit review"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#review-history-list .card",
+      "note": "Wait for review list update"
+    }
+  ]
+}

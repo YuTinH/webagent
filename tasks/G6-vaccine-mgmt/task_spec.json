@@ -1,0 +1,89 @@
+{
+  "task_id": "G6-2025-VACCINE",
+  "family": "G",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Book an MMR vaccine appointment for 2025-12-19 at 11:00.",
+  "inputs": {
+    "vaccine_type": "mmr",
+    "appointment_date": "2025-12-19",
+    "appointment_time": "11:00"
+  },
+  "allowed_domains": [
+    "health.local"
+  ],
+  "preconditions": [],
+  "dependencies": [],
+  "memory_keys": [
+    "health.vaccines.last.id",
+    "health.vaccines.last.status"
+  ],
+  "success_criteria": [
+    "mem('health.vaccines.last.status') == 'booked'",
+    "mem('health.vaccines.last.type') == 'mmr'",
+    "mem('health.vaccines.last.date') == '2025-12-19'",
+    "mem('health.vaccines.last.time') == '11:00'",
+    "exists('#records-list .badge.ok')"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "scoring_checkpoints": [
+    {
+      "id": "cp_g6_1",
+      "name": "cp_g6 checkpoint 1",
+      "assertion": "mem('health.vaccines.last.status') == 'booked'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g6_2",
+      "name": "cp_g6 checkpoint 2",
+      "assertion": "mem('health.vaccines.last.type') == 'mmr'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g6_3",
+      "name": "cp_g6 checkpoint 3",
+      "assertion": "mem('health.vaccines.last.date') == '2025-12-19'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g6_4",
+      "name": "cp_g6 checkpoint 4",
+      "assertion": "mem('health.vaccines.last.time') == '11:00'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g6_5",
+      "name": "cp_g6 checkpoint 5",
+      "assertion": "exists('#records-list .badge.ok')",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "module_group": "vaccine_mgmt",
+  "canonical_task_dir": "G6-vaccine-mgmt",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

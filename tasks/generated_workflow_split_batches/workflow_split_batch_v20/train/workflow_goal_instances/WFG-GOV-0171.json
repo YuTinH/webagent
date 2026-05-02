@@ -1,0 +1,33 @@
+{
+  "goal_id": "WFG-GOV-0171",
+  "theme": "government",
+  "difficulty": 8,
+  "instruction": "Close the mailing-permit route by preparing the residence evidence first, completing permit and address updates in full, and ending with a completed billing review.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "permit_application_submitted",
+      "mailing_address_current",
+      "bills_reviewed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "permit_application_submitted",
+    "mailing_address_current",
+    "bills_reviewed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_GOV_MAILING_PERMIT; mailing-permit workflows should continue into billing verification after address and permit work are completed."
+}

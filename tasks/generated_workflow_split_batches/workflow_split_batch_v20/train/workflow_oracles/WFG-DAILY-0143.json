@@ -1,0 +1,390 @@
+{
+  "goal_id": "WFG-DAILY-0143",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either use the housekeeping-first route before subscription, food delivery, and calendar sync, or use the grocery-first route before the same subscription, food, and follow-up closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "role": "alternative",
+      "produces": [
+        "coupon_available",
+        "daily_order_bundle_prepared",
+        "order_price_secured",
+        "service_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_FOOD_DELIVERY",
+      "role": "required",
+      "produces": [
+        "food_order_pending"
+      ]
+    },
+    {
+      "module_id": "MODULE_FRESH_SUBSCRIPTION",
+      "role": "required",
+      "produces": [
+        "subscription_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_GROCERY_RUN",
+      "role": "alternative",
+      "produces": [
+        "daily_order_bundle_prepared",
+        "grocery_order_pending"
+      ]
+    },
+    {
+      "module_id": "MODULE_HOUSEKEEPING_BOOKING",
+      "role": "required",
+      "produces": [
+        "housekeeping_service_booked",
+        "service_stack_prepared"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_COUPON_MANAGEMENT",
+      "to": "MODULE_FRESH_SUBSCRIPTION",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FOOD_DELIVERY",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_FRESH_SUBSCRIPTION",
+      "to": "MODULE_FOOD_DELIVERY",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_GROCERY_RUN",
+      "to": "MODULE_HOUSEKEEPING_BOOKING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_HOUSEKEEPING_BOOKING",
+      "to": "MODULE_COUPON_MANAGEMENT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_HOUSEKEEPING_BOOKING",
+      "to": "MODULE_FRESH_SUBSCRIPTION",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_housekeeping_coupon_subscription_food_calendar",
+      "required_modules": [
+        "MODULE_HOUSEKEEPING_BOOKING",
+        "MODULE_COUPON_MANAGEMENT",
+        "MODULE_FRESH_SUBSCRIPTION",
+        "MODULE_FOOD_DELIVERY",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0143-M1",
+        "WFG-DAILY-0143-M2",
+        "WFG-DAILY-0143-M3",
+        "WFG-DAILY-0143-M4",
+        "WFG-DAILY-0143-M5"
+      ],
+      "terminal_predicates": [
+        "service_stack_prepared",
+        "daily_order_bundle_prepared",
+        "food_order_pending",
+        "subscription_active",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_grocery_housekeeping_subscription_food_calendar",
+      "required_modules": [
+        "MODULE_GROCERY_RUN",
+        "MODULE_HOUSEKEEPING_BOOKING",
+        "MODULE_FRESH_SUBSCRIPTION",
+        "MODULE_FOOD_DELIVERY",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0143-M6",
+        "WFG-DAILY-0143-M7",
+        "WFG-DAILY-0143-M8",
+        "WFG-DAILY-0143-M9",
+        "WFG-DAILY-0143-M10"
+      ],
+      "terminal_predicates": [
+        "service_stack_prepared",
+        "daily_order_bundle_prepared",
+        "food_order_pending",
+        "subscription_active",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-DAILY-0143-M1",
+      "module_id": "MODULE_HOUSEKEEPING_BOOKING",
+      "binding_id": "BIND_B8_HOUSEKEEPING_BOOKING",
+      "binding_task_id": "B8-2025-HOUSEKEEPING",
+      "parameter_values": {
+        "service_type": "deep_cleaning",
+        "service_date": "2026-01-18",
+        "service_time": "13:00",
+        "instructions": "Focus on kitchen and bathroom"
+      },
+      "description": "Book a deep cleaning session for 2026-01-18 at 13:00.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "housekeeping_service_booked",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0143-M2",
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "binding_id": "BIND_B10_COUPON_MANAGEMENT",
+      "binding_task_id": "B10-2025-COUPONS",
+      "parameter_values": {
+        "name": "Spring Saver",
+        "code": "SAVE20",
+        "type": "discount",
+        "value": "20.0",
+        "min_spend": "100.0",
+        "expiry_date": "2026-04-30"
+      },
+      "description": "Add a discount coupon SAVE20 worth 20.0 off with a minimum spend of 100.0.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coupon_available",
+          "daily_order_bundle_prepared",
+          "order_price_secured",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0143-M3",
+      "module_id": "MODULE_FRESH_SUBSCRIPTION",
+      "binding_id": "BIND_B2_FRESH_SUBSCRIPTION",
+      "binding_task_id": "B2-2025-FRESHSUB",
+      "parameter_values": {
+        "name": "Family Box 10",
+        "price": "99",
+        "next_delivery_date": "2026-01-10",
+        "items": "fruit, vegetables, yogurt"
+      },
+      "description": "Create a fresh-food subscription named 'Family Box 10' with bi-weekly delivery, price 99 per delivery, and next delivery date 2026-01-10.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "subscription_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0143-M4",
+      "module_id": "MODULE_FOOD_DELIVERY",
+      "binding_id": "BIND_B3_FOOD_DELIVERY",
+      "binding_task_id": "B3-2025-FOOD-PROMO",
+      "parameter_values": {
+        "restaurant": "Pizza Palace",
+        "item": "Margherita",
+        "promo_code": "SAVE20",
+        "total": 10.39
+      },
+      "description": "Order a 'Margherita' pizza from 'Pizza Palace' with a promo code 'SAVE20' for a total of $10.39.",
+      "expected_observables": [
+        "url().includes('/food.local/orders.html')",
+        "json('env','food.orders.last.restaurant') == 'Pizza Palace'",
+        "json('env','food.orders.last.items') includes 'Margherita'",
+        "json('env','food.orders.last.total') == 10.39",
+        "json('env','food.orders.last.promo_code') == 'SAVE20'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "food_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0143-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0143-M6",
+      "module_id": "MODULE_GROCERY_RUN",
+      "binding_id": "BIND_B7_GROCERY_RUN",
+      "binding_task_id": "B7-2025-GROCERYSUB",
+      "parameter_values": {
+        "plan_name": "Weekly Grocery Basket",
+        "frequency": "weekly",
+        "items": "Fruit, Vegetables, Eggs",
+        "price_per_delivery": 180,
+        "next_delivery_date": "2026-02-15"
+      },
+      "description": "Set up a weekly grocery subscription plan.",
+      "expected_observables": [
+        "url().includes('/food.local/subscription.html')",
+        "exists(\"#subscriptions-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "daily_order_bundle_prepared",
+          "grocery_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0143-M7",
+      "module_id": "MODULE_HOUSEKEEPING_BOOKING",
+      "binding_id": "BIND_B8_HOUSEKEEPING_BOOKING",
+      "binding_task_id": "B8-2025-HOUSEKEEPING",
+      "parameter_values": {
+        "service_type": "deep_cleaning",
+        "service_date": "2026-01-18",
+        "service_time": "13:00",
+        "instructions": "Focus on kitchen and bathroom"
+      },
+      "description": "Book a deep cleaning session for 2026-01-18 at 13:00.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "housekeeping_service_booked",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0143-M8",
+      "module_id": "MODULE_FRESH_SUBSCRIPTION",
+      "binding_id": "BIND_B2_FRESH_SUBSCRIPTION",
+      "binding_task_id": "B2-2025-FRESHSUB",
+      "parameter_values": {
+        "name": "Family Box 10",
+        "price": "99",
+        "next_delivery_date": "2026-01-10",
+        "items": "fruit, vegetables, yogurt"
+      },
+      "description": "Create a fresh-food subscription named 'Family Box 10' with bi-weekly delivery, price 99 per delivery, and next delivery date 2026-01-10.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "subscription_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0143-M9",
+      "module_id": "MODULE_FOOD_DELIVERY",
+      "binding_id": "BIND_B3_FOOD_DELIVERY",
+      "binding_task_id": "B3-2025-FOOD-PROMO",
+      "parameter_values": {
+        "restaurant": "Pizza Palace",
+        "item": "Margherita",
+        "promo_code": "SAVE20",
+        "total": 10.39
+      },
+      "description": "Order a 'Margherita' pizza from 'Pizza Palace' with a promo code 'SAVE20' for a total of $10.39.",
+      "expected_observables": [
+        "url().includes('/food.local/orders.html')",
+        "json('env','food.orders.last.restaurant') == 'Pizza Palace'",
+        "json('env','food.orders.last.items') includes 'Margherita'",
+        "json('env','food.orders.last.total') == 10.39",
+        "json('env','food.orders.last.promo_code') == 'SAVE20'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "food_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0143-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "service_stack_prepared",
+      "daily_order_bundle_prepared",
+      "food_order_pending",
+      "subscription_active",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_synced",
+      "coupon_available",
+      "daily_order_bundle_prepared",
+      "food_order_pending",
+      "grocery_order_pending",
+      "housekeeping_service_booked",
+      "order_price_secured",
+      "service_stack_prepared",
+      "subscription_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

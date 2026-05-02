@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-DAILY-0098",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Finish the ticket-service workflow only after housekeeping is booked, pricing is secured, a food order is pending, event access is booked, and the itinerary is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "housekeeping_service_booked",
+      "order_price_secured",
+      "food_order_pending",
+      "event_ticket_booked",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "housekeeping_service_booked",
+    "order_price_secured",
+    "food_order_pending",
+    "event_ticket_booked",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_TICKET_SERVICE_ALIGNMENT; ticket-service daily workflows should end with a calendar handoff after booking access."
+}

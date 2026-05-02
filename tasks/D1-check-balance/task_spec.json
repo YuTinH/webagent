@@ -1,0 +1,68 @@
+{
+  "task_id": "D1-2025-FINANCE",
+  "family": "D",
+  "goal": "Your task is to open the bank dashboard and check the total balance view.",
+  "inputs": {},
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/bank.local/dashboard.html')",
+    "mem('banking.balance.last_view') == 'total'",
+    "mem('banking.balance.last_amount') == '6523.45'",
+    "text('#balance-display') includes '6,523.45'",
+    "text('#balance-view-label') includes 'total'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_d1_1",
+      "name": "cp_d1 checkpoint 1",
+      "assertion": "url().includes('/bank.local/dashboard.html')",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d1_2",
+      "name": "cp_d1 checkpoint 2",
+      "assertion": "mem('banking.balance.last_view') == 'total'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d1_3",
+      "name": "cp_d1 checkpoint 3",
+      "assertion": "mem('banking.balance.last_amount') == '6523.45'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d1_4",
+      "name": "cp_d1 checkpoint 4",
+      "assertion": "text('#balance-display') includes '6,523.45'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d1_5",
+      "name": "cp_d1 checkpoint 5",
+      "assertion": "text('#balance-view-label') includes 'total'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "check_balance",
+  "canonical_task_dir": "D1-check-balance",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-GOV-0159",
+  "theme": "government",
+  "difficulty": 6,
+  "instruction": "Close the permit-compliance workflow by securing the home first, verifying the address trail, and then completing parking-permit activation, address update, and renewal.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "address_confirmation_verified",
+      "parking_permit_active",
+      "local_vehicle_compliance_verified",
+      "vehicle_address_updated",
+      "permit_renewed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_confirmation_verified",
+    "parking_permit_active",
+    "local_vehicle_compliance_verified",
+    "vehicle_address_updated",
+    "permit_renewed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 50,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_GOV_WORKFLOW_PERMIT_COMPLIANCE; permit-compliance workflows should include address verification plus both activation and renewal rather than ending after a single compliance step."
+}

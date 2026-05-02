@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-CAREER-0017",
+  "theme": "career",
+  "difficulty": 8,
+  "instruction": "Close the job-signaling route by strengthening the signal first, creating the follow-up, coordinating deadlines, registering the conference, and ending with archived supporting receipts.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "career_signal_strengthened",
+      "job_application_followup_created",
+      "deadline_coordination_recorded",
+      "conference_admin_recorded",
+      "conference_registered",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "career_signal_strengthened",
+    "job_application_followup_created",
+    "deadline_coordination_recorded",
+    "conference_admin_recorded",
+    "conference_registered",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CAREER_JOB_SIGNALING; job-signaling workflows should continue through receipt archiving after conference registration."
+}

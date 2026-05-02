@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>School.local - Certification Center</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+	<body class="page">
+	  <div class="navbar">
+	    <div class="inner">
+	      <div class="brand">🎓 School.local</div>
+	    </div>
+	  </div>
+	  
+	  <div class="container">
+	    <h1>Certification Center</h1>
+	    <div class="card soft">
+	        <h2>Available Certifications</h2>
+        <div id="cert-python" style="display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); padding:16px; margin-top:16px; border-radius:8px">
+            <div>
+                <h3>Certified Python Expert</h3>
+                <p style="color:var(--muted)">Advanced software and automation proficiency track.</p>
+            </div>
+            <button id="apply-cert-python-btn" class="btn pri" onclick="applyCert('Certified Python Expert')">Apply Now</button>
+        </div>
+        <div id="cert-data" style="display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); padding:16px; margin-top:16px; border-radius:8px">
+            <div>
+                <h3>Certified Data Analyst</h3>
+                <p style="color:var(--muted)">Portfolio-focused analytics track.</p>
+            </div>
+            <button id="apply-cert-data-btn" class="btn pri" onclick="applyCert('Certified Data Analyst')">Apply Now</button>
+        </div>
+        <div id="cert-ops" style="display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); padding:16px; margin-top:16px; border-radius:8px">
+            <div>
+                <h3>Certified Operations Specialist</h3>
+                <p style="color:var(--muted)">Workflow and service operations track.</p>
+            </div>
+            <button id="apply-cert-ops-btn" class="btn pri" onclick="applyCert('Certified Operations Specialist')">Apply Now</button>
+        </div>
+    </div>
+  </div>
+
+	  <script>
+	  const certificationParams = new URLSearchParams(window.location.search);
+	  const requestedCertificationTaskId = certificationParams.get('task') || 'J5-2025-CERT';
+	  const certificationTaskId = resolveTaskId(requestedCertificationTaskId);
+
+	  async function applyCert(certName) {
+	      try {
+          await send(certificationTaskId, 'issue_certificate', {
+              name: certName
+          });
+          Toast.success(`${certName} request submitted.`);
+	      } catch(e) {
+	          console.error(e);
+	      }
+	  }
+	  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

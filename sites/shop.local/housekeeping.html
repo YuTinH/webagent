@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - Housekeeping</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">Information</a>
+        <a href="../shop.local/orders.html">Information</a>
+        <a href="../shop.local/housekeeping.html" class="active">Housekeeping</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Housekeeping</h1>
+    </div>
+
+    <div class="card soft">
+      <div class="form">
+        <label>Service Type</label>
+        <select id="service-type" class="input">
+          <option value="regular_cleaning">Regular Cleaning</option>
+          <option value="deep_cleaning">Deep Cleaning</option>
+          <option value="move_out_cleaning">Move-out Cleaning</option>
+        </select>
+        
+        <label>Date</label>
+        <input id="service-date" type="date" class="input">
+        
+        <label>Service Time</label>
+        <select id="service-time" class="input">
+          <option value="09:00">09:00 - 11:00</option>
+          <option value="10:30">10:30 - 12:30</option>
+          <option value="11:00">11:00 - 13:00</option>
+          <option value="13:00">13:00 - 15:00</option>
+          <option value="15:00">15:00 - 17:00</option>
+          <option value="16:00">16:00 - 18:00</option>
+          <option value="17:00">17:00 - 19:00</option>
+        </select>
+        
+        <label>Special Instructions</label>
+        <textarea id="instructions" class="input" rows="3" placeholder="Details: , Password0123#"></textarea>
+        
+        <button id="book-btn" class="btn pri" style="margin-top:24px; width:100%" onclick="bookService()">Submit Housekeeping Booking</button>
+      </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>Bookings</h2>
+        <div id="bookings-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Bookings loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">No bookings yet.</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function bookService() {
+    const serviceType = document.getElementById('service-type').value;
+    const serviceDate = document.getElementById('service-date').value;
+    const serviceTime = document.getElementById('service-time').value;
+    const instructions = document.getElementById('instructions').value;
+    
+    if (!serviceDate || !serviceTime) {
+      Toast.error("Choose a service date and time.");
+      return;
+    }
+    
+    document.getElementById('book-btn').disabled = true;
+    document.getElementById('book-btn').innerText = "Submitting Booking...";
+    
+    await send(resolveTaskId('B8-2025-HOUSEKEEPING'), 'book_housekeeping', {
+      service_type: serviceType,
+      service_date: serviceDate,
+      service_time: serviceTime,
+      instructions: instructions
+    });
+    
+    document.getElementById('book-btn').disabled = false;
+    document.getElementById('book-btn').innerText = "Submit Housekeeping Booking";
+    await loadBookings();
+  }
+
+  async function loadBookings() {
+    const list = document.getElementById('bookings-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+
+    try {
+      const env = await loadEnv();
+      const bookings = env.local_services?.housekeeping_bookings || {};
+
+      if (Object.keys(bookings).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">No bookings yet.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(bookings).map(([id, booking]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${booking.service_type === 'regular_cleaning' ? 'Regular Cleaning' : booking.service_type === 'deep_cleaning' ? 'Deep Cleaning' : 'Move-out Cleaning'}</h3>
+              <div style="color:var(--muted); font-size:14px">${booking.service_date} ${booking.service_time}</div>
+            </div>
+            <div style="text-align:right">
+              <span class="badge ok">${booking.status}</span>
+            </div>
+          </div>
+          <div style="font-size:13px; color:var(--muted)">Details: ${booking.instructions || ''}</div>
+        </div>
+      `).join('');
+
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadBookings();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

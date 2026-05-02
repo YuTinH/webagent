@@ -1,0 +1,216 @@
+{
+  "goal_id": "WFG-COMPOSITE-0069",
+  "composition": {
+    "composition_type": "single_path",
+    "num_semantically_distinct_paths": 1,
+    "distinctness_rule": "Reach the target through the full bank-opening, investment activation, growth verification, auction, and calendar-sync chain rather than through a shorter investment subset."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_BANK_OPENING",
+      "role": "required",
+      "produces": [
+        "bank_account_active",
+        "payment_method_available"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_INVESTMENT_ACCOUNT",
+      "role": "required",
+      "produces": [
+        "investment_account_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_INVESTMENT_GROWTH",
+      "role": "required",
+      "produces": [
+        "investment_account_active",
+        "investment_growth_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_LIVE_AUCTION",
+      "role": "required",
+      "produces": [
+        "auction_bid_placed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_BANK_OPENING",
+      "to": "MODULE_INVESTMENT_ACCOUNT",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_INVESTMENT_ACCOUNT",
+      "to": "MODULE_INVESTMENT_GROWTH",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_INVESTMENT_GROWTH",
+      "to": "MODULE_LIVE_AUCTION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_LIVE_AUCTION",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_bank_invest_growth_auction_calendar",
+      "required_modules": [
+        "MODULE_BANK_OPENING",
+        "MODULE_INVESTMENT_ACCOUNT",
+        "MODULE_INVESTMENT_GROWTH",
+        "MODULE_LIVE_AUCTION",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-COMPOSITE-0069-M1",
+        "WFG-COMPOSITE-0069-M2",
+        "WFG-COMPOSITE-0069-M3",
+        "WFG-COMPOSITE-0069-M4",
+        "WFG-COMPOSITE-0069-M5"
+      ],
+      "terminal_predicates": [
+        "investment_account_active",
+        "investment_growth_verified",
+        "auction_bid_placed",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-COMPOSITE-0069-M1",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0069-M2",
+      "module_id": "MODULE_INVESTMENT_ACCOUNT",
+      "binding_id": "BIND_D11_INVESTMENT_ACCOUNT",
+      "binding_task_id": "D11-2025-INVESTMENT",
+      "parameter_values": {
+        "name": "Growth Portfolio",
+        "type": "stocks",
+        "initial_deposit": "1000"
+      },
+      "description": "Open a Growth Portfolio investment account of type stocks with an initial deposit of 1000.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "investment_account_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0069-M3",
+      "module_id": "MODULE_INVESTMENT_GROWTH",
+      "binding_id": "BIND_Z2_INVESTMENT_GROWTH",
+      "binding_task_id": "Z2-2025-GROWTH",
+      "parameter_values": {
+        "account_type": "funds",
+        "deposit": "1200"
+      },
+      "description": "Open an Income Builder funds account with 1200 and verify the balance grows to 1260.00 after time passes.",
+      "expected_observables": [
+        "exists(\"#investment-accounts-list .card:has-text('Income Builder')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "investment_account_active",
+          "investment_growth_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0069-M4",
+      "module_id": "MODULE_LIVE_AUCTION",
+      "binding_id": "BIND_Z3_LIVE_AUCTION",
+      "binding_task_id": "Z3-2025-AUCTION",
+      "parameter_values": {
+        "item": "Ming Vase",
+        "budget": 500
+      },
+      "description": "Place a bid of 250 in the live auction and become the highest bidder.",
+      "expected_observables": [
+        "json('env','auctions.VASE-001.current_price') == 250.0",
+        "text('#current-price') includes '250.00'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "auction_bid_placed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0069-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "investment_account_active",
+      "investment_growth_verified",
+      "auction_bid_placed",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "auction_bid_placed",
+      "bank_account_active",
+      "calendar_event_synced",
+      "investment_account_active",
+      "investment_growth_verified",
+      "payment_method_available"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

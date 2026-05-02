@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-NEWCOMER-0038",
+  "theme": "newcomer",
+  "difficulty": 7,
+  "instruction": "Close the housing-finance onboarding workflow by finding housing first, completing the lease-finance path, verifying residency before banking, activating mobile service, and ending with address alignment.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "lease_active",
+      "housing_finance_prepared",
+      "residency_record_verified",
+      "bank_account_active",
+      "mobile_service_active",
+      "address_records_aligned"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "lease_active",
+    "housing_finance_prepared",
+    "residency_record_verified",
+    "bank_account_active",
+    "mobile_service_active",
+    "address_records_aligned"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 75,
+  "max_module_invocations": 6,
+  "notes": "Generated from BP_NEWCOMER_LEASE_FINANCE_REGISTRY; housing-finance onboarding should verify residency before banking and end with address-record alignment rather than stopping at mobile activation."
+}

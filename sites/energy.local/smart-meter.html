@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>energy.local - Smart Meter</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">⚡ Energy.local</div>
+      <div class="navlinks">
+        <a href="../energy.local/index.html">Dashboard</a>
+        <a href="../energy.local/plan.html">Energy Plans</a>
+        <a href="../energy.local/smart-meter.html" class="active">Smart Meter</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Smart Meter Readings</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>Current Meter Reading</h2>
+        <div id="meter-reading">
+            <div class="loading">Loading......</div>
+        </div>
+    </div>
+
+    <div class="card soft">
+        <h2>Submit New Reading</h2>
+        <div class="form">
+            <label>Reading (kWh)</label>
+            <input id="new-reading" type="number" step="0.01" class="input" placeholder="13020.75">
+            
+            <button class="btn pri" id="submit-reading-btn" style="margin-top:24px; width:100%" onclick="submitReading()">Submit Meter Reading</button>
+        </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>Bills</h2>
+        <div id="bill-history-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- History loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">Bills</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  const smartMeterParams = new URLSearchParams(window.location.search);
+  const smartMeterTaskId = resolveTaskId(smartMeterParams.get('task') || 'I4-2025-SMARTMETER');
+
+  async function loadMeter() {
+    const meterReadingDiv = document.getElementById('meter-reading');
+    const billHistoryList = document.getElementById('bill-history-list');
+    
+    try {
+      const env = await loadEnv();
+      const meter = env.meters?.meter_data || {
+          current_reading: 12345.67,
+          last_billed_reading: 12000.00,
+          last_bill_amount: 50.25,
+          last_bill_date: "2025-12-15"
+      };
+      const bills = env.meters?.bill_history || {};
+
+      meterReadingDiv.innerHTML = `
+          <div style="font-size:36px; font-weight:700">${parseFloat(meter.current_reading).toFixed(2)} kWh</div>
+          <div style="color:var(--muted); font-size:14px">Last Billed Reading: ${parseFloat(meter.last_billed_reading).toFixed(2)} kWh</div>
+          <div style="color:var(--muted); font-size:14px">Last Bill: ¥${parseFloat(meter.last_bill_amount).toFixed(2)} on ${meter.last_bill_date}</div>
+      `;
+
+      if (Object.keys(bills).length === 0) {
+        billHistoryList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">Bills</div></div>`;
+      } else {
+        billHistoryList.innerHTML = Object.entries(bills).map(([id, bill]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">Bills (${id})</h3>
+                <div style="color:var(--muted); font-size:14px">Details: ${bill.start_date} - ${bill.end_date}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:600">Details: ¥${parseFloat(bill.amount).toFixed(2)}</div>
+                <div style="color:var(--muted); font-size:13px">Status: <span class="badge ${bill.status === 'paid' ? 'ok' : 'warn'}">${bill.status}</span></div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      meterReadingDiv.innerHTML = '<div class="error">Load failed</div>';
+      billHistoryList.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  async function submitReading() {
+    const newReading = document.getElementById('new-reading').value;
+    
+    if (!newReading || parseFloat(newReading) <= 0) {
+      Toast.error("Enter a valid meter reading.");
+      return;
+    }
+    
+    await send(smartMeterTaskId, 'submit_meter_reading', {
+      reading: parseFloat(newReading)
+    });
+    
+    setTimeout(loadMeter, 500);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadMeter);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

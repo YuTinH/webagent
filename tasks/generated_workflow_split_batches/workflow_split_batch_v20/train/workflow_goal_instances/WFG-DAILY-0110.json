@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-DAILY-0110",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Close the daily service stack by preparing both service and bundle context, completing the subscription and food steps, and ending with a synced routine calendar.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "service_stack_prepared",
+      "daily_order_bundle_prepared",
+      "food_order_pending",
+      "subscription_active",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "service_stack_prepared",
+    "daily_order_bundle_prepared",
+    "food_order_pending",
+    "subscription_active",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_BUNDLE_FOOD_ALIGNMENT; daily service-and-subscription workflows should end with an explicit calendar handoff."
+}

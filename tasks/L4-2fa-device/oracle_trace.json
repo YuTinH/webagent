@@ -1,0 +1,32 @@
+{
+  "task_id": "L4-2025-2FA",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/2fa.html?clean=true&task=L4-2025-2FA"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#new-device-name",
+      "value": "Galaxy Fold 7"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#verification-code",
+      "value": "778899"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button.btn.pri"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#twofa-history-list .card:has-text('Galaxy Fold 7')"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "task_id": "B7-2025-GROCERYSUB",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+    "url": "http://localhost:8014/food.local/subscription.html?clean=true&task=B7-2025-GROCERYSUB",
+      "note": "Open grocery subscription page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button[onclick='openSubscribeModal()']",
+      "note": "Open subscription modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-name",
+      "value": "Weekly Grocery Basket",
+      "note": "Fill plan name"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#new-frequency",
+      "value": "weekly",
+      "note": "Set frequency"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#new-items",
+      "value": "Fruit, Vegetables, Eggs",
+      "note": "Fill items"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#new-price",
+      "value": "180",
+      "note": "Fill delivery price"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#new-delivery-date",
+      "value": "2026-02-15",
+      "note": "Fill next delivery date"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm subscription"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#subscriptions-list .card",
+      "note": "Wait for subscription card"
+    }
+  ]
+}

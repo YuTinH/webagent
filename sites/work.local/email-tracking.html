@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Work.local - Email Tracking</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">💼 Work.local</div>
+      <div class="navlinks">
+        <a href="../work.local/dashboard.html">Dashboard</a>
+        <a href="../work.local/calendar.html">Calendar</a>
+        <a href="../work.local/paper-submission.html">Paper Submission</a>
+        <a href="../work.local/email-tracking.html" class="active">Email Tracking</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Tracked Email Threads</h1>
+      <button class="btn pri" id="open-track-email-modal-btn" onclick="openTrackEmailModal()">Track Email Thread</button>
+    </div>
+
+    <div id="email-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Email list loaded here -->
+    </div>
+  </div>
+
+<script>
+const emailTrackerParams = new URLSearchParams(window.location.search);
+const requestedEmailTrackerTaskId = emailTrackerParams.get('task') || 'F9-2025-EMAILTRACK';
+const emailTrackerTaskId = resolveTaskId(requestedEmailTrackerTaskId);
+
+  async function loadEmails() {
+    const list = document.getElementById('email-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const emails = env.work?.email_threads || {};
+      
+      if (Object.keys(emails).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">📧</div>
+            <div style="color:var(--muted)">No tracked email threads.</div>
+          </div>
+        `;
+        return;
+      }
+
+	      list.innerHTML = Object.entries(emails).filter(([id]) => id !== 'last').map(([id, email]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${email.subject || ''}</h3>
+              <div style="color:var(--muted); font-size:14px">Details: ${email.sender || ''}</div>
+            </div>
+            <div style="text-align:right">
+              <span class="badge ${email.status === 'replied' ? 'ok' : 'warn'}">${email.status === 'replied' ? 'Replied' : 'Pending'}</span>
+            </div>
+          </div>
+          <div style="font-size:13px; color:var(--muted); margin-bottom:8px">Details: ${email.last_updated || 'N/A'}</div>
+          <div style="font-size:13px; color:var(--muted); margin-bottom:8px">Priority: ${email.priority || 'normal'}${email.follow_up_date ? ` · Follow up: ${email.follow_up_date}` : ''}</div>
+          <p style="font-size:14px; margin-bottom:12px">${email.summary || ''}</p>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn secondary" id="view-thread-${id}" onclick="viewThread('${id}')">View Thread</button>
+            <button class="btn" id="mark-thread-replied-${id}" onclick="markReplied('${id}')" ${email.status === 'replied' ? 'disabled' : ''}>Mark Replied</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openTrackEmailModal() {
+    const modal = new Modal({
+      title: 'Track Email Thread',
+      content: `
+        <div class="form">
+          <label>Email Subject</label>
+          <input id="email-subject" class="input" placeholder="e.g. Budget Review Request">
+          
+          <label>Sender</label>
+          <input id="email-sender" class="input" placeholder="e.g. finance@example.com">
+          
+          <label>Summary</label>
+          <textarea id="email-summary" class="input" rows="3" placeholder="Add a short note about the thread"></textarea>
+
+          <label>Priority</label>
+          <select id="email-priority" class="input">
+            <option value="">Choose a priority</option>
+            <option value="low">Low</option>
+            <option value="normal">Normal</option>
+            <option value="high">High</option>
+          </select>
+
+          <label>Follow-up Date</label>
+          <input id="email-follow-up-date" class="input" type="date">
+        </div>
+      `,
+      confirmText: 'Track Thread',
+      onConfirm: async () => {
+        const subject = document.getElementById('email-subject').value.trim();
+        const sender = document.getElementById('email-sender').value.trim();
+        const summary = document.getElementById('email-summary').value.trim();
+        const priority = document.getElementById('email-priority').value.trim();
+        const followUpDate = document.getElementById('email-follow-up-date').value.trim();
+        
+        if (!subject || !sender || !summary || !priority || !followUpDate) {
+          Toast.error("Enter the thread details, priority, and follow-up date.");
+          return false;
+        }
+
+        await send(emailTrackerTaskId, 'track_email_thread', {
+          action_type: 'add',
+          subject: subject,
+          sender: sender,
+          summary: summary,
+          priority: priority,
+          follow_up_date: followUpDate
+        });
+        await loadEmails();
+        return true;
+      }
+    });
+    modal.open();
+  }
+
+  function markReplied(id) {
+    send(emailTrackerTaskId, 'track_email_thread', {
+        action_type: 'mark_replied',
+        thread_id: id
+    }).then(loadEmails);
+  }
+
+  function viewThread(id) {
+    Toast.info(`Opening thread ${id}...`);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadEmails();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+

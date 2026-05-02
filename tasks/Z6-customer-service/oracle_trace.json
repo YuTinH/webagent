@@ -1,0 +1,26 @@
+{
+  "task_id": "Z6-2025-CHAT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/support-chat.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#msg-input",
+      "value": "What is going on with order O-10005? I need the current status."
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": ".chat-input-area button.btn.pri"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#messages .message.bot:has-text('O-10005')"
+    }
+  ]
+}

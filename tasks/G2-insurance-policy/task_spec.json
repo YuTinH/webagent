@@ -1,0 +1,61 @@
+{
+  "task_id": "G2-2025-INSURANCE",
+  "family": "G",
+  "goal": "Your task is to purchase the Premium Plus Plan from Prime Shield.",
+  "inputs": {
+    "plan_name": "Premium Plus Plan",
+    "provider": "Prime Shield"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('health.insurance.active') == 1",
+    "mem('health.insurance.plan_name') == 'Premium Plus Plan'",
+    "mem('health.insurance.provider') == 'Prime Shield'",
+    "mem('health.insurance.policy_number') includes 'POL-'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_g2_1",
+      "name": "cp_g2 checkpoint 1",
+      "assertion": "mem('health.insurance.active') == 1",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g2_2",
+      "name": "cp_g2 checkpoint 2",
+      "assertion": "mem('health.insurance.plan_name') == 'Premium Plus Plan'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g2_3",
+      "name": "cp_g2 checkpoint 3",
+      "assertion": "mem('health.insurance.provider') == 'Prime Shield'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g2_4",
+      "name": "cp_g2 checkpoint 4",
+      "assertion": "mem('health.insurance.policy_number') includes 'POL-'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "health.local"
+  ],
+  "module_group": "insurance_policy",
+  "canonical_task_dir": "G2-insurance-policy",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,29 @@
+{
+  "task_id": "B4-2025-TRACKING",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/orders.html?task=B4-2025-TRACKING",
+      "note": "Open orders list page"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": ".order-card[data-order-id='O-93902']",
+      "note": "Wait for specific order to load"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": ".order-card[data-order-id='O-93902'] button:has-text('Track')",
+      "note": "Click 'Track Order' button for O-93902"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "h1:has-text('Order跟踪')",
+      "note": "Wait for order tracking page to load"
+    }
+  ]
+}

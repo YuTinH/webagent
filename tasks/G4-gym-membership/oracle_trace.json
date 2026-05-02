@@ -1,0 +1,32 @@
+{
+  "task_id": "G4-2025-GYM",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/refill.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#prescriptionId",
+      "value": "RX-3303"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#medication",
+      "value": "Vitamin D 1000IU"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": ".btn-submit"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#records-list .record-card:has-text('Prescription - RX-3303')"
+    }
+  ]
+}

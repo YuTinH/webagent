@@ -1,0 +1,62 @@
+{
+  "task_id": "D3-2025-AUTOPAY",
+  "family": "D",
+  "goal": "Your task is to enable autopay for Neighborhood Internet with account FIBER-9012 and a monthly limit of 120.",
+  "inputs": {
+    "payee": "Neighborhood Internet",
+    "amount": 120,
+    "account_number": "FIBER-9012"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('autopay.utility.status') == 'active'",
+    "mem('autopay.utility.payee') == 'Neighborhood Internet'",
+    "mem('autopay.utility.account_number') == 'FIBER-9012'",
+    "mem('autopay.utility.amount') == '120'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_d3_1",
+      "name": "cp_d3 checkpoint 1",
+      "assertion": "mem('autopay.utility.status') == 'active'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d3_2",
+      "name": "cp_d3 checkpoint 2",
+      "assertion": "mem('autopay.utility.payee') == 'Neighborhood Internet'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d3_3",
+      "name": "cp_d3 checkpoint 3",
+      "assertion": "mem('autopay.utility.account_number') == 'FIBER-9012'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d3_4",
+      "name": "cp_d3 checkpoint 4",
+      "assertion": "mem('autopay.utility.amount') == '120'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "autopay",
+  "canonical_task_dir": "D3-autopay",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

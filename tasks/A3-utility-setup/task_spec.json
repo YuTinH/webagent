@@ -1,0 +1,70 @@
+{
+  "task_id": "A3-2025-UTIL",
+  "family": "A",
+  "goal": "Complete the following task: set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+  "inputs": {
+    "address": "88 River Rd, Springfield",
+    "services": [
+      "electricity",
+      "water",
+      "broadband"
+    ],
+    "plans": {
+      "electricity": "standard",
+      "water": "standard",
+      "broadband": "postpaid-auto"
+    }
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('contracts.electricity.status') == 'active'",
+    "mem('autopay.utility.account_number') == 'UTIL-7788'",
+    "mem('autopay.utility.payee') == 'City Utilities'",
+    "mem('autopay.utility.amount') == '260'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_a3_1",
+      "name": "cp_a3 checkpoint 1",
+      "assertion": "mem('contracts.electricity.status') == 'active'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a3_2",
+      "name": "cp_a3 checkpoint 2",
+      "assertion": "mem('autopay.utility.account_number') == 'UTIL-7788'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a3_3",
+      "name": "cp_a3 checkpoint 3",
+      "assertion": "mem('autopay.utility.payee') == 'City Utilities'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a3_4",
+      "name": "cp_a3 checkpoint 4",
+      "assertion": "mem('autopay.utility.amount') == '260'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "energy.local"
+  ],
+  "module_group": "utility_setup",
+  "canonical_task_dir": "A3-utility-setup",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

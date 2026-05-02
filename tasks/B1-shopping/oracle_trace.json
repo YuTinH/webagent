@@ -1,0 +1,35 @@
+{
+  "task_id": "B1-2025-001",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://127.0.0.1:8040/shop.local/product.html?id=WM-5521&clean=true"
+    },
+    {
+      "t": 1,
+      "act": "wait",
+      "selector": "#buy-now-btn"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#buy-now-btn"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#checkout-btn"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#checkout-btn"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "body"
+    }
+  ]
+}

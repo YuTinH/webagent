@@ -1,0 +1,44 @@
+{
+  "task_id": "E5-2025-EXPENSE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/expense-report.html?clean=true&task=E5-2025-EXPENSE"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#report-id",
+      "value": "EXP-6631"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#total-amount",
+      "value": "860"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#description",
+      "value": "Hotel and taxi reimbursement"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#linked-pnr",
+      "value": "PNR-6631"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "button.btn.pri.lg"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "body"
+    }
+  ]
+}

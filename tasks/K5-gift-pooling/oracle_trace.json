@@ -1,0 +1,43 @@
+{
+  "task_id": "K5-2025-GIFTPOOL",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/social.local/charity.html?clean=true&task=K5-2025-GIFTPOOL",
+      "note": "Open donation page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Open donate modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#charity-name",
+      "value": "团队礼物基金",
+      "note": "Enter gift pool name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#donation-amount",
+      "value": "300",
+      "note": "Enter target amount"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Submit donation"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#donations-list .card",
+      "note": "Wait for donation card"
+    }
+  ]
+}

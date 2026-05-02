@@ -1,0 +1,52 @@
+{
+  "task_id": "A2-2025-BANK-OPEN",
+  "family": "A",
+  "goal": "Your task is to open a new bank account and enable 2FA before finishing.",
+  "inputs": {
+    "fullname": "Alex Chen",
+    "phone": "555-0102",
+    "address": "123 Main St, Springfield"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('bank.account.status') == 'active'",
+    "mem('bank.account.holder_name') == 'Alex Chen'",
+    "mem('bank.account.2fa_enabled') == '1'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_a2_1",
+      "name": "cp_a2 checkpoint 1",
+      "assertion": "mem('bank.account.status') == 'active'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a2_2",
+      "name": "cp_a2 checkpoint 2",
+      "assertion": "mem('bank.account.holder_name') == 'Alex Chen'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a2_3",
+      "name": "cp_a2 checkpoint 3",
+      "assertion": "mem('bank.account.2fa_enabled') == '1'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "bank_opening",
+  "canonical_task_dir": "A2-bank-opening",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Report - Nebula Bank</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Bank</div>
+    <div class="navlinks">
+      <a href="../bank.local/dashboard.html">Dashboard</a>
+      <a href="../bank.local/transactions.html">Transactions</a>
+      <a href="../bank.local/expense-report.html" class="active">Expense Report</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="text-align:center; font-size:28px; font-weight:700; margin:32px 0">Submit Expense Report</h1>
+
+    <div class="report-card">
+      <div class="form-group">
+        <label for="report-id">Report ID</label>
+        <input type="text" id="report-id" placeholder="e.g. EXP-3344">
+      </div>
+      <div class="form-group">
+        <label for="total-amount">Total Amount</label>
+        <input type="number" id="total-amount" placeholder="e.g. 1200.00">
+      </div>
+    <div class="form-group">
+      <label for="description">Expense Description</label>
+      <textarea id="description" rows="4" placeholder="Describe the reimbursable charges"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="linked-pnr">Linked PNR</label>
+      <input type="text" id="linked-pnr" placeholder="e.g. PNR-1234">
+    </div>
+    <button class="btn pri lg" id="submit-expense-btn" style="width:100%" onclick="submitReport()">Submit Expense Report</button>
+  </div>
+
+  <div class="footer">Nebula Bank · Synthetic UI for Web Agent Research</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const expenseParams = new URLSearchParams(window.location.search);
+const requestedExpenseTaskId = expenseParams.get('task') || 'E5-2025-EXPENSE';
+const expenseTaskId = resolveTaskId(requestedExpenseTaskId);
+
+async function submitReport() {
+  const reportId = document.getElementById('report-id').value.trim();
+  const totalAmount = document.getElementById('total-amount').value;
+  const description = document.getElementById('description').value.trim();
+  const linkedPnr = document.getElementById('linked-pnr').value.trim();
+
+  if (!reportId || !totalAmount || !description) {
+    Toast.error('Enter the report ID, amount, and description.');
+    return;
+  }
+
+  Toast.info('Submitting expense report...');
+
+  try {
+    const response = await send(expenseTaskId, 'submit_expense', {
+      reportId: reportId,
+      total: parseFloat(totalAmount),
+      description: description,
+      pnr: linkedPnr || undefined
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('Expense report submitted.');
+      // Fallback reload if redirect doesn't happen automatically
+      if (!response.redirect) {
+          window.location.href = `${window.RelRoot}bank.local/expense-report.html?submitted=true&task=${encodeURIComponent(expenseTaskId)}`;
+      }
+    } else {
+        console.warn('Response invalid, attempting fallback reload...');
+        window.location.href = `${window.RelRoot}bank.local/expense-report.html?submitted=true&task=${encodeURIComponent(expenseTaskId)}`;
+    }
+  } catch (error) {
+    console.error('SubmitDetails:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}bank.local/expense-report.html?submitted=true&task=${encodeURIComponent(expenseTaskId)}`;
+    } else {
+        Toast.error('Expense report submission failed. Please try again.');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('submitted') === 'true') {
+        Toast.success('Expense report submitted.');
+    }
+});
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

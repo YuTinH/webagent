@@ -1,0 +1,60 @@
+{
+  "task_id": "M5-2025-RESETCODE::WFG-SECURITY-0003-M1",
+  "family": "M",
+  "goal": "Request a password reset code for account recovery.",
+  "inputs": {
+    "username": "cloudember"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/security.local/reset-password.html')",
+    "exists(\"#new-password\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "url().includes('/security.local/reset-password.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "exists(\"#new-password\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "security.local"
+  ],
+  "module_group": "password_reset_request",
+  "variant_kind": "distinct",
+  "canonical_task_dir": "M5-reset-password",
+  "lifecycle_status": "active",
+  "module_notes": "Reset-code request stage.",
+  "binding_task_id": "M5-2025-RESETCODE",
+  "source_task_id": "M5-2025-RESETCODE"
+}

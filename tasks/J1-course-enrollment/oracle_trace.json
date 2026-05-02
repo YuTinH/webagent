@@ -1,0 +1,23 @@
+{
+  "task_id": "J1-2025-ENROLL",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/course.html?id=ML202",
+      "note": "Open 机器学习进阶 course page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#enroll-button",
+      "note": "Click 'Enroll Now' button"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#enrolled-courses-grid",
+      "note": "Wait for My Learning page to load"
+    }
+  ]
+}

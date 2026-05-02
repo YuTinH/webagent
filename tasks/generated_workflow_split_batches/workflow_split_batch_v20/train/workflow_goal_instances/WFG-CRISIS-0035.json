@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-CRISIS-0035",
+  "theme": "crisis",
+  "difficulty": 7,
+  "instruction": "Close the illness-side crisis route by logging the intake first, restoring access, securing urgent liquidity, reviewing the balance, and ending with transaction dispute submission.",
+  "visible_constraints": {
+    "deadline_days": 1,
+    "preferred_outcomes": [
+      "illness_report_submitted",
+      "crisis_intake_completed",
+      "password_reset_completed",
+      "emergency_liquidity_secured",
+      "account_balance_reviewed",
+      "transaction_dispute_submitted"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "illness_report_submitted",
+    "crisis_intake_completed",
+    "password_reset_completed",
+    "emergency_liquidity_secured",
+    "account_balance_reviewed",
+    "transaction_dispute_submitted"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    }
+  ],
+  "max_steps": 65,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CRISIS_REPORT_LIQUIDITY_STABILIZATION; illness-side crisis workflows should continue from liquidity support into explicit balance review and transaction dispute handling."
+}

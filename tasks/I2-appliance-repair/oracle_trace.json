@@ -1,0 +1,58 @@
+{
+  "task_id": "I2-2025-APPREPAIR",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/appliance-repair.html?clean=true&task=I2-2025-APPREPAIR",
+      "note": "Open appliance repair page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Open submit modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#appliance-name",
+      "value": "Oven",
+      "note": "Enter appliance name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#serial-number",
+      "value": "OVN-4401",
+      "note": "Enter serial number"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#problem-description",
+      "value": "Heating element not working",
+      "note": "Enter problem"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#service-date",
+      "value": "2025-12-30",
+      "note": "Enter service date"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Submit form"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#appliance-repair-requests-list .badge",
+      "note": "Wait for status badge in list",
+      "value": "Oven"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-CRISIS-0165",
+  "theme": "crisis",
+  "difficulty": 8,
+  "instruction": "Close the reset-intake route by completing the reset-or-recovery work first, logging the crisis intake, reviewing the balance, and ending only after liquidity is secured.",
+  "visible_constraints": {
+    "deadline_days": 2,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "crisis_intake_completed",
+      "account_access_contained",
+      "emergency_liquidity_secured",
+      "account_balance_reviewed"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "password_reset_completed",
+    "crisis_intake_completed",
+    "account_access_contained",
+    "emergency_liquidity_secured",
+    "account_balance_reviewed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 6,
+  "notes": "Generated from BP_CRISIS_RESET_INTAKE; reset-intake crisis workflows should include a balance-review checkpoint before liquidity closure."
+}

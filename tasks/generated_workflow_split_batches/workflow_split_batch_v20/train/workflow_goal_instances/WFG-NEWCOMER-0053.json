@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-NEWCOMER-0053",
+  "theme": "newcomer",
+  "difficulty": 6,
+  "instruction": "Finish the newcomer lease-finance packet only after address confirmation is verified, records are aligned, housing finance is prepared, and the bank account is active.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "address_confirmation_verified",
+      "address_records_aligned",
+      "housing_finance_prepared",
+      "bank_account_active"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_confirmation_verified",
+    "address_records_aligned",
+    "housing_finance_prepared",
+    "bank_account_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_NEWCOMER_ADDRESS_LEASE_FINANCE_SYNC; newcomer lease-finance workflows should extend into banking after the address and housing-finance steps."
+}

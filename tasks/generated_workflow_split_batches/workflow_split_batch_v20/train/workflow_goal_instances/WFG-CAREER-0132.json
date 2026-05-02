@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-CAREER-0132",
+  "theme": "career",
+  "difficulty": 6,
+  "instruction": "Close the career workflow by recording the conference admin first, archiving the receipt, coordinating the deadline, strengthening the signal, and ending with a concrete job follow-up action.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "conference_admin_recorded",
+      "receipt_archived",
+      "deadline_coordination_recorded",
+      "career_signal_strengthened",
+      "job_application_followup_created"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "conference_admin_recorded",
+    "receipt_archived",
+    "deadline_coordination_recorded",
+    "career_signal_strengthened",
+    "job_application_followup_created"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 65,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CAREER_WORKFLOW_SIGNAL_DEADLINE; conference-signal career workflows should continue into explicit job follow-up rather than stopping once the signal is strengthened."
+}

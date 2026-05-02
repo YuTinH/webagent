@@ -1,0 +1,5 @@
+{
+  "permits.parking.application_id": {"key": "permits.parking.application_id", "value": "APP-8899", "ts": "2025-11-22T09:00:18Z", "source": "H2-2025-007", "confidence": 1.0},
+  "permits.parking.state": {"key": "permits.parking.state", "value": "submitted", "ts": "2025-11-22T09:00:18Z", "source": "H2-2025-007", "confidence": 1.0},
+  "permits.parking.documents_uploaded": {"key": "permits.parking.documents_uploaded", "value": ["vehicle_registration", "proof_of_address"], "ts": "2025-11-22T09:00:18Z", "source": "H2-2025-007", "confidence": 1.0}
+}

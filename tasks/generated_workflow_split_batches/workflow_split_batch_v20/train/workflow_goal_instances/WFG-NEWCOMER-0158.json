@@ -1,0 +1,33 @@
+{
+  "goal_id": "WFG-NEWCOMER-0158",
+  "theme": "newcomer",
+  "difficulty": 7,
+  "instruction": "Close newcomer connectivity setup by verifying the address path first, switching the mobile plan, and ending with the address record aligned.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "address_confirmation_verified",
+      "mobile_plan_updated",
+      "address_records_aligned"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_confirmation_verified",
+    "mobile_plan_updated",
+    "address_records_aligned"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 65,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_NEWCOMER_RESIDENCY_MOBILE; connectivity-switch newcomer workflows should not stop at the mobile switch and must close with address-record alignment."
+}

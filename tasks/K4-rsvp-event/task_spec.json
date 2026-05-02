@@ -1,0 +1,76 @@
+{
+  "task_id": "K4-2025-RSVPGROUP",
+  "family": "K",
+  "goal": "RSVP by joining the Tech Enthusiasts organizer group.",
+  "inputs": {
+    "group_name": "Tech Enthusiasts"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('social.groups.GRP-002.status') == 'joined'",
+    "url().includes('/social.local/my-groups.html')",
+    "exists(\"#my-groups-list .badge.ok\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('social.groups.GRP-002.status') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('social.groups.GRP-002.status') == 'joined'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "url().includes('/social.local/my-groups.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"#my-groups-list .badge.ok\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "social.local"
+  ],
+  "module_group": "rsvp_event",
+  "canonical_task_dir": "K4-rsvp-event",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

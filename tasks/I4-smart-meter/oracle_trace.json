@@ -1,0 +1,26 @@
+{
+  "task_id": "I4-2025-SMARTMETER",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/energy.local/smart-meter.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#new-reading",
+      "value": "13020.75"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('Submit')"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#meter-reading:has-text('13020.75')"
+    }
+  ]
+}

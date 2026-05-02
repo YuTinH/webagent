@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> - Nebula</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.help-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula</div>
+    <div class="navlinks">
+      <a href="../shop.local/index.html">Home</a>
+      <a href="../shop.local/orders.html">Orders</a>
+      <a href="../shop.local/help.html" class="active">Support Ticket</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="text-align:center; font-size:28px; font-weight:700; margin:32px 0">Submit Support Ticket</h1>
+
+  <div class="help-card">
+    <div class="form-group">
+      <label for="order-id">Order ID</label>
+      <input type="text" id="order-id" placeholder="Details: O-12345" value="">
+    </div>
+    <div class="form-group">
+      <label for="issue-type">Issue Type</label>
+      <select id="issue-type">
+        <option value="delayed">Delayed Delivery</option>
+        <option value="late">Late Delivery</option>
+        <option value="damaged">Damaged Item</option>
+        <option value="partial_delivery">Partial Delivery</option>
+        <option value="missing">Missing Package</option>
+        <option value="missing_parts">Missing Parts</option>
+        <option value="missing_accessories">Missing Accessories</option>
+        <option value="wrong_item">Wrong Item</option>
+        <option value="not_as_described">Not as Described</option>
+        <option value="broken_seal">Broken Seal</option>
+        <option value="quality_issue">Quality Issue</option>
+        <option value="other">Other Issue</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" rows="4" placeholder="..."></textarea>
+    </div>
+    <button class="btn pri lg" id="submit-ticket-btn" style="width:100%" onclick="submitTicket()">Submit</button>
+  </div>
+
+  <div class="footer">Nebula · Synthetic UI for Web Agent Research</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const shopHelpParams = new URLSearchParams(window.location.search);
+const requestedShopHelpTaskId = shopHelpParams.get('task') || 'C1-2025-SUPPORT';
+const shopHelpTaskId = resolveTaskId(requestedShopHelpTaskId);
+
+async function submitTicket() {
+  const orderId = document.getElementById('order-id').value;
+  const issueType = document.getElementById('issue-type').value;
+  const description = document.getElementById('description').value;
+
+  if (!orderId || !issueType || !description.trim()) {
+    Toast.error('Enter the order ID, choose an issue type, and describe the issue.');
+    return;
+  }
+
+  Toast.info('Submitting support ticket...');
+
+  try {
+    const response = await send(shopHelpTaskId, 'submit_ticket', {
+      orderId: orderId,
+      type: issueType,
+      description: description
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('Submit!');
+      // If server returns redirect, common.js handles it.
+      // Fallback reload if no redirect
+      if (!response.redirect) {
+          const target = new URL(window.RelRoot + 'shop.local/help.html', window.location.href);
+          target.searchParams.set('status', 'ticket_created');
+          target.searchParams.set('task', shopHelpTaskId);
+          window.location.href = target.toString();
+      }
+    } else {
+        console.warn('Response invalid, attempting fallback reload...');
+        const target = new URL(window.RelRoot + 'shop.local/help.html', window.location.href);
+        target.searchParams.set('status', 'ticket_created');
+        target.searchParams.set('task', shopHelpTaskId);
+        window.location.href = target.toString();
+    }
+  } catch (error) {
+    console.error('SubmitDetails:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        const target = new URL(window.RelRoot + 'shop.local/help.html', window.location.href);
+        target.searchParams.set('status', 'ticket_created');
+        target.searchParams.set('task', shopHelpTaskId);
+        window.location.href = target.toString();
+    } else {
+        Toast.error('Ticket submission failed. Please try again.');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('status') === 'ticket_created') {
+        document.querySelector('.help-card').innerHTML = `
+                <div style="text-align:center; padding:20px">
+                    <div style="font-size:64px; margin-bottom:16px">✅</div>
+                    <h3>Ticket Submitted</h3>
+                    <p style="color:var(--muted)">Your support request has been recorded and queued for review.</p>
+                    <button id="back-home-after-ticket" class="btn pri" style="margin-top:20px" onclick="window.location.href='../shop.local/index.html'">Back Home</button>
+                </div>
+        `;
+    }
+});
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

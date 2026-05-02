@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-SOCIAL-0104",
+  "theme": "social",
+  "difficulty": 8,
+  "instruction": "Finish the social ticket workflow only after the contribution commitment is recorded, the RSVP is confirmed, tickets are booked, shared expenses are settled, and the event is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "event_ticket_booked",
+      "event_rsvp_completed",
+      "social_commitment_recorded",
+      "shared_expenses_settled",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "event_ticket_booked",
+    "event_rsvp_completed",
+    "social_commitment_recorded",
+    "shared_expenses_settled",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SOCIAL_TICKET_COMMITMENT_ALIGNMENT; social ticket workflows should end with an explicit calendar-sync step after the event commitment is fully arranged."
+}

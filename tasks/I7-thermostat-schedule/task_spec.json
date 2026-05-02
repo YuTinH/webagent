@@ -1,0 +1,97 @@
+{
+  "task_id": "I7-2025-THERMOSTAT",
+  "family": "I",
+  "goal": "Configure a thermostat profile in the smart-home control panel.",
+  "inputs": {
+    "deviceId": "THERMO-001",
+    "location": "卧室",
+    "color": "warm_white"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('devices.THERMO-001.status') == 'active'",
+    "mem('devices.THERMO-001.location') == '卧室'",
+    "exists(\"div:has-text('卧室')\")",
+    "url().includes('/energy.local/index.html')",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('devices.THERMO-001.status') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('devices.THERMO-001.status') == 'active'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Criterion 2 state set",
+      "assertion": "mem('devices.THERMO-001.location') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "mem('devices.THERMO-001.location') == '卧室'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"div:has-text('卧室')\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "url().includes('/energy.local/index.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_6_final",
+      "name": "Criterion 6 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "energy.local"
+  ],
+  "module_group": "thermostat_schedule",
+  "canonical_task_dir": "I7-thermostat-schedule",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-NEWCOMER-0012",
+  "theme": "newcomer",
+  "difficulty": 5,
+  "instruction": "Finish the newcomer settlement packet only after housing is secured, utilities are active, address proof is available, the mailing address is current, and the bank account is active.",
+  "visible_constraints": {
+    "deadline_days": 7,
+    "preferred_outcomes": [
+      "lease_active",
+      "utilities_active",
+      "address_proof_available",
+      "mailing_address_current",
+      "bank_account_active"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "lease_active",
+    "utilities_active",
+    "address_proof_available",
+    "mailing_address_current",
+    "bank_account_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        5,
+        7
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_NEWCOMER_SETTLEMENT_FOUNDATION; settlement-foundation newcomer workflows should continue into banking rather than stopping once the address is aligned."
+}

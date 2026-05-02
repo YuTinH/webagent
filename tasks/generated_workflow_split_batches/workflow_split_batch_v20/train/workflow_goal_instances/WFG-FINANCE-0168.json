@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-FINANCE-0168",
+  "theme": "finance",
+  "difficulty": 7,
+  "instruction": "Finish the budget-filing packet only after the budget limit is updated, tax funding is prepared, the filing is submitted, the receipt trail is archived, and the filing follow-up is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "budget_limit_updated",
+      "tax_funding_prepared",
+      "tax_filing_submitted",
+      "receipt_archived",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "budget_limit_updated",
+    "tax_funding_prepared",
+    "tax_filing_submitted",
+    "receipt_archived",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_BUDGET_FUNDING; tax-budget finance workflows should include a calendar follow-up after archival."
+}

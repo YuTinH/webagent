@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-DAILY-0185",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Close the resale route by activating the listing first, building the bundle, turning on the subscription, and ending with a synced follow-up calendar.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "resale_listing_activated",
+      "daily_order_bundle_prepared",
+      "subscription_active",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "resale_listing_activated",
+    "daily_order_bundle_prepared",
+    "subscription_active",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_RESALE_BUNDLE_DUAL; resale-and-subscription daily workflows should end with an explicit scheduling handoff."
+}

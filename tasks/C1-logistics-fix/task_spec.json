@@ -1,0 +1,72 @@
+{
+  "task_id": "C1-2025-SUPPORT",
+  "family": "C",
+  "goal": "Open a logistics ticket for order O-98321 with issue type damaged.",
+  "inputs": {
+    "order_id": "O-98321",
+    "issue_type": "damaged",
+    "description": "The package arrived with a damaged item."
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('support.ticket.last.status') == 'open'",
+    "mem('support.ticket.last.order_id') == 'O-98321'",
+    "mem('support.ticket.last.type') == 'damaged'",
+    "mem('support.ticket.last.description') includes 'The'",
+    "url().includes('/shop.local/help.html?status=ticket_created')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_c1_1",
+      "name": "cp_c1 checkpoint 1",
+      "assertion": "mem('support.ticket.last.status') == 'open'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_c1_2",
+      "name": "cp_c1 checkpoint 2",
+      "assertion": "mem('support.ticket.last.order_id') == 'O-98321'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_c1_3",
+      "name": "cp_c1 checkpoint 3",
+      "assertion": "mem('support.ticket.last.type') == 'damaged'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_c1_4",
+      "name": "cp_c1 checkpoint 4",
+      "assertion": "mem('support.ticket.last.description') includes 'The'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_c1_5",
+      "name": "cp_c1 checkpoint 5",
+      "assertion": "url().includes('/shop.local/help.html?status=ticket_created')",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "logistics_fix",
+  "canonical_task_dir": "C1-logistics-fix",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

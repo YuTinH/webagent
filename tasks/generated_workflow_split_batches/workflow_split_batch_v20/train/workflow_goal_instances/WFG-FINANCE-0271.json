@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-FINANCE-0271",
+  "theme": "finance",
+  "difficulty": 7,
+  "instruction": "Close the capital-setup workflow by opening the account, preparing the funding path, activating the investment account, updating the budget limit, and archiving the receipt record.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "bank_account_active",
+      "tax_funding_prepared",
+      "investment_account_active",
+      "budget_limit_updated",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bank_account_active",
+    "tax_funding_prepared",
+    "investment_account_active",
+    "budget_limit_updated",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_ZTRAIN_08_FUNDING_INVESTMENT_DUAL; funding-and-investment finance workflows should include a budget-limit closure before archival."
+}

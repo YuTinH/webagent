@@ -1,0 +1,390 @@
+{
+  "goal_id": "WFG-CAREER-0150",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either take the formal conference-registration route before archival, calendar coordination, signaling, and job follow-up, or take the conference-admin route before the same archival, coordination, signaling, and follow-up closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CALENDAR_AGGREGATION",
+      "role": "required",
+      "produces": [
+        "calendar_event_created",
+        "deadline_coordination_recorded"
+      ]
+    },
+    {
+      "module_id": "MODULE_CONFERENCE_REG",
+      "role": "alternative",
+      "produces": [
+        "conference_admin_recorded",
+        "conference_expense_logged"
+      ]
+    },
+    {
+      "module_id": "MODULE_CONFERENCE_REGISTRATION",
+      "role": "alternative",
+      "produces": [
+        "conference_admin_recorded",
+        "conference_registered",
+        "deadline_coordination_recorded"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_TRACKING",
+      "role": "alternative",
+      "produces": [
+        "career_signal_strengthened",
+        "email_thread_tracked"
+      ]
+    },
+    {
+      "module_id": "MODULE_JOB_SEARCH",
+      "role": "required",
+      "produces": [
+        "job_application_followup_created"
+      ]
+    },
+    {
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "role": "required",
+      "produces": [
+        "receipt_archived"
+      ]
+    },
+    {
+      "module_id": "MODULE_UPDATE_LINKEDIN",
+      "role": "alternative",
+      "produces": [
+        "career_signal_strengthened",
+        "professional_profile_updated"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_CALENDAR_AGGREGATION",
+      "to": "MODULE_EMAIL_TRACKING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_CALENDAR_AGGREGATION",
+      "to": "MODULE_UPDATE_LINKEDIN",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_CONFERENCE_REG",
+      "to": "MODULE_RECEIPT_ARCHIVING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_CONFERENCE_REGISTRATION",
+      "to": "MODULE_RECEIPT_ARCHIVING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_EMAIL_TRACKING",
+      "to": "MODULE_JOB_SEARCH",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_RECEIPT_ARCHIVING",
+      "to": "MODULE_CALENDAR_AGGREGATION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_UPDATE_LINKEDIN",
+      "to": "MODULE_JOB_SEARCH",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_conference_registration_followup",
+      "required_modules": [
+        "MODULE_CONFERENCE_REGISTRATION",
+        "MODULE_RECEIPT_ARCHIVING",
+        "MODULE_CALENDAR_AGGREGATION",
+        "MODULE_EMAIL_TRACKING",
+        "MODULE_JOB_SEARCH"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CAREER-0150-M1",
+        "WFG-CAREER-0150-M2",
+        "WFG-CAREER-0150-M3",
+        "WFG-CAREER-0150-M4",
+        "WFG-CAREER-0150-M5"
+      ],
+      "terminal_predicates": [
+        "conference_admin_recorded",
+        "receipt_archived",
+        "deadline_coordination_recorded",
+        "career_signal_strengthened",
+        "job_application_followup_created"
+      ]
+    },
+    {
+      "path_id": "path_conference_admin_followup",
+      "required_modules": [
+        "MODULE_CONFERENCE_REG",
+        "MODULE_RECEIPT_ARCHIVING",
+        "MODULE_CALENDAR_AGGREGATION",
+        "MODULE_UPDATE_LINKEDIN",
+        "MODULE_JOB_SEARCH"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CAREER-0150-M6",
+        "WFG-CAREER-0150-M7",
+        "WFG-CAREER-0150-M8",
+        "WFG-CAREER-0150-M9",
+        "WFG-CAREER-0150-M10"
+      ],
+      "terminal_predicates": [
+        "conference_admin_recorded",
+        "receipt_archived",
+        "deadline_coordination_recorded",
+        "career_signal_strengthened",
+        "job_application_followup_created"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-CAREER-0150-M1",
+      "module_id": "MODULE_CONFERENCE_REGISTRATION",
+      "binding_id": "BIND_F7_CONFERENCE_REGISTRATION",
+      "binding_task_id": "F7-2025-CONFINVOICE",
+      "parameter_values": {
+        "document_name": "Conference-Invoice",
+        "document_type": "invoice",
+        "amount": "980",
+        "date": "2025-12-31",
+        "paymentMethod": "invoice"
+      },
+      "description": "Upload the conference invoice document 'Conference-Invoice' for amount 980 dated 2025-12-31 for tax review.",
+      "expected_observables": [
+        "exists(\"#tax-docs-list .invoice:has-text('Conference-Invoice')\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "conference_admin_recorded",
+          "conference_registered",
+          "deadline_coordination_recorded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0150-M2",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0150-M3",
+      "module_id": "MODULE_CALENDAR_AGGREGATION",
+      "binding_id": "BIND_F6_CALENDAR_AGGREGATION",
+      "binding_task_id": "F6-2025-CALENDAR",
+      "parameter_values": {
+        "work_title": "团队会议",
+        "personal_title": "牙医预约",
+        "date": "2026-01-16",
+        "time": "15:30"
+      },
+      "description": "Add a personal event Dentist Follow-up on 2026-01-16 at 15:30.",
+      "expected_observables": [
+        "exists('#event-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_created",
+          "deadline_coordination_recorded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0150-M4",
+      "module_id": "MODULE_EMAIL_TRACKING",
+      "binding_id": "BIND_F9_EMAIL_TRACKING",
+      "binding_task_id": "F9-2025-EMAILTRACK",
+      "parameter_values": {
+        "subject": "Budget Review Request",
+        "sender": "finance@example.com",
+        "summary": "Need your feedback on the Q1 budget sheet."
+      },
+      "description": "Track the email thread Budget Review Request from finance@example. Then com.",
+      "expected_observables": [
+        "exists('#email-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "career_signal_strengthened",
+          "email_thread_tracked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0150-M5",
+      "module_id": "MODULE_JOB_SEARCH",
+      "binding_id": "BIND_F1_JOB_SEARCH",
+      "binding_task_id": "F1-2025-JOBSEARCH",
+      "parameter_values": {},
+      "description": "Search and apply for jobs",
+      "expected_observables": [
+        "exists(\"#email-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "job_application_followup_created"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0150-M6",
+      "module_id": "MODULE_CONFERENCE_REG",
+      "binding_id": "BIND_F2_CONFERENCE_REG",
+      "binding_task_id": "F2-2025-CONFREG",
+      "parameter_values": {
+        "report_id": "EXP-2201",
+        "total_amount": "980",
+        "description": "Conference registration and travel",
+        "linked_pnr": "PNR-2201"
+      },
+      "description": "Submit the conference registration expense report EXP-2201 for 980 linked to PNR-2201.",
+      "expected_observables": [
+        "url().includes('/bank.local/expense-report.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "conference_admin_recorded",
+          "conference_expense_logged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0150-M7",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0150-M8",
+      "module_id": "MODULE_CALENDAR_AGGREGATION",
+      "binding_id": "BIND_F6_CALENDAR_AGGREGATION",
+      "binding_task_id": "F6-2025-CALENDAR",
+      "parameter_values": {
+        "work_title": "团队会议",
+        "personal_title": "牙医预约",
+        "date": "2026-01-16",
+        "time": "15:30"
+      },
+      "description": "Add a personal event Dentist Follow-up on 2026-01-16 at 15:30.",
+      "expected_observables": [
+        "exists('#event-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_created",
+          "deadline_coordination_recorded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0150-M9",
+      "module_id": "MODULE_UPDATE_LINKEDIN",
+      "binding_id": "BIND_F3_UPDATE_LINKEDIN",
+      "binding_task_id": "F3-2025-LINKEDIN",
+      "parameter_values": {},
+      "description": "Update professional profile",
+      "expected_observables": [
+        "exists(\"#email-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "career_signal_strengthened",
+          "professional_profile_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0150-M10",
+      "module_id": "MODULE_JOB_SEARCH",
+      "binding_id": "BIND_F1_JOB_SEARCH",
+      "binding_task_id": "F1-2025-JOBSEARCH",
+      "parameter_values": {},
+      "description": "Search and apply for jobs",
+      "expected_observables": [
+        "exists(\"#email-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "job_application_followup_created"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "conference_admin_recorded",
+      "receipt_archived",
+      "deadline_coordination_recorded",
+      "career_signal_strengthened",
+      "job_application_followup_created"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_created",
+      "career_signal_strengthened",
+      "conference_admin_recorded",
+      "conference_expense_logged",
+      "conference_registered",
+      "deadline_coordination_recorded",
+      "email_thread_tracked",
+      "job_application_followup_created",
+      "professional_profile_updated",
+      "receipt_archived"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

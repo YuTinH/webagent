@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-COMPOSITE-0066",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Close the investment workflow by opening the bank account first, activating the investment path, verifying growth, placing the auction bid, and ending with the calendar synced.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "investment_account_active",
+      "investment_growth_verified",
+      "auction_bid_placed",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "investment_account_active",
+    "investment_growth_verified",
+    "auction_bid_placed",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_INVESTMENT_CALENDAR_BOOTSTRAP; investment bootstrap workflows should verify account growth before the auction-and-calendar closeout."
+}

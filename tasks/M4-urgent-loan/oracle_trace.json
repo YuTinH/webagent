@@ -1,0 +1,23 @@
+{
+  "task_id": "M4-2025-EMERGENCYLOAN",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/dashboard.html?clean=true&task=M4-2025-EMERGENCYLOAN",
+      "note": "Open bank dashboard"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#urgent-loan-card",
+      "note": "Submit urgent loan request"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#balance-display",
+      "note": "Wait for redirected dashboard"
+    }
+  ]
+}

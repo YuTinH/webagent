@@ -1,0 +1,47 @@
+{
+  "task_id": "J2-2025-EBOOK",
+  "family": "J",
+  "goal": "Buy the ebook 'Python数据分析' (ID: BK-102).",
+  "inputs": {
+    "bookId": "BK-102"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/school.local/my-learning.html')",
+    "mem('library.books.BK-102.owned') == 'true'",
+    "mem('library.books.BK-102.title') == 'Python数据分析'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "My Learning page opened",
+      "assertion": "url().includes('/school.local/my-learning.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Book owned",
+      "assertion": "mem('library.books.BK-102.owned') == 'true'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Book title matches",
+      "assertion": "mem('library.books.BK-102.title') == 'Python数据分析'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "school.local"
+  ],
+  "module_group": "buy_ebook",
+  "canonical_task_dir": "J2-buy-ebook",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

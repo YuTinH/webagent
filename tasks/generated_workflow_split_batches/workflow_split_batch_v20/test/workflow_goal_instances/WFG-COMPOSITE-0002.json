@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-COMPOSITE-0002",
+  "theme": "composite",
+  "difficulty": 5,
+  "instruction": "End the auction workflow with the bills reviewed, payment ready, the reminder synced, and the bid already placed.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "bills_reviewed",
+      "payment_stack_prepared",
+      "calendar_event_synced",
+      "auction_bid_placed"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bills_reviewed",
+    "payment_stack_prepared",
+    "calendar_event_synced",
+    "auction_bid_placed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 70,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_AUCTION_PAYMENT_READY; auction readiness should first review the bill stack, then prepare payment, sync the reminder, and only then place the bid."
+}

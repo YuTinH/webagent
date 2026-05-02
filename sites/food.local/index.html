@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food.local - Order Food Online</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #ff6b6b; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { margin: 0; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        .restaurant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 30px; }
+        .restaurant-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .restaurant-card:hover { transform: translateY(-5px); }
+        .restaurant-img { height: 150px; background-color: #ddd; display: flex; align-items: center; justify-content: center; font-size: 3em; color: #888; }
+        .restaurant-info { padding: 15px; }
+        .restaurant-title { font-size: 1.2em; font-weight: bold; margin-bottom: 5px; }
+        .restaurant-meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+        .btn-order { display: block; width: 100%; padding: 10px; background-color: #ff6b6b; color: white; text-align: center; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .btn-order:hover { background-color: #ee5253; }
+    </style>
+    <script src="../static/common.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="container" style="display:flex; justify-content:space-between; width:100%; padding:0">
+            <h1>Food.local</h1>
+            <div class="nav-links">
+                <a href="../food.local/index.html">Restaurants</a>
+                <a href="../food.local/orders.html">My Orders</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Popular Restaurants</h2>
+        <div class="restaurant-grid">
+            <div class="restaurant-card">
+                <div class="restaurant-img">🍔</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Burger Kingpin</div>
+                    <div class="restaurant-meta">American • 15-25 min • $</div>
+                    <a href="restaurant.html?id=RES-001" class="btn-order">View Menu</a>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <div class="restaurant-img">🍕</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Pizza Palace</div>
+                    <div class="restaurant-meta">Italian • 30-45 min • $$</div>
+                    <a href="restaurant.html?id=RES-002" class="btn-order">View Menu</a>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <div class="restaurant-img">🍣</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Sushi Sensation</div>
+                    <div class="restaurant-meta">Japanese • 20-35 min • $$$</div>
+                    <a href="restaurant.html?id=RES-003" class="btn-order">View Menu</a>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <div class="restaurant-img">🌮</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Taco Town</div>
+                    <div class="restaurant-meta">Mexican • 10-20 min • $</div>
+                    <a href="restaurant.html?id=RES-004" class="btn-order">View Menu</a>
+                </div>
+            </div>
+            <div class="restaurant-card">
+                <div class="restaurant-img">🍜</div>
+                <div class="restaurant-info">
+                    <div class="restaurant-title">Noodle House</div>
+                    <div class="restaurant-meta">Asian • 20-30 min • $$</div>
+                    <a href="restaurant.html?id=RES-006" class="btn-order">View Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>window.RelRoot = "../";</script>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+

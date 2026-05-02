@@ -1,0 +1,50 @@
+{
+  "task_id": "B2-2025-FRESHSUB",
+  "family": "B",
+  "goal": "Create a fresh-food subscription named 'Family Box 10' with bi-weekly delivery, price 99 per delivery, and next delivery date 2026-01-10.",
+  "inputs": {
+    "name": "Family Box 10",
+    "frequency": "bi-weekly",
+    "price": 99,
+    "next_delivery_date": "2026-01-10",
+    "items": [
+      "fruit",
+      "vegetables",
+      "yogurt"
+    ]
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('food.subscriptions.last.status') == 'active'",
+    "mem('food.subscriptions.last.next_delivery_date') == '2026-01-10'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_sub_active",
+      "name": "Subscription active",
+      "assertion": "mem('food.subscriptions.last.status') == 'active'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_date_matched",
+      "name": "Next delivery date matched",
+      "assertion": "mem('food.subscriptions.last.next_delivery_date') == '2026-01-10'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [
+        "cp_sub_active"
+      ],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "food.local"
+  ],
+  "module_group": "fresh_subscription",
+  "canonical_task_dir": "B2-fresh-subscription",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

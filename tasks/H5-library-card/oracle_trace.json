@@ -1,0 +1,23 @@
+{
+  "task_id": "H5-2025-BILLVIEW",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/billing/index.html?clean=true",
+      "note": "Open billing"
+    },
+    {
+      "t": 1,
+      "act": "wait",
+      "selector": ".bill-item",
+      "note": "Wait bill list"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#total-due",
+      "note": "Wait summary"
+    }
+  ]
+}

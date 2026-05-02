@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-EDUCATION-0274",
+  "theme": "education",
+  "difficulty": 6,
+  "instruction": "Close the coursework credential route by enrolling first, preparing the resources, submitting the assignment, certifying the skill, and ending with certificate download.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "course_enrolled",
+      "assignment_resources_provisioned",
+      "assignment_submitted",
+      "skill_certified",
+      "certificate_downloaded"
+    ]
+  },
+  "initial_world_state": [
+    "education_account_activated"
+  ],
+  "target_state": [
+    "course_enrolled",
+    "assignment_resources_provisioned",
+    "assignment_submitted",
+    "skill_certified",
+    "certificate_downloaded"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 65,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_EDUCATION_ZTRAIN_08_CERT_RESOURCE_DUAL; resource-cert education workflows should continue through assignment submission before the final certification download."
+}

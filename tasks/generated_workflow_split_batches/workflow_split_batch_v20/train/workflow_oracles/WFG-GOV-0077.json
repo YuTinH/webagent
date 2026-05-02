@@ -1,0 +1,403 @@
+{
+  "goal_id": "WFG-GOV-0077",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full address-permit route to completion and do not stop before address alignment, permit submission, and billing review are all completed."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_ADDRESS_CHANGE",
+      "role": "required",
+      "produces": [
+        "address_records_aligned",
+        "mailing_address_current",
+        "permit_readiness_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_ADDRESS_PROOF",
+      "role": "alternative",
+      "produces": [
+        "address_confirmation_verified",
+        "address_proof_available",
+        "residency_record_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_BILLING_REVIEW",
+      "role": "required",
+      "produces": [
+        "bills_reviewed",
+        "permit_readiness_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_FIND_HOME",
+      "role": "required",
+      "produces": [
+        "address_known",
+        "housing_secured",
+        "lease_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_PERMIT_APP",
+      "role": "required",
+      "produces": [
+        "permit_application_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_UTILITY_SETUP",
+      "role": "alternative",
+      "produces": [
+        "address_confirmation_verified",
+        "electricity_active",
+        "residency_record_verified",
+        "utilities_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_ADDRESS_CHANGE",
+      "to": "MODULE_PERMIT_APP",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_ADDRESS_PROOF",
+      "to": "MODULE_ADDRESS_CHANGE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FIND_HOME",
+      "to": "MODULE_ADDRESS_PROOF",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FIND_HOME",
+      "to": "MODULE_UTILITY_SETUP",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_PERMIT_APP",
+      "to": "MODULE_BILLING_REVIEW",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_ADDRESS_CHANGE",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_home_proof_change_permit_billing",
+      "required_modules": [
+        "MODULE_FIND_HOME",
+        "MODULE_ADDRESS_PROOF",
+        "MODULE_ADDRESS_CHANGE",
+        "MODULE_PERMIT_APP",
+        "MODULE_BILLING_REVIEW"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-GOV-0077-M1",
+        "WFG-GOV-0077-M2",
+        "WFG-GOV-0077-M3",
+        "WFG-GOV-0077-M4",
+        "WFG-GOV-0077-M5"
+      ],
+      "terminal_predicates": [
+        "address_confirmation_verified",
+        "address_records_aligned",
+        "mailing_address_current",
+        "permit_application_submitted",
+        "bills_reviewed"
+      ]
+    },
+    {
+      "path_id": "path_home_utility_change_permit_billing",
+      "required_modules": [
+        "MODULE_FIND_HOME",
+        "MODULE_UTILITY_SETUP",
+        "MODULE_ADDRESS_CHANGE",
+        "MODULE_PERMIT_APP",
+        "MODULE_BILLING_REVIEW"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-GOV-0077-M6",
+        "WFG-GOV-0077-M7",
+        "WFG-GOV-0077-M8",
+        "WFG-GOV-0077-M9",
+        "WFG-GOV-0077-M10"
+      ],
+      "terminal_predicates": [
+        "address_confirmation_verified",
+        "address_records_aligned",
+        "mailing_address_current",
+        "permit_application_submitted",
+        "bills_reviewed"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-GOV-0077-M1",
+      "module_id": "MODULE_FIND_HOME",
+      "binding_id": "BIND_A1_FIND_HOME",
+      "binding_task_id": "A1-2025-HOME",
+      "parameter_values": {
+        "propertyId": "PROP-EXT-10",
+        "leaseTerm": "6"
+      },
+      "description": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $2600/month, then pick the largest area. Set lease term to 6 months and then apply.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0077-M2",
+      "module_id": "MODULE_ADDRESS_PROOF",
+      "binding_id": "BIND_A6_ADDRESS_PROOF",
+      "binding_task_id": "A6-2025-PROOF",
+      "parameter_values": {
+        "docType": "utility_bill",
+        "fileName": "utility_bill_dec.pdf"
+      },
+      "description": "Upload a utility bill named utility_bill_dec.pdf as address proof.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "address_proof_available",
+          "residency_record_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0077-M3",
+      "module_id": "MODULE_ADDRESS_CHANGE",
+      "binding_id": "BIND_H1_ADDRESS_CHANGE",
+      "binding_task_id": "H1-2025-ADDRCHANGE",
+      "parameter_values": {
+        "new_address": "742 Evergreen Terrace",
+        "zip_code": "12345",
+        "proof_document": "proof_of_address.pdf"
+      },
+      "description": "Submit an address change to 742 Evergreen Terrace with zip code 12345.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_records_aligned",
+          "mailing_address_current",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0077-M4",
+      "module_id": "MODULE_PERMIT_APP",
+      "binding_id": "BIND_H2_PERMIT_APP",
+      "binding_task_id": "H2-2025-PERMITAPP",
+      "parameter_values": {
+        "permit_type": "residential",
+        "vehicle_plate": "ABC123",
+        "documents": [
+          "vehicle_registration.pdf",
+          "proof_of_address.pdf"
+        ]
+      },
+      "description": "Apply for parking permit by filling form and uploading documents",
+      "expected_observables": [
+        "exists(\"#permits-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "permit_application_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0077-M5",
+      "module_id": "MODULE_BILLING_REVIEW",
+      "binding_id": "BIND_H5_LIBRARY_CARD",
+      "binding_task_id": "H5-2025-BILLVIEW",
+      "parameter_values": {},
+      "description": "Open the government billing page and review the current bills summary and total amount due.",
+      "expected_observables": [
+        "url().includes('/gov.local/billing/index.html')",
+        "exists('.bill-item')",
+        "exists('.bills-summary')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "bills_reviewed",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0077-M6",
+      "module_id": "MODULE_FIND_HOME",
+      "binding_id": "BIND_A1_FIND_HOME",
+      "binding_task_id": "A1-2025-HOME",
+      "parameter_values": {
+        "propertyId": "PROP-EXT-10",
+        "leaseTerm": "6"
+      },
+      "description": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $2600/month, then pick the largest area. Set lease term to 6 months and then apply.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0077-M7",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "88 River Rd, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0077-M8",
+      "module_id": "MODULE_ADDRESS_CHANGE",
+      "binding_id": "BIND_H1_ADDRESS_CHANGE",
+      "binding_task_id": "H1-2025-ADDRCHANGE",
+      "parameter_values": {
+        "new_address": "742 Evergreen Terrace",
+        "zip_code": "12345",
+        "proof_document": "proof_of_address.pdf"
+      },
+      "description": "Submit an address change to 742 Evergreen Terrace with zip code 12345.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_records_aligned",
+          "mailing_address_current",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0077-M9",
+      "module_id": "MODULE_PERMIT_APP",
+      "binding_id": "BIND_H2_PERMIT_APP",
+      "binding_task_id": "H2-2025-PERMITAPP",
+      "parameter_values": {
+        "permit_type": "residential",
+        "vehicle_plate": "ABC123",
+        "documents": [
+          "vehicle_registration.pdf",
+          "proof_of_address.pdf"
+        ]
+      },
+      "description": "Apply for parking permit by filling form and uploading documents",
+      "expected_observables": [
+        "exists(\"#permits-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "permit_application_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0077-M10",
+      "module_id": "MODULE_BILLING_REVIEW",
+      "binding_id": "BIND_H5_LIBRARY_CARD",
+      "binding_task_id": "H5-2025-BILLVIEW",
+      "parameter_values": {},
+      "description": "Open the government billing page and review the current bills summary and total amount due.",
+      "expected_observables": [
+        "url().includes('/gov.local/billing/index.html')",
+        "exists('.bill-item')",
+        "exists('.bills-summary')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "bills_reviewed",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "address_confirmation_verified",
+      "address_records_aligned",
+      "mailing_address_current",
+      "permit_application_submitted",
+      "bills_reviewed"
+    ],
+    "checkpoint_predicates": [
+      "address_confirmation_verified",
+      "address_known",
+      "address_proof_available",
+      "address_records_aligned",
+      "bills_reviewed",
+      "electricity_active",
+      "housing_secured",
+      "lease_active",
+      "mailing_address_current",
+      "permit_application_submitted",
+      "permit_readiness_verified",
+      "residency_record_verified",
+      "utilities_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

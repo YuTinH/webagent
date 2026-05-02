@@ -1,0 +1,68 @@
+{
+  "task_id": "C5-2025-REVIEWS",
+  "family": "C",
+  "goal": "Submit a 1-star review for '问题商家' with content '差评，列入黑名单'. Also add '问题商家' to the blacklist and ensure the review is recorded and the merchant is blacklisted.",
+  "inputs": {
+    "review_merchant": "问题商家",
+    "review_rating": 1,
+    "review_content": "差评，列入黑名单",
+    "blacklist_merchant": "问题商家"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/reviews.html')",
+    "mem('user_reviews.reviews.last.merchant') == '问题商家'",
+    "mem('user_reviews.reviews.last.rating') == '1'",
+    "mem('user_reviews.reviews.last.content') == '差评，列入黑名单'",
+    "mem('user_reviews.blacklist.问题商家.status') == 'blacklisted'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Reviews page opened",
+      "assertion": "url().includes('/shop.local/reviews.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Merchant recorded",
+      "assertion": "mem('user_reviews.reviews.last.merchant') == '问题商家'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Rating recorded",
+      "assertion": "mem('user_reviews.reviews.last.rating') == '1'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Review content recorded",
+      "assertion": "mem('user_reviews.reviews.last.content') == '差评，列入黑名单'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Merchant blacklisted",
+      "assertion": "mem('user_reviews.blacklist.问题商家.status') == 'blacklisted'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "reviews_blacklist",
+  "canonical_task_dir": "C5-reviews-blacklist",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-HEALTH-0154",
+  "theme": "health",
+  "difficulty": 7,
+  "instruction": "Close the health continuity workflow by activating coverage first, booking the appointment, completing continuity and vaccine management, and ending with a synced follow-up calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "coverage_path_active",
+      "medical_appointment_booked",
+      "care_continuity_established",
+      "vaccination_record_updated",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "coverage_path_active",
+    "medical_appointment_booked",
+    "care_continuity_established",
+    "vaccination_record_updated",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HEALTH_WORKFLOW_COVERAGE_APPOINTMENT; continuity-and-vaccine health workflows should end with an explicit follow-up scheduling step."
+}

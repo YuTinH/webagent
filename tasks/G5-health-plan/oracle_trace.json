@@ -1,0 +1,26 @@
+{
+  "task_id": "G5-2025-PLAN",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/plan.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "wait",
+      "selector": "#activate-premium-button"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#activate-premium-button"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#plan-premium.active"
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Email Detail - Work Mail</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">📧 Work Mail</div>
+      <div class="navlinks">
+        <a href="../work.local/email.html" class="active">Inbox</a>
+        <a href="../work.local/calendar.html">Calendar</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div style="margin-bottom:16px">
+      <a href="email.html" class="btn">← Back</a>
+    </div>
+
+    <div class="card soft">
+      <h1 id="email-subject">Email Detail</h1>
+      <div style="color:var(--muted); border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:16px">
+        <div id="email-from">From:</div>
+        <div id="email-to">To:</div>
+        <div id="email-date">Date:</div>
+      </div>
+
+      <div class="email-body" style="line-height:1.6">
+        <pre id="email-body" style="white-space:pre-wrap; font-family:inherit"></pre>
+      </div>
+
+      <div id="autopay-panel" class="card soft" style="display:none; margin-top:20px">
+        <h2>Billing Details</h2>
+        <div id="autopay-payee"></div>
+        <div id="autopay-account"></div>
+        <div id="autopay-amount"></div>
+        <div id="autopay-followup" style="display:none; margin-top:8px"></div>
+        <button id="setup-autopay-from-email" class="btn pri" style="margin-top:12px" onclick="openAutopay()">Open Bank Autopay</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const emailDetailParams = new URLSearchParams(window.location.search);
+  const requestedEmailDetailTaskId = emailDetailParams.get('task') || '';
+  let currentEmail = null;
+  let emailLoadPromise = null;
+
+  function buildAutopayPayload() {
+    if (!currentEmail || !currentEmail.autopay) return null;
+    return {
+      payee: currentEmail.autopay.payee,
+      account_number: currentEmail.autopay.account_number,
+      amount: String(currentEmail.autopay.amount),
+      source_email: currentEmail.id,
+    };
+  }
+
+  async function loadEmail() {
+    if (emailLoadPromise) {
+      await emailLoadPromise;
+      return currentEmail;
+    }
+    emailLoadPromise = (async () => {
+      const emailId = emailDetailParams.get('id');
+      const env = await loadEnv();
+      const emails = env.work?.emails || [];
+      currentEmail = emails.find(e => String(e.id) === String(emailId)) || null;
+      if (!currentEmail) {
+        document.getElementById('email-subject').textContent = 'Email Not Found';
+        document.getElementById('email-body').textContent = 'The requested email is unavailable.';
+        return null;
+      }
+
+      document.getElementById('email-subject').textContent = currentEmail.subject;
+      document.getElementById('email-from').textContent = `From: ${currentEmail.sender}`;
+      document.getElementById('email-to').textContent = `To: ${currentEmail.to || 'me@work.local'}`;
+      document.getElementById('email-date').textContent = `Date: ${currentEmail.date || ''}`;
+      document.getElementById('email-body').textContent = currentEmail.body || '';
+
+      if (currentEmail.autopay) {
+        document.getElementById('autopay-panel').style.display = 'block';
+        document.getElementById('autopay-payee').textContent = `Payee: ${currentEmail.autopay.payee}`;
+        document.getElementById('autopay-account').textContent = `Account Number: ${currentEmail.autopay.account_number}`;
+        document.getElementById('autopay-amount').textContent = `Monthly Limit: ${currentEmail.autopay.amount}`;
+        const followup = document.getElementById('autopay-followup');
+        if (followup) {
+          followup.style.display = 'block';
+          followup.innerHTML = '<span style="color:var(--muted)">Review these billing details in the bank flow before confirming autopay.</span>';
+        }
+      }
+      return currentEmail;
+    })();
+    try {
+      await emailLoadPromise;
+      return currentEmail;
+    } finally {
+      emailLoadPromise = null;
+    }
+  }
+
+  async function ensureEmailReady() {
+    if (currentEmail) return true;
+    await loadEmail();
+    return !!currentEmail;
+  }
+
+  async function openAutopay() {
+    if (!(await ensureEmailReady())) return;
+    const payload = buildAutopayPayload();
+    if (!payload) return;
+    const params = new URLSearchParams({
+      payee: payload.payee,
+      acc: payload.account_number,
+      amount: payload.amount,
+      source_email: payload.source_email
+    });
+    if (requestedEmailDetailTaskId) {
+      params.set('task', requestedEmailDetailTaskId);
+    }
+    window.location.href = `../bank.local/autopay.html?${params.toString()}`;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    void loadEmail();
+  });
+  </script>
+</body>
+</html>

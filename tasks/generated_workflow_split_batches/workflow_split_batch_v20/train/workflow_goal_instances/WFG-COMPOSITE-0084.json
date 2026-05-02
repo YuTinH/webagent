@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-COMPOSITE-0084",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Finish the composite admin flow only after the payment stack is prepared, the expense packet is filed, and the receipt is archived.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "payment_stack_prepared",
+      "expense_report_submitted",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "payment_stack_prepared",
+    "expense_report_submitted",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_EXPENSE_PAYMENT_ALIGNMENT; finance-travel expense workflows should explicitly archive the proof bundle after expense submission."
+}

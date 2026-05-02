@@ -1,0 +1,242 @@
+{
+  "goal_id": "WFG-CRISIS-0153",
+  "composition": {
+    "composition_type": "single_path",
+    "num_semantically_distinct_paths": 1,
+    "distinctness_rule": "Reach the target through the full containment, recovery, urgent-loan, balance-review, and dispute chain rather than through a shorter crisis subset."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CHECK_BALANCE",
+      "role": "required",
+      "produces": [
+        "account_balance_reviewed",
+        "account_issue_triaged"
+      ]
+    },
+    {
+      "module_id": "MODULE_DISPUTE_TRANSACTION",
+      "role": "required",
+      "produces": [
+        "transaction_dispute_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_LOST_CARD_FREEZE",
+      "role": "required",
+      "produces": [
+        "account_access_contained",
+        "card_frozen",
+        "crisis_intake_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RECOVERY_E2E",
+      "role": "required",
+      "produces": [
+        "account_access_contained",
+        "account_access_restored",
+        "password_reset_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_URGENT_LOAN",
+      "role": "required",
+      "produces": [
+        "emergency_liquidity_secured"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_CHECK_BALANCE",
+      "to": "MODULE_DISPUTE_TRANSACTION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_LOST_CARD_FREEZE",
+      "to": "MODULE_PASSWORD_RECOVERY_E2E",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_PASSWORD_RECOVERY_E2E",
+      "to": "MODULE_URGENT_LOAN",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_URGENT_LOAN",
+      "to": "MODULE_CHECK_BALANCE",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_freeze_recovery_loan_balance_dispute",
+      "required_modules": [
+        "MODULE_LOST_CARD_FREEZE",
+        "MODULE_PASSWORD_RECOVERY_E2E",
+        "MODULE_URGENT_LOAN",
+        "MODULE_CHECK_BALANCE",
+        "MODULE_DISPUTE_TRANSACTION"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CRISIS-0153-M1",
+        "WFG-CRISIS-0153-M2",
+        "WFG-CRISIS-0153-M3",
+        "WFG-CRISIS-0153-M4",
+        "WFG-CRISIS-0153-M5"
+      ],
+      "terminal_predicates": [
+        "account_access_contained",
+        "crisis_intake_completed",
+        "password_reset_completed",
+        "emergency_liquidity_secured",
+        "account_balance_reviewed",
+        "transaction_dispute_submitted"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-CRISIS-0153-M1",
+      "module_id": "MODULE_LOST_CARD_FREEZE",
+      "binding_id": "BIND_M1_LOST_CARD",
+      "binding_task_id": "M1-2025-CARD",
+      "parameter_values": {
+        "card_last4": "7777",
+        "reissue": false
+      },
+      "description": "Report the card ending in 7777 as lost and freeze it immediately.",
+      "expected_observables": [
+        "json('env','world_state.financial_context.liquidity') == 'frozen'",
+        "exists('#card-7777.blocked')",
+        "text('#card-status-7777') == 'Blocked'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_access_contained",
+          "card_frozen",
+          "crisis_intake_completed"
+        ],
+        "removes": [
+          "payment_method_available"
+        ]
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0153-M2",
+      "module_id": "MODULE_PASSWORD_RECOVERY_E2E",
+      "binding_id": "BIND_Z5_PASSWORD_RECOVERY",
+      "binding_task_id": "Z5-2025-RESET",
+      "parameter_values": {
+        "username": "byteblaze",
+        "new_password": "ByteBlaze#2026"
+      },
+      "description": "Recover the password for byteblaze and set a new password ByteBlaze#2026.",
+      "expected_observables": [
+        "url().includes('/security.local/login.html')",
+        "url().includes('reset=success')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_access_contained",
+          "account_access_restored",
+          "password_reset_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0153-M3",
+      "module_id": "MODULE_URGENT_LOAN",
+      "binding_id": "BIND_M4_URGENT_LOAN",
+      "binding_task_id": "M4-2025-EMERGENCYLOAN",
+      "parameter_values": {
+        "amount": 500
+      },
+      "description": "Submit an emergency loan request from bank dashboard.",
+      "expected_observables": [
+        "url().includes('/bank.local/dashboard.html?loan=submitted')",
+        "exists(\"#balance-display\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "emergency_liquidity_secured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0153-M4",
+      "module_id": "MODULE_CHECK_BALANCE",
+      "binding_id": "BIND_D1_CHECK_BALANCE",
+      "binding_task_id": "D1-2025-FINANCE",
+      "parameter_values": {},
+      "description": "Open the bank dashboard and check the total balance view.",
+      "expected_observables": [
+        "url().includes('/bank.local/dashboard.html')",
+        "text('#balance-display') includes '6,523.45'",
+        "text('#balance-view-label') includes 'total'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_balance_reviewed",
+          "account_issue_triaged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0153-M5",
+      "module_id": "MODULE_DISPUTE_TRANSACTION",
+      "binding_id": "BIND_D10_DISPUTE_TRANSACTION",
+      "binding_task_id": "D10-2025-DISPUTEDOC",
+      "parameter_values": {
+        "name": "Dispute Evidence",
+        "type": "statement",
+        "amount": "89.90",
+        "date": "2025-12-03"
+      },
+      "description": "Upload the supporting statement document 'Dispute Evidence' on the bank tax documents page with amount 89.90 dated 2025-12-03.",
+      "expected_observables": [
+        "url().includes('/bank.local/taxes.html')",
+        "exists(\"#tax-docs-list .card:has-text('Dispute Evidence')\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "transaction_dispute_submitted"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "account_access_contained",
+      "crisis_intake_completed",
+      "password_reset_completed",
+      "emergency_liquidity_secured",
+      "account_balance_reviewed",
+      "transaction_dispute_submitted"
+    ],
+    "checkpoint_predicates": [
+      "account_access_contained",
+      "account_access_restored",
+      "account_balance_reviewed",
+      "account_issue_triaged",
+      "card_frozen",
+      "crisis_intake_completed",
+      "emergency_liquidity_secured",
+      "password_reset_completed",
+      "transaction_dispute_submitted"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

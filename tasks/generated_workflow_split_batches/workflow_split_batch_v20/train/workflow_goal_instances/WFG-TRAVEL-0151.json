@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-TRAVEL-0151",
+  "theme": "travel",
+  "difficulty": 7,
+  "instruction": "Finish the rebook-topup workflow only after the itinerary is rebooked, transfer is arranged, transit balance is topped up, and check-in is completed.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "flight_booked",
+      "itinerary_rebooked",
+      "airport_transfer_arranged",
+      "transit_balance_topped_up",
+      "check_in_completed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "flight_booked",
+    "itinerary_rebooked",
+    "airport_transfer_arranged",
+    "transit_balance_topped_up",
+    "check_in_completed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_TRAVEL_REBOOK_TOPUP; rebook-and-topup travel workflows should continue through check-in."
+}

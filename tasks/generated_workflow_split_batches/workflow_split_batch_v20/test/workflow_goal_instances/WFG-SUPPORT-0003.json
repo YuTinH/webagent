@@ -1,0 +1,42 @@
+{
+  "goal_id": "WFG-SUPPORT-0003",
+  "theme": "support",
+  "difficulty": 7,
+  "instruction": "Finish the subscription-exit contact flow only after support is reached, the refund is requested, the subscription is canceled, and the exit closes with explicit feedback submitted, and finish with the support follow-up synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "support_contacted",
+      "refund_requested",
+      "subscription_canceled",
+      "subscription_exit_processed",
+      "product_review_submitted",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "subscription_active",
+    "shop_order_delivered"
+  ],
+  "target_state": [
+    "support_contacted",
+    "refund_requested",
+    "subscription_canceled",
+    "subscription_exit_processed",
+    "product_review_submitted",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SUPPORT_EXIT_CONTACT_DUAL; support workflows should end with an explicit follow-up scheduling step."
+}

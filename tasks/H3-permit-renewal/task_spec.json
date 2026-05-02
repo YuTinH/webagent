@@ -1,0 +1,52 @@
+{
+  "task_id": "H3-2025-RENEWAL",
+  "family": "H",
+  "goal": "Renew permit RP-2024-77 to 2026-12-01 and pay by card.",
+  "inputs": {
+    "permit_id": "RP-2024-77",
+    "new_expiry": "2026-12-01",
+    "payment_method": "card"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('permits.RP-2024-77.next_appointment') includes '2026-12-01'",
+    "mem('permits.RP-2024-77.payment_method') == 'card'",
+    "url().includes('/gov.local/permits.html')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_h3_1",
+      "name": "cp_h3 checkpoint 1",
+      "assertion": "mem('permits.RP-2024-77.next_appointment') includes '2026-12-01'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h3_2",
+      "name": "cp_h3 checkpoint 2",
+      "assertion": "mem('permits.RP-2024-77.payment_method') == 'card'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h3_3",
+      "name": "cp_h3 checkpoint 3",
+      "assertion": "url().includes('/gov.local/permits.html')",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "gov.local"
+  ],
+  "module_group": "permit_renewal",
+  "canonical_task_dir": "H3-permit-renewal",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

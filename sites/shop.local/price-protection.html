@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price - Nebula</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.protection-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+.status-badge.submitted { background: var(--pri-bg); color: var(--pri); }
+.status-badge.approved { background: var(--ok-bg); color: var(--ok); }
+.status-badge.rejected { background: var(--err-bg); color: var(--err); }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula</div>
+    <div class="navlinks">
+      <a href="../shop.local/index.html">Home</a>
+      <a href="../shop.local/orders.html">Information</a>
+      <a href="../shop.local/help.html">Information</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="text-align:center; font-size:28px; font-weight:700; margin:32px 0">Price</h1>
+
+	  <div class="protection-card">
+	    <div class="form-group">
+	      <label for="order-id">Information</label>
+	      <input type="text" id="order-id" placeholder="Details: O-12345">
+	    </div>
+    <div class="form-group">
+      <label for="current-price">Information</label>
+      <input type="number" id="current-price" value="179.00" readonly>
+    </div>
+    <div class="form-group">
+      <label for="original-price">Price</label>
+      <input type="number" id="original-price" value="199.00" readonly>
+    </div>
+    <button class="btn pri lg" style="width:100%" onclick="submitClaim()">Submit</button>
+  </div>
+
+  <!-- Status Section (Hidden by default) -->
+  <div id="status-section" style="display:none; text-align:center; margin-top:24px">
+    <div class="status-badge submitted">Submit</div>
+    <p style="color:var(--muted); margin-top:12px">1-3。</p>
+  </div>
+
+  <div class="footer">Nebula · Synthetic UI for Web Agent Research</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const priceProtectionParams = new URLSearchParams(window.location.search);
+const requestedPriceProtectionTaskId = priceProtectionParams.get('task') || 'B5-2025-PRICE';
+const priceProtectionTaskId = resolveTaskId(requestedPriceProtectionTaskId);
+
+function getPriceProtectionOrderId() {
+  return priceProtectionParams.get('order_id') || '';
+}
+
+async function submitClaim() {
+  const orderId = document.getElementById('order-id').value;
+
+  if (!orderId) {
+    Toast.error('');
+    return;
+  }
+
+  Toast.info('SubmitPrice...');
+
+  try {
+    const response = await send(priceProtectionTaskId, 'submit_price_protect', {
+      orderId: orderId
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('Submit!');
+      document.querySelector('.protection-card').style.display = 'none';
+      document.getElementById('status-section').style.display = 'block';
+    } else {
+        // Handle server.py implicit success if redirect is generic
+        console.warn('Response invalid, attempting fallback UI update...');
+        document.querySelector('.protection-card').style.display = 'none';
+        document.getElementById('status-section').style.display = 'block';
+    }
+  } catch (error) {
+    console.error('SubmitDetails:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback UI update...');
+        document.querySelector('.protection-card').style.display = 'none';
+        document.getElementById('status-section').style.display = 'block';
+    } else {
+        Toast.error('SubmitError, please try again.');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = priceProtectionParams;
+    const orderId = getPriceProtectionOrderId();
+    if (orderId) {
+        document.getElementById('order-id').value = orderId;
+    }
+    if (params.get('status') === 'submitted') {
+        document.querySelector('.protection-card').style.display = 'none';
+        document.getElementById('status-section').style.display = 'block';
+    }
+});
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

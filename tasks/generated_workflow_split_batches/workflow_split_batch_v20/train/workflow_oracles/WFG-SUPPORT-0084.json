@@ -1,0 +1,383 @@
+{
+  "goal_id": "WFG-SUPPORT-0084",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full support route to completion and do not stop before the follow-up is synced to the calendar."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CONTACT_SUPPORT",
+      "role": "alternative",
+      "produces": [
+        "support_contacted",
+        "support_ticket_opened"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_LEAVE_REVIEW",
+      "role": "required",
+      "produces": [
+        "product_review_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_LOGISTICS_FIX",
+      "role": "alternative",
+      "produces": [
+        "logistics_ticket_opened",
+        "support_contacted"
+      ]
+    },
+    {
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "role": "required",
+      "produces": [
+        "delivery_visibility_confirmed",
+        "shop_order_delivered"
+      ]
+    },
+    {
+      "module_id": "MODULE_REVIEWS_BLACKLIST",
+      "role": "required",
+      "produces": [
+        "merchant_blacklisted",
+        "product_review_submitted"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_CONTACT_SUPPORT",
+      "to": "MODULE_LEAVE_REVIEW",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_LEAVE_REVIEW",
+      "to": "MODULE_REVIEWS_BLACKLIST",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_LOGISTICS_FIX",
+      "to": "MODULE_LEAVE_REVIEW",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_ORDER_ARRIVAL",
+      "to": "MODULE_CONTACT_SUPPORT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_ORDER_ARRIVAL",
+      "to": "MODULE_LOGISTICS_FIX",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_REVIEWS_BLACKLIST",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_arrival_contact_review_blacklist_calendar",
+      "required_modules": [
+        "MODULE_ORDER_ARRIVAL",
+        "MODULE_CONTACT_SUPPORT",
+        "MODULE_LEAVE_REVIEW",
+        "MODULE_REVIEWS_BLACKLIST",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-SUPPORT-0084-M1",
+        "WFG-SUPPORT-0084-M2",
+        "WFG-SUPPORT-0084-M3",
+        "WFG-SUPPORT-0084-M4",
+        "WFG-SUPPORT-0084-M5"
+      ],
+      "terminal_predicates": [
+        "delivery_visibility_confirmed",
+        "shop_order_delivered",
+        "support_contacted",
+        "product_review_submitted",
+        "merchant_blacklisted",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_arrival_logistics_review_blacklist_calendar",
+      "required_modules": [
+        "MODULE_ORDER_ARRIVAL",
+        "MODULE_LOGISTICS_FIX",
+        "MODULE_LEAVE_REVIEW",
+        "MODULE_REVIEWS_BLACKLIST",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-SUPPORT-0084-M6",
+        "WFG-SUPPORT-0084-M7",
+        "WFG-SUPPORT-0084-M8",
+        "WFG-SUPPORT-0084-M9",
+        "WFG-SUPPORT-0084-M10"
+      ],
+      "terminal_predicates": [
+        "delivery_visibility_confirmed",
+        "shop_order_delivered",
+        "support_contacted",
+        "product_review_submitted",
+        "merchant_blacklisted",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M1",
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "binding_id": "BIND_Z1_ORDER_ARRIVAL",
+      "binding_task_id": "Z1-2025-ARRIVAL",
+      "parameter_values": {
+        "product_name": "Wireless Mouse"
+      },
+      "description": "Wait for your order to be delivered.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "shop_order_delivered"
+        ],
+        "removes": [
+          "shop_order_pending"
+        ]
+      }
+    },
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M2",
+      "module_id": "MODULE_CONTACT_SUPPORT",
+      "binding_id": "BIND_C6_CONTACT_SUPPORT",
+      "binding_task_id": "C6-2025-SUPPORTCONTACT",
+      "parameter_values": {
+        "order_id": "O-98321",
+        "issue_type": "missing",
+        "description": "An item was missing from my delivered package."
+      },
+      "description": "Contact support about a missing item.",
+      "expected_observables": [
+        "url().includes('/shop.local/help.html?status=ticket_created')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "support_contacted",
+          "support_ticket_opened"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M3",
+      "module_id": "MODULE_LEAVE_REVIEW",
+      "binding_id": "BIND_C7_LEAVE_REVIEW",
+      "binding_task_id": "C7-2025-REVIEW",
+      "parameter_values": {
+        "merchant": "美味餐厅",
+        "rating": 5,
+        "content": "非常棒的用餐体验，会再次光顾！"
+      },
+      "description": "Leave a product review without blacklisting the merchant.",
+      "expected_observables": [
+        "url().includes('/shop.local/reviews.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "product_review_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M4",
+      "module_id": "MODULE_REVIEWS_BLACKLIST",
+      "binding_id": "BIND_C5_REVIEWS_BLACKLIST",
+      "binding_task_id": "C5-2025-REVIEWS",
+      "parameter_values": {
+        "review_merchant": "问题商家",
+        "review_rating": 1,
+        "review_content": "差评，列入黑名单",
+        "blacklist_merchant": "问题商家"
+      },
+      "description": "Submit a 1-star review for '问题商家' with content '差评，列入黑名单'. Also add '问题商家' to the blacklist and ensure the review is recorded and the merchant is blacklisted.",
+      "expected_observables": [
+        "url().includes('/shop.local/reviews.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "merchant_blacklisted",
+          "product_review_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M6",
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "binding_id": "BIND_Z1_ORDER_ARRIVAL",
+      "binding_task_id": "Z1-2025-ARRIVAL",
+      "parameter_values": {
+        "product_name": "Wireless Mouse"
+      },
+      "description": "Wait for your order to be delivered.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "shop_order_delivered"
+        ],
+        "removes": [
+          "shop_order_pending"
+        ]
+      }
+    },
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M7",
+      "module_id": "MODULE_LOGISTICS_FIX",
+      "binding_id": "BIND_C1_LOGISTICS_FIX",
+      "binding_task_id": "C1-2025-SUPPORT",
+      "parameter_values": {
+        "order_id": "O-98321",
+        "issue_type": "damaged",
+        "description": "The package arrived with a damaged item."
+      },
+      "description": "Open a logistics ticket for order O-98321 with issue type damaged.",
+      "expected_observables": [
+        "url().includes('/shop.local/help.html?status=ticket_created')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "logistics_ticket_opened",
+          "support_contacted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M8",
+      "module_id": "MODULE_LEAVE_REVIEW",
+      "binding_id": "BIND_C7_LEAVE_REVIEW",
+      "binding_task_id": "C7-2025-REVIEW",
+      "parameter_values": {
+        "merchant": "美味餐厅",
+        "rating": 5,
+        "content": "非常棒的用餐体验，会再次光顾！"
+      },
+      "description": "Leave a product review without blacklisting the merchant.",
+      "expected_observables": [
+        "url().includes('/shop.local/reviews.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "product_review_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M9",
+      "module_id": "MODULE_REVIEWS_BLACKLIST",
+      "binding_id": "BIND_C5_REVIEWS_BLACKLIST",
+      "binding_task_id": "C5-2025-REVIEWS",
+      "parameter_values": {
+        "review_merchant": "问题商家",
+        "review_rating": 1,
+        "review_content": "差评，列入黑名单",
+        "blacklist_merchant": "问题商家"
+      },
+      "description": "Submit a 1-star review for '问题商家' with content '差评，列入黑名单'. Also add '问题商家' to the blacklist and ensure the review is recorded and the merchant is blacklisted.",
+      "expected_observables": [
+        "url().includes('/shop.local/reviews.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "merchant_blacklisted",
+          "product_review_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SUPPORT-0084-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "delivery_visibility_confirmed",
+      "shop_order_delivered",
+      "support_contacted",
+      "product_review_submitted",
+      "merchant_blacklisted",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_synced",
+      "delivery_visibility_confirmed",
+      "logistics_ticket_opened",
+      "merchant_blacklisted",
+      "product_review_submitted",
+      "shop_order_delivered",
+      "support_contacted",
+      "support_ticket_opened"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

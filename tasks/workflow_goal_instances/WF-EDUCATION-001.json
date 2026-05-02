@@ -1,0 +1,36 @@
+{
+  "goal_id": "WF-EDUCATION-001",
+  "theme": "education",
+  "difficulty": 3,
+  "instruction": "Prepare for your machine-learning study week by enrolling in the course, buying the assigned ebook, and reserving a library copy of a reference title before the weekend.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "must_avoid": [
+      "duplicate_purchase"
+    ],
+    "preferred_outcomes": [
+      "all_learning_assets_ready"
+    ]
+  },
+  "initial_world_state": {
+    "education_account_ready": true,
+    "course_enrolled": false,
+    "ebook_owned": false,
+    "library_pickup_reserved": false
+  },
+  "target_state": [
+    "course_enrolled",
+    "ebook_owned",
+    "library_pickup_reserved"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "initial_world_state.education_account_ready",
+      "type": "toggle",
+      "values": [true]
+    }
+  ],
+  "max_steps": 70,
+  "max_module_invocations": 3,
+  "notes": "Prototype education workflow with parallel-ready modules."
+}

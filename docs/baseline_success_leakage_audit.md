@@ -1,0 +1,83 @@
+# Baseline Success Leakage Audit
+
+- Total task specs: 116
+- Flagged task specs: 37
+- Passed assertion types: {'other': 38}
+
+## Flagged Tasks
+
+- `C7-2025-REVIEW` (`C7-leave-review`): 2/6 criteria already pass at baseline
+  - `NOT[mem('user_reviews.blacklist.美味餐厅.status') == 'blacklisted']`
+  - `NOT[url().includes('chrome-error://')]`
+- `A10-2025-LEASECHECK` (`A10-neighbor-complaint`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `A7-2025-LEASEVIEW` (`A7-maintenance-request`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `A8-2025-MOBILESUB` (`A8-internet-upgrade`): 1/4 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `A9-2025-LEASEOPEN` (`A9-rent-payment`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `B7-2025-GROCERYSUB` (`B7-grocery-run`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `B9-2025-EVENTBOOKING` (`B9-movie-tickets`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `C6-2025-SUPPORTCONTACT` (`C6-contact-support`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `C8-2025-CANCELSUB` (`C8-cancel-subscription`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `D10-2025-DISPUTEDOC` (`D10-dispute-transaction`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `D6-2025-CARDREPLACE` (`D6-apply-credit-card`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `D7-2025-SPENDPROFILE` (`D7-update-profile`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `D8-2025-BILLAGG` (`D8-bill-aggregation`): 1/8 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `D9-2025-TRANSPORTBUDGET` (`D9-transfer-funds`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `E1-2025-FLIGHT` (`E1-book-flight`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `F1-2025-JOBSEARCH` (`F1-job-search`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `F3-2025-LINKEDIN` (`F3-update-linkedin`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `F4-2025-TAXFILE` (`F4-file-taxes`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `F7-2025-CONFINVOICE` (`F7-conference-registration`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `H2-2025-PERMITAPP` (`H2-permit-app`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `H5-2025-BILLVIEW` (`H5-library-card`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `H6-2025-003` (`H6-check-bill`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `H8-2025-RENEW2` (`H8-renew-permit`): 1/4 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `I3-2025-CAMERASETUP` (`I3-camera-check`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `I7-2025-THERMOSTAT` (`I7-thermostat-schedule`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `I8-2025-FWREPAIR` (`I8-firmware-update`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `J7-2025-ASSIGNSUB` (`J7-submit-assignment`): 1/7 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `J8-2025-CERTISSUE` (`J8-download-cert`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `K2-2025-010` (`K2-aa-split`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `K4-2025-RSVPGROUP` (`K4-rsvp-event`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `K5-2025-GIFTPOOL` (`K5-gift-pooling`): 1/6 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `L5-2025-CREDENTIALADD` (`L5-privacy-settings`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `L6-2025-DATAEXPORT` (`L6-download-data`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `L8-2025-2FASETUP` (`L8-2fa-setup`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `M4-2025-EMERGENCYLOAN` (`M4-urgent-loan`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `M5-2025-RESETCODE` (`M5-reset-password`): 1/4 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`
+- `M6-2025-PWRECOVERY` (`M6-account-recovery`): 1/5 criteria already pass at baseline
+  - `NOT[url().includes('chrome-error://')]`

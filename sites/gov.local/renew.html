@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RenewPermit - Government</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.renewal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      Government
+    </div>
+    <div class="navlinks">
+      <a href="../gov.local/index.html">Home</a>
+      <a href="../gov.local/permits.html" class="active">Permits</a>
+      <a href="../gov.local/applications.html">Applications</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">Renew Permit</h1>
+
+  <div class="renewal-card">
+    <div class="form-group">
+      <label for="permit-id">Permit ID</label>
+      <input type="text" id="permit-id" readonly>
+    </div>
+    <div class="form-group">
+      <label for="current-expiry">Current Expiry Date</label>
+      <input type="date" id="current-expiry" readonly>
+    </div>
+    <div class="form-group">
+      <label for="new-expiry">New Expiry Date</label>
+      <input type="date" id="new-expiry">
+    </div>
+    <div class="form-group">
+      <label for="payment-method">Payment Method</label>
+      <select id="payment-method">
+        <option value="card">Card (**** 7777)</option>
+        <option value="alipay">Alipay</option>
+        <option value="wechat">WeChat</option>
+        <option value="bank_transfer">Bank Transfer</option>
+        <option value="invoice">Invoice</option>
+        <option value="wallet">Wallet</option>
+      </select>
+    </div>
+    <button class="btn pri lg" id="submit-renewal-btn" onclick="submitRenewal()">Submit Renewal</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Government · Synthetic UI for Web Agent Research
+  </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function loadRenewalInfo() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const permitId = urlParams.get('permit_id') || '';
+  const paymentMethod = urlParams.get('payment_method') || 'card';
+  const fallbackExpiryByPermit = {
+    'RP-2024-77': '2025-12-01',
+    'BC-2024-12': '2025-06-15'
+  };
+
+  if (!permitId) {
+    Toast.error('Permit ID is missing.');
+    return;
+  }
+
+  document.getElementById('permit-id').value = permitId;
+  document.getElementById('payment-method').value = paymentMethod;
+
+  try {
+    const env = await loadEnv();
+    const permit = env.permits?.[permitId]; // Assuming permit is directly under env.permits
+    const currentExpiryRaw = permit?.next_appointment || fallbackExpiryByPermit[permitId] || '';
+    if (!currentExpiryRaw) {
+      Toast.warn('Permit details are unavailable.');
+      return;
+    }
+    const currentExpiry = String(currentExpiryRaw).split('T')[0];
+    document.getElementById('current-expiry').value = currentExpiry;
+
+    // Suggest one year from the current permit expiry, but leave submission manual.
+    const currentExpiryDate = new Date(currentExpiry);
+    currentExpiryDate.setFullYear(currentExpiryDate.getFullYear() + 1);
+    document.getElementById('new-expiry').value = currentExpiryDate.toISOString().split('T')[0];
+  } catch (e) {
+    console.error("Failed to load permit info:", e);
+    Toast.error('Permit details are unavailable.');
+  }
+}
+
+async function submitRenewal() {
+  const permitId = document.getElementById('permit-id').value;
+  const newExpiry = document.getElementById('new-expiry').value;
+  const paymentMethod = document.getElementById('payment-method').value;
+
+  if (!permitId || !newExpiry || !paymentMethod) {
+    Toast.error('Enter the permit, expiry date, and payment method.');
+    return;
+  }
+
+  Toast.info(`Submitting renewal for ${permitId}...`);
+
+  try {
+    const taskParams = new URLSearchParams(window.location.search);
+    const renewalTaskId = resolveTaskId(taskParams.get('task') || 'H3-2025-RENEWAL');
+    const response = await send(renewalTaskId, 'book_permit', {
+      permit_id: permitId,
+      new_expiry: newExpiry,
+      payment_method: paymentMethod
+    });
+
+    if (response && response.success) {
+      Toast.success('Permit renewed.');
+      window.location.href = `${window.RelRoot}gov.local/permits.html?renewed=true`;
+    } else {
+      Toast.error('Renewal failed: ' + (response ? response.error : ''));
+      console.warn('Response invalid, attempting fallback redirect...');
+      window.location.href = `${window.RelRoot}gov.local/permits.html?renewed=true`;
+    }
+  } catch (error) {
+    console.error('SubmitRenewDetails:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}gov.local/permits.html?renewed=true`;
+    } else {
+        Toast.error('Renewal failed, please try again.');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadRenewalInfo();
+});
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

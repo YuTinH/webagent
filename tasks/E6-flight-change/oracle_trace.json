@@ -1,0 +1,32 @@
+{
+  "task_id": "E6-2025-FLIGHTCHANGE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/manage/PNR9ZZ.html?clean=true&task=E6-2025-FLIGHTCHANGE"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#rebook-policy",
+      "value": "flexible-change"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#rebook-date",
+      "value": "2025-01-18"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "#rebook-flight-btn"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#status-message"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "goal_id": "WF-SUPPORT-001",
+  "theme": "support",
+  "difficulty": 3,
+  "instruction": "A delivered order was damaged. Get the issue into a support channel and leave a public negative record that also blacklists the merchant. Avoid opening redundant support routes.",
+  "visible_constraints": {
+    "deadline_days": 2,
+    "must_avoid": [
+      "duplicate_support_route"
+    ],
+    "preferred_outcomes": [
+      "single_valid_support_path"
+    ]
+  },
+  "initial_world_state": {
+    "shop_order_delivered": true,
+    "support_contacted": false,
+    "product_review_submitted": false,
+    "merchant_blacklisted": false
+  },
+  "target_state": [
+    "support_contacted",
+    "product_review_submitted",
+    "merchant_blacklisted"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "initial_world_state.shop_order_delivered",
+      "type": "toggle",
+      "values": [true]
+    }
+  ],
+  "max_steps": 50,
+  "max_module_invocations": 2,
+  "notes": "Prototype support goal with alternative issue-reporting routes."
+}

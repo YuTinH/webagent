@@ -1,0 +1,404 @@
+{
+  "goal_id": "WFG-HOME-0002",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full home-control route to completion and do not stop before a synced control follow-up calendar."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CAMERA_CHECK",
+      "role": "required",
+      "produces": [
+        "camera_config_verified",
+        "home_service_monitored"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_ENERGY_OPTIMIZE",
+      "role": "alternative",
+      "produces": [
+        "energy_control_configured",
+        "energy_usage_optimized"
+      ]
+    },
+    {
+      "module_id": "MODULE_SMART_METER",
+      "role": "alternative",
+      "produces": [
+        "energy_control_configured",
+        "smart_meter_configured"
+      ]
+    },
+    {
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "role": "required",
+      "produces": [
+        "thermostat_schedule_configured"
+      ]
+    },
+    {
+      "module_id": "MODULE_UTILITY_SETUP",
+      "role": "required",
+      "produces": [
+        "address_confirmation_verified",
+        "electricity_active",
+        "residency_record_verified",
+        "utilities_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_CAMERA_CHECK",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_ENERGY_OPTIMIZE",
+      "to": "MODULE_THERMOSTAT_SCHEDULE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SMART_METER",
+      "to": "MODULE_THERMOSTAT_SCHEDULE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_THERMOSTAT_SCHEDULE",
+      "to": "MODULE_CAMERA_CHECK",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_ENERGY_OPTIMIZE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_SMART_METER",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_utility_meter_thermostat_camera_extended",
+      "required_modules": [
+        "MODULE_UTILITY_SETUP",
+        "MODULE_SMART_METER",
+        "MODULE_THERMOSTAT_SCHEDULE",
+        "MODULE_CAMERA_CHECK",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HOME-0002-M1",
+        "WFG-HOME-0002-M2",
+        "WFG-HOME-0002-M3",
+        "WFG-HOME-0002-M4",
+        "WFG-HOME-0002-M5"
+      ],
+      "terminal_predicates": [
+        "utilities_active",
+        "energy_control_configured",
+        "thermostat_schedule_configured",
+        "home_service_monitored",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_utility_optimize_thermostat_camera_extended",
+      "required_modules": [
+        "MODULE_UTILITY_SETUP",
+        "MODULE_ENERGY_OPTIMIZE",
+        "MODULE_THERMOSTAT_SCHEDULE",
+        "MODULE_CAMERA_CHECK",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HOME-0002-M6",
+        "WFG-HOME-0002-M7",
+        "WFG-HOME-0002-M8",
+        "WFG-HOME-0002-M9",
+        "WFG-HOME-0002-M10"
+      ],
+      "terminal_predicates": [
+        "utilities_active",
+        "energy_control_configured",
+        "thermostat_schedule_configured",
+        "home_service_monitored",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-HOME-0002-M1",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "301 Hillcrest Dr, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0002-M2",
+      "module_id": "MODULE_SMART_METER",
+      "binding_id": "BIND_I4_SMART_METER",
+      "binding_task_id": "I4-2025-SMARTMETER",
+      "parameter_values": {
+        "reading": "13111.90"
+      },
+      "description": "Submit a smart meter reading of 13111.90 kWh.",
+      "expected_observables": [
+        "exists(\"#meter-reading:has-text('13111.90')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "energy_control_configured",
+          "smart_meter_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0002-M3",
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "binding_id": "BIND_I7_THERMOSTAT_SCHEDULE",
+      "binding_task_id": "I7-2025-THERMOSTAT",
+      "parameter_values": {
+        "deviceId": "THERMO-014",
+        "location": "地下室",
+        "color": "candle"
+      },
+      "description": "Configure thermostat device THERMO-014 in 地下室 with profile candle.",
+      "expected_observables": [
+        "exists(\"div:has-text('地下室')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "thermostat_schedule_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0002-M4",
+      "module_id": "MODULE_CAMERA_CHECK",
+      "binding_id": "BIND_I3_CAMERA_CHECK",
+      "binding_task_id": "I3-2025-CAMERASETUP",
+      "parameter_values": {
+        "deviceId": "CAM-001",
+        "location": "玄关",
+        "color": "white"
+      },
+      "description": "Add a camera device and verify it appears online in the home dashboard.",
+      "expected_observables": [
+        "exists(\"div:has-text('玄关')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "camera_config_verified",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0002-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0002-M6",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "301 Hillcrest Dr, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0002-M7",
+      "module_id": "MODULE_ENERGY_OPTIMIZE",
+      "binding_id": "BIND_I5_ENERGY_OPTIMIZE",
+      "binding_task_id": "I5-2025-ENERGY",
+      "parameter_values": {
+        "meterId": "M-377",
+        "plan": "quiet_hours"
+      },
+      "description": "Switch to an eco-friendly energy plan.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "energy_control_configured",
+          "energy_usage_optimized"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0002-M8",
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "binding_id": "BIND_I7_THERMOSTAT_SCHEDULE",
+      "binding_task_id": "I7-2025-THERMOSTAT",
+      "parameter_values": {
+        "deviceId": "THERMO-014",
+        "location": "地下室",
+        "color": "candle"
+      },
+      "description": "Configure thermostat device THERMO-014 in 地下室 with profile candle.",
+      "expected_observables": [
+        "exists(\"div:has-text('地下室')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "thermostat_schedule_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0002-M9",
+      "module_id": "MODULE_CAMERA_CHECK",
+      "binding_id": "BIND_I3_CAMERA_CHECK",
+      "binding_task_id": "I3-2025-CAMERASETUP",
+      "parameter_values": {
+        "deviceId": "CAM-001",
+        "location": "玄关",
+        "color": "white"
+      },
+      "description": "Add a camera device and verify it appears online in the home dashboard.",
+      "expected_observables": [
+        "exists(\"div:has-text('玄关')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "camera_config_verified",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0002-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "utilities_active",
+      "energy_control_configured",
+      "thermostat_schedule_configured",
+      "home_service_monitored",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "address_confirmation_verified",
+      "calendar_event_synced",
+      "camera_config_verified",
+      "electricity_active",
+      "energy_control_configured",
+      "energy_usage_optimized",
+      "home_service_monitored",
+      "residency_record_verified",
+      "smart_meter_configured",
+      "thermostat_schedule_configured",
+      "utilities_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

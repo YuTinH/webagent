@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>gov.local - </title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🏛️ Gov.local</div>
+      <div class="navlinks">
+        <a href="../gov.local/index.html">Home</a>
+        <a href="../gov.local/visa-apply.html" class="active">Visa Application</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Visa Application</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>Status</h2>
+        <div id="application-status">
+            <div class="loading">Loading......</div>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px">
+          <button id="refresh-visa-review-btn" class="btn secondary" onclick="refreshVisaReview()" style="display:none">Refresh Review Status</button>
+          <button id="continue-to-flight-btn" class="btn secondary" onclick="openFlightBooking()" style="display:none">Continue to Flight Booking</button>
+        </div>
+    </div>
+
+    <div class="card soft">
+        <h2>Submit</h2>
+        <div class="form">
+            <label for="destination">Destination Country</label>
+            <select id="destination" class="input">
+                <option value="">Select a destination</option>
+                <option value="Japan">Japan</option>
+                <option value="France">France</option>
+                <option value="USA">United States</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Vietnam">Vietnam</option>
+                <option value="Kuala Lumpur">Kuala Lumpur</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Germany">Germany</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+            </select>
+            
+            <label for="passport-number">Passport Number</label>
+            <input id="passport-number" class="input" placeholder="E.g., E12345678">
+            <div style="font-size:13px; color:var(--muted)">
+              Enter the destination country and the passport number shown on the travel document.
+            </div>
+            
+            <button id="submit-visa-btn" class="btn pri" style="margin-top:24px; width:100%" onclick="submitVisa()">Submit Visa Application</button>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  const visaApplyParams = new URLSearchParams(window.location.search);
+  const visaApplyTaskId = resolveTaskId(visaApplyParams.get('task') || 'E7-LONG-HAUL');
+  let currentVisaApplication = null;
+
+  async function loadStatus() {
+    const statusDiv = document.getElementById('application-status');
+    const refreshBtn = document.getElementById('refresh-visa-review-btn');
+    const continueBtn = document.getElementById('continue-to-flight-btn');
+    
+    try {
+      const env = await loadEnv();
+      const apps = env.gov?.visa_applications || {};
+      const lastApp = apps.last;
+
+      if (!lastApp || !lastApp.id) {
+        currentVisaApplication = null;
+        statusDiv.innerHTML = `<div style="padding:16px; color:var(--muted)">No visa application has been submitted yet.</div>`;
+        if (refreshBtn) refreshBtn.style.display = 'none';
+        if (continueBtn) continueBtn.style.display = 'none';
+        return;
+      }
+
+      currentVisaApplication = lastApp;
+      const approved = lastApp.status === 'approved';
+      const statusColor = approved ? 'ok' : 'warn';
+      const statusText = approved ? 'Approved' : 'Pending Review';
+
+      statusDiv.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center">
+              <div>
+                  <div style="font-size:18px; font-weight:600">Details: ${lastApp.destination}</div>
+                  <div style="color:var(--muted); font-size:14px">Details: ${lastApp.id}</div>
+              </div>
+                  <span class="badge ${statusColor}">${statusText}</span>
+          </div>
+      `;
+      if (refreshBtn) refreshBtn.style.display = approved ? 'none' : 'inline-flex';
+      if (continueBtn) continueBtn.style.display = approved ? 'inline-flex' : 'none';
+      
+    } catch (e) {
+      console.error(e);
+      statusDiv.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  async function submitVisa() {
+    const dest = document.getElementById('destination').value;
+    const passport = document.getElementById('passport-number').value;
+
+    if (!dest || !passport) {
+      Toast.error("Enter the destination and passport number before submitting.");
+      return;
+    }
+    
+    await send(visaApplyTaskId, 'apply_visa', {
+      destination: dest,
+      passport_number: passport
+    });
+    
+    setTimeout(loadStatus, 500);
+  }
+
+  function openFlightBooking() {
+    const url = new URL('../trip.local/flights.html', window.location.href);
+    url.searchParams.set('task', visaApplyTaskId);
+    window.location.href = url.toString();
+  }
+
+  async function refreshVisaReview() {
+    await fetch('../api/debug/time_travel', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({days: 5})
+    });
+    await loadStatus();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadStatus();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

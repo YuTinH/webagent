@@ -1,0 +1,23 @@
+{
+  "task_id": "E4-2025-CHECKIN",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/manage/PNR9ZZ.html?clean=true&task=E4-2025-CHECKIN",
+      "note": "Open manage page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn-rebook",
+      "note": "Trigger check-in/rebook flow"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#status-message.success",
+      "note": "Wait for completion"
+    }
+  ]
+}

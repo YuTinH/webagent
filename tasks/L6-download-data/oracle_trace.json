@@ -1,0 +1,50 @@
+{
+  "task_id": "L6-2025-DATAEXPORT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/data-deletion.html?clean=true&task=L6-2025-DATAEXPORT",
+      "note": "Open data request page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Open request modal"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#request-type",
+      "value": "export",
+      "note": "Select export request type"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#platform-name",
+      "value": "NebulaCloud",
+      "note": "Enter platform"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#data-scope",
+      "value": "profile,activity",
+      "note": "Enter data scope"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Submit request"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#requests-list .card",
+      "note": "Wait for request card"
+    }
+  ]
+}

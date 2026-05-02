@@ -1,0 +1,43 @@
+{
+  "task_id": "A1-2025-HOME",
+  "family": "A",
+  "goal": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $2600/month, then pick the largest area. Set lease term to 6 months and then apply.",
+  "inputs": {
+    "propertyId": "PROP-EXT-10",
+    "leaseTerm": "6"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('housing.lease.last.id') == 'PROP-EXT-10'",
+    "mem('housing.lease.last.term') == '6'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_property_selected",
+      "name": "Target property selected",
+      "assertion": "mem('housing.lease.last.id') == 'PROP-EXT-10'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_lease_term_selected",
+      "name": "Lease term selected",
+      "assertion": "mem('housing.lease.last.term') == '6'",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": [
+        "cp_property_selected"
+      ],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "housing.local"
+  ],
+  "module_group": "find_home",
+  "canonical_task_dir": "A1-find-home",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

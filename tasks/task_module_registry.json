@@ -1,0 +1,5 @@
+{
+  "version": 3,
+  "description": "Explicit overlap registry after duplicate-pruning and prefix compaction. Currently empty.",
+  "groups": []
+}

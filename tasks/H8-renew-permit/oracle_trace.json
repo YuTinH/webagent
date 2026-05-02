@@ -1,0 +1,37 @@
+{
+  "task_id": "H8-2025-RENEW2",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/renew.html?permit_id=RP-2024-77&clean=true&task=H8-2025-RENEW2",
+      "note": "Open renewal page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#new-expiry",
+      "value": "2027-01-15",
+      "note": "Set new expiry"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#payment-method",
+      "value": "card",
+      "note": "Payment method"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button.btn.pri.lg",
+      "note": "Submit renewal"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "body",
+      "note": "Wait redirect"
+    }
+  ]
+}

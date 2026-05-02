@@ -1,0 +1,36 @@
+{
+  "task_id": "B3-2025-FOOD-PROMO",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/food.local/restaurant.html?id=RES-002"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": ".btn-add"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#promo-code",
+      "value": "SAVE20"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button:has-text('Apply')"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": ".btn-checkout"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#order-list .order-card"
+    }
+  ]
+}

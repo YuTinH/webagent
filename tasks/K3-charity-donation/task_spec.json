@@ -1,0 +1,72 @@
+{
+  "task_id": "K3-2025-CHARITY",
+  "family": "K",
+  "goal": "Ensure you donate 200 to 社区基金 and request a tax-deductible receipt.",
+  "inputs": {
+    "charity_name": "社区基金",
+    "amount": 200,
+    "tax_deductible": true
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('charity.donations.last.id') includes 'DON-'",
+    "mem('charity.donations.last.charity_name') == '社区基金'",
+    "mem('charity.donations.last.amount') == '200.0'",
+    "mem('charity.donations.last.tax_deductible') == '1'",
+    "exists('#donations-list .card')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_k3_1",
+      "name": "cp_k3 checkpoint 1",
+      "assertion": "mem('charity.donations.last.id') includes 'DON-'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_k3_2",
+      "name": "cp_k3 checkpoint 2",
+      "assertion": "mem('charity.donations.last.charity_name') == '社区基金'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_k3_3",
+      "name": "cp_k3 checkpoint 3",
+      "assertion": "mem('charity.donations.last.amount') == '200.0'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_k3_4",
+      "name": "cp_k3 checkpoint 4",
+      "assertion": "mem('charity.donations.last.tax_deductible') == '1'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_k3_5",
+      "name": "cp_k3 checkpoint 5",
+      "assertion": "exists('#donations-list .card')",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "social.local"
+  ],
+  "module_group": "charity_donation",
+  "canonical_task_dir": "K3-charity-donation",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

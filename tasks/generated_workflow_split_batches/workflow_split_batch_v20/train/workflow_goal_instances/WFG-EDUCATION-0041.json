@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-EDUCATION-0041",
+  "theme": "education",
+  "difficulty": 7,
+  "instruction": "Close the certificate-rental workflow by generating the certificate artifact, activating the rental listing, syncing the related calendar event, and ending with event access booked.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "certificate_downloaded",
+      "rental_listing_active",
+      "calendar_event_synced",
+      "event_ticket_booked"
+    ]
+  },
+  "initial_world_state": [
+    "education_account_activated"
+  ],
+  "target_state": [
+    "certificate_downloaded",
+    "rental_listing_active",
+    "calendar_event_synced",
+    "event_ticket_booked"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_EDUCATION_CERTIFIED_GEAR_ACCESS; certificate-and-rental education workflows should continue into explicit event access after the calendar step."
+}

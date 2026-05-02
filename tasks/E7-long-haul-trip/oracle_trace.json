@@ -1,0 +1,57 @@
+{
+  "task_id": "E7-LONG-HAUL",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/visa-apply.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#destination",
+      "value": "Japan"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#passport-number",
+      "value": "J24681012"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button.btn.pri"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#debug-visa-time-travel"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#application-status .badge.ok"
+    },
+    {
+      "t": 6,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/flights.html?departure=Shenzhen&destination=Japan&date=2026-05-09&clean=true"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#book-flight-CA1881"
+    },
+    {
+      "t": 8,
+      "act": "click",
+      "selector": "#book-flight-CA1881"
+    },
+    {
+      "t": 9,
+      "act": "wait",
+      "selector": "#trips-list .card"
+    }
+  ]
+}

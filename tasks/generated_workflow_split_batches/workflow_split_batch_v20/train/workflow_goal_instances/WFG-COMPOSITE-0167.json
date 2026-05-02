@@ -1,0 +1,42 @@
+{
+  "goal_id": "WFG-COMPOSITE-0167",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Finish the followup-payment packet only after order follow-up is prepared, delivery visibility is confirmed, order tracking is open, the payment path is prepared, the calendar is synced, and the record is archived.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "order_followup_prepared",
+      "delivery_visibility_confirmed",
+      "order_tracking_opened",
+      "payment_stack_prepared",
+      "calendar_event_synced",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active",
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "order_followup_prepared",
+    "delivery_visibility_confirmed",
+    "order_tracking_opened",
+    "payment_stack_prepared",
+    "calendar_event_synced",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_FOLLOWUP_PAYMENT; followup-payment composite workflows should archive the proof after the calendar handoff."
+}

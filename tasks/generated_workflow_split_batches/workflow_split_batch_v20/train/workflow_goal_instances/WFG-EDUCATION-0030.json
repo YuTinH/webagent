@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-EDUCATION-0030",
+  "theme": "education",
+  "difficulty": 7,
+  "instruction": "Finish the assignment packet only after the course is enrolled, resources are provisioned, the assignment is submitted, the certificate is downloaded, and the study calendar is synced.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "course_enrolled",
+      "assignment_resources_provisioned",
+      "assignment_submitted",
+      "certificate_downloaded",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "education_account_activated"
+  ],
+  "target_state": [
+    "course_enrolled",
+    "assignment_resources_provisioned",
+    "assignment_submitted",
+    "certificate_downloaded",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_EDUCATION_ASSIGNMENT_READINESS; assignment-oriented education workflows should close with an explicit calendar handoff after certificate download."
+}

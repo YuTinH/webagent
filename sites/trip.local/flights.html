@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> - Nebula</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.search-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+.flight-results {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+.flight-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+}
+.flight-item:last-child {
+  border-bottom: none;
+}
+.flight-details {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.airline-logo {
+  font-size: 48px;
+  width: 60px;
+  text-align: center;
+}
+.flight-info h3 {
+  font-size: 18px;
+  margin: 0 0 4px 0;
+}
+.flight-route {
+  color: var(--muted);
+  font-size: 14px;
+}
+.flight-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+.flight-actions .btn {
+  padding: 10px 20px;
+  font-size: 15px;
+}
+.loading-message {
+  padding: 40px;
+  text-align: center;
+  color: var(--muted);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula</div>
+    <div class="navlinks">
+      <a href="../trip.local/dashboard.html">Home</a>
+      <a href="../trip.local/flights.html" class="active">Flights</a>
+      <a href="../trip.local/hotels.html">Hotels</a>
+      <a href="../trip.local/manage.html">My Trips</a>
+    </div>
+    <div style="margin-left:auto">
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">Flight Booking</h1>
+
+  <!-- Flight Search Form -->
+  <div class="search-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="departure">Departure City</label>
+        <input type="text" id="departure" value="">
+      </div>
+      <div class="form-group">
+        <label for="destination">Destination City</label>
+        <input type="text" id="destination" value="">
+      </div>
+      <div class="form-group">
+        <label for="depart-date">Date</label>
+        <input type="date" id="depart-date" value="2025-12-31">
+      </div>
+      <div class="form-group">
+        <label for="return-date">Date ()</label>
+        <input type="date" id="return-date">
+      </div>
+      <div class="form-group">
+        <label for="passengers">Passengers</label>
+        <input type="number" id="passengers" value="1" min="1">
+      </div>
+      <div class="form-group">
+        <label for="class">Travel Class</label>
+        <select id="class">
+          <option value="economy">Economy</option>
+          <option value="business">Business</option>
+          <option value="first">First</option>
+        </select>
+      </div>
+    </div>
+    <div class="button-group">
+      <button class="btn pri lg" id="search-flights-btn" onclick="searchFlights()">Search Flights</button>
+    </div>
+  </div>
+
+  <!-- Flight Search Results -->
+  <div id="flight-results" class="flight-results">
+    <div class="loading-message">Search for available flights.</div>
+  </div>
+
+  <div class="footer">Nebula · Synthetic UI for Web Agent Research</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const flightParams = new URLSearchParams(window.location.search);
+const requestedFlightTaskId = flightParams.get('task') || 'E1-2025-FLIGHT';
+const flightTaskId = resolveTaskId(requestedFlightTaskId);
+let currentFlights = [];
+let userMenuDropdown = null;
+
+function normalizeCityName(value, fallback = '') {
+  const raw = String(value || '').trim();
+  if (!raw) return fallback;
+  const aliases = {
+    beijing: '北京',
+    shanghai: '上海',
+    guangzhou: '广州',
+    shenzhen: '深圳',
+    hangzhou: '杭州'
+  };
+  return aliases[raw.toLowerCase()] || raw;
+}
+
+// Initialize components on load
+window.addEventListener('DOMContentLoaded', () => {
+  // User menu dropdown
+  userMenuDropdown = new Dropdown(document.getElementById('user-menu-btn'), {
+    align: 'right',
+    items: [
+      { icon: '👤', label: 'My Account', value: 'account' },
+      { icon: '✈️', label: '', value: 'my_trips' },
+      { type: 'divider' },
+      { icon: '⚙️', label: '', value: 'settings' },
+      { icon: '🚪', label: 'Login', value: 'logout' }
+    ],
+    onSelect: (item) => {
+      if (item.value === 'my_trips') window.location.href=window.RelRoot+'trip.local/manage.html';
+      else Toast.info(`${item.label}`);
+    }
+  });
+});
+
+
+async function searchFlights() {
+  const departure = document.getElementById('departure').value;
+  const destination = document.getElementById('destination').value;
+  const departDate = document.getElementById('depart-date').value;
+  const returnDate = document.getElementById('return-date').value;
+  const passengers = document.getElementById('passengers').value;
+  const flightClass = document.getElementById('class').value;
+  const normalizedDeparture = normalizeCityName(departure, departure);
+  const normalizedDestination = normalizeCityName(destination, destination);
+
+  if (!normalizedDeparture || !normalizedDestination || !departDate || !passengers) {
+    Toast.error('Enter departure, destination, date, and passengers.');
+    return;
+  }
+
+  document.getElementById('departure').value = normalizedDeparture;
+  document.getElementById('destination').value = normalizedDestination;
+
+  const resultsContainer = document.getElementById('flight-results');
+  resultsContainer.innerHTML = '<div class="loading-message">Search...</div>';
+
+  try {
+    const response = await fetch(`${window.RelRoot}api/flights/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        departure: normalizedDeparture,
+        destination: normalizedDestination,
+        depart_date: departDate,
+        return_date: returnDate || null,
+        passengers: parseInt(passengers),
+        class: flightClass
+      })
+    });
+    const data = await response.json();
+
+    if (data.success && data.flights.length > 0) {
+      currentFlights = data.flights;
+      renderFlights(currentFlights);
+    } else {
+      resultsContainer.innerHTML = '<div class="loading-message">No matching flights found.</div>';
+    }
+  } catch (error) {
+    console.error('SearchDetails:', error);
+    resultsContainer.innerHTML = '<div class="loading-message">SearchError, please try again.</div>';
+    Toast.error('Search');
+  }
+}
+
+function renderFlights(flights) {
+  const resultsContainer = document.getElementById('flight-results');
+  resultsContainer.innerHTML = ''; // Clear loading message
+
+  flights.forEach(flight => {
+    const flightItem = document.createElement('div');
+    flightItem.className = 'flight-item';
+    flightItem.innerHTML = `
+      <div class="flight-details">
+        <div class="airline-logo">✈️</div>
+        <div class="flight-info">
+          <h3>${flight.airline} ${flight.flight_number}</h3>
+          <div class="flight-route">${flight.departure_airport} (${flight.departure_time}) → ${flight.destination_airport} (${flight.arrival_time})</div>
+        </div>
+      </div>
+      <div class="flight-price">¥${flight.price.toFixed(2)}</div>
+      <div class="flight-actions">
+        <button id="book-flight-${flight.flight_number}" class="btn pri" onclick="bookFlight('${flight.flight_number}', '${flight.price}', '${flight.departure_airport}', '${flight.destination_airport}', '${flight.departure_time}')">Book Flight</button>
+      </div>
+    `;
+    resultsContainer.appendChild(flightItem);
+  });
+}
+
+async function bookFlight(flightNumber, price, departureAirport, destinationAirport, departureTime) {
+  const departDate = document.getElementById('depart-date').value;
+  const normalizedDestination = normalizeCityName(
+    document.getElementById('destination').value,
+    destinationAirport
+  );
+  Toast.info(` ${flightNumber}...`);
+  try {
+    const response = await send(flightTaskId, 'book_flight', {
+      flight_number: flightNumber,
+      price: parseFloat(price),
+      departure: departureAirport,
+      destination: normalizedDestination,
+      date: departDate,
+      depart_time: departureTime
+    });
+
+    if (response && response.success) {
+      Toast.success('!');
+      // Redirect to trip management page or show confirmation
+      window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    } else {
+      Toast.error('Details: ' + (response ? response.error : ''));
+      // Fallback for test environment network issues
+      console.warn('Response invalid, attempting fallback redirect...');
+      window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    }
+  } catch (error) {
+    console.error('Details:', error);
+    // Fallback for network errors
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    } else {
+        Toast.error('Error, please try again.');
+    }
+  }
+}
+
+// Initial search on load if params are present (e.g., from a dashboard widget)
+document.addEventListener('DOMContentLoaded', () => {
+    if (flightParams.get('departure') && flightParams.get('destination') && flightParams.get('date')) {
+        document.getElementById('departure').value = flightParams.get('departure');
+        document.getElementById('destination').value = flightParams.get('destination');
+        document.getElementById('depart-date').value = flightParams.get('date');
+        searchFlights();
+    }
+});
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

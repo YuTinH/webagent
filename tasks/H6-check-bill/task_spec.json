@@ -1,0 +1,131 @@
+{
+  "task_id": "H6-2025-003",
+  "family": "H",
+  "episode_id": "ep-001",
+  "priority": 2,
+  "seed": 42,
+  "time": "2025-11-16T11:00:00Z",
+  "persona": {
+    "bill_tracking": true,
+    "payment_method": "autopay"
+  },
+  "goal": "Login to utility portal, check current electricity and water bill amounts and due dates",
+  "inputs": {
+    "utility_types": [
+      "electricity",
+      "water"
+    ]
+  },
+  "allowed_domains": [
+    "gov.local"
+  ],
+  "preconditions": [
+    "mem('identity.address') != ''"
+  ],
+  "memory_keys": [
+    "bills.electricity.amount",
+    "bills.electricity.due_date",
+    "bills.water.amount",
+    "bills.water.due_date"
+  ],
+  "success_criteria": [
+    "url().includes('/gov.local/billing/index.html')",
+    "exists(\".bill-item\")",
+    "exists(\".bills-summary\")",
+    "mem('bills.pending_count') >= 1",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "artifacts": [
+    "bills_screenshot"
+  ],
+  "rubrics": {
+    "SR": 1.0,
+    "LH-F1": 0.3
+  },
+  "timeout": 180,
+  "step_timeout": 30,
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {
+      "strategy": "retry",
+      "max_retries": 3,
+      "retry_delay_ms": 1000
+    },
+    "on_element_not_found": {
+      "strategy": "wait_and_retry",
+      "wait_seconds": 10
+    },
+    "on_assertion_fail": {
+      "strategy": "save_trace_and_report",
+      "capture_screenshot": true,
+      "capture_dom": true,
+      "capture_memory": true
+    },
+    "on_precondition_fail": "abort_with_warning"
+  },
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "url().includes('/gov.local/billing/index.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "exists(\".bill-item\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\".bills-summary\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_state",
+      "name": "Criterion 4 state set",
+      "assertion": "mem('bills.pending_count') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "mem('bills.pending_count') >= 1",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_4_state"
+      ]
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_6_final",
+      "name": "Criterion 6 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "module_group": "billing_review",
+  "canonical_task_dir": "H6-check-bill",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

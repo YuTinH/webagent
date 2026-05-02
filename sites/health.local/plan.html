@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Plans - Nebula Health</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+.plan-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  cursor: pointer;
+  transition: .2s;
+  position: relative;
+  overflow: hidden;
+}
+.plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--pri);
+}
+.plan-card.active {
+  border-color: var(--ok);
+  background: rgba(16, 185, 129, 0.05);
+}
+.plan-card.active::after {
+  content: 'Active';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--ok);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.plan-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.plan-description {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.plan-features li::before {
+  content: '✓';
+  color: var(--ok);
+  font-weight: 700;
+}
+</style>
+</head>
+<body class="page">
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">⚕️ Nebula Health</div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="records.html">Records</a>
+      <a href="plan.html" class="active">Health Plans</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <h1>Choose Your Health Plan</h1>
+
+  <div class="plan-grid">
+    <div class="plan-card" id="plan-standard">
+      <div class="plan-name">Standard Plan</div>
+      <div class="plan-description">Basic coverage for daily wellness and routine checkups.</div>
+      <ul class="plan-features">
+        <li>Annual Physical Exam</li>
+        <li>Routine Blood Work</li>
+        <li>Virtual Consultations</li>
+      </ul>
+      <button id="activate-standard-plan-btn" class="btn" onclick="selectPlan('standard')">Select Plan</button>
+    </div>
+
+    <div class="plan-card" id="plan-premium">
+      <div class="plan-name">Premium Plan</div>
+      <div class="plan-description">Comprehensive coverage including specialist visits and fitness perks.</div>
+      <ul class="plan-features">
+        <li>Specialist Referrals</li>
+        <li>Mental Health Support</li>
+        <li>Gym Membership Subsidy</li>
+      </ul>
+      <button id="activate-premium-button" class="btn pri" onclick="selectPlan('premium')">Select Plan</button>
+    </div>
+  </div>
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+let currentPlanId = '';
+const requestedPlanTaskId = new URLSearchParams(window.location.search).get('task') || 'G5-2025-PLAN';
+const planTaskId = resolveTaskId(requestedPlanTaskId);
+
+function markPlanActive(planId) {
+  currentPlanId = planId;
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.plan-card button').forEach(btn => {
+    btn.disabled = false;
+    btn.textContent = 'Select Plan';
+  });
+  const activeCard = document.getElementById(`plan-${planId}`);
+  if (activeCard) {
+    activeCard.classList.add('active');
+    const btn = activeCard.querySelector('button');
+    if (btn) {
+      btn.textContent = 'Current Plan';
+      btn.disabled = true;
+    }
+  }
+}
+
+async function loadPlanInfo() {
+  const env = await loadEnv();
+  const plan = env.health?.plan;
+  if (plan) {
+    markPlanActive(plan.name.toLowerCase().includes('premium') ? 'premium' : 'standard');
+  }
+}
+
+async function selectPlan(planId) {
+  const planName = planId === 'premium' ? 'Premium Health Plan' : 'Standard Health Plan';
+  await send(planTaskId, 'activate_health_plan', { planName });
+  markPlanActive(planId);
+  Toast.success("Plan updated successfully");
+  const target = new URL(window.location.href);
+  target.searchParams.set('status', 'active');
+  window.history.replaceState({}, '', target.toString());
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadPlanInfo();
+});
+</script>
+

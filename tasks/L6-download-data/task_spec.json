@@ -1,0 +1,87 @@
+{
+  "task_id": "L6-2025-DATAEXPORT",
+  "family": "L",
+  "goal": "Submit a personal data export request.",
+  "inputs": {
+    "request_type": "export",
+    "platform": "NebulaCloud"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('security.data_deletion_requests.last.platform') == 'NebulaCloud'",
+    "mem('security.data_deletion_requests.last.status') == 'pending'",
+    "exists(\"#requests-list .card\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('security.data_deletion_requests.last.platform') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('security.data_deletion_requests.last.platform') == 'NebulaCloud'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Criterion 2 state set",
+      "assertion": "mem('security.data_deletion_requests.last.status') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "mem('security.data_deletion_requests.last.status') == 'pending'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"#requests-list .card\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "security.local"
+  ],
+  "module_group": "download_data",
+  "canonical_task_dir": "L6-download-data",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

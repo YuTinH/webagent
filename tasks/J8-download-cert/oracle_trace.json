@@ -1,0 +1,23 @@
+{
+  "task_id": "J8-2025-CERTISSUE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/certification.html?clean=true&task=J8-2025-CERTISSUE",
+      "note": "Open certification page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Apply for certificate"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "button:has-text('Apply Now')",
+      "note": "Wait for page to stabilize after submission"
+    }
+  ]
+}

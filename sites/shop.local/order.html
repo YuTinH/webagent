@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Nebula</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #28a745; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        h1 { color: #28a745; margin-bottom: 25px; }
+        .confirmation-card { background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 40px; text-align: center; }
+        .success-icon { font-size: 5em; color: #28a745; margin-bottom: 20px; }
+        .order-details { margin-top: 30px; text-align: left; border-top: 1px solid #eee; padding-top: 20px; }
+        .order-details p { margin: 10px 0; }
+        .order-details strong { display: inline-block; width: 120px; }
+        .btn-view-orders { background-color: #007bff; color: white; padding: 12px 25px; border: none; border-radius: 5px; font-weight: bold; margin-top: 30px; text-decoration: none; display: inline-block; }
+        .btn-view-orders:hover { background-color: #0056b3; }
+    </style>
+    <script src="../static/common.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="container" style="display:flex; justify-content:space-between; width:100%; padding:0; align-items:center">
+            <h1><a href="index.html" style="color:white; text-decoration:none">Nebula</a></h1>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="orders.html">Information</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="confirmation-card">
+            <div class="success-icon">✔️</div>
+            <h1>Confirm！</h1>
+            <p>!Submit。</p>
+            
+            <div class="order-details">
+                <p><strong>Details:</strong> <span id="order-id"></span></p>
+                            <p><strong>Details:</strong> <span id="order-total"></span></p>
+                            <p><strong>Address:</strong> <span id="shipping-address"></span></p>
+                            <p><strong>Status:</strong> <span id="order-status">Confirm</span></p>
+                            </div>
+            <a href="orders.html" class="btn-view-orders">My Orders</a>
+        </div>
+    </div>
+
+    <script>
+        window.RelRoot = "../";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let orderId = urlParams.get('order_id');
+        
+        // Check path for order ID if not in query params
+        if (!orderId) {
+            const pathParts = window.location.pathname.split('/order/confirmation/');
+            if (pathParts.length > 1) {
+                orderId = pathParts[1].split('?')[0]; // Handle potential trailing query params
+            }
+        }
+
+        const total = urlParams.get('total');
+        const shippingAddress = urlParams.get('shipping_address') || 'N/A';
+
+        if (orderId) {
+            document.getElementById('order-id').textContent = orderId;
+            document.getElementById('order-total').textContent = `$${parseFloat(total).toFixed(2)}`;
+            document.getElementById('shipping-address').textContent = shippingAddress;
+            localStorage.removeItem('cart'); // Clear cart after successful order
+        } else {
+            document.getElementById('order-id').textContent = 'N/A';
+            document.getElementById('order-total').textContent = 'N/A';
+            document.getElementById('shipping-address').textContent = 'N/A';
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

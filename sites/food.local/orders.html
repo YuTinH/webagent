@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food.local - My Orders</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #ff6b6b; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { margin: 0; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        .order-list { margin-top: 30px; }
+        .order-card { background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; padding: 20px; }
+        .order-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+        .order-id { font-weight: bold; font-size: 1.1em; }
+        .order-status { padding: 5px 10px; border-radius: 5px; font-size: 0.9em; font-weight: bold; background-color: #ffc107; color: #333; }
+        .order-status.pending { background-color: #ffc107; }
+        .order-status.delivered { background-color: #28a745; color: white; }
+        .order-details p { margin: 5px 0; }
+        .order-items ul { list-style: none; padding: 0; margin: 10px 0; border-top: 1px dashed #eee; padding-top: 10px; }
+        .order-items li { display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 5px; }
+        .order-total { font-weight: bold; text-align: right; margin-top: 10px; }
+    </style>
+    <script src="../static/common.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="container" style="display:flex; justify-content:space-between; width:100%; padding:0; align-items:center">
+            <h1><a href="index.html" style="color:white; text-decoration:none">Food.local</a></h1>
+            <div class="nav-links">
+                <a href="../food.local/index.html">Restaurants</a>
+                <a href="../food.local/orders.html">My Orders</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>My Recent Orders</h2>
+        <div id="order-list" class="order-list">
+            <!-- Orders injected here -->
+            <div class="order-card" id="empty-orders-message">
+                <p>No orders yet. Start ordering from your favorite restaurants!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.RelRoot = "../";
+
+        async function loadOrders() {
+            const orderList = document.getElementById('order-list');
+            orderList.innerHTML = '<div class="order-card"><p>Loading orders...</p></div>';
+
+            const env = await loadEnv();
+            const foodOrders = env?.food?.orders || {};
+            const orderEntries = Object.entries(foodOrders);
+
+            if (orderEntries.length === 0) {
+                orderList.innerHTML = '<div class="order-card"><p>No orders yet. Start ordering from your favorite restaurants!</p></div>';
+                return;
+            }
+
+            orderList.innerHTML = orderEntries.map(([orderId, order]) => {
+                const itemsList = order.items.map(item => `<li><span>${item}</span><span></span></li>`).join('');
+                const statusClass = order.status === 'pending' ? 'order-status pending' : 'order-status delivered';
+
+                return `
+                    <div class="order-card" id="order-${orderId}">
+                        <div class="order-header">
+                            <div class="order-id">Order ID: ${orderId}</div>
+                            <span class="${statusClass}">${order.status}</span>
+                        </div>
+                        <div class="order-details">
+                            <p>Restaurant: ${order.restaurant}</p>
+                            <p>Ordered At: ${new Date(order.ordered_at).toLocaleString()}</p>
+                            <div class="order-items">
+                                <ul>${itemsList}</ul>
+                            </div>
+                            <div class="order-total">Total: $${order.total.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        loadOrders();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

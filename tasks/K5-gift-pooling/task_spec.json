@@ -1,0 +1,107 @@
+{
+  "task_id": "K5-2025-GIFTPOOL",
+  "family": "K",
+  "goal": "Create a gift pool donation entry for the team celebration.",
+  "inputs": {
+    "charity_name": "团队礼物基金",
+    "amount": 300,
+    "tax_deductible": false
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('charity.donations.last.charity_name') == '团队礼物基金'",
+    "mem('charity.donations.last.amount') == '300'",
+    "mem('charity.donations.last.tax_deductible') == '0'",
+    "exists(\"#donations-list .card\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('charity.donations.last.charity_name') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('charity.donations.last.charity_name') == '团队礼物基金'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Criterion 2 state set",
+      "assertion": "mem('charity.donations.last.amount') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "mem('charity.donations.last.amount') == '300'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_state",
+      "name": "Criterion 3 state set",
+      "assertion": "mem('charity.donations.last.tax_deductible') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "mem('charity.donations.last.tax_deductible') == '0'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_3_state"
+      ]
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "exists(\"#donations-list .card\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_6_final",
+      "name": "Criterion 6 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "social.local"
+  ],
+  "module_group": "gift_pooling",
+  "canonical_task_dir": "K5-gift-pooling",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

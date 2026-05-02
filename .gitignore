@@ -1,0 +1,65 @@
+# Runtime data
+data.db
+data.db-*
+webapp.db
+*.db
+*.db-shm
+*.db-wal
+env/state.json
+*.log
+*.out
+*.err
+*.pid
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Output and temp
+output/
+test_results/
+downloads/
+screenshots/
+errors/
+sites_backup/
+logs/
+releases/
+.parallel_runs/
+.task_sync_meta/
+.codex_openrlhf_ref_*/
+.tmp*/
+codex_tmp/
+
+# Large/generated benchmark artifacts
+tasks/generated_workflow_split_batches/*
+!tasks/generated_workflow_split_batches/workflow_split_batch_v20/
+!tasks/generated_workflow_split_batches/workflow_split_batch_v20/**
+rl_memory/runs/
+rl_memory/openrlhf/data/
+rl_memory/**/runs/
+rl_memory/**/__pycache__/
+
+# Local documents and binary artifacts
+*.pdf
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Mac
+.DS_Store

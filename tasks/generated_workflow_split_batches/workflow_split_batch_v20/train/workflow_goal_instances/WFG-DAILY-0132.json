@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-DAILY-0132",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Finish the resale workflow only after the listing is active, the daily bundle is prepared, the subscription is turned on, and the follow-up schedule is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "resale_listing_activated",
+      "daily_order_bundle_prepared",
+      "subscription_active",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "resale_listing_activated",
+    "daily_order_bundle_prepared",
+    "subscription_active",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_WORKFLOW_RESALE_PRICE; resale-and-subscription daily workflows should end with an explicit scheduling handoff."
+}

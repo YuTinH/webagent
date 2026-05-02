@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-GOV-0163",
+  "theme": "government",
+  "difficulty": 5,
+  "instruction": "Close the government billing route by securing housing first, aligning the address, reviewing the bills, and ending with vehicle-address compliance updated.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "address_confirmation_verified",
+      "address_records_aligned",
+      "bills_reviewed",
+      "vehicle_address_updated",
+      "local_vehicle_compliance_verified"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_confirmation_verified",
+    "address_records_aligned",
+    "bills_reviewed",
+    "vehicle_address_updated",
+    "local_vehicle_compliance_verified"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_GOV_BILL_ALIGNMENT; bill-alignment government workflows should continue into vehicle-address compliance rather than stopping at the billing review."
+}

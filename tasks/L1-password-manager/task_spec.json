@@ -1,0 +1,62 @@
+{
+  "task_id": "L1-2025-PASSMGR",
+  "family": "L",
+  "goal": "Add a password manager entry for Overleaf using username paper.drafts@example.com.",
+  "inputs": {
+    "site": "Google",
+    "username": "test@google.com",
+    "password": "SecurePass!123"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('security.passwords.last.id') includes 'PW-'",
+    "mem('security.passwords.last.site') == 'Overleaf'",
+    "mem('security.passwords.last.username') == 'paper.drafts@example.com'",
+    "exists(\"#password-list .card:has-text('Overleaf')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_l1_1",
+      "name": "cp_l1 checkpoint 1",
+      "assertion": "mem('security.passwords.last.id') includes 'PW-'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l1_2",
+      "name": "cp_l1 checkpoint 2",
+      "assertion": "mem('security.passwords.last.site') == 'Overleaf'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l1_3",
+      "name": "cp_l1 checkpoint 3",
+      "assertion": "mem('security.passwords.last.username') == 'paper.drafts@example.com'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l1_4",
+      "name": "cp_l1 checkpoint 4",
+      "assertion": "exists(\"#password-list .card:has-text('Overleaf')\")",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "security.local"
+  ],
+  "module_group": "password_manager",
+  "canonical_task_dir": "L1-password-manager",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,422 @@
+{
+  "goal_id": "WFG-HOME-0011",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full home-control route to completion and do not stop before the thermostat schedule configured."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CAMERA_CHECK",
+      "role": "required",
+      "produces": [
+        "camera_config_verified",
+        "home_service_monitored"
+      ]
+    },
+    {
+      "module_id": "MODULE_FIRMWARE_UPDATE",
+      "role": "alternative",
+      "produces": [
+        "firmware_updated",
+        "home_device_readiness_confirmed",
+        "home_service_monitored"
+      ]
+    },
+    {
+      "module_id": "MODULE_SMART_BULB_SETUP",
+      "role": "alternative",
+      "produces": [
+        "home_device_readiness_confirmed",
+        "smart_bulb_configured"
+      ]
+    },
+    {
+      "module_id": "MODULE_SMART_METER",
+      "role": "required",
+      "produces": [
+        "energy_control_configured",
+        "smart_meter_configured"
+      ]
+    },
+    {
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "role": "required",
+      "produces": [
+        "thermostat_schedule_configured"
+      ]
+    },
+    {
+      "module_id": "MODULE_UTILITY_SETUP",
+      "role": "required",
+      "produces": [
+        "address_confirmation_verified",
+        "electricity_active",
+        "residency_record_verified",
+        "utilities_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_CAMERA_CHECK",
+      "to": "MODULE_SMART_METER",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_FIRMWARE_UPDATE",
+      "to": "MODULE_CAMERA_CHECK",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SMART_BULB_SETUP",
+      "to": "MODULE_CAMERA_CHECK",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SMART_METER",
+      "to": "MODULE_THERMOSTAT_SCHEDULE",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_FIRMWARE_UPDATE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_SMART_BULB_SETUP",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_utility_bulb_camera_meter_extended",
+      "required_modules": [
+        "MODULE_UTILITY_SETUP",
+        "MODULE_SMART_BULB_SETUP",
+        "MODULE_CAMERA_CHECK",
+        "MODULE_SMART_METER",
+        "MODULE_THERMOSTAT_SCHEDULE"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HOME-0011-M1",
+        "WFG-HOME-0011-M2",
+        "WFG-HOME-0011-M3",
+        "WFG-HOME-0011-M4",
+        "WFG-HOME-0011-M5"
+      ],
+      "terminal_predicates": [
+        "utilities_active",
+        "energy_control_configured",
+        "camera_config_verified",
+        "home_device_readiness_confirmed",
+        "home_service_monitored",
+        "thermostat_schedule_configured"
+      ]
+    },
+    {
+      "path_id": "path_utility_firmware_camera_meter_extended",
+      "required_modules": [
+        "MODULE_UTILITY_SETUP",
+        "MODULE_FIRMWARE_UPDATE",
+        "MODULE_CAMERA_CHECK",
+        "MODULE_SMART_METER",
+        "MODULE_THERMOSTAT_SCHEDULE"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HOME-0011-M6",
+        "WFG-HOME-0011-M7",
+        "WFG-HOME-0011-M8",
+        "WFG-HOME-0011-M9",
+        "WFG-HOME-0011-M10"
+      ],
+      "terminal_predicates": [
+        "utilities_active",
+        "energy_control_configured",
+        "camera_config_verified",
+        "home_device_readiness_confirmed",
+        "home_service_monitored",
+        "thermostat_schedule_configured"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-HOME-0011-M1",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "88 River Rd, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0011-M2",
+      "module_id": "MODULE_SMART_BULB_SETUP",
+      "binding_id": "BIND_I6_SMART_BULB_SETUP",
+      "binding_task_id": "I6-2025-SMARTBULB",
+      "parameter_values": {
+        "deviceId": "BULB-163",
+        "location": "Dining Room",
+        "color": "soft_white"
+      },
+      "description": "Set up smart bulb BULB-163 in the Dining Room using RGB mode.",
+      "expected_observables": [
+        "json('env','devices.BULB-163.color') == 'soft_white'",
+        "exists(\"#devices-list:has-text('Dining Room')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "home_device_readiness_confirmed",
+          "smart_bulb_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0011-M3",
+      "module_id": "MODULE_CAMERA_CHECK",
+      "binding_id": "BIND_I3_CAMERA_CHECK",
+      "binding_task_id": "I3-2025-CAMERASETUP",
+      "parameter_values": {
+        "deviceId": "CAM-075",
+        "location": "玄关",
+        "color": "black"
+      },
+      "description": "Add a camera device and verify it appears online in the home dashboard.",
+      "expected_observables": [
+        "exists(\"div:has-text('玄关')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "camera_config_verified",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0011-M4",
+      "module_id": "MODULE_SMART_METER",
+      "binding_id": "BIND_I4_SMART_METER",
+      "binding_task_id": "I4-2025-SMARTMETER",
+      "parameter_values": {
+        "reading": "13020.75"
+      },
+      "description": "Submit a smart meter reading of 13020.75 kWh.",
+      "expected_observables": [
+        "exists(\"#meter-reading:has-text('13020.75')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "energy_control_configured",
+          "smart_meter_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0011-M5",
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "binding_id": "BIND_I7_THERMOSTAT_SCHEDULE",
+      "binding_task_id": "I7-2025-THERMOSTAT",
+      "parameter_values": {
+        "deviceId": "THERMO-001",
+        "location": "卧室",
+        "color": "warm_white"
+      },
+      "description": "Configure thermostat device THERMO-001 in 卧室 with profile warm_white.",
+      "expected_observables": [
+        "exists(\"div:has-text('卧室')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "thermostat_schedule_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0011-M6",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "88 River Rd, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0011-M7",
+      "module_id": "MODULE_FIRMWARE_UPDATE",
+      "binding_id": "BIND_I8_FIRMWARE_UPDATE",
+      "binding_task_id": "I8-2025-FWREPAIR",
+      "parameter_values": {
+        "appliance": "Smart Thermostat",
+        "serial_number": "FW-001-8899",
+        "problem": "Firmware update failed and device keeps rebooting",
+        "service_date": "2026-02-28"
+      },
+      "description": "Report a failed thermostat firmware update and submit a repair request.",
+      "expected_observables": [
+        "exists(\"#appliance-repair-requests-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "firmware_updated",
+          "home_device_readiness_confirmed",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0011-M8",
+      "module_id": "MODULE_CAMERA_CHECK",
+      "binding_id": "BIND_I3_CAMERA_CHECK",
+      "binding_task_id": "I3-2025-CAMERASETUP",
+      "parameter_values": {
+        "deviceId": "CAM-075",
+        "location": "玄关",
+        "color": "black"
+      },
+      "description": "Add a camera device and verify it appears online in the home dashboard.",
+      "expected_observables": [
+        "exists(\"div:has-text('玄关')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "camera_config_verified",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0011-M9",
+      "module_id": "MODULE_SMART_METER",
+      "binding_id": "BIND_I4_SMART_METER",
+      "binding_task_id": "I4-2025-SMARTMETER",
+      "parameter_values": {
+        "reading": "13020.75"
+      },
+      "description": "Submit a smart meter reading of 13020.75 kWh.",
+      "expected_observables": [
+        "exists(\"#meter-reading:has-text('13020.75')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "energy_control_configured",
+          "smart_meter_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0011-M10",
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "binding_id": "BIND_I7_THERMOSTAT_SCHEDULE",
+      "binding_task_id": "I7-2025-THERMOSTAT",
+      "parameter_values": {
+        "deviceId": "THERMO-001",
+        "location": "卧室",
+        "color": "warm_white"
+      },
+      "description": "Configure thermostat device THERMO-001 in 卧室 with profile warm_white.",
+      "expected_observables": [
+        "exists(\"div:has-text('卧室')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "thermostat_schedule_configured"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "utilities_active",
+      "energy_control_configured",
+      "camera_config_verified",
+      "home_device_readiness_confirmed",
+      "home_service_monitored",
+      "thermostat_schedule_configured"
+    ],
+    "checkpoint_predicates": [
+      "address_confirmation_verified",
+      "camera_config_verified",
+      "electricity_active",
+      "energy_control_configured",
+      "firmware_updated",
+      "home_device_readiness_confirmed",
+      "home_service_monitored",
+      "residency_record_verified",
+      "smart_bulb_configured",
+      "smart_meter_configured",
+      "thermostat_schedule_configured",
+      "utilities_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

@@ -1,0 +1,385 @@
+{
+  "goal_id": "WFG-EDUCATION-0078",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either use the library-service route before certificate download, ticket booking, and calendar sync, or use the ebook route before the same certificate, ticket, and calendar closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_BUY_EBOOK",
+      "role": "alternative",
+      "produces": [
+        "assignment_resources_provisioned",
+        "ebook_owned"
+      ]
+    },
+    {
+      "module_id": "MODULE_DOWNLOAD_CERT",
+      "role": "required",
+      "produces": [
+        "certificate_downloaded"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_EVENT_TICKETS",
+      "role": "alternative",
+      "produces": [
+        "event_ticket_booked"
+      ]
+    },
+    {
+      "module_id": "MODULE_LIBRARY_SERVICE",
+      "role": "alternative",
+      "produces": [
+        "assignment_resources_provisioned",
+        "library_pickup_reserved"
+      ]
+    },
+    {
+      "module_id": "MODULE_MOVIE_TICKETS",
+      "role": "alternative",
+      "produces": [
+        "event_ticket_booked"
+      ]
+    },
+    {
+      "module_id": "MODULE_SUBMIT_ASSIGNMENT",
+      "role": "required",
+      "produces": [
+        "assignment_submitted"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_BUY_EBOOK",
+      "to": "MODULE_SUBMIT_ASSIGNMENT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_DOWNLOAD_CERT",
+      "to": "MODULE_EVENT_TICKETS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_DOWNLOAD_CERT",
+      "to": "MODULE_MOVIE_TICKETS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_EVENT_TICKETS",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_LIBRARY_SERVICE",
+      "to": "MODULE_SUBMIT_ASSIGNMENT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_MOVIE_TICKETS",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SUBMIT_ASSIGNMENT",
+      "to": "MODULE_DOWNLOAD_CERT",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_library_submit_cert_event_calendar",
+      "required_modules": [
+        "MODULE_LIBRARY_SERVICE",
+        "MODULE_SUBMIT_ASSIGNMENT",
+        "MODULE_DOWNLOAD_CERT",
+        "MODULE_EVENT_TICKETS",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-EDUCATION-0078-M1",
+        "WFG-EDUCATION-0078-M2",
+        "WFG-EDUCATION-0078-M3",
+        "WFG-EDUCATION-0078-M4",
+        "WFG-EDUCATION-0078-M5"
+      ],
+      "terminal_predicates": [
+        "assignment_resources_provisioned",
+        "assignment_submitted",
+        "certificate_downloaded",
+        "event_ticket_booked",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_ebook_submit_cert_movie_calendar",
+      "required_modules": [
+        "MODULE_BUY_EBOOK",
+        "MODULE_SUBMIT_ASSIGNMENT",
+        "MODULE_DOWNLOAD_CERT",
+        "MODULE_MOVIE_TICKETS",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-EDUCATION-0078-M6",
+        "WFG-EDUCATION-0078-M7",
+        "WFG-EDUCATION-0078-M8",
+        "WFG-EDUCATION-0078-M9",
+        "WFG-EDUCATION-0078-M10"
+      ],
+      "terminal_predicates": [
+        "assignment_resources_provisioned",
+        "assignment_submitted",
+        "certificate_downloaded",
+        "event_ticket_booked",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M1",
+      "module_id": "MODULE_LIBRARY_SERVICE",
+      "binding_id": "BIND_J6_LIBRARY_SERVICE",
+      "binding_task_id": "J6-2025-LIBRARY",
+      "parameter_values": {
+        "applicant_name": "王五",
+        "student_id": "S888999",
+        "book_query": "Playwright in Practice",
+        "pickup_date": "2026-03-20"
+      },
+      "description": "Apply for a library card for 王五 after enrollment and reserve Playwright in Practice for pickup on 2026-03-20.",
+      "expected_observables": [
+        "exists('#reservations-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "assignment_resources_provisioned",
+          "library_pickup_reserved"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M2",
+      "module_id": "MODULE_SUBMIT_ASSIGNMENT",
+      "binding_id": "BIND_J7_SUBMIT_ASSIGNMENT",
+      "binding_task_id": "J7-2025-ASSIGNSUB",
+      "parameter_values": {
+        "course_id": "ML202",
+        "assignment_title": "ML202 Project Draft",
+        "file_name": "ml202_project_draft.pdf",
+        "submission_note": "Assignment submitted before review time."
+      },
+      "description": "Submit ML202 Project Draft for course ML202 using attachment ml202_project_draft.pdf.",
+      "expected_observables": [
+        "exists('#assignment-submissions-list .course-card')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "assignment_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M3",
+      "module_id": "MODULE_DOWNLOAD_CERT",
+      "binding_id": "BIND_J8_DOWNLOAD_CERT",
+      "binding_task_id": "J8-2025-CERTISSUE",
+      "parameter_values": {},
+      "description": "Issue and verify a course completion certificate.",
+      "expected_observables": [
+        "url().includes('/school.local/certification.html')",
+        "exists(\"button:has-text('Apply Now')\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "certificate_downloaded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M4",
+      "module_id": "MODULE_EVENT_TICKETS",
+      "binding_id": "BIND_J3_EVENT_TICKETS",
+      "binding_task_id": "J3-2025-TICKETS",
+      "parameter_values": {
+        "event_name": "Outdoor Film Meetup",
+        "price": 30,
+        "recipient_id": "S112233"
+      },
+      "description": "Buy a ticket for Outdoor Film Meetup and transfer it to S112233.",
+      "expected_observables": [
+        "exists(\"#tickets-list .card .badge.pri\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M6",
+      "module_id": "MODULE_BUY_EBOOK",
+      "binding_id": "BIND_J2_BUY_EBOOK",
+      "binding_task_id": "J2-2025-EBOOK",
+      "parameter_values": {
+        "bookId": "BK-102"
+      },
+      "description": "Buy the ebook 'Python数据分析' (ID: BK-102).",
+      "expected_observables": [
+        "url().includes('/school.local/my-learning.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "assignment_resources_provisioned",
+          "ebook_owned"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M7",
+      "module_id": "MODULE_SUBMIT_ASSIGNMENT",
+      "binding_id": "BIND_J7_SUBMIT_ASSIGNMENT",
+      "binding_task_id": "J7-2025-ASSIGNSUB",
+      "parameter_values": {
+        "course_id": "ML202",
+        "assignment_title": "ML202 Project Draft",
+        "file_name": "ml202_project_draft.pdf",
+        "submission_note": "Assignment submitted before review time."
+      },
+      "description": "Submit ML202 Project Draft for course ML202 using attachment ml202_project_draft.pdf.",
+      "expected_observables": [
+        "exists('#assignment-submissions-list .course-card')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "assignment_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M8",
+      "module_id": "MODULE_DOWNLOAD_CERT",
+      "binding_id": "BIND_J8_DOWNLOAD_CERT",
+      "binding_task_id": "J8-2025-CERTISSUE",
+      "parameter_values": {},
+      "description": "Issue and verify a course completion certificate.",
+      "expected_observables": [
+        "url().includes('/school.local/certification.html')",
+        "exists(\"button:has-text('Apply Now')\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "certificate_downloaded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M9",
+      "module_id": "MODULE_MOVIE_TICKETS",
+      "binding_id": "BIND_B9_MOVIE_TICKETS",
+      "binding_task_id": "B9-2025-EVENTBOOKING",
+      "parameter_values": {
+        "target_site": "school.local/event-tickets.html"
+      },
+      "description": "Book a ticket for an available event.",
+      "expected_observables": [
+        "url().includes('/school.local/event-tickets.html')",
+        "exists(\"#tickets-list .card .badge.ok\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0078-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "assignment_resources_provisioned",
+      "assignment_submitted",
+      "certificate_downloaded",
+      "event_ticket_booked",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "assignment_resources_provisioned",
+      "assignment_submitted",
+      "calendar_event_synced",
+      "certificate_downloaded",
+      "ebook_owned",
+      "event_ticket_booked",
+      "library_pickup_reserved"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

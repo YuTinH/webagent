@@ -1,0 +1,41 @@
+{
+  "goal_id": "WF-SECURITY-001",
+  "theme": "security",
+  "difficulty": 5,
+  "instruction": "Recover access to the account today, restore strong login protection, and move 2FA onto your new device before the session ends.",
+  "visible_constraints": {
+    "deadline_days": 1,
+    "must_avoid": [
+      "two_factor_disabled_at_finish"
+    ],
+    "preferred_outcomes": [
+      "new_device_protected"
+    ]
+  },
+  "initial_world_state": {
+    "password_reset_code_requested": false,
+    "password_reset_completed": false,
+    "two_factor_enabled": false,
+    "two_factor_device_updated": false
+  },
+  "target_state": [
+    "password_reset_completed",
+    "two_factor_enabled",
+    "two_factor_device_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [1, 2]
+    },
+    {
+      "path": "initial_world_state.two_factor_enabled",
+      "type": "toggle",
+      "values": [false, true]
+    }
+  ],
+  "max_steps": 75,
+  "max_module_invocations": 5,
+  "notes": "Prototype security workflow with a recovery alternative path."
+}

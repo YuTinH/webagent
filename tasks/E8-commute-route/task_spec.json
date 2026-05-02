@@ -1,0 +1,42 @@
+{
+  "task_id": "E8-2025-COMMUTE",
+  "family": "E",
+  "goal": "Check your daily commute route and cost.",
+  "inputs": {
+    "origin": "家",
+    "destination": "办公室",
+    "commute_time": "08:00",
+    "transport_mode": "all"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "ANY[ALL[json('env','world_state.location_context.tier') == 'suburban', mem('commute.last_search.cost') == 120.0], ALL[NOT[json('env','world_state.location_context.tier') == 'suburban'], mem('commute.last_search.cost') == 35.0]]"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_commute_cost_city",
+      "name": "City-center commute cost baseline",
+      "assertion": "mem('commute.last_search.cost') == 35.0",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": [],
+      "when": "NOT[json('env','world_state.location_context.tier') == 'suburban']"
+    },
+    {
+      "id": "cp_commute_cost_suburb",
+      "name": "Suburban commute cost uplift",
+      "assertion": "mem('commute.last_search.cost') == 120.0",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": [],
+      "when": "json('env','world_state.location_context.tier') == 'suburban'"
+    }
+  ],
+  "allowed_domains": [
+    "trip.local"
+  ],
+  "module_group": "commute_route",
+  "canonical_task_dir": "E8-commute-route",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

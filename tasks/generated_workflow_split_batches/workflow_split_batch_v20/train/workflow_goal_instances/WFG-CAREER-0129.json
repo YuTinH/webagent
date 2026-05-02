@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-CAREER-0129",
+  "theme": "career",
+  "difficulty": 8,
+  "instruction": "Finish the submission-coordination workflow only after the paper is submitted, records are archived, the professional signal is updated, and the follow-up thread is tracked by email.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "paper_submitted",
+      "deadline_coordination_recorded",
+      "receipt_archived",
+      "career_signal_strengthened",
+      "email_thread_tracked"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "paper_submitted",
+    "deadline_coordination_recorded",
+    "receipt_archived",
+    "career_signal_strengthened",
+    "email_thread_tracked"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CAREER_SUBMISSION_TIMING_ALIGNMENT; submission-coordination workflows should continue into tracked follow-up communication after signaling is updated."
+}

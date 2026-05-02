@@ -1,0 +1,31 @@
+{
+  "goal_id": "WFG-GOV-0227",
+  "theme": "government",
+  "difficulty": 5,
+  "instruction": "Wrap up the government route after aligning address records and verifying local vehicle compliance.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "address_records_aligned",
+      "local_vehicle_compliance_verified"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_records_aligned",
+    "local_vehicle_compliance_verified"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 41,
+  "max_module_invocations": 6,
+  "notes": "Complete secure housing, then collect address proof, then submit the address change, then submit the parking permit application, then complete permit renewal to reach the target."
+}

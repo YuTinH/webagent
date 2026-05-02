@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-FINANCE-0062",
+  "theme": "finance",
+  "difficulty": 7,
+  "instruction": "Close the finance-readiness workflow by opening the account, triaging the account state, updating the budget limit, archiving the receipt trail, and ending with a synced follow-up reminder.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "bank_account_active",
+      "account_issue_triaged",
+      "budget_limit_updated",
+      "receipt_archived",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bank_account_active",
+    "account_issue_triaged",
+    "budget_limit_updated",
+    "receipt_archived",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_ACCOUNT_TRIAGE_READINESS; account-readiness finance workflows should close with budget and follow-up scheduling after triage."
+}

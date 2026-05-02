@@ -1,0 +1,389 @@
+{
+  "goal_id": "WFG-DAILY-0093",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either use the movie-ticket route before calendar sync, or use the event-ticket route before the same calendar closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "role": "required",
+      "produces": [
+        "coupon_available",
+        "daily_order_bundle_prepared",
+        "order_price_secured",
+        "service_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_EVENT_TICKETS",
+      "role": "alternative",
+      "produces": [
+        "event_ticket_booked"
+      ]
+    },
+    {
+      "module_id": "MODULE_FOOD_DELIVERY",
+      "role": "required",
+      "produces": [
+        "food_order_pending"
+      ]
+    },
+    {
+      "module_id": "MODULE_HOUSEKEEPING_BOOKING",
+      "role": "required",
+      "produces": [
+        "housekeeping_service_booked",
+        "service_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_MOVIE_TICKETS",
+      "role": "alternative",
+      "produces": [
+        "event_ticket_booked"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_COUPON_MANAGEMENT",
+      "to": "MODULE_FOOD_DELIVERY",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_EVENT_TICKETS",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FOOD_DELIVERY",
+      "to": "MODULE_EVENT_TICKETS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FOOD_DELIVERY",
+      "to": "MODULE_MOVIE_TICKETS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_HOUSEKEEPING_BOOKING",
+      "to": "MODULE_COUPON_MANAGEMENT",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_MOVIE_TICKETS",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_service_coupon_food_movie_calendar",
+      "required_modules": [
+        "MODULE_HOUSEKEEPING_BOOKING",
+        "MODULE_COUPON_MANAGEMENT",
+        "MODULE_FOOD_DELIVERY",
+        "MODULE_MOVIE_TICKETS",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0093-M1",
+        "WFG-DAILY-0093-M2",
+        "WFG-DAILY-0093-M3",
+        "WFG-DAILY-0093-M4",
+        "WFG-DAILY-0093-M5"
+      ],
+      "terminal_predicates": [
+        "housekeeping_service_booked",
+        "order_price_secured",
+        "food_order_pending",
+        "event_ticket_booked",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_service_coupon_food_event_calendar",
+      "required_modules": [
+        "MODULE_HOUSEKEEPING_BOOKING",
+        "MODULE_COUPON_MANAGEMENT",
+        "MODULE_FOOD_DELIVERY",
+        "MODULE_EVENT_TICKETS",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0093-M6",
+        "WFG-DAILY-0093-M7",
+        "WFG-DAILY-0093-M8",
+        "WFG-DAILY-0093-M9",
+        "WFG-DAILY-0093-M10"
+      ],
+      "terminal_predicates": [
+        "housekeeping_service_booked",
+        "order_price_secured",
+        "food_order_pending",
+        "event_ticket_booked",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-DAILY-0093-M1",
+      "module_id": "MODULE_HOUSEKEEPING_BOOKING",
+      "binding_id": "BIND_B8_HOUSEKEEPING_BOOKING",
+      "binding_task_id": "B8-2025-HOUSEKEEPING",
+      "parameter_values": {
+        "service_type": "deep_cleaning",
+        "service_date": "2026-01-18",
+        "service_time": "13:00",
+        "instructions": "Focus on kitchen and bathroom"
+      },
+      "description": "Book a deep cleaning session for 2026-01-18 at 13:00.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "housekeeping_service_booked",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0093-M2",
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "binding_id": "BIND_B10_COUPON_MANAGEMENT",
+      "binding_task_id": "B10-2025-COUPONS",
+      "parameter_values": {
+        "name": "Spring Saver",
+        "code": "SAVE20",
+        "type": "discount",
+        "value": "20.0",
+        "min_spend": "100.0",
+        "expiry_date": "2026-04-30"
+      },
+      "description": "Add a discount coupon SAVE20 worth 20.0 off with a minimum spend of 100.0.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coupon_available",
+          "daily_order_bundle_prepared",
+          "order_price_secured",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0093-M3",
+      "module_id": "MODULE_FOOD_DELIVERY",
+      "binding_id": "BIND_B3_FOOD_DELIVERY",
+      "binding_task_id": "B3-2025-FOOD-PROMO",
+      "parameter_values": {
+        "restaurant": "Pizza Palace",
+        "item": "Margherita",
+        "promo_code": "SAVE20",
+        "total": 10.39
+      },
+      "description": "Order a 'Margherita' pizza from 'Pizza Palace' with a promo code 'SAVE20' for a total of $10.39.",
+      "expected_observables": [
+        "url().includes('/food.local/orders.html')",
+        "json('env','food.orders.last.restaurant') == 'Pizza Palace'",
+        "json('env','food.orders.last.items') includes 'Margherita'",
+        "json('env','food.orders.last.total') == 10.39",
+        "json('env','food.orders.last.promo_code') == 'SAVE20'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "food_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0093-M4",
+      "module_id": "MODULE_MOVIE_TICKETS",
+      "binding_id": "BIND_B9_MOVIE_TICKETS",
+      "binding_task_id": "B9-2025-EVENTBOOKING",
+      "parameter_values": {
+        "target_site": "school.local/event-tickets.html"
+      },
+      "description": "Book a ticket for an available event.",
+      "expected_observables": [
+        "url().includes('/school.local/event-tickets.html')",
+        "exists(\"#tickets-list .card .badge.ok\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0093-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0093-M6",
+      "module_id": "MODULE_HOUSEKEEPING_BOOKING",
+      "binding_id": "BIND_B8_HOUSEKEEPING_BOOKING",
+      "binding_task_id": "B8-2025-HOUSEKEEPING",
+      "parameter_values": {
+        "service_type": "deep_cleaning",
+        "service_date": "2026-01-18",
+        "service_time": "13:00",
+        "instructions": "Focus on kitchen and bathroom"
+      },
+      "description": "Book a deep cleaning session for 2026-01-18 at 13:00.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "housekeeping_service_booked",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0093-M7",
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "binding_id": "BIND_B10_COUPON_MANAGEMENT",
+      "binding_task_id": "B10-2025-COUPONS",
+      "parameter_values": {
+        "name": "Spring Saver",
+        "code": "SAVE20",
+        "type": "discount",
+        "value": "20.0",
+        "min_spend": "100.0",
+        "expiry_date": "2026-04-30"
+      },
+      "description": "Add a discount coupon SAVE20 worth 20.0 off with a minimum spend of 100.0.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coupon_available",
+          "daily_order_bundle_prepared",
+          "order_price_secured",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0093-M8",
+      "module_id": "MODULE_FOOD_DELIVERY",
+      "binding_id": "BIND_B3_FOOD_DELIVERY",
+      "binding_task_id": "B3-2025-FOOD-PROMO",
+      "parameter_values": {
+        "restaurant": "Pizza Palace",
+        "item": "Margherita",
+        "promo_code": "SAVE20",
+        "total": 10.39
+      },
+      "description": "Order a 'Margherita' pizza from 'Pizza Palace' with a promo code 'SAVE20' for a total of $10.39.",
+      "expected_observables": [
+        "url().includes('/food.local/orders.html')",
+        "json('env','food.orders.last.restaurant') == 'Pizza Palace'",
+        "json('env','food.orders.last.items') includes 'Margherita'",
+        "json('env','food.orders.last.total') == 10.39",
+        "json('env','food.orders.last.promo_code') == 'SAVE20'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "food_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0093-M9",
+      "module_id": "MODULE_EVENT_TICKETS",
+      "binding_id": "BIND_J3_EVENT_TICKETS",
+      "binding_task_id": "J3-2025-TICKETS",
+      "parameter_values": {
+        "event_name": "Outdoor Film Meetup",
+        "price": 30,
+        "recipient_id": "S112233"
+      },
+      "description": "Buy a ticket for Outdoor Film Meetup and transfer it to S112233.",
+      "expected_observables": [
+        "exists(\"#tickets-list .card .badge.pri\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0093-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "housekeeping_service_booked",
+      "order_price_secured",
+      "food_order_pending",
+      "event_ticket_booked",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_synced",
+      "coupon_available",
+      "daily_order_bundle_prepared",
+      "event_ticket_booked",
+      "food_order_pending",
+      "housekeeping_service_booked",
+      "order_price_secured",
+      "service_stack_prepared"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

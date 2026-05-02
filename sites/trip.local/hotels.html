@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> - Nebula</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.search-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+.hotel-results {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+.hotel-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+}
+.hotel-item:last-child {
+  border-bottom: none;
+}
+.hotel-details {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.hotel-icon {
+  font-size: 48px;
+  width: 60px;
+  text-align: center;
+}
+.hotel-info h3 {
+  font-size: 18px;
+  margin: 0 0 4px 0;
+}
+.hotel-meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+.hotel-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+.hotel-actions .btn {
+  padding: 10px 20px;
+  font-size: 15px;
+}
+.loading-message {
+  padding: 40px;
+  text-align: center;
+  color: var(--muted);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula</div>
+    <div class="navlinks">
+      <a href="../trip.local/dashboard.html">Home</a>
+      <a href="../trip.local/flights.html">Flights</a>
+      <a href="../trip.local/hotels.html" class="active">Hotels</a>
+      <a href="../trip.local/manage.html">My Trips</a>
+    </div>
+    <div style="margin-left:auto">
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">Hotel Booking</h1>
+
+  <!-- Hotel Search Form -->
+  <div class="search-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="city">Destination City</label>
+        <input type="text" id="city" value="">
+      </div>
+      <div class="form-group">
+        <label for="check-in-date">Date</label>
+        <input type="date" id="check-in-date" value="">
+      </div>
+      <div class="form-group">
+        <label for="check-out-date">Date</label>
+        <input type="date" id="check-out-date" value="">
+      </div>
+      <div class="form-group">
+        <label for="guests">Guests</label>
+        <input type="number" id="guests" value="1" min="1">
+      </div>
+    </div>
+    <div class="button-group">
+      <button class="btn pri lg" id="search-hotels-btn" onclick="searchHotels()">Search Hotels</button>
+    </div>
+  </div>
+
+  <!-- Hotel Search Results -->
+  <div id="hotel-results" class="hotel-results">
+    <div class="loading-message">Search for available hotels.</div>
+  </div>
+
+  <div class="footer">Nebula · Synthetic UI for Web Agent Research</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const hotelParams = new URLSearchParams(window.location.search);
+const requestedHotelTaskId = hotelParams.get('task') || 'E2-2025-HOTEL';
+const hotelTaskId = resolveTaskId(requestedHotelTaskId);
+let currentHotels = [];
+let userMenuDropdown = null;
+
+function normalizeHotelCity(value, fallback = '') {
+  const raw = String(value || '').trim();
+  if (!raw) return fallback;
+  const aliases = {
+    beijing: '北京',
+    shanghai: '上海',
+    guangzhou: '广州',
+    shenzhen: '深圳',
+    hangzhou: '杭州'
+  };
+  return aliases[raw.toLowerCase()] || raw;
+}
+
+// Initialize components on load
+window.addEventListener('DOMContentLoaded', () => {
+  // User menu dropdown
+  userMenuDropdown = new Dropdown(document.getElementById('user-menu-btn'), {
+    align: 'right',
+    items: [
+      { icon: '👤', label: 'My Account', value: 'account' },
+      { icon: '✈️', label: '', value: 'my_trips' },
+      { type: 'divider' },
+      { icon: '⚙️', label: '', value: 'settings' },
+      { icon: '🚪', label: 'Login', value: 'logout' }
+    ],
+    onSelect: (item) => {
+      if (item.value === 'my_trips') window.location.href=window.RelRoot+'trip.local/manage.html';
+      else Toast.info(`${item.label}`);
+    }
+  });
+});
+
+
+async function searchHotels() {
+  const city = document.getElementById('city').value;
+  const checkInDate = document.getElementById('check-in-date').value;
+  const checkOutDate = document.getElementById('check-out-date').value;
+  const guests = document.getElementById('guests').value;
+
+  if (!city || !checkInDate || !checkOutDate || !guests) {
+    Toast.error('');
+    return;
+  }
+
+  const resultsContainer = document.getElementById('hotel-results');
+  resultsContainer.innerHTML = '<div class="loading-message">Search...</div>';
+
+  try {
+    const response = await fetch(`${window.RelRoot}api/hotels/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        city,
+        check_in_date: checkInDate,
+        check_out_date: checkOutDate,
+        guests: parseInt(guests)
+      })
+    });
+    const data = await response.json();
+
+    if (data.success && data.hotels.length > 0) {
+      currentHotels = data.hotels;
+      renderHotels(currentHotels);
+    } else {
+      resultsContainer.innerHTML = '<div class="loading-message">No matching hotels found.</div>';
+    }
+  } catch (error) {
+    console.error('SearchDetails:', error);
+    resultsContainer.innerHTML = '<div class="loading-message">SearchError, please try again.</div>';
+    Toast.error('Search');
+  }
+}
+
+function renderHotels(hotels) {
+  const resultsContainer = document.getElementById('hotel-results');
+  resultsContainer.innerHTML = ''; // Clear loading message
+
+  hotels.forEach(hotel => {
+    const hotelItem = document.createElement('div');
+    hotelItem.className = 'hotel-item';
+    hotelItem.innerHTML = `
+      <div class="hotel-details">
+        <div class="hotel-icon">🏨</div>
+        <div class="hotel-info">
+          <h3>${hotel.name}</h3>
+          <div class="hotel-meta">${hotel.rating}  · ${hotel.city}</div>
+        </div>
+      </div>
+      <div class="hotel-price">¥${hotel.price.toFixed(2)}</div>
+      <div class="hotel-actions">
+        <button id="book-hotel-${hotel.id}" class="btn pri" onclick="bookHotel('${hotel.id}', '${hotel.name}', '${hotel.price}')">预订</button>
+      </div>
+    `;
+    resultsContainer.appendChild(hotelItem);
+  });
+}
+
+async function bookHotel(hotelId, hotelName, price) {
+  const city = normalizeHotelCity(document.getElementById('city').value, '');
+  const checkInDate = document.getElementById('check-in-date').value;
+  const checkOutDate = document.getElementById('check-out-date').value;
+
+  const date1 = new Date(checkInDate);
+  const date2 = new Date(checkOutDate);
+  const diffTime = Math.abs(date2 - date1);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  const nights = diffDays > 0 ? diffDays : 1; // Ensure at least 1 night
+
+  Toast.info(` ${hotelName}...`);
+  try {
+    const response = await send(hotelTaskId, 'book_hotel', {
+      hotel_id: hotelId,
+      name: hotelName,
+      city: city,
+      checkin: checkInDate,
+      checkout: checkOutDate,
+      nights: nights, // Added nights
+      price: parseFloat(price)
+    });
+
+    if (response && response.success) {
+      Toast.success('!');
+      window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    } else {
+      Toast.error('Details: ' + (response ? response.error : ''));
+      console.warn('Response invalid, attempting fallback redirect...');
+      window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    }
+  } catch (error) {
+    console.error('Details:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}trip.local/manage.html`;
+    } else {
+        Toast.error('Error, please try again.');
+    }
+  }
+}
+
+// Initial search on load if params are present
+document.addEventListener('DOMContentLoaded', () => {
+    if (hotelParams.get('city') && hotelParams.get('check_in_date')) {
+        document.getElementById('city').value = hotelParams.get('city');
+        document.getElementById('check-in-date').value = hotelParams.get('check_in_date');
+        if (hotelParams.get('check_out_date')) {
+            document.getElementById('check-out-date').value = hotelParams.get('check_out_date');
+        }
+        if (hotelParams.get('guests')) {
+            document.getElementById('guests').value = hotelParams.get('guests');
+        }
+        searchHotels();
+    }
+});
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

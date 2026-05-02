@@ -1,0 +1,36 @@
+{
+  "task_id": "I5-2025-ENERGY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/energy.local/plan.html?clean=true",
+      "note": "Open energy plan page"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#meter-id",
+      "value": "M-321",
+      "note": "Select meter M-321"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#select-plan-green_offpeak",
+      "note": "Wait for Green Off-peak action button"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "#select-plan-green_offpeak",
+      "note": "Click select button for Green Off-peak plan"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#plan-green_offpeak.active",
+      "note": "Wait for Green Off-peak plan to be active"
+    }
+  ]
+}

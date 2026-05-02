@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-DAILY-0161",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Close the daily protection route by creating the order context first, handling follow-up and price protection, confirming delivery, and ending with a concrete service contact.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "order_followup_prepared",
+      "order_price_secured",
+      "delivery_visibility_confirmed",
+      "shop_order_delivered",
+      "support_contacted"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "order_followup_prepared",
+    "order_price_secured",
+    "delivery_visibility_confirmed",
+    "shop_order_delivered",
+    "support_contacted"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_TRACK_PRICE_STACK; order-protection daily workflows should continue into explicit customer-service closure after delivery."
+}

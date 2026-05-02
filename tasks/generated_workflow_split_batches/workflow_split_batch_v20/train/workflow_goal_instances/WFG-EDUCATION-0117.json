@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-EDUCATION-0117",
+  "theme": "education",
+  "difficulty": 7,
+  "instruction": "Finish the resource-cert packet only after study resources are provisioned, the certificate is downloaded, the rental listing is active, and the study calendar is synced.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "assignment_resources_provisioned",
+      "certificate_downloaded",
+      "rental_listing_active",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "education_account_activated"
+  ],
+  "target_state": [
+    "assignment_resources_provisioned",
+    "certificate_downloaded",
+    "rental_listing_active",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_EDUCATION_RESOURCE_CERT_ALIGNMENT; resource-cert education workflows should continue into rental readiness before the final calendar closure."
+}

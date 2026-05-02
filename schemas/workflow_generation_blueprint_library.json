@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowGenerationBlueprintLibrary",
+  "description": "Reusable blueprint library for scalable workflow-goal and hidden-oracle generation.",
+  "type": "object",
+  "required": ["version", "description", "blueprints"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "blueprints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "blueprint_id",
+          "theme",
+          "goal_id_prefix",
+          "difficulty",
+          "instruction_templates",
+          "visible_constraints",
+          "initial_world_state",
+          "target_state",
+          "max_steps",
+          "max_module_invocations",
+          "distinctness_rule",
+          "shared_variable_pools",
+          "paths"
+        ],
+        "properties": {
+          "blueprint_id": {
+            "type": "string"
+          },
+          "theme": {
+            "type": "string"
+          },
+          "goal_id_prefix": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "instruction_templates": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "visible_constraints": {
+            "type": "object"
+          },
+          "initial_world_state": {
+            "type": "object"
+          },
+          "target_state": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "counterfactual_axes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "max_steps": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "max_module_invocations": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "notes_template": {
+            "type": "string"
+          },
+          "distinctness_rule": {
+            "type": "string"
+          },
+          "shared_variable_pools": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "minItems": 1,
+              "items": {}
+            }
+          },
+          "paths": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["path_id", "kind", "steps"],
+              "properties": {
+                "path_id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": ["hard", "alternative", "recovery"]
+                },
+                "steps": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": ["module_id"],
+                    "properties": {
+                      "module_id": {
+                        "type": "string"
+                      },
+                      "binding_id": {
+                        "type": "string"
+                      },
+                      "binding_task_id": {
+                        "type": "string"
+                      },
+                      "parameter_bindings": {
+                        "type": "object",
+                        "additionalProperties": {}
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

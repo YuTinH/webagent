@@ -1,0 +1,373 @@
+{
+  "goal_id": "WFG-CAREER-0125",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full submission-coordination route to completion and do not stop before the paper is submitted, the signal is updated, and follow-up email tracking is completed."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CALENDAR_AGGREGATION",
+      "role": "alternative",
+      "produces": [
+        "calendar_event_created",
+        "deadline_coordination_recorded"
+      ]
+    },
+    {
+      "module_id": "MODULE_CONFERENCE_REGISTRATION",
+      "role": "alternative",
+      "produces": [
+        "conference_admin_recorded",
+        "conference_registered",
+        "deadline_coordination_recorded"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_TRACKING",
+      "role": "required",
+      "produces": [
+        "career_signal_strengthened",
+        "email_thread_tracked"
+      ]
+    },
+    {
+      "module_id": "MODULE_PAPER_SUBMISSION",
+      "role": "required",
+      "produces": [
+        "paper_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "role": "required",
+      "produces": [
+        "receipt_archived"
+      ]
+    },
+    {
+      "module_id": "MODULE_UPDATE_LINKEDIN",
+      "role": "required",
+      "produces": [
+        "career_signal_strengthened",
+        "professional_profile_updated"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_CALENDAR_AGGREGATION",
+      "to": "MODULE_PAPER_SUBMISSION",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_CONFERENCE_REGISTRATION",
+      "to": "MODULE_PAPER_SUBMISSION",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_PAPER_SUBMISSION",
+      "to": "MODULE_RECEIPT_ARCHIVING",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_RECEIPT_ARCHIVING",
+      "to": "MODULE_UPDATE_LINKEDIN",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_UPDATE_LINKEDIN",
+      "to": "MODULE_EMAIL_TRACKING",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_calendar_submission_archive_linkedin_email",
+      "required_modules": [
+        "MODULE_CALENDAR_AGGREGATION",
+        "MODULE_PAPER_SUBMISSION",
+        "MODULE_RECEIPT_ARCHIVING",
+        "MODULE_UPDATE_LINKEDIN",
+        "MODULE_EMAIL_TRACKING"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CAREER-0125-M1",
+        "WFG-CAREER-0125-M2",
+        "WFG-CAREER-0125-M3",
+        "WFG-CAREER-0125-M4",
+        "WFG-CAREER-0125-M5"
+      ],
+      "terminal_predicates": [
+        "paper_submitted",
+        "deadline_coordination_recorded",
+        "receipt_archived",
+        "career_signal_strengthened",
+        "email_thread_tracked"
+      ]
+    },
+    {
+      "path_id": "path_conf_submission_archive_linkedin_email",
+      "required_modules": [
+        "MODULE_CONFERENCE_REGISTRATION",
+        "MODULE_PAPER_SUBMISSION",
+        "MODULE_RECEIPT_ARCHIVING",
+        "MODULE_UPDATE_LINKEDIN",
+        "MODULE_EMAIL_TRACKING"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CAREER-0125-M6",
+        "WFG-CAREER-0125-M7",
+        "WFG-CAREER-0125-M8",
+        "WFG-CAREER-0125-M9",
+        "WFG-CAREER-0125-M10"
+      ],
+      "terminal_predicates": [
+        "paper_submitted",
+        "deadline_coordination_recorded",
+        "receipt_archived",
+        "career_signal_strengthened",
+        "email_thread_tracked"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-CAREER-0125-M1",
+      "module_id": "MODULE_CALENDAR_AGGREGATION",
+      "binding_id": "BIND_F6_CALENDAR_AGGREGATION",
+      "binding_task_id": "F6-2025-CALENDAR",
+      "parameter_values": {
+        "work_title": "团队会议",
+        "personal_title": "牙医预约",
+        "date": "2026-01-16",
+        "time": "15:30"
+      },
+      "description": "Add a personal event Dentist Follow-up on 2026-01-16 at 15:30.",
+      "expected_observables": [
+        "exists('#event-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_created",
+          "deadline_coordination_recorded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0125-M2",
+      "module_id": "MODULE_PAPER_SUBMISSION",
+      "binding_id": "BIND_F8_PAPER_SUBMISSION",
+      "binding_task_id": "F8-2025-PAPERSUB",
+      "parameter_values": {
+        "title": "Branch-Aware Benchmarking",
+        "journal": "EMNLP Findings",
+        "authors": "Tianyu Hu, David Sun",
+        "file": "branch_aware_benchmarking.pdf"
+      },
+      "description": "Submit the paper Branch-Aware Benchmarking to EMNLP Findings using file branch_aware_benchmarking.pdf.",
+      "expected_observables": [
+        "exists(\"#submissions-list .card:has-text('Branch-Aware Benchmarking')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "paper_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0125-M3",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0125-M4",
+      "module_id": "MODULE_UPDATE_LINKEDIN",
+      "binding_id": "BIND_F3_UPDATE_LINKEDIN",
+      "binding_task_id": "F3-2025-LINKEDIN",
+      "parameter_values": {},
+      "description": "Update professional profile",
+      "expected_observables": [
+        "exists(\"#email-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "career_signal_strengthened",
+          "professional_profile_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0125-M5",
+      "module_id": "MODULE_EMAIL_TRACKING",
+      "binding_id": "BIND_F9_EMAIL_TRACKING",
+      "binding_task_id": "F9-2025-EMAILTRACK",
+      "parameter_values": {
+        "subject": "Budget Review Request",
+        "sender": "finance@example.com",
+        "summary": "Need your feedback on the Q1 budget sheet."
+      },
+      "description": "Track the email thread Budget Review Request from finance@example. Then com.",
+      "expected_observables": [
+        "exists('#email-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "career_signal_strengthened",
+          "email_thread_tracked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0125-M6",
+      "module_id": "MODULE_CONFERENCE_REGISTRATION",
+      "binding_id": "BIND_F7_CONFERENCE_REGISTRATION",
+      "binding_task_id": "F7-2025-CONFINVOICE",
+      "parameter_values": {
+        "document_name": "Conference-Invoice",
+        "document_type": "invoice",
+        "amount": "980",
+        "date": "2025-12-31",
+        "paymentMethod": "invoice"
+      },
+      "description": "Upload the conference invoice document 'Conference-Invoice' for amount 980 dated 2025-12-31 for tax review.",
+      "expected_observables": [
+        "exists(\"#tax-docs-list .invoice:has-text('Conference-Invoice')\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "conference_admin_recorded",
+          "conference_registered",
+          "deadline_coordination_recorded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0125-M7",
+      "module_id": "MODULE_PAPER_SUBMISSION",
+      "binding_id": "BIND_F8_PAPER_SUBMISSION",
+      "binding_task_id": "F8-2025-PAPERSUB",
+      "parameter_values": {
+        "title": "Branch-Aware Benchmarking",
+        "journal": "EMNLP Findings",
+        "authors": "Tianyu Hu, David Sun",
+        "file": "branch_aware_benchmarking.pdf"
+      },
+      "description": "Submit the paper Branch-Aware Benchmarking to EMNLP Findings using file branch_aware_benchmarking.pdf.",
+      "expected_observables": [
+        "exists(\"#submissions-list .card:has-text('Branch-Aware Benchmarking')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "paper_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0125-M8",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0125-M9",
+      "module_id": "MODULE_UPDATE_LINKEDIN",
+      "binding_id": "BIND_F3_UPDATE_LINKEDIN",
+      "binding_task_id": "F3-2025-LINKEDIN",
+      "parameter_values": {},
+      "description": "Update professional profile",
+      "expected_observables": [
+        "exists(\"#email-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "career_signal_strengthened",
+          "professional_profile_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0125-M10",
+      "module_id": "MODULE_EMAIL_TRACKING",
+      "binding_id": "BIND_F9_EMAIL_TRACKING",
+      "binding_task_id": "F9-2025-EMAILTRACK",
+      "parameter_values": {
+        "subject": "Budget Review Request",
+        "sender": "finance@example.com",
+        "summary": "Need your feedback on the Q1 budget sheet."
+      },
+      "description": "Track the email thread Budget Review Request from finance@example. Then com.",
+      "expected_observables": [
+        "exists('#email-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "career_signal_strengthened",
+          "email_thread_tracked"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "paper_submitted",
+      "deadline_coordination_recorded",
+      "receipt_archived",
+      "career_signal_strengthened",
+      "email_thread_tracked"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_created",
+      "career_signal_strengthened",
+      "conference_admin_recorded",
+      "conference_registered",
+      "deadline_coordination_recorded",
+      "email_thread_tracked",
+      "paper_submitted",
+      "professional_profile_updated",
+      "receipt_archived"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

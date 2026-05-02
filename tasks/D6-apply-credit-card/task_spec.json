@@ -1,0 +1,115 @@
+{
+  "task_id": "D6-2025-CARDREPLACE",
+  "family": "D",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Replace the current bank card after OTP verification and set the new card digits to 8888.",
+  "inputs": {
+    "new_last4": "8888"
+  },
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "preconditions": [
+    "mem('banking.balance.checking') > 0"
+  ],
+  "dependencies": [
+    "D1-check-balance"
+  ],
+  "memory_keys": [
+    "payment.cards[0].last4",
+    "payment.cards[0].state"
+  ],
+  "success_criteria": [
+    "url().includes('/bank.local/cards.html')",
+    "mem('payment.cards[0].last4') == '8888'",
+    "mem('payment.cards[0].state') == 'active'",
+    "exists('#cards-grid .badge.ok')",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Cards page opened",
+      "assertion": "url().includes('/bank.local/cards.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Card last4 populated",
+      "assertion": "mem('payment.cards[0].last4') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Card digits updated",
+      "assertion": "mem('payment.cards[0].last4') == '8888'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_state",
+      "name": "Card state populated",
+      "assertion": "mem('payment.cards[0].state') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Card active",
+      "assertion": "mem('payment.cards[0].state') == 'active'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_3_state"
+      ]
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Active card badge visible",
+      "assertion": "exists('#cards-grid .badge.ok')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Not blank page",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_6_final",
+      "name": "Not chrome error",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "module_group": "card_replacement",
+  "canonical_task_dir": "D4-card-replacement",
+  "variant_kind": "exact_alias",
+  "lifecycle_status": "deprecated_duplicate"
+}

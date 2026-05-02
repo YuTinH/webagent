@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>trip.local - </title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">✈️ Trip.local</div>
+      <div class="navlinks">
+        <a href="../trip.local/flights.html">Flights</a>
+        <a href="../trip.local/hotels.html">Hotels</a>
+        <a href="../trip.local/commute.html">Commute</a>
+        <a href="../trip.local/transport-card.html" class="active">Transport Card</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Transport Card</h1>
+      <button class="btn pri" id="open-topup" onclick="openTopUpModal()">Top Up</button>
+    </div>
+
+    <div class="card soft">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <div>
+          <div style="font-size:14px; color:var(--muted)">Details: <span id="card-number">...</span></div>
+          <div style="font-size:36px; font-weight:700; margin:8px 0">¥<span id="card-balance">0.00</span></div>
+          <div style="font-size:14px; color:var(--muted)">Status: <span id="card-status" class="badge ok">Normal</span></div>
+        </div>
+        <div style="text-align:right">
+           <div style="margin-bottom:8px">Auto Recharge: <span id="auto-recharge-status">Disabled</span></div>
+           <button class="btn secondary" id="open-auto-recharge" onclick="openAutoRechargeModal()">Configure Auto Recharge</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>Recent Top-ups</h2>
+        <div id="transactions-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Transactions loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+          <div style="color:var(--muted)">No recent top-up records.</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  async function loadCardInfo() {
+    try {
+      const env = await loadEnv();
+      const card = env.transport?.card || {
+          number: "TR-8888-8888",
+          balance: 25.50,
+          status: "active",
+          auto_recharge: { enabled: false, threshold: 20, amount: 50 }
+      };
+
+      document.getElementById('card-number').innerText = card.number;
+      document.getElementById('card-balance').innerText = parseFloat(card.balance).toFixed(2);
+      document.getElementById('card-status').innerText = card.status === 'active' ? 'Normal' : 'Inactive';
+      
+      const ar = card.auto_recharge || {};
+      document.getElementById('auto-recharge-status').innerText = ar.enabled ?
+          `Enabled below ¥${ar.threshold}, reload ¥${ar.amount}` : 'Disabled';
+      
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function openTopUpModal() {
+    new Modal({
+      title: 'Top Up Card',
+      content: `
+        <div class="form">
+          <label>Top-up Amount</label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px">
+             <button class="btn" id="topup-quick-50" onclick="setAmount(50)">¥50</button>
+             <button class="btn" id="topup-quick-100" onclick="setAmount(100)">¥100</button>
+             <button class="btn" id="topup-quick-200" onclick="setAmount(200)">¥200</button>
+          </div>
+          <input id="topup-amount" type="number" class="input" placeholder="Enter amount">
+        </div>
+      `,
+      confirmText: 'Submit Top-up',
+      onConfirm: async () => {
+        const amount = document.getElementById('topup-amount').value;
+        if (!amount || amount <= 0) {
+          Toast.error("Enter a valid amount.");
+          return;
+        }
+        
+        await send(resolveTaskId('E9-2025-TOPUP'), 'transport_topup', {
+          action_type: 'topup',
+          amount: parseFloat(amount)
+        });
+        
+        setTimeout(loadCardInfo, 500);
+      }
+    }).open();
+  }
+
+  window.setAmount = function(val) {
+      document.getElementById('topup-amount').value = val;
+  }
+
+  function openAutoRechargeModal() {
+    new Modal({
+      title: 'Configure Auto Recharge',
+      content: `
+        <div class="form">
+          <div style="margin-bottom:16px; display:flex; align-items:center; gap:8px">
+            <input type="checkbox" id="ar-enable">
+            <label for="ar-enable" style="margin:0">Enable auto recharge</label>
+          </div>
+          <label>Trigger Threshold (Balance)</label>
+          <input id="ar-threshold" type="number" class="input" value="20">
+          <label>Reload Amount</label>
+          <input id="ar-amount" type="number" class="input" value="50">
+        </div>
+      `,
+      confirmText: 'Save Auto Recharge',
+      onConfirm: async () => {
+        const enabled = document.getElementById('ar-enable').checked;
+        const threshold = document.getElementById('ar-threshold').value;
+        const amount = document.getElementById('ar-amount').value;
+        
+        await send(resolveTaskId('E9-2025-TOPUP'), 'transport_topup', {
+          action_type: 'set_auto_recharge',
+          enabled: enabled,
+          threshold: parseFloat(threshold),
+          amount: parseFloat(amount)
+        });
+        
+        setTimeout(loadCardInfo, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadCardInfo);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

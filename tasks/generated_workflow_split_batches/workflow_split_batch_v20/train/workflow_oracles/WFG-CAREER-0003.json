@@ -1,0 +1,387 @@
+{
+  "goal_id": "WFG-CAREER-0003",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full expense-archive route to completion and do not stop before conference administration and the calendar milestone are both completed."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "travel_booking_confirmed"
+      ]
+    },
+    {
+      "module_id": "MODULE_BOOK_HOTEL",
+      "role": "alternative",
+      "produces": [
+        "hotel_booked",
+        "travel_booking_confirmed"
+      ]
+    },
+    {
+      "module_id": "MODULE_CALENDAR_AGGREGATION",
+      "role": "required",
+      "produces": [
+        "calendar_event_created",
+        "deadline_coordination_recorded"
+      ]
+    },
+    {
+      "module_id": "MODULE_CONFERENCE_REG",
+      "role": "required",
+      "produces": [
+        "conference_admin_recorded",
+        "conference_expense_logged"
+      ]
+    },
+    {
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "role": "required",
+      "produces": [
+        "expense_report_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "role": "required",
+      "produces": [
+        "receipt_archived"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_BOOK_FLIGHT",
+      "to": "MODULE_EXPENSE_REPORT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_BOOK_HOTEL",
+      "to": "MODULE_EXPENSE_REPORT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_CONFERENCE_REG",
+      "to": "MODULE_CALENDAR_AGGREGATION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_EXPENSE_REPORT",
+      "to": "MODULE_RECEIPT_ARCHIVING",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_RECEIPT_ARCHIVING",
+      "to": "MODULE_CONFERENCE_REG",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_flight_expense_archive_conf_calendar",
+      "required_modules": [
+        "MODULE_BOOK_FLIGHT",
+        "MODULE_EXPENSE_REPORT",
+        "MODULE_RECEIPT_ARCHIVING",
+        "MODULE_CONFERENCE_REG",
+        "MODULE_CALENDAR_AGGREGATION"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CAREER-0003-M1",
+        "WFG-CAREER-0003-M2",
+        "WFG-CAREER-0003-M3",
+        "WFG-CAREER-0003-M4",
+        "WFG-CAREER-0003-M5"
+      ],
+      "terminal_predicates": [
+        "expense_report_submitted",
+        "receipt_archived",
+        "conference_expense_logged",
+        "conference_admin_recorded",
+        "calendar_event_created"
+      ]
+    },
+    {
+      "path_id": "path_hotel_expense_archive_conf_calendar",
+      "required_modules": [
+        "MODULE_BOOK_HOTEL",
+        "MODULE_EXPENSE_REPORT",
+        "MODULE_RECEIPT_ARCHIVING",
+        "MODULE_CONFERENCE_REG",
+        "MODULE_CALENDAR_AGGREGATION"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CAREER-0003-M6",
+        "WFG-CAREER-0003-M7",
+        "WFG-CAREER-0003-M8",
+        "WFG-CAREER-0003-M9",
+        "WFG-CAREER-0003-M10"
+      ],
+      "terminal_predicates": [
+        "expense_report_submitted",
+        "receipt_archived",
+        "conference_expense_logged",
+        "conference_admin_recorded",
+        "calendar_event_created"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-CAREER-0003-M1",
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "binding_id": "BIND_E1_BOOK_FLIGHT",
+      "binding_task_id": "E1-2025-FLIGHT",
+      "parameter_values": {
+        "departure": "Wuhan",
+        "destination": "Taipei",
+        "depart_date": "2026-08-05",
+        "passengers": "1",
+        "class": "economy",
+        "flight_number": "HO4117",
+        "price": 450.0
+      },
+      "description": "Book a flight from Wuhan to Taipei on 2026-08-05 for 1 passenger.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0003-M2",
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "binding_id": "BIND_E5_EXPENSE_REPORT",
+      "binding_task_id": "E5-2025-EXPENSE",
+      "parameter_values": {
+        "reportId": "EXP-2299",
+        "total": "1120",
+        "description": "Workshop lodging reimbursement",
+        "pnr": "PNR-1184"
+      },
+      "description": "Submit travel expense report EXP-2299 for 1120 linked to PNR-1184.",
+      "expected_observables": [
+        "url().includes('/bank.local/expense-report.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "expense_report_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0003-M3",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "lodging_receipt_july.pdf"
+      },
+      "description": "Archive lodging_receipt_july.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0003-M4",
+      "module_id": "MODULE_CONFERENCE_REG",
+      "binding_id": "BIND_F2_CONFERENCE_REG",
+      "binding_task_id": "F2-2025-CONFREG",
+      "parameter_values": {
+        "report_id": "EXP-2201",
+        "total_amount": "980",
+        "description": "Conference registration and travel",
+        "linked_pnr": "PNR-2201"
+      },
+      "description": "Submit the conference registration expense report EXP-2201 for 980 linked to PNR-2201.",
+      "expected_observables": [
+        "url().includes('/bank.local/expense-report.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "conference_admin_recorded",
+          "conference_expense_logged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0003-M5",
+      "module_id": "MODULE_CALENDAR_AGGREGATION",
+      "binding_id": "BIND_F6_CALENDAR_AGGREGATION",
+      "binding_task_id": "F6-2025-CALENDAR",
+      "parameter_values": {
+        "work_title": "团队会议",
+        "personal_title": "牙医预约",
+        "date": "2026-01-16",
+        "time": "15:30"
+      },
+      "description": "Add a personal event Dentist Follow-up on 2026-01-16 at 15:30.",
+      "expected_observables": [
+        "exists('#event-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_created",
+          "deadline_coordination_recorded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0003-M6",
+      "module_id": "MODULE_BOOK_HOTEL",
+      "binding_id": "BIND_E2_BOOK_HOTEL",
+      "binding_task_id": "E2-2025-HOTEL",
+      "parameter_values": {
+        "city": "Shanghai",
+        "check_in_date": "2026-06-16",
+        "check_out_date": "2026-06-19",
+        "guests": "1",
+        "hotel_name": "Skyline Meridian",
+        "price": 1200.0
+      },
+      "description": "Book a hotel in Shanghai from 2026-06-16 to 2026-06-19 for 1 guest.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')",
+        "json('env','trips.hotel.id') != ''",
+        "json('env','trips.hotel.city') == 'Shanghai'",
+        "json('env','trips.hotel.checkin') == '2026-06-16'",
+        "json('env','trips.hotel.nights') == 3"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "hotel_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0003-M7",
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "binding_id": "BIND_E5_EXPENSE_REPORT",
+      "binding_task_id": "E5-2025-EXPENSE",
+      "parameter_values": {
+        "reportId": "EXP-2299",
+        "total": "1120",
+        "description": "Workshop lodging reimbursement",
+        "pnr": "PNR-1184"
+      },
+      "description": "Submit travel expense report EXP-2299 for 1120 linked to PNR-1184.",
+      "expected_observables": [
+        "url().includes('/bank.local/expense-report.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "expense_report_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0003-M8",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "lodging_receipt_july.pdf"
+      },
+      "description": "Archive lodging_receipt_july.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0003-M9",
+      "module_id": "MODULE_CONFERENCE_REG",
+      "binding_id": "BIND_F2_CONFERENCE_REG",
+      "binding_task_id": "F2-2025-CONFREG",
+      "parameter_values": {
+        "report_id": "EXP-2201",
+        "total_amount": "980",
+        "description": "Conference registration and travel",
+        "linked_pnr": "PNR-2201"
+      },
+      "description": "Submit the conference registration expense report EXP-2201 for 980 linked to PNR-2201.",
+      "expected_observables": [
+        "url().includes('/bank.local/expense-report.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "conference_admin_recorded",
+          "conference_expense_logged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CAREER-0003-M10",
+      "module_id": "MODULE_CALENDAR_AGGREGATION",
+      "binding_id": "BIND_F6_CALENDAR_AGGREGATION",
+      "binding_task_id": "F6-2025-CALENDAR",
+      "parameter_values": {
+        "work_title": "团队会议",
+        "personal_title": "牙医预约",
+        "date": "2026-01-16",
+        "time": "15:30"
+      },
+      "description": "Add a personal event Dentist Follow-up on 2026-01-16 at 15:30.",
+      "expected_observables": [
+        "exists('#event-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_created",
+          "deadline_coordination_recorded"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "expense_report_submitted",
+      "receipt_archived",
+      "conference_expense_logged",
+      "conference_admin_recorded",
+      "calendar_event_created"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_created",
+      "conference_admin_recorded",
+      "conference_expense_logged",
+      "deadline_coordination_recorded",
+      "expense_report_submitted",
+      "flight_booked",
+      "hotel_booked",
+      "receipt_archived",
+      "travel_booking_confirmed"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

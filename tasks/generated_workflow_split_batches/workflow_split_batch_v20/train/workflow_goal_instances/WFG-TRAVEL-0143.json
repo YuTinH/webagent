@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-TRAVEL-0143",
+  "theme": "travel",
+  "difficulty": 7,
+  "instruction": "Finish the rebooked-departure workflow only after the itinerary is rebooked, transfer is arranged, check-in is completed, and the departure follow-up is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "flight_booked",
+      "itinerary_rebooked",
+      "airport_transfer_arranged",
+      "check_in_completed",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "flight_booked",
+    "itinerary_rebooked",
+    "airport_transfer_arranged",
+    "check_in_completed",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_TRAVEL_WORKFLOW_REBOOK_TRANSFER; rebooked-travel workflows should end with a synced departure follow-up."
+}

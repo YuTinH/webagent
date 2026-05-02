@@ -1,0 +1,72 @@
+{
+  "task_id": "F9-2025-EMAILTRACK",
+  "family": "F",
+  "goal": "Track the email thread Budget Review Request from finance@example.com.",
+  "inputs": {
+    "subject": "Budget Review Request",
+    "sender": "finance@example.com",
+    "summary": "Need your feedback on the Q1 budget sheet."
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('work.email_threads.last.id') includes 'MSG-'",
+    "mem('work.email_threads.last.subject') == 'Budget Review Request'",
+    "mem('work.email_threads.last.sender') == 'finance@example.com'",
+    "mem('work.email_threads.last.status') == 'pending'",
+    "exists('#email-list .card')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_f4_1",
+      "name": "cp_f4 checkpoint 1",
+      "assertion": "mem('work.email_threads.last.id') includes 'MSG-'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f4_2",
+      "name": "cp_f4 checkpoint 2",
+      "assertion": "mem('work.email_threads.last.subject') == 'Budget Review Request'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f4_3",
+      "name": "cp_f4 checkpoint 3",
+      "assertion": "mem('work.email_threads.last.sender') == 'finance@example.com'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f4_4",
+      "name": "cp_f4 checkpoint 4",
+      "assertion": "mem('work.email_threads.last.status') == 'pending'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f4_5",
+      "name": "cp_f4 checkpoint 5",
+      "assertion": "exists('#email-list .card')",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "work.local"
+  ],
+  "module_group": "email_tracking",
+  "canonical_task_dir": "F9-email-tracking",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

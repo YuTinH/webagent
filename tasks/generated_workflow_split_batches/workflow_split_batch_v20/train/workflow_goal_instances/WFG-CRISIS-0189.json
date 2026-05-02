@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-CRISIS-0189",
+  "theme": "crisis",
+  "difficulty": 8,
+  "instruction": "Finish the containment-triage crisis workflow only after access is contained, crisis intake is logged, the account balance is reviewed, and the credential vault is updated.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "crisis_intake_completed",
+      "account_access_contained",
+      "account_balance_reviewed",
+      "credential_vault_updated"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "password_reset_completed",
+    "crisis_intake_completed",
+    "account_access_contained",
+    "account_balance_reviewed",
+    "credential_vault_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 6,
+  "notes": "Generated from BP_CRISIS_CONTAINMENT_TRIAGE_DUAL; containment-triage crisis workflows should continue through balance review and credential-vault remediation."
+}

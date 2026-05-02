@@ -1,0 +1,50 @@
+{
+  "task_id": "Z6-2025-CHAT",
+  "family": "Z",
+  "goal": "Your task is to ask customer service to check order O-10005.",
+  "inputs": {
+    "order_id": "O-10005"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('support.chat.last_query_order') == 'O-10005'",
+    "mem('support.chat.last_reply_status') == 'found'",
+    "exists(\"#messages .message.bot:has-text('O-10005')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_z6_1",
+      "name": "cp_z6 checkpoint 1",
+      "assertion": "mem('support.chat.last_query_order') == 'O-10005'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z6_2",
+      "name": "cp_z6 checkpoint 2",
+      "assertion": "mem('support.chat.last_reply_status') == 'found'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z6_3",
+      "name": "cp_z6 checkpoint 3",
+      "assertion": "exists(\"#messages .message.bot:has-text('O-10005')\")",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "customer_service",
+  "canonical_task_dir": "Z6-customer-service",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

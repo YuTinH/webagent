@@ -1,0 +1,405 @@
+{
+  "goal_id": "WFG-DAILY-0262",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either activate the daily bundle through groceries before order arrival and price protection, or use the coupon-backed bundle route before the same arrival-and-protection closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_BANK_OPENING",
+      "role": "required",
+      "produces": [
+        "bank_account_active",
+        "payment_method_available"
+      ]
+    },
+    {
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "role": "alternative",
+      "produces": [
+        "coupon_available",
+        "daily_order_bundle_prepared",
+        "order_price_secured",
+        "service_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_GROCERY_RUN",
+      "role": "alternative",
+      "produces": [
+        "daily_order_bundle_prepared",
+        "grocery_order_pending"
+      ]
+    },
+    {
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "role": "required",
+      "produces": [
+        "delivery_visibility_confirmed",
+        "shop_order_delivered"
+      ]
+    },
+    {
+      "module_id": "MODULE_PRICE_PROTECTION",
+      "role": "required",
+      "produces": [
+        "order_price_secured",
+        "price_protection_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_SHOPPING",
+      "role": "required",
+      "produces": [
+        "shop_order_exists",
+        "shop_order_pending"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_BANK_OPENING",
+      "to": "MODULE_SHOPPING",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_COUPON_MANAGEMENT",
+      "to": "MODULE_ORDER_ARRIVAL",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_GROCERY_RUN",
+      "to": "MODULE_ORDER_ARRIVAL",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_ORDER_ARRIVAL",
+      "to": "MODULE_PRICE_PROTECTION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_SHOPPING",
+      "to": "MODULE_COUPON_MANAGEMENT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SHOPPING",
+      "to": "MODULE_GROCERY_RUN",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_bank_shop_grocery_arrival_protect",
+      "required_modules": [
+        "MODULE_BANK_OPENING",
+        "MODULE_SHOPPING",
+        "MODULE_GROCERY_RUN",
+        "MODULE_ORDER_ARRIVAL",
+        "MODULE_PRICE_PROTECTION"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0262-M1",
+        "WFG-DAILY-0262-M2",
+        "WFG-DAILY-0262-M3",
+        "WFG-DAILY-0262-M4",
+        "WFG-DAILY-0262-M5"
+      ],
+      "terminal_predicates": [
+        "bank_account_active",
+        "payment_method_available",
+        "daily_order_bundle_prepared",
+        "order_price_secured",
+        "delivery_visibility_confirmed",
+        "shop_order_delivered"
+      ]
+    },
+    {
+      "path_id": "path_bank_shop_coupon_arrival_protect",
+      "required_modules": [
+        "MODULE_BANK_OPENING",
+        "MODULE_SHOPPING",
+        "MODULE_COUPON_MANAGEMENT",
+        "MODULE_ORDER_ARRIVAL",
+        "MODULE_PRICE_PROTECTION"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0262-M6",
+        "WFG-DAILY-0262-M7",
+        "WFG-DAILY-0262-M8",
+        "WFG-DAILY-0262-M9",
+        "WFG-DAILY-0262-M10"
+      ],
+      "terminal_predicates": [
+        "bank_account_active",
+        "payment_method_available",
+        "daily_order_bundle_prepared",
+        "order_price_secured",
+        "delivery_visibility_confirmed",
+        "shop_order_delivered"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-DAILY-0262-M1",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0262-M2",
+      "module_id": "MODULE_SHOPPING",
+      "binding_id": "BIND_B1_SHOPPING",
+      "binding_task_id": "B1-2025-001",
+      "parameter_values": {
+        "category": "electronics",
+        "item_keywords": [
+          "wireless",
+          "mouse"
+        ],
+        "max_price": 30,
+        "shipping_speed": "same_day",
+        "payment_method": "credit_card_1234"
+      },
+      "description": "Purchase a wireless mouse with same-day shipping.",
+      "expected_observables": [
+        "ANY[mem('shop.orders.last.total') == 29.99, ALL[json('env','world_state.financial_context.liquidity') == 'frozen', json('env','shop.orders.last.id') == null]]",
+        "ANY[ALL[NOT[json('env','world_state.financial_context.liquidity') == 'frozen'], mem('shop.orders.last.shipping_speed') == 'same_day'], json('env','world_state.financial_context.liquidity') == 'frozen']"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "shop_order_exists",
+          "shop_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0262-M3",
+      "module_id": "MODULE_GROCERY_RUN",
+      "binding_id": "BIND_B7_GROCERY_RUN",
+      "binding_task_id": "B7-2025-GROCERYSUB",
+      "parameter_values": {
+        "plan_name": "Weekly Grocery Basket",
+        "frequency": "weekly",
+        "items": "Fruit, Vegetables, Eggs",
+        "price_per_delivery": 180,
+        "next_delivery_date": "2026-02-15"
+      },
+      "description": "Set up a weekly grocery subscription plan.",
+      "expected_observables": [
+        "url().includes('/food.local/subscription.html')",
+        "exists(\"#subscriptions-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "daily_order_bundle_prepared",
+          "grocery_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0262-M4",
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "binding_id": "BIND_Z1_ORDER_ARRIVAL",
+      "binding_task_id": "Z1-2025-ARRIVAL",
+      "parameter_values": {
+        "product_name": "Wireless Mouse"
+      },
+      "description": "Wait for your order to be delivered.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "shop_order_delivered"
+        ],
+        "removes": [
+          "shop_order_pending"
+        ]
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0262-M5",
+      "module_id": "MODULE_PRICE_PROTECTION",
+      "binding_id": "BIND_B5_PRICE_PROTECTION",
+      "binding_task_id": "B5-2025-PRICE",
+      "parameter_values": {
+        "order_id": "O-10002"
+      },
+      "description": "Submit a price protection claim for order O-10002.",
+      "expected_observables": [
+        "url().includes('/shop.local/price-protection.html?status=submitted')",
+        "exists('.status-badge.submitted')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "order_price_secured",
+          "price_protection_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0262-M6",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0262-M7",
+      "module_id": "MODULE_SHOPPING",
+      "binding_id": "BIND_B1_SHOPPING",
+      "binding_task_id": "B1-2025-001",
+      "parameter_values": {
+        "category": "electronics",
+        "item_keywords": [
+          "wireless",
+          "mouse"
+        ],
+        "max_price": 30,
+        "shipping_speed": "same_day",
+        "payment_method": "credit_card_1234"
+      },
+      "description": "Purchase a wireless mouse with same-day shipping.",
+      "expected_observables": [
+        "ANY[mem('shop.orders.last.total') == 29.99, ALL[json('env','world_state.financial_context.liquidity') == 'frozen', json('env','shop.orders.last.id') == null]]",
+        "ANY[ALL[NOT[json('env','world_state.financial_context.liquidity') == 'frozen'], mem('shop.orders.last.shipping_speed') == 'same_day'], json('env','world_state.financial_context.liquidity') == 'frozen']"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "shop_order_exists",
+          "shop_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0262-M8",
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "binding_id": "BIND_B10_COUPON_MANAGEMENT",
+      "binding_task_id": "B10-2025-COUPONS",
+      "parameter_values": {
+        "name": "Spring Saver",
+        "code": "SAVE20",
+        "type": "discount",
+        "value": "20.0",
+        "min_spend": "100.0",
+        "expiry_date": "2026-04-30"
+      },
+      "description": "Add a discount coupon SAVE20 worth 20.0 off with a minimum spend of 100.0.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coupon_available",
+          "daily_order_bundle_prepared",
+          "order_price_secured",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0262-M9",
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "binding_id": "BIND_Z1_ORDER_ARRIVAL",
+      "binding_task_id": "Z1-2025-ARRIVAL",
+      "parameter_values": {
+        "product_name": "Wireless Mouse"
+      },
+      "description": "Wait for your order to be delivered.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "shop_order_delivered"
+        ],
+        "removes": [
+          "shop_order_pending"
+        ]
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0262-M10",
+      "module_id": "MODULE_PRICE_PROTECTION",
+      "binding_id": "BIND_B5_PRICE_PROTECTION",
+      "binding_task_id": "B5-2025-PRICE",
+      "parameter_values": {
+        "order_id": "O-10002"
+      },
+      "description": "Submit a price protection claim for order O-10002.",
+      "expected_observables": [
+        "url().includes('/shop.local/price-protection.html?status=submitted')",
+        "exists('.status-badge.submitted')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "order_price_secured",
+          "price_protection_submitted"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "bank_account_active",
+      "payment_method_available",
+      "daily_order_bundle_prepared",
+      "order_price_secured",
+      "delivery_visibility_confirmed",
+      "shop_order_delivered"
+    ],
+    "checkpoint_predicates": [
+      "bank_account_active",
+      "coupon_available",
+      "daily_order_bundle_prepared",
+      "delivery_visibility_confirmed",
+      "grocery_order_pending",
+      "order_price_secured",
+      "payment_method_available",
+      "price_protection_submitted",
+      "service_stack_prepared",
+      "shop_order_delivered",
+      "shop_order_exists",
+      "shop_order_pending"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

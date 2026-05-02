@@ -1,0 +1,42 @@
+{
+  "task_id": "H3-2025-RENEWAL",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/permits.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": ".permit-card:has(.permit-id:has-text('RP-2024-77')) button.btn.pri"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#new-expiry"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#new-expiry",
+      "value": "2026-12-01"
+    },
+    {
+      "t": 4,
+      "act": "select",
+      "selector": "#payment-method",
+      "value": "card"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "button.btn.pri.lg"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#permit-expiry"
+    }
+  ]
+}

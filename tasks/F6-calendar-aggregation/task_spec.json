@@ -1,0 +1,83 @@
+{
+  "task_id": "F6-2025-CALENDAR",
+  "family": "F",
+  "goal": "Add a personal event Dentist Follow-up on 2026-01-16 at 15:30.",
+  "inputs": {
+    "work_title": "团队会议",
+    "personal_title": "牙医预约",
+    "date": "2026-01-15",
+    "time": "10:00"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('calendar.events.last.id') includes 'EVE-'",
+    "mem('calendar.events.last.title') == 'Dentist Follow-up'",
+    "mem('calendar.events.last.date') == '2026-01-16'",
+    "mem('calendar.events.last.time') == '15:30'",
+    "mem('calendar.events.last.type') == 'personal'",
+    "exists('#event-list .card')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_f1_1",
+      "name": "cp_f1 checkpoint 1",
+      "assertion": "mem('calendar.events.last.id') includes 'EVE-'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f1_2",
+      "name": "cp_f1 checkpoint 2",
+      "assertion": "mem('calendar.events.last.title') == 'Dentist Follow-up'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f1_3",
+      "name": "cp_f1 checkpoint 3",
+      "assertion": "mem('calendar.events.last.date') == '2026-01-16'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f1_4",
+      "name": "cp_f1 checkpoint 4",
+      "assertion": "mem('calendar.events.last.time') == '15:30'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f1_5",
+      "name": "cp_f1 checkpoint 5",
+      "assertion": "mem('calendar.events.last.type') == 'personal'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f1_6",
+      "name": "cp_f1 checkpoint 6",
+      "assertion": "exists('#event-list .card')",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "work.local"
+  ],
+  "module_group": "calendar_aggregation",
+  "canonical_task_dir": "F6-calendar-aggregation",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

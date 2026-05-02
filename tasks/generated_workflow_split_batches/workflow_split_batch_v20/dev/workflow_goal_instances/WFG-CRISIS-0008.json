@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-CRISIS-0008",
+  "theme": "crisis",
+  "difficulty": 7,
+  "instruction": "Finish the card-containment packet only after password reset is completed, the card is frozen, account access is contained, the replacement card is requested, and the balance is reviewed.",
+  "visible_constraints": {
+    "deadline_days": 1,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "card_frozen",
+      "account_access_contained",
+      "replacement_card_requested",
+      "account_balance_reviewed"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "password_reset_completed",
+    "card_frozen",
+    "account_access_contained",
+    "replacement_card_requested",
+    "account_balance_reviewed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CRISIS_CARD_ACCESS_CONTAINMENT; lost-card containment should continue through post-replacement balance review rather than stopping once the replacement is requested."
+}

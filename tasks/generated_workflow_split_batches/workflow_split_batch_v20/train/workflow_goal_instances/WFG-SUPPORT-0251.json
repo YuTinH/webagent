@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-SUPPORT-0251",
+  "theme": "support",
+  "difficulty": 7,
+  "instruction": "Finish the review-support workflow only after delivery visibility is confirmed, the order is delivered, support is contacted, a product review is submitted, and the merchant is blacklisted, and finish with the support follow-up synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "delivery_visibility_confirmed",
+      "shop_order_delivered",
+      "support_contacted",
+      "product_review_submitted",
+      "merchant_blacklisted",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "delivery_visibility_confirmed",
+    "shop_order_delivered",
+    "support_contacted",
+    "product_review_submitted",
+    "merchant_blacklisted",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SUPPORT_ZTRAIN_06_REVIEW_SUPPORT_DUAL; support workflows should end with an explicit follow-up scheduling step."
+}

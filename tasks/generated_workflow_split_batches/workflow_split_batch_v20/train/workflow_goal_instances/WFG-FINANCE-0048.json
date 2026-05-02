@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-FINANCE-0048",
+  "theme": "finance",
+  "difficulty": 7,
+  "instruction": "Finish the tax-filing packet only after the bank account is opened, tax funding is prepared, the filing is submitted, the receipt trail is archived, and the filing follow-up is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "bank_account_active",
+      "tax_funding_prepared",
+      "tax_filing_submitted",
+      "receipt_archived",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bank_account_active",
+    "tax_funding_prepared",
+    "tax_filing_submitted",
+    "receipt_archived",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_TAX_FILING_FUNDING; tax-filing finance workflows should include a post-filing calendar follow-up after archival."
+}

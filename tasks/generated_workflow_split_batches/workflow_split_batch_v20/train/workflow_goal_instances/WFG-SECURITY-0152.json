@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-SECURITY-0152",
+  "theme": "security",
+  "difficulty": 6,
+  "instruction": "Close the account-recovery security packet by requesting the reset, completing it, enabling two-factor, hardening the account, and ending with an audit complete.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "two_factor_enabled",
+      "security_hardening_completed",
+      "security_audit_completed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "password_reset_completed",
+    "two_factor_enabled",
+    "security_hardening_completed",
+    "security_audit_completed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 50,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_RESET_AUDIT; reset workflows should continue through post-reset hardening and audit instead of stopping at reset completion."
+}

@@ -1,0 +1,12 @@
+/Users/masteryth/Documents/webagent/sites/energy.local/bulb-setup.html
+/Users/masteryth/Documents/webagent/sites/energy.local/smart-meter.html
+/Users/masteryth/Documents/webagent/sites/food.local/subscription.html
+/Users/masteryth/Documents/webagent/sites/gov.local/parking-permits.html
+/Users/masteryth/Documents/webagent/sites/housing.local/lease-management.html
+/Users/masteryth/Documents/webagent/sites/market.local/list-item.html
+/Users/masteryth/Documents/webagent/sites/school.local/library.html
+/Users/masteryth/Documents/webagent/sites/school.local/my-learning.html
+/Users/masteryth/Documents/webagent/sites/shop.local/appliance-repair.html
+/Users/masteryth/Documents/webagent/sites/shop.local/coupons.html
+/Users/masteryth/Documents/webagent/sites/shop.local/reviews.html
+/Users/masteryth/Documents/webagent/sites/trip.local/hotels.html

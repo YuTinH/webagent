@@ -1,0 +1,67 @@
+{
+  "task_id": "C4-2025-WARRANTY",
+  "family": "C",
+  "goal": "I need to Submit a warranty claim for serial TV-42-2025-XY9 from order O-10123.. Asap.",
+  "inputs": {
+    "serial": "TV-42-2025-XY9",
+    "order_id": "O-10123",
+    "issue": "Screen flickering"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('warranty.last.serial') == 'TV-42-2025-XY9'",
+    "mem('warranty.last.order_id') == 'O-10123'",
+    "mem('warranty.last.state') == 'RMA_issued'",
+    "url().includes('status=accepted')",
+    "url().includes('serial=TV-42-2025-XY9')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_c4_1",
+      "name": "cp_c4 checkpoint 1",
+      "assertion": "mem('warranty.last.serial') == 'TV-42-2025-XY9'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "cp_c4_2",
+      "name": "cp_c4 checkpoint 2",
+      "assertion": "mem('warranty.last.order_id') == 'O-10123'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "cp_c4_3",
+      "name": "cp_c4 checkpoint 3",
+      "assertion": "mem('warranty.last.state') == 'RMA_issued'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "cp_c4_4",
+      "name": "cp_c4 checkpoint 4",
+      "assertion": "url().includes('status=accepted')",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "cp_c4_5",
+      "name": "cp_c4 checkpoint 5",
+      "assertion": "url().includes('serial=TV-42-2025-XY9')",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "warranty_claim",
+  "canonical_task_dir": "C4-warranty-claim",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

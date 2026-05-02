@@ -1,0 +1,76 @@
+{
+  "task_id": "J7-2025-ASSIGNSUB",
+  "family": "J",
+  "goal": "Submit the ML202 Project Draft assignment from My Learning and leave the submission recorded.",
+  "inputs": {
+    "course_id": "ML202",
+    "assignment_title": "ML202 Project Draft",
+    "file_name": "ml202_project_draft.pdf",
+    "submission_note": "Assignment submitted before review time."
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('courses.assignments.last.course_id') == 'ML202'",
+    "mem('courses.assignments.last.title') == 'ML202 Project Draft'",
+    "mem('courses.assignments.last.file_name') == 'ml202_project_draft.pdf'",
+    "mem('courses.assignments.last.status') == 'submitted'",
+    "exists('#assignment-submissions-list .course-card')",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "cp_j7_1",
+      "name": "Assignment course recorded",
+      "assertion": "mem('courses.assignments.last.course_id') == 'ML202'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j7_2",
+      "name": "Assignment title recorded",
+      "assertion": "mem('courses.assignments.last.title') == 'ML202 Project Draft'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j7_3",
+      "name": "Assignment file recorded",
+      "assertion": "mem('courses.assignments.last.file_name') == 'ml202_project_draft.pdf'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j7_4",
+      "name": "Assignment submission status recorded",
+      "assertion": "mem('courses.assignments.last.status') == 'submitted'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j7_5",
+      "name": "Assignment submission card visible",
+      "assertion": "exists('#assignment-submissions-list .course-card')",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "school.local"
+  ],
+  "module_group": "submit_assignment",
+  "canonical_task_dir": "J7-submit-assignment",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,393 @@
+{
+  "goal_id": "WFG-COMPOSITE-0082",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either use the transfer-and-hotel route before expense submission and archival, or use the autopay-and-flight route before the same expense and archival closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_BANK_OPENING",
+      "role": "required",
+      "produces": [
+        "bank_account_active",
+        "payment_method_available"
+      ]
+    },
+    {
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "travel_booking_confirmed"
+      ]
+    },
+    {
+      "module_id": "MODULE_BOOK_HOTEL",
+      "role": "alternative",
+      "produces": [
+        "hotel_booked",
+        "travel_booking_confirmed"
+      ]
+    },
+    {
+      "module_id": "MODULE_COMPLEX_AUTOPAY",
+      "role": "alternative",
+      "produces": [
+        "autopay_enabled",
+        "payment_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "role": "required",
+      "produces": [
+        "expense_report_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "role": "required",
+      "produces": [
+        "receipt_archived"
+      ]
+    },
+    {
+      "module_id": "MODULE_TRANSFER_FUNDS",
+      "role": "alternative",
+      "produces": [
+        "payment_stack_prepared",
+        "tax_funding_prepared",
+        "transfer_completed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_BANK_OPENING",
+      "to": "MODULE_COMPLEX_AUTOPAY",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_BANK_OPENING",
+      "to": "MODULE_TRANSFER_FUNDS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_BOOK_FLIGHT",
+      "to": "MODULE_EXPENSE_REPORT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_BOOK_HOTEL",
+      "to": "MODULE_EXPENSE_REPORT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_COMPLEX_AUTOPAY",
+      "to": "MODULE_BOOK_FLIGHT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_EXPENSE_REPORT",
+      "to": "MODULE_RECEIPT_ARCHIVING",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_TRANSFER_FUNDS",
+      "to": "MODULE_BOOK_HOTEL",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_transfer_hotel_expense_archive",
+      "required_modules": [
+        "MODULE_BANK_OPENING",
+        "MODULE_TRANSFER_FUNDS",
+        "MODULE_BOOK_HOTEL",
+        "MODULE_EXPENSE_REPORT",
+        "MODULE_RECEIPT_ARCHIVING"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-COMPOSITE-0082-M1",
+        "WFG-COMPOSITE-0082-M2",
+        "WFG-COMPOSITE-0082-M3",
+        "WFG-COMPOSITE-0082-M4",
+        "WFG-COMPOSITE-0082-M5"
+      ],
+      "terminal_predicates": [
+        "payment_stack_prepared",
+        "expense_report_submitted",
+        "receipt_archived"
+      ]
+    },
+    {
+      "path_id": "path_autopay_flight_expense_archive",
+      "required_modules": [
+        "MODULE_BANK_OPENING",
+        "MODULE_COMPLEX_AUTOPAY",
+        "MODULE_BOOK_FLIGHT",
+        "MODULE_EXPENSE_REPORT",
+        "MODULE_RECEIPT_ARCHIVING"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-COMPOSITE-0082-M6",
+        "WFG-COMPOSITE-0082-M7",
+        "WFG-COMPOSITE-0082-M8",
+        "WFG-COMPOSITE-0082-M9",
+        "WFG-COMPOSITE-0082-M10"
+      ],
+      "terminal_predicates": [
+        "payment_stack_prepared",
+        "expense_report_submitted",
+        "receipt_archived"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M1",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M2",
+      "module_id": "MODULE_TRANSFER_FUNDS",
+      "binding_id": "BIND_D9_TRANSFER_FUNDS",
+      "binding_task_id": "D9-2025-TRANSPORTBUDGET",
+      "parameter_values": {
+        "category": "transport",
+        "limit": "150"
+      },
+      "description": "Adjust transport budget after a funds transfer decision.",
+      "expected_observables": [
+        "url().includes('/bank.local/budget.html?updated=true')",
+        "text('#limit-transport') includes '150'",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "payment_stack_prepared",
+          "tax_funding_prepared",
+          "transfer_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M3",
+      "module_id": "MODULE_BOOK_HOTEL",
+      "binding_id": "BIND_E2_BOOK_HOTEL",
+      "binding_task_id": "E2-2025-HOTEL",
+      "parameter_values": {
+        "city": "上海",
+        "check_in_date": "2025-12-31",
+        "check_out_date": "2026-01-03",
+        "guests": "1",
+        "hotel_name": "浦东香格里拉大酒店",
+        "price": 1200.0
+      },
+      "description": "Book a hotel in Shanghai from 2025-12-31 to 2026-01-03 for 1 guest.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')",
+        "json('env','trips.hotel.id') != ''",
+        "json('env','trips.hotel.city') == '上海'",
+        "json('env','trips.hotel.checkin') == '2025-12-31'",
+        "json('env','trips.hotel.nights') == 3"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "hotel_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M4",
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "binding_id": "BIND_E5_EXPENSE_REPORT",
+      "binding_task_id": "E5-2025-EXPENSE",
+      "parameter_values": {
+        "reportId": "EXP-6631",
+        "total": "860",
+        "description": "Hotel and taxi reimbursement",
+        "pnr": "PNR-6631"
+      },
+      "description": "Submit travel expense report EXP-6631 for 860 linked to PNR-6631.",
+      "expected_observables": [
+        "url().includes('/bank.local/expense-report.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "expense_report_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M5",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M6",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M7",
+      "module_id": "MODULE_COMPLEX_AUTOPAY",
+      "binding_id": "BIND_Z7_COMPLEX_AUTOPAY",
+      "binding_task_id": "Z7-complex-autopay",
+      "parameter_values": {},
+      "description": "Search your email for the enterprise Electricity Dept bill with account UTIL-7710, then enable autopay for that exact account with a monthly limit of 310.",
+      "expected_observables": [
+        "text('#success-summary') includes 'UTIL-7710'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "autopay_enabled",
+          "payment_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M8",
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "binding_id": "BIND_E1_BOOK_FLIGHT",
+      "binding_task_id": "E1-2025-FLIGHT",
+      "parameter_values": {
+        "departure": "北京",
+        "destination": "上海",
+        "depart_date": "2025-12-31",
+        "passengers": "1",
+        "class": "economy",
+        "flight_number": "CA1881",
+        "price": 450.0
+      },
+      "description": "Book a flight from 北京 to 上海 on 2025-12-31 for 1 passenger.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M9",
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "binding_id": "BIND_E5_EXPENSE_REPORT",
+      "binding_task_id": "E5-2025-EXPENSE",
+      "parameter_values": {
+        "reportId": "EXP-6631",
+        "total": "860",
+        "description": "Hotel and taxi reimbursement",
+        "pnr": "PNR-6631"
+      },
+      "description": "Submit travel expense report EXP-6631 for 860 linked to PNR-6631.",
+      "expected_observables": [
+        "url().includes('/bank.local/expense-report.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "expense_report_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0082-M10",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "payment_stack_prepared",
+      "expense_report_submitted",
+      "receipt_archived"
+    ],
+    "checkpoint_predicates": [
+      "autopay_enabled",
+      "bank_account_active",
+      "expense_report_submitted",
+      "flight_booked",
+      "hotel_booked",
+      "payment_method_available",
+      "payment_stack_prepared",
+      "receipt_archived",
+      "tax_funding_prepared",
+      "transfer_completed",
+      "travel_booking_confirmed"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

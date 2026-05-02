@@ -1,0 +1,1132 @@
+{
+  "version": 1,
+  "batch_name": "dev",
+  "generated_on": "2026-04-20",
+  "seed": 1,
+  "count_per_blueprint": 10,
+  "blueprint_library": "/Users/masteryth/Documents/webagent/tasks/workflow_generation_blueprints.json",
+  "quality_requirements": "/Users/masteryth/Documents/webagent/tasks/workflow_quality_requirements.json",
+  "projected_multi_path_ratio": 0.7142857142857143,
+  "goals": [
+    {
+      "goal_id": "WFG-CAREER-0001",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0001.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0001.json"
+    },
+    {
+      "goal_id": "WFG-CAREER-0002",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0002.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0002.json"
+    },
+    {
+      "goal_id": "WFG-CAREER-0003",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0003.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0003.json"
+    },
+    {
+      "goal_id": "WFG-CAREER-0004",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0004.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0004.json"
+    },
+    {
+      "goal_id": "WFG-CAREER-0005",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0005.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0005.json"
+    },
+    {
+      "goal_id": "WFG-CAREER-0006",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0006.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0006.json"
+    },
+    {
+      "goal_id": "WFG-CAREER-0007",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0007.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0007.json"
+    },
+    {
+      "goal_id": "WFG-CAREER-0008",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0008.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0008.json"
+    },
+    {
+      "goal_id": "WFG-CAREER-0009",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0009.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0009.json"
+    },
+    {
+      "goal_id": "WFG-CAREER-0010",
+      "theme": "career",
+      "blueprint_id": "BP_CAREER_CONFERENCE_ADMIN",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-CAREER-0010.json",
+      "oracle_file": "workflow_oracles/WFG-CAREER-0010.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0001",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0001.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0001.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0002",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0002.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0002.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0003",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0003.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0003.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0004",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0004.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0004.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0005",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0005.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0005.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0006",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0006.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0006.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0007",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0007.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0007.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0008",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0008.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0008.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0009",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0009.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0009.json"
+    },
+    {
+      "goal_id": "WFG-CRISIS-0010",
+      "theme": "crisis",
+      "blueprint_id": "BP_CRISIS_CARD_ACCESS_CONTAINMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-CRISIS-0010.json",
+      "oracle_file": "workflow_oracles/WFG-CRISIS-0010.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0001",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0001.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0001.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0002",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0002.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0002.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0003",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0003.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0003.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0004",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0004.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0004.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0005",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0005.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0005.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0006",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0006.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0006.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0007",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0007.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0007.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0008",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0008.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0008.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0009",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0009.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0009.json"
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0010",
+      "theme": "education",
+      "blueprint_id": "BP_EDUCATION_ASSIGNMENT_RESOURCE_DELIVERY",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-EDUCATION-0010.json",
+      "oracle_file": "workflow_oracles/WFG-EDUCATION-0010.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0001",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0001.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0001.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0002",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0002.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0002.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0003",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0003.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0003.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0004",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0004.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0004.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0005",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0005.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0005.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0006",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0006.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0006.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0007",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0007.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0007.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0008",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0008.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0008.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0009",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0009.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0009.json"
+    },
+    {
+      "goal_id": "WFG-SUPPORT-0010",
+      "theme": "support",
+      "blueprint_id": "BP_SUPPORT_DIRECT_REMEDY_ESCALATION",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SUPPORT-0010.json",
+      "oracle_file": "workflow_oracles/WFG-SUPPORT-0010.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0001",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0001.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0001.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0002",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0002.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0002.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0003",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0003.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0003.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0004",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0004.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0004.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0005",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0005.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0005.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0006",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0006.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0006.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0007",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0007.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0007.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0008",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0008.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0008.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0009",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0009.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0009.json"
+    },
+    {
+      "goal_id": "WFG-DAILY-0010",
+      "theme": "daily",
+      "blueprint_id": "BP_DAILY_BUNDLE_SUBSCRIPTION_PREP",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-DAILY-0010.json",
+      "oracle_file": "workflow_oracles/WFG-DAILY-0010.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0001",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0001.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0001.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0002",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0002.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0002.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0003",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0003.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0003.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0004",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0004.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0004.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0005",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0005.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0005.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0006",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0006.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0006.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0007",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0007.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0007.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0008",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0008.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0008.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0009",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0009.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0009.json"
+    },
+    {
+      "goal_id": "WFG-TRAVEL-0010",
+      "theme": "travel",
+      "blueprint_id": "BP_TRAVEL_BOOKING_EXPENSE_PACKET",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-TRAVEL-0010.json",
+      "oracle_file": "workflow_oracles/WFG-TRAVEL-0010.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0001",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0001.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0001.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0002",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0002.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0002.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0003",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0003.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0003.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0004",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0004.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0004.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0005",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0005.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0005.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0006",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0006.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0006.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0007",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0007.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0007.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0008",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0008.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0008.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0009",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0009.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0009.json"
+    },
+    {
+      "goal_id": "WFG-COMPOSITE-0010",
+      "theme": "composite",
+      "blueprint_id": "BP_COMPOSITE_AUCTION_PAYMENT_BRIDGE",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-COMPOSITE-0010.json",
+      "oracle_file": "workflow_oracles/WFG-COMPOSITE-0010.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0001",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0001.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0001.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0002",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0002.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0002.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0003",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0003.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0003.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0004",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0004.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0004.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0005",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0005.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0005.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0006",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0006.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0006.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0007",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0007.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0007.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0008",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0008.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0008.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0009",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0009.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0009.json"
+    },
+    {
+      "goal_id": "WFG-NEWCOMER-0010",
+      "theme": "newcomer",
+      "blueprint_id": "BP_NEWCOMER_BANK_ADDRESS_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-NEWCOMER-0010.json",
+      "oracle_file": "workflow_oracles/WFG-NEWCOMER-0010.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0001",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0001.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0001.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0002",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0002.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0002.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0003",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0003.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0003.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0004",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0004.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0004.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0005",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0005.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0005.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0006",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0006.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0006.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0007",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0007.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0007.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0008",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0008.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0008.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0009",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0009.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0009.json"
+    },
+    {
+      "goal_id": "WFG-SECURITY-0010",
+      "theme": "security",
+      "blueprint_id": "BP_SECURITY_AUDIT_HARDEN_ALIGNMENT",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-SECURITY-0010.json",
+      "oracle_file": "workflow_oracles/WFG-SECURITY-0010.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0001",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0001.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0001.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0002",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0002.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0002.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0003",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0003.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0003.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0004",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0004.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0004.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0005",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0005.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0005.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0006",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0006.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0006.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0007",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0007.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0007.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0008",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0008.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0008.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0009",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0009.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0009.json"
+    },
+    {
+      "goal_id": "WFG-HOME-0010",
+      "theme": "home",
+      "blueprint_id": "BP_HOME_CONTROL_READINESS_ALT",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HOME-0010.json",
+      "oracle_file": "workflow_oracles/WFG-HOME-0010.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0001",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0001.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0001.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0002",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0002.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0002.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0003",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0003.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0003.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0004",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0004.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0004.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0005",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0005.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0005.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0006",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0006.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0006.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0007",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0007.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0007.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0008",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0008.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0008.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0009",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0009.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0009.json"
+    },
+    {
+      "goal_id": "WFG-FINANCE-0010",
+      "theme": "finance",
+      "blueprint_id": "BP_FINANCE_AUTOPAY_BUDGET_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-FINANCE-0010.json",
+      "oracle_file": "workflow_oracles/WFG-FINANCE-0010.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0001",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0001.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0001.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0002",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0002.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0002.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0003",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0003.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0003.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0004",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0004.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0004.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0005",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0005.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0005.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0006",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0006.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0006.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0007",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0007.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0007.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0008",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0008.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0008.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0009",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0009.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0009.json"
+    },
+    {
+      "goal_id": "WFG-HEALTH-0010",
+      "theme": "health",
+      "blueprint_id": "BP_HEALTH_CLAIM_COVERAGE_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-HEALTH-0010.json",
+      "oracle_file": "workflow_oracles/WFG-HEALTH-0010.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0001",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0001.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0001.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0002",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0002.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0002.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0003",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0003.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0003.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0004",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0004.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0004.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0005",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0005.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0005.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0006",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0006.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0006.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0007",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0007.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0007.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0008",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0008.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0008.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0009",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0009.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0009.json"
+    },
+    {
+      "goal_id": "WFG-SOCIAL-0010",
+      "theme": "social",
+      "blueprint_id": "BP_SOCIAL_CONTRIBUTION_ACCOUNT_DUAL",
+      "composition_type": "multi_path",
+      "goal_file": "workflow_goal_instances/WFG-SOCIAL-0010.json",
+      "oracle_file": "workflow_oracles/WFG-SOCIAL-0010.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0001",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0001.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0001.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0002",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0002.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0002.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0003",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0003.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0003.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0004",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0004.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0004.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0005",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0005.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0005.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0006",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0006.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0006.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0007",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0007.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0007.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0008",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0008.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0008.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0009",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0009.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0009.json"
+    },
+    {
+      "goal_id": "WFG-GOV-0010",
+      "theme": "government",
+      "blueprint_id": "BP_GOVERNMENT_ZTRAIN_03_BP_GOV_RENEWAL_REVIEW_DUAL",
+      "composition_type": "single_path",
+      "goal_file": "workflow_goal_instances/WFG-GOV-0010.json",
+      "oracle_file": "workflow_oracles/WFG-GOV-0010.json"
+    }
+  ]
+}

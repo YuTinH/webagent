@@ -1,0 +1,30 @@
+{
+  "goal_id": "WFG-GOV-0042",
+  "theme": "government",
+  "difficulty": 4,
+  "instruction": "Before the civic deadline, get the permit application filed and complete the verification step needed to support that filing.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "permit_application_verified"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "permit_application_submitted",
+    "permit_readiness_verified"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Complete secure housing, then activate utilities, then collect address proof, then submit the address change, then MODULE_PERMIT_APP to reach the target."
+}

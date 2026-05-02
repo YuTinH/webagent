@@ -1,0 +1,42 @@
+{
+  "task_id": "E9-2025-TOPUP",
+  "family": "E",
+  "goal": "Top up the transport card by 120.",
+  "inputs": {
+    "topup_amount": 120,
+    "auto_recharge_threshold": 20,
+    "auto_recharge_amount": 50
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('transport.card.balance') == '145.5'",
+    "mem('transport.card.last_topup_amount') == '120.0'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_e2_1",
+      "name": "cp_e2 checkpoint 1",
+      "assertion": "mem('transport.card.balance') == '145.5'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e2_2",
+      "name": "cp_e2 checkpoint 2",
+      "assertion": "mem('transport.card.last_topup_amount') == '120.0'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "trip.local"
+  ],
+  "module_group": "transport_topup",
+  "canonical_task_dir": "E9-transport-topup",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

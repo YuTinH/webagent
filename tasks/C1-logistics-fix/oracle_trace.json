@@ -1,0 +1,38 @@
+{
+  "task_id": "C1-2025-SUPPORT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/help.html?clean=true&task=C1-2025-SUPPORT"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#order-id",
+      "value": "O-98321"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#issue-type",
+      "value": "damaged"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#description",
+      "value": "The package arrived with a damaged item."
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#submit-ticket-btn"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "body"
+    }
+  ]
+}

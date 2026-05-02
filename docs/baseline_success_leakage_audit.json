@@ -1,0 +1,615 @@
+{
+  "total_task_specs": 116,
+  "flagged_task_specs": 37,
+  "passed_assertion_type_counts": {
+    "other": 38
+  },
+  "records": [
+    {
+      "task_id": "C7-2025-REVIEW",
+      "task_dir": "C7-leave-review",
+      "passed_count": 2,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[mem('user_reviews.blacklist.美味餐厅.status') == 'blacklisted']",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/shop.local/reviews.html')",
+        "mem('user_reviews.reviews.last.merchant') == '美味餐厅'",
+        "mem('user_reviews.reviews.last.rating') == '5'",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "A10-2025-LEASECHECK",
+      "task_dir": "A10-neighbor-complaint",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/housing.local/lease-management.html')",
+        "exists('#leases-list')",
+        "exists('#add-lease-btn')",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "A7-2025-LEASEVIEW",
+      "task_dir": "A7-maintenance-request",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/housing.local/lease-management.html')",
+        "exists('#leases-list')",
+        "exists('#add-lease-btn')",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "A8-2025-MOBILESUB",
+      "task_dir": "A8-internet-upgrade",
+      "passed_count": 1,
+      "criteria_count": 4,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "ALL[url().includes('/mobile.local/account.html'), mem('mobile.subscription.status') == 'active']",
+        "exists(\".plan-badge\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "A9-2025-LEASEOPEN",
+      "task_dir": "A9-rent-payment",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/housing.local/lease-management.html')",
+        "exists('#leases-list')",
+        "exists('#add-lease-btn')",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "B7-2025-GROCERYSUB",
+      "task_dir": "B7-grocery-run",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/food.local/subscription.html')",
+        "mem('food.subscriptions.last.status') == 'active'",
+        "mem('food.subscriptions.last.next_delivery_date') == '2026-02-15'",
+        "exists(\"#subscriptions-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "B9-2025-EVENTBOOKING",
+      "task_dir": "B9-movie-tickets",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/school.local/event-tickets.html')",
+        "mem('tickets.user_tickets.last.status') == 'active'",
+        "exists(\"#tickets-list .card .badge.ok\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "C6-2025-SUPPORTCONTACT",
+      "task_dir": "C6-contact-support",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/shop.local/help.html?status=ticket_created')",
+        "mem('support.ticket.last.status') == 'open'",
+        "mem('support.ticket.last.order_id') == 'O-98321'",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "C8-2025-CANCELSUB",
+      "task_dir": "C8-cancel-subscription",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/shop.local/subscriptions.html')",
+        "mem('subscriptions.last.status') == 'cancelled'",
+        "mem('subscriptions.SUB-001.status') == 'cancelled'",
+        "exists('#subscriptions-list .card')",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "D10-2025-DISPUTEDOC",
+      "task_dir": "D10-dispute-transaction",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/bank.local/taxes.html')",
+        "mem('finance.tax_documents.last.status') == 'pending'",
+        "exists(\"#tax-docs-list .card:has-text('Dispute Evidence')\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "D6-2025-CARDREPLACE",
+      "task_dir": "D6-apply-credit-card",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/bank.local/cards.html')",
+        "mem('payment.cards[0].last4') == '8888'",
+        "mem('payment.cards[0].state') == 'active'",
+        "exists('#cards-grid .badge.ok')",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "D7-2025-SPENDPROFILE",
+      "task_dir": "D7-update-profile",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/bank.local/budget.html?updated=true')",
+        "mem('finance.budgets.food.limit') == 450",
+        "text('#limit-food') includes '450'",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "D8-2025-BILLAGG",
+      "task_dir": "D8-bill-aggregation",
+      "passed_count": 1,
+      "criteria_count": 8,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/bank.local/bill-aggregation.html')",
+        "mem('bills.sources.last.status') == 'active'",
+        "mem('bills.sources.last.name') == '电力公司'",
+        "mem('bills.sources.last.account_id') == 'ACCT-12345'",
+        "mem('bills.sources.last.last_synced') != ''",
+        "exists(\"#bill-sources-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "D9-2025-TRANSPORTBUDGET",
+      "task_dir": "D9-transfer-funds",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/bank.local/budget.html?updated=true')",
+        "mem('finance.budgets.transport.limit') == 150",
+        "text('#limit-transport') includes '150'",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "E1-2025-FLIGHT",
+      "task_dir": "E1-book-flight",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/trip.local/manage.html')",
+        "mem('travel.flight.last.destination') == '上海'",
+        "mem('travel.flight.last.pnr') includes 'PNR-'",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "F1-2025-JOBSEARCH",
+      "task_dir": "F1-job-search",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('work.email_threads.last.subject') == 'Job Application Follow-up'",
+        "mem('work.email_threads.last.status') == 'pending'",
+        "exists(\"#email-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "F3-2025-LINKEDIN",
+      "task_dir": "F3-update-linkedin",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('work.email_threads.last.subject') == 'LinkedIn Profile Update'",
+        "mem('work.email_threads.last.status') == 'pending'",
+        "exists(\"#email-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "F4-2025-TAXFILE",
+      "task_dir": "F4-file-taxes",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('finance.tax_documents.last.status') == 'pending'",
+        "mem('finance.tax_documents.last.id') includes 'TAX-'",
+        "exists(\"#tax-docs-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "F7-2025-CONFINVOICE",
+      "task_dir": "F7-conference-registration",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('finance.tax_documents.last.status') == 'pending'",
+        "mem('finance.tax_documents.last.id') includes 'TAX-'",
+        "exists(\"#tax-docs-list .card:has-text('Conference-Invoice')\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "H2-2025-PERMITAPP",
+      "task_dir": "H2-permit-app",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('gov.parking_permits.last.status') == 'active'",
+        "mem('permits.parking.state') == 'submitted'",
+        "mem('gov.parking_permits.last.plate_number') == 'ABC123'",
+        "exists(\"#permits-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "H5-2025-BILLVIEW",
+      "task_dir": "H5-library-card",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/gov.local/billing/index.html')",
+        "exists('.bill-item')",
+        "exists('.bills-summary')",
+        "mem('bills.total_due') > 0",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "H6-2025-003",
+      "task_dir": "H6-check-bill",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/gov.local/billing/index.html')",
+        "exists(\".bill-item\")",
+        "exists(\".bills-summary\")",
+        "mem('bills.pending_count') >= 1",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "H8-2025-RENEW2",
+      "task_dir": "H8-renew-permit",
+      "passed_count": 1,
+      "criteria_count": 4,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('permits.RP-2024-77.next_appointment') includes '2027-01-15'",
+        "url().includes('/gov.local/permits.html?renewed=true')",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "I3-2025-CAMERASETUP",
+      "task_dir": "I3-camera-check",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('devices.CAM-001.status') == 'active'",
+        "mem('devices.CAM-001.location') == '玄关'",
+        "exists(\"div:has-text('玄关')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "I7-2025-THERMOSTAT",
+      "task_dir": "I7-thermostat-schedule",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('devices.THERMO-001.status') == 'active'",
+        "mem('devices.THERMO-001.location') == '卧室'",
+        "exists(\"div:has-text('卧室')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "I8-2025-FWREPAIR",
+      "task_dir": "I8-firmware-update",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('appliance_repairs.requests.last.appliance') == 'Smart Thermostat'",
+        "mem('appliance_repairs.requests.last.problem') includes 'Firmware update failed'",
+        "mem('appliance_repairs.requests.last.status') == 'submitted'",
+        "exists(\"#appliance-repair-requests-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "J7-2025-ASSIGNSUB",
+      "task_dir": "J7-submit-assignment",
+      "passed_count": 1,
+      "criteria_count": 7,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('courses.assignments.last.course_id') == 'ML202'",
+        "mem('courses.assignments.last.title') == 'ML202 Project Draft'",
+        "mem('courses.assignments.last.file_name') == 'ml202_project_draft.pdf'",
+        "mem('courses.assignments.last.status') == 'submitted'",
+        "exists('#assignment-submissions-list .course-card')",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "J8-2025-CERTISSUE",
+      "task_dir": "J8-download-cert",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('world_state.skills.certified') == 'True'",
+        "url().includes('/school.local/certification.html')",
+        "exists(\"button:has-text('Apply Now')\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "K2-2025-010",
+      "task_dir": "K2-aa-split",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('settlements.2025-11.state') == 'settled'",
+        "url().includes('/social.local/split.html')",
+        "url().includes('month=2025-11')",
+        "exists(\"#month\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "K4-2025-RSVPGROUP",
+      "task_dir": "K4-rsvp-event",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('social.groups.GRP-002.status') == 'joined'",
+        "url().includes('/social.local/my-groups.html')",
+        "exists(\"#my-groups-list .badge.ok\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "K5-2025-GIFTPOOL",
+      "task_dir": "K5-gift-pooling",
+      "passed_count": 1,
+      "criteria_count": 6,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('charity.donations.last.charity_name') == '团队礼物基金'",
+        "mem('charity.donations.last.amount') == '300'",
+        "mem('charity.donations.last.tax_deductible') == '0'",
+        "exists(\"#donations-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "L5-2025-CREDENTIALADD",
+      "task_dir": "L5-privacy-settings",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('security.passwords.last.site') == 'SocialHub'",
+        "mem('security.passwords.last.username') == 'privacy_user'",
+        "exists(\"#password-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "L6-2025-DATAEXPORT",
+      "task_dir": "L6-download-data",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('security.data_deletion_requests.last.platform') == 'NebulaCloud'",
+        "mem('security.data_deletion_requests.last.status') == 'pending'",
+        "exists(\"#requests-list .card\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "L8-2025-2FASETUP",
+      "task_dir": "L8-2fa-setup",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('security.mfa.current_device') == 'Pixel 8'",
+        "mem('security.mfa_history.last.device_name') == 'Pixel 8'",
+        "exists(\"div[id='2fa-status']\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "M4-2025-EMERGENCYLOAN",
+      "task_dir": "M4-urgent-loan",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('banking.loans.urgent.last.status') == 'submitted'",
+        "url().includes('/bank.local/dashboard.html?loan=submitted')",
+        "exists(\"#balance-display\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "M5-2025-RESETCODE",
+      "task_dir": "M5-reset-password",
+      "passed_count": 1,
+      "criteria_count": 4,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "url().includes('/security.local/reset-password.html')",
+        "exists(\"#new-password\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    },
+    {
+      "task_id": "M6-2025-PWRECOVERY",
+      "task_dir": "M6-account-recovery",
+      "passed_count": 1,
+      "criteria_count": 5,
+      "passed_criteria": [
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "failed_criteria": [
+        "mem('security.password_reset.status') == 'success'",
+        "url().includes('/security.local/login.html?reset=success')",
+        "exists(\"#reset-success\")",
+        "NOT[url().includes('about:blank')]"
+      ],
+      "error_count": 0
+    }
+  ]
+}

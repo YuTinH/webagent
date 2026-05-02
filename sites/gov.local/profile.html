@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile - Government Portal</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.profile-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; margin-bottom: 24px; }
+.profile-section-title { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+.profile-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+.verification-status { display: flex; align-items: center; gap: 12px; }
+.verification-status.verified .status-badge { background: var(--ok); }
+.verification-status.pending .status-badge { background: var(--warn); }
+.status-badge { width: 10px; height: 10px; border-radius: 50%; }
+</style>
+</head>
+<body class="page">
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">🏛️ Gov Portal</div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="profile.html" class="active">Profile</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h1>My Government Profile</h1>
+
+  <div class="profile-card">
+    <div class="profile-section-title">Personal Information</div>
+    <div class="profile-item">
+      <span class="item-label">Full Name</span>
+      <span class="item-value">Masteryth</span>
+    </div>
+    <div class="profile-item">
+      <span class="item-label">Email</span>
+      <span class="item-value">demo@example.com</span>
+    </div>
+  </div>
+
+  <div class="profile-card">
+    <div class="profile-section-title">Address Verification</div>
+    <div class="profile-item">
+      <span class="item-label">Current Address</span>
+      <span class="item-value">123 Main St, Springfield</span>
+    </div>
+    <div class="profile-item">
+      <span class="item-label">Status</span>
+      <div class="verification-status pending" id="address-verification-status">
+        <span class="status-badge"></span>
+        <span class="status-text">Pending Verification</span>
+      </div>
+    </div>
+    <div style="text-align:right; margin-top:20px">
+      <button class="btn pri" id="upload-proof-btn" onclick="openAddressProofModal()">Upload Address Proof</button>
+    </div>
+  </div>
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function loadProfile() {
+  const env = await loadEnv();
+  const isVerified = env.identity?.address_verified;
+  const statusEl = document.getElementById('address-verification-status');
+  if (isVerified) {
+    statusEl.className = "verification-status verified";
+    statusEl.querySelector('.status-text').textContent = "Verified";
+    document.getElementById('upload-proof-btn').style.display = 'none';
+  }
+}
+
+function openAddressProofModal() {
+  new Modal({
+    title: 'Upload Proof of Address',
+    content: `
+      <div class="form">
+        <div class="form-group">
+          <label>Document Type</label>
+          <select id="doc-type" class="input">
+            <option value="utility_bill">Utility Bill</option>
+            <option value="bank_statement">Bank Statement</option>
+            <option value="lease_agreement">Lease Agreement</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>File Name</label>
+          <input type="text" id="proof-file-name" class="input" value="utility_bill_dec.pdf">
+        </div>
+      </div>
+    `,
+    onConfirm: async () => {
+      await send(resolveTaskId('A6-2025-PROOF'), 'verify_address', {
+        doc_type: document.getElementById('doc-type').value,
+        file_name: document.getElementById('proof-file-name').value
+      });
+      Toast.success("Proof uploaded!");
+      setTimeout(() => location.reload(), 1500);
+    }
+  }).open();
+}
+document.addEventListener('DOMContentLoaded', loadProfile);
+</script>
+</body>
+</html>

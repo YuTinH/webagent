@@ -1,0 +1,172 @@
+# Workflow Goal Quality Audit
+
+- oracle_dir: `tasks/generated_workflow_split_batches/workflow_split_batch_v20/test/workflow_oracles`
+- requirements_file: `tasks/workflow_quality_requirements.json`
+- total_goals: 140
+- multi_path_goals: 120
+- multi_path_ratio: 0.857
+- target_ratio: 0.500
+- meets_target: yes
+- strict_status: pass
+- subset_like_multi_path_goals: 0
+- subset_like_multi_path_ratio: 0.000
+- initial_target_overlap_goals: 0
+- initial_target_overlap_ratio: 0.000
+
+## Requirements
+- multi_path.min_success_paths: 2
+- multi_path.min_semantically_distinct_paths: 2
+- multi_path.require_distinct_required_module_sets: True
+- multi_path.max_required_set_jaccard: 0.800
+- single_path.max_success_paths: 1
+
+## Per Goal
+- `WFG-CAREER-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CAREER-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CAREER-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CAREER-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CAREER-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CAREER-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CAREER-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CAREER-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CAREER-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CAREER-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-COMPOSITE-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-CRISIS-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CRISIS-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CRISIS-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CRISIS-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CRISIS-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CRISIS-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CRISIS-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CRISIS-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CRISIS-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-CRISIS-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-DAILY-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-DAILY-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-DAILY-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-DAILY-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-DAILY-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-DAILY-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-DAILY-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-DAILY-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-DAILY-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-DAILY-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-EDUCATION-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-FINANCE-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-FINANCE-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-FINANCE-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-FINANCE-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-FINANCE-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-FINANCE-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-FINANCE-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-FINANCE-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-FINANCE-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-FINANCE-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-GOV-0001`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-GOV-0002`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-GOV-0003`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-GOV-0004`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-GOV-0005`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-GOV-0006`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-GOV-0007`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-GOV-0008`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-GOV-0009`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-GOV-0010`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-HEALTH-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HEALTH-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HEALTH-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HEALTH-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HEALTH-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HEALTH-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HEALTH-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HEALTH-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HEALTH-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HEALTH-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-HOME-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-NEWCOMER-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.6666666666666666, issues=none, soft_issues=none
+- `WFG-SECURITY-0001`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SECURITY-0002`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SECURITY-0003`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SECURITY-0004`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SECURITY-0005`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SECURITY-0006`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SECURITY-0007`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SECURITY-0008`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SECURITY-0009`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SECURITY-0010`: single_path, declared=1, paths=1, unique_required_sets=1, max_jaccard=None, issues=none, soft_issues=none
+- `WFG-SOCIAL-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SOCIAL-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SOCIAL-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SOCIAL-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SOCIAL-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SOCIAL-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SOCIAL-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SOCIAL-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SOCIAL-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SOCIAL-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.5, issues=none, soft_issues=none
+- `WFG-SUPPORT-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-SUPPORT-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-SUPPORT-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-SUPPORT-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-SUPPORT-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-SUPPORT-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-SUPPORT-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-SUPPORT-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-SUPPORT-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-SUPPORT-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.0, issues=none, soft_issues=none
+- `WFG-TRAVEL-0001`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-TRAVEL-0002`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-TRAVEL-0003`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-TRAVEL-0004`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-TRAVEL-0005`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-TRAVEL-0006`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-TRAVEL-0007`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-TRAVEL-0008`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-TRAVEL-0009`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+- `WFG-TRAVEL-0010`: multi_path, declared=2, paths=2, unique_required_sets=2, max_jaccard=0.3333333333333333, issues=none, soft_issues=none
+
+## Hard Fail Reasons
+- none
+
+## Flags
+- none
+
+## Soft Flags
+- none

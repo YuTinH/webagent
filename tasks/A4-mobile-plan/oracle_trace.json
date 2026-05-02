@@ -1,0 +1,20 @@
+{
+  "task_id": "A4-2025-MOBILE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/mobile.local/account.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#plan-unlimited button"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#plan-unlimited.active"
+    }
+  ]
+}

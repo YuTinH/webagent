@@ -1,0 +1,97 @@
+{
+  "task_id": "I3-2025-CAMERASETUP",
+  "family": "I",
+  "goal": "Add a camera device and verify it appears online in the home dashboard.",
+  "inputs": {
+    "deviceId": "CAM-001",
+    "location": "玄关",
+    "color": "white"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('devices.CAM-001.status') == 'active'",
+    "mem('devices.CAM-001.location') == '玄关'",
+    "exists(\"div:has-text('玄关')\")",
+    "url().includes('/energy.local/index.html')",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('devices.CAM-001.status') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('devices.CAM-001.status') == 'active'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Criterion 2 state set",
+      "assertion": "mem('devices.CAM-001.location') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "mem('devices.CAM-001.location') == '玄关'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"div:has-text('玄关')\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "url().includes('/energy.local/index.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_6_final",
+      "name": "Criterion 6 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "energy.local"
+  ],
+  "module_group": "camera_check",
+  "canonical_task_dir": "I3-camera-check",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

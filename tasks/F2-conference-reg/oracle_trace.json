@@ -1,0 +1,44 @@
+{
+  "task_id": "F2-2025-CONFREG",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/expense-report.html?clean=true&task=F2-2025-CONFREG"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#report-id",
+      "value": "EXP-2201"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#total-amount",
+      "value": "980"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#description",
+      "value": "Conference registration and travel"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#linked-pnr",
+      "value": "PNR-2201"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "button.btn.pri.lg"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "body"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "task_id": "I8-2025-FWREPAIR",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/appliance-repair.html?clean=true&task=I8-2025-FWREPAIR",
+      "note": "Open appliance repair center"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Open submit modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#appliance-name",
+      "value": "Smart Thermostat",
+      "note": "Enter appliance name"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#serial-number",
+      "value": "FW-001-8899",
+      "note": "Enter serial number"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#problem-description",
+      "value": "Firmware update failed and device keeps rebooting",
+      "note": "Describe firmware issue"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#service-date",
+      "value": "2026-02-28",
+      "note": "Set preferred repair date"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Submit repair request"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#appliance-repair-requests-list .card",
+      "note": "Wait for request card to appear"
+    }
+  ]
+}

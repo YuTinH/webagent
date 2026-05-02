@@ -1,0 +1,361 @@
+{
+  "goal_id": "WFG-TRAVEL-0289",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full rebooking route to completion and do not stop before the departure follow-up is synced to the calendar."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "role": "required",
+      "produces": [
+        "airport_transfer_arranged"
+      ]
+    },
+    {
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "travel_booking_confirmed"
+      ]
+    },
+    {
+      "module_id": "MODULE_CHECK_IN",
+      "role": "required",
+      "produces": [
+        "check_in_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "role": "required",
+      "produces": [
+        "itinerary_rebooked"
+      ]
+    },
+    {
+      "module_id": "MODULE_LONG_HAUL_TRIP",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "mobility_clearance_verified",
+        "travel_booking_confirmed",
+        "trip_booked",
+        "visa_approved"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_AIRPORT_TRANSFER",
+      "to": "MODULE_CHECK_IN",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_BOOK_FLIGHT",
+      "to": "MODULE_FLIGHT_REBOOKING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_CHECK_IN",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_FLIGHT_REBOOKING",
+      "to": "MODULE_AIRPORT_TRANSFER",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_LONG_HAUL_TRIP",
+      "to": "MODULE_FLIGHT_REBOOKING",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_flight_rebook_transfer_checkin_calendar",
+      "required_modules": [
+        "MODULE_BOOK_FLIGHT",
+        "MODULE_FLIGHT_REBOOKING",
+        "MODULE_AIRPORT_TRANSFER",
+        "MODULE_CHECK_IN",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-TRAVEL-0289-M1",
+        "WFG-TRAVEL-0289-M2",
+        "WFG-TRAVEL-0289-M3",
+        "WFG-TRAVEL-0289-M4",
+        "WFG-TRAVEL-0289-M5"
+      ],
+      "terminal_predicates": [
+        "travel_booking_confirmed",
+        "itinerary_rebooked",
+        "airport_transfer_arranged",
+        "check_in_completed",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_longhaul_rebook_transfer_checkin_calendar",
+      "required_modules": [
+        "MODULE_LONG_HAUL_TRIP",
+        "MODULE_FLIGHT_REBOOKING",
+        "MODULE_AIRPORT_TRANSFER",
+        "MODULE_CHECK_IN",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-TRAVEL-0289-M6",
+        "WFG-TRAVEL-0289-M7",
+        "WFG-TRAVEL-0289-M8",
+        "WFG-TRAVEL-0289-M9",
+        "WFG-TRAVEL-0289-M10"
+      ],
+      "terminal_predicates": [
+        "travel_booking_confirmed",
+        "itinerary_rebooked",
+        "airport_transfer_arranged",
+        "check_in_completed",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M1",
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "binding_id": "BIND_E1_BOOK_FLIGHT",
+      "binding_task_id": "E1-2025-FLIGHT",
+      "parameter_values": {
+        "departure": "北京",
+        "destination": "上海",
+        "depart_date": "2025-12-31",
+        "passengers": "1",
+        "class": "economy",
+        "flight_number": "CA1881",
+        "price": 450.0
+      },
+      "description": "Book a flight from 北京 to 上海 on 2025-12-31 for 1 passenger.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M2",
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "binding_id": "BIND_E6_FLIGHT_CHANGE",
+      "binding_task_id": "E6-2025-FLIGHTCHANGE",
+      "parameter_values": {},
+      "description": "Rebook flight PNR9ZZ with the flexible change policy for 2025-01-18.",
+      "expected_observables": [
+        "text('#ticket-status') == 'Rebooked'",
+        "text('#status-message') includes '2025-01-18'",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "itinerary_rebooked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M3",
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "binding_id": "BIND_E3_AIRPORT_TRANSFER",
+      "binding_task_id": "E3-2025-TRANSFER",
+      "parameter_values": {},
+      "description": "Book airport transfer and choose self_drive when the vehicle is healthy, otherwise choose taxi.",
+      "expected_observables": [
+        "ANY[ALL[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken'], mem('trips.transfer.method') == 'taxi'], ALL[NOT[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken']], mem('trips.transfer.method') == 'self_drive']]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "airport_transfer_arranged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M4",
+      "module_id": "MODULE_CHECK_IN",
+      "binding_id": "BIND_E4_CHECK_IN",
+      "binding_task_id": "E4-2025-CHECKIN",
+      "parameter_values": {},
+      "description": "Online check-in for flight",
+      "expected_observables": [
+        "text(\"#pnr\") == \"PNR9ZZ\"",
+        "text(\"#ticket-status\") == \"Rebooked\"",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "check_in_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M6",
+      "module_id": "MODULE_LONG_HAUL_TRIP",
+      "binding_id": "BIND_E7_LONG_HAUL_TRIP",
+      "binding_task_id": "E7-LONG-HAUL",
+      "parameter_values": {
+        "destination": "Japan",
+        "passport_number": "J24681012"
+      },
+      "description": "Apply for a Japan visa with passport J24681012, wait for approval, then book the Japan flight from Shenzhen on 2026-05-09.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "mobility_clearance_verified",
+          "travel_booking_confirmed",
+          "trip_booked",
+          "visa_approved"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M7",
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "binding_id": "BIND_E6_FLIGHT_CHANGE",
+      "binding_task_id": "E6-2025-FLIGHTCHANGE",
+      "parameter_values": {},
+      "description": "Rebook flight PNR9ZZ with the flexible change policy for 2025-01-18.",
+      "expected_observables": [
+        "text('#ticket-status') == 'Rebooked'",
+        "text('#status-message') includes '2025-01-18'",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "itinerary_rebooked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M8",
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "binding_id": "BIND_E3_AIRPORT_TRANSFER",
+      "binding_task_id": "E3-2025-TRANSFER",
+      "parameter_values": {},
+      "description": "Book airport transfer and choose self_drive when the vehicle is healthy, otherwise choose taxi.",
+      "expected_observables": [
+        "ANY[ALL[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken'], mem('trips.transfer.method') == 'taxi'], ALL[NOT[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken']], mem('trips.transfer.method') == 'self_drive']]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "airport_transfer_arranged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M9",
+      "module_id": "MODULE_CHECK_IN",
+      "binding_id": "BIND_E4_CHECK_IN",
+      "binding_task_id": "E4-2025-CHECKIN",
+      "parameter_values": {},
+      "description": "Online check-in for flight",
+      "expected_observables": [
+        "text(\"#pnr\") == \"PNR9ZZ\"",
+        "text(\"#ticket-status\") == \"Rebooked\"",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "check_in_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0289-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "travel_booking_confirmed",
+      "itinerary_rebooked",
+      "airport_transfer_arranged",
+      "check_in_completed",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "airport_transfer_arranged",
+      "calendar_event_synced",
+      "check_in_completed",
+      "flight_booked",
+      "itinerary_rebooked",
+      "mobility_clearance_verified",
+      "travel_booking_confirmed",
+      "trip_booked",
+      "visa_approved"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

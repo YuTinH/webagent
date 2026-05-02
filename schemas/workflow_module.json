@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowModule",
+  "description": "Core reusable workflow module for planning. Execution bindings should live in a separate sidecar.",
+  "type": "object",
+  "required": [
+    "module_id",
+    "name",
+    "parameters",
+    "requires",
+    "effects",
+    "constraints",
+    "domains",
+    "alternatives"
+  ],
+  "properties": {
+    "module_id": {
+      "type": "string",
+      "description": "Stable workflow module ID, e.g. HOUSING_FIND_LEASE",
+      "minLength": 3
+    },
+    "family": {
+      "type": "string",
+      "description": "Optional high-level task family or theme for grouping and analysis."
+    },
+    "name": {
+      "type": "string",
+      "description": "Short human-readable module name."
+    },
+    "requires": {
+      "type": "object",
+      "required": ["all_of", "any_of", "none_of"],
+      "properties": {
+        "all_of": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Predicates that must all hold before the module is valid."
+        },
+        "any_of": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Alternative prerequisite predicates; empty means no OR dependency."
+        },
+        "none_of": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Predicates that must not hold before execution."
+        }
+      },
+      "additionalProperties": false
+    },
+    "effects": {
+      "type": "object",
+      "required": ["adds", "removes"],
+      "properties": {
+        "adds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Predicates made true by this module."
+        },
+        "removes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Predicates invalidated by this module."
+        },
+        "may_trigger": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Possible side effects or failure cascades."
+        }
+      },
+      "additionalProperties": false
+    },
+    "constraints": {
+      "type": "object",
+      "required": ["estimated_steps"],
+      "properties": {
+        "estimated_steps": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Nominal step budget for this module."
+        },
+        "budget_delta": {
+          "type": "number",
+          "description": "Positive for income/refund, negative for spending."
+        },
+        "time_delta_hours": {
+          "type": "number",
+          "description": "Expected time consumption or wait horizon."
+        },
+        "risk": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "default": "medium"
+        }
+      },
+      "additionalProperties": false
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Domains likely touched by this module."
+    },
+    "parameters": {
+      "type": "array",
+      "description": "Slots that should be instantiated per workflow instance.",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "boolean", "date", "enum", "json"]
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Other module_ids that can substitute for the same effect."
+    }
+  },
+  "additionalProperties": false
+}

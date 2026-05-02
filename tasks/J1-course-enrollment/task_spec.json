@@ -1,0 +1,48 @@
+{
+  "task_id": "J1-2025-ENROLL",
+  "family": "J",
+  "goal": "Enroll in the '机器学习进阶' course (ID: ML202).",
+  "inputs": {
+    "courseId": "ML202"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/school.local/my-learning.html')",
+    "json('env','courses.ML202.state') == 'enrolled'",
+    "exists(\"#enrolled-courses-grid\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "url().includes('/school.local/my-learning.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "json('env','courses.ML202.state') == 'enrolled'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"#enrolled-courses-grid\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "school.local"
+  ],
+  "module_group": "course_enrollment",
+  "variant_kind": "distinct",
+  "canonical_task_dir": "J1-course-enrollment",
+  "lifecycle_status": "active",
+  "module_notes": "Enrollment instance for ML202."
+}

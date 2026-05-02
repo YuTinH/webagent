@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-TRAVEL-0257",
+  "theme": "travel",
+  "difficulty": 7,
+  "instruction": "Close the rebooked-departure route by confirming the rebooked itinerary, arranging transfer, completing check-in, and ending with a synced departure calendar.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "travel_booking_confirmed",
+      "itinerary_rebooked",
+      "airport_transfer_arranged",
+      "check_in_completed",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "travel_booking_confirmed",
+    "itinerary_rebooked",
+    "airport_transfer_arranged",
+    "check_in_completed",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_TRAVEL_ZTRAIN_06_REBOOK_BOOKING_DUAL; rebooked-travel workflows should end with a synced departure follow-up."
+}

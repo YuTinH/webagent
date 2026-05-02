@@ -1,0 +1,33 @@
+{
+  "goal_id": "WFG-HOME-0338",
+  "theme": "home",
+  "difficulty": 7,
+  "instruction": "Close the home route after configuring both energy control and thermostat schedule, and finish with camera verification completed.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "energy_control_configured",
+      "thermostat_schedule_configured",
+      "camera_config_verified"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "energy_control_configured",
+    "thermostat_schedule_configured",
+    "camera_config_verified"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HOME_ZTRAIN_14_CONTROL_SCHEDULE_DUAL; control-schedule home workflows should verify the monitoring surface after thermostat setup."
+}

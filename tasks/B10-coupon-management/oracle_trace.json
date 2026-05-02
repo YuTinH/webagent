@@ -1,0 +1,61 @@
+{
+  "task_id": "B10-2025-COUPONS",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/coupons.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#open-add-coupon"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-name",
+      "value": "Spring Saver"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#new-code",
+      "value": "SAVE20"
+    },
+    {
+      "t": 4,
+      "act": "select",
+      "selector": "#new-type",
+      "value": "discount"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#new-value",
+      "value": "20.0"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#new-min-spend",
+      "value": "100.0"
+    },
+    {
+      "t": 7,
+      "act": "type",
+      "selector": "#new-expiry-date",
+      "value": "2026-04-30"
+    },
+    {
+      "t": 8,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 9,
+      "act": "wait",
+      "selector": "#coupons-list .badge.ok"
+    }
+  ]
+}

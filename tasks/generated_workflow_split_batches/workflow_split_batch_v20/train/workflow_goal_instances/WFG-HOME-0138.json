@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-HOME-0138",
+  "theme": "home",
+  "difficulty": 7,
+  "instruction": "Finish the home-control packet only after energy control is configured, the camera is verified, device readiness is confirmed, monitoring is active, and the thermostat schedule is configured, and finish with a synced maintenance calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "energy_control_configured",
+      "camera_config_verified",
+      "home_device_readiness_confirmed",
+      "home_service_monitored",
+      "thermostat_schedule_configured",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "utilities_active"
+  ],
+  "target_state": [
+    "energy_control_configured",
+    "camera_config_verified",
+    "home_device_readiness_confirmed",
+    "home_service_monitored",
+    "thermostat_schedule_configured",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HOME_ENERGY_MONITOR_ALIGNMENT; control-readiness home workflows should end with a scheduled follow-up reminder."
+}

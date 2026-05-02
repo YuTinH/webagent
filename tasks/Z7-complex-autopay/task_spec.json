@@ -1,0 +1,67 @@
+{
+  "task_id": "Z7-complex-autopay",
+  "success_criteria": [
+    "mem('autopay.utility.status') == 'active'",
+    "mem('autopay.utility.payee') == 'Electricity Dept'",
+    "mem('autopay.utility.account_number') == 'UTIL-7710'",
+    "mem('autopay.utility.amount') == '310'",
+    "text('#success-summary') includes 'UTIL-7710'"
+  ],
+  "preconditions": [],
+  "goal": "Ensure you search your email for the enterprise Electricity Dept bill with account UTIL-7710, then enable autopay for that exact account with a monthly limit of 310.",
+  "scoring_checkpoints": [
+    {
+      "id": "cp_z7_1",
+      "name": "cp_z7 checkpoint 1",
+      "assertion": "mem('autopay.utility.status') == 'active'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z7_2",
+      "name": "cp_z7 checkpoint 2",
+      "assertion": "mem('autopay.utility.payee') == 'Electricity Dept'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z7_3",
+      "name": "cp_z7 checkpoint 3",
+      "assertion": "mem('autopay.utility.account_number') == 'UTIL-7710'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z7_4",
+      "name": "cp_z7 checkpoint 4",
+      "assertion": "mem('autopay.utility.amount') == '310'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z7_5",
+      "name": "cp_z7 checkpoint 5",
+      "assertion": "text('#success-summary') includes 'UTIL-7710'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "work.local",
+    "bank.local"
+  ],
+  "module_group": "complex_autopay",
+  "canonical_task_dir": "Z7-complex-autopay",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

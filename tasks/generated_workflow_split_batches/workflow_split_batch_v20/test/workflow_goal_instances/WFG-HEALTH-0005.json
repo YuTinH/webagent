@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-HEALTH-0005",
+  "theme": "health",
+  "difficulty": 7,
+  "instruction": "Close the claim-vaccine workflow by activating coverage first, completing the appointment and claim path, updating the vaccine record, and ending with a synced follow-up calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "coverage_path_active",
+      "medical_appointment_booked",
+      "medical_claim_submitted",
+      "vaccination_record_updated",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "coverage_path_active",
+    "medical_appointment_booked",
+    "medical_claim_submitted",
+    "vaccination_record_updated",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HEALTH_CLAIM_VACCINE; claim-then-vaccine health workflows should schedule a concrete follow-up after the vaccination step."
+}

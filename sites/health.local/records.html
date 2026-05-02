@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Health Records - Health Connect</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.record-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.record-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #10b981, #6ee7b7)"></div>
+      Health Connect
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="doctors.html">Doctors</a>
+      <a href="records.html" class="active">My Records</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="breadcrumbs">
+    <a href="index.html">Home</a> / <span>My Records</span>
+  </div>
+
+  <h1 style="margin-bottom: 24px;">My Health Records</h1>
+
+  <div id="records-list">
+    <!-- Rendered by JS -->
+    <div class="record-card skeleton" style="height:200px"></div>
+    <div class="record-card skeleton" style="height:150px"></div>
+  </div>
+
+  <div class="card" style="margin: 24px 0; display:flex; justify-content:space-between; align-items:center; gap:16px">
+    <div>
+      <h3 style="margin:0">Need to file an insurance claim?</h3>
+      <p class="muted" style="margin:4px 0 0">Submit your visit and prescription to your insurer online.</p>
+    </div>
+    <a href="claim.html" class="btn pri" style="background:var(--pri); border-color:transparent">Start Claim</a>
+  </div>
+
+  <div class="ad-banner" style="margin-top: 40px; background:linear-gradient(90deg, #6ee7b7, #10b981)">
+    <div>
+      <h3>New Prescription?</h3>
+      <p>Order your refills directly to your home.</p>
+    </div>
+    <button class="btn" style="background:white; color:var(--ok)">Order Refill</button>
+  </div>
+
+</div>
+
+<script>window.RelRoot = "../";</script>
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+async function loadRecords() {
+  const list = document.getElementById('records-list');
+  list.innerHTML = '<div class="text-center muted p-8">Loading records...</div>';
+
+  const env = await loadEnv();
+  const prescriptions = env?.health?.prescriptions || {};
+  const entries = Object.entries(prescriptions);
+  
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="text-center muted p-8">No prescriptions found.</div>';
+    return;
+  }
+
+  list.innerHTML = entries.map(([id, rx]) => `
+    <div class="record-card">
+      <div class="record-header">
+        <h3>Prescription - ${id}</h3>
+        <span class="badge ok">Status: ${rx.state || 'active'}</span>
+      </div>
+      <p class="muted">Medication: ${rx.medication}</p>
+      <div class="record-details">
+        <div>
+          <strong>Refills Left:</strong> <span id="refills-${id}">${rx.refills_left}</span>
+        </div>
+        <div>
+          <strong>Last Refill:</strong> ${rx.last_refill ? new Date(rx.last_refill).toLocaleDateString() : 'N/A'}
+        </div>
+      </div>
+      <button
+        class="btn pri mt-4"
+        data-rx-id="${id}"
+        data-medication="${rx.medication}"
+        onclick="orderRefill"
+      >Order Refill</button>
+    </div>
+  `).join('');
+
+  document.querySelectorAll('button.btn.pri[onclick="orderRefill"]').forEach((button) => {
+    if (button.dataset.boundRefill === '1') return;
+    button.dataset.boundRefill = '1';
+    button.addEventListener('click', () => {
+      orderRefill(button.dataset.rxId, button.dataset.medication);
+    });
+  });
+}
+
+loadRecords();
+
+async function orderRefill(rxId, medication) {
+  // Redirect to refill page with pre-filled data
+  location.href = `refill.html?prescriptionId=${rxId}&medication=${encodeURIComponent(medication)}`;
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

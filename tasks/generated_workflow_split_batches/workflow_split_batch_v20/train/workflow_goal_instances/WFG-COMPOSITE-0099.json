@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-COMPOSITE-0099",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Finish the mixed finance-travel workflow only after the tax-funding side is prepared, the itinerary is rebooked, and the expense report is submitted.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "tax_funding_prepared",
+      "itinerary_rebooked",
+      "expense_report_submitted"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "tax_funding_prepared",
+    "itinerary_rebooked",
+    "expense_report_submitted"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_REBOOK_FUNDING_ALIGNMENT; rebooking-and-funding composite flows should submit the expense claim after the itinerary is stabilized."
+}

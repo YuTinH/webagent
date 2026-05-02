@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Login - Security</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page" style="display:flex; align-items:center; justify-content:center; min-height:100vh">
+  
+  <div class="card soft" style="width:400px">
+    <h1 style="text-align:center">Login</h1>
+    
+    <!-- Reset Success Message -->
+    <div id="reset-success" style="display:none; background:var(--ok-bg); color:var(--ok); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center">
+        Password reset complete. Sign in with the updated credentials.
+    </div>
+
+    <div class="form">
+        <label>Username</label>
+        <input id="username" class="input">
+        
+        <label>Password</label>
+        <input id="password" type="password" class="input">
+        
+        <button id="login-btn" class="btn pri" style="width:100%; margin-top:24px" onclick="submitLogin()">Login</button>
+        
+        <div style="text-align:center; margin-top:16px; display:flex; justify-content:space-between; font-size:14px">
+            <a href="forgot-password.html" style="color:var(--muted)">Forgot Password?</a>
+            <a href="#" style="color:var(--pri)">Need Help?</a>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const requestedSecurityLoginTaskId = params.get('task') || '';
+  const securityLoginTaskId = resolveTaskId(requestedSecurityLoginTaskId || '');
+
+  if (params.get('reset') === 'success') {
+      document.getElementById('reset-success').style.display = 'block';
+  }
+
+  async function submitLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      if (!username || !password) {
+          Toast.error('Enter username and password.');
+          return;
+      }
+      const target = new URL(`../security.local/dashboard.html`, window.location.href);
+      if (securityLoginTaskId) {
+          target.searchParams.set('task', securityLoginTaskId);
+      }
+      window.location.href = target.toString();
+  }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,4806 @@
+{
+  "version": 4,
+  "description": "Core reusable workflow module library for planning, separated from execution bindings.",
+  "modules": [
+    {
+      "module_id": "MODULE_2FA_DEVICE",
+      "family": "security",
+      "name": "2FA Device",
+      "requires": {
+        "all_of": [
+          "two_factor_enabled"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "two_factor_device_updated"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [
+        {
+          "name": "new_device_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: new_device_name"
+        },
+        {
+          "name": "verification_code",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: verification_code"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_2FA_SETUP",
+      "family": "security",
+      "name": "2FA Setup",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "two_factor_enabled"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_ADDRESS_CHANGE",
+      "family": "government",
+      "name": "Address Change",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [
+          "address_proof_available",
+          "residency_record_verified"
+        ],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "address_records_aligned",
+          "mailing_address_current",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "gov.local"
+      ],
+      "parameters": [
+        {
+          "name": "new_address",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: new_address"
+        },
+        {
+          "name": "proof_document",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: proof_document"
+        },
+        {
+          "name": "zip_code",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: zip_code"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_ADDRESS_PROOF",
+      "family": "newcomer",
+      "name": "Address Proof",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "address_proof_available",
+          "residency_record_verified"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "gov.local"
+      ],
+      "parameters": [
+        {
+          "name": "docType",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: docType"
+        },
+        {
+          "name": "fileName",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: fileName"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "family": "travel",
+      "name": "Airport Transfer",
+      "requires": {
+        "all_of": [
+          "flight_booked"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "airport_transfer_arranged"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": -0.0,
+        "time_delta_hours": 2.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "trip.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_AUTOPAY",
+      "family": "finance",
+      "name": "Autopay",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "autopay_enabled"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": -200.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "account_number",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: account_number"
+        },
+        {
+          "name": "amount",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: amount"
+        },
+        {
+          "name": "payee",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: payee"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_BANK_OPENING",
+      "family": "newcomer",
+      "name": "Bank Opening",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [],
+        "none_of": [
+          "bank_account_active"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: address"
+        },
+        {
+          "name": "fullname",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: fullname"
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: phone"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_BILLING_REVIEW",
+      "family": "government",
+      "name": "Billing Review",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "bills_reviewed",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "gov.local"
+      ],
+      "parameters": [
+        {
+          "name": "utility_types",
+          "type": "json",
+          "required": true,
+          "description": "Instantiated input slot: utility_types"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_BILL_AGGREGATION",
+      "family": "finance",
+      "name": "Bill Aggregation",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "account_issue_triaged",
+          "bills_aggregated"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 9,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: account_id"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: name"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: type"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "family": "travel",
+      "name": "Book Flight",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "flight_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 10,
+        "budget_delta": -450.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "trip.local"
+      ],
+      "parameters": [
+        {
+          "name": "class",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: class"
+        },
+        {
+          "name": "depart_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: depart_date"
+        },
+        {
+          "name": "departure",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: departure"
+        },
+        {
+          "name": "destination",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: destination"
+        },
+        {
+          "name": "flight_number",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: flight_number"
+        },
+        {
+          "name": "passengers",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: passengers"
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: price"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_BOOK_HOTEL",
+      "family": "travel",
+      "name": "Book Hotel",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "hotel_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 9,
+        "budget_delta": -1200.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "trip.local"
+      ],
+      "parameters": [
+        {
+          "name": "check_in_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: check_in_date"
+        },
+        {
+          "name": "check_out_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: check_out_date"
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: city"
+        },
+        {
+          "name": "guests",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: guests"
+        },
+        {
+          "name": "hotel_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: hotel_name"
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: price"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_BUDGET_LIMIT_UPDATE",
+      "family": "finance",
+      "name": "Budget Limit Update",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "budget_limit_updated"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "category",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: category"
+        },
+        {
+          "name": "limit",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: limit"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_BUY_EBOOK",
+      "family": "education",
+      "name": "Buy eBook",
+      "requires": {
+        "all_of": [
+          "education_account_activated"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "assignment_resources_provisioned",
+          "ebook_owned"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "school.local"
+      ],
+      "parameters": [
+        {
+          "name": "bookId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: bookId"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CALENDAR_AGGREGATION",
+      "family": "career",
+      "name": "Calendar Aggregation",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "calendar_event_created",
+          "deadline_coordination_recorded"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 9,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "work.local"
+      ],
+      "parameters": [
+        {
+          "name": "date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: date"
+        },
+        {
+          "name": "personal_title",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: personal_title"
+        },
+        {
+          "name": "time",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: time"
+        },
+        {
+          "name": "work_title",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: work_title"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CAMERA_CHECK",
+      "family": "home",
+      "name": "Camera Check",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "camera_config_verified",
+          "home_service_monitored"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "energy.local"
+      ],
+      "parameters": [
+        {
+          "name": "color",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: color"
+        },
+        {
+          "name": "deviceId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: deviceId"
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: location"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CANCEL_SUBSCRIPTION",
+      "family": "support",
+      "name": "Cancel Subscription",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": [
+          "subscription_canceled"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "subscription_canceled",
+          "subscription_exit_processed"
+        ],
+        "removes": [
+          "subscription_active"
+        ]
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "subscription_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: subscription_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CARD_REPLACEMENT",
+      "family": "finance",
+      "name": "Card Replacement",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "replacement_card_requested"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "pay.local"
+      ],
+      "parameters": [
+        {
+          "name": "new_last4",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: new_last4"
+        },
+        {
+          "name": "old_last4",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: old_last4"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CHARITY_DONATION",
+      "family": "social",
+      "name": "Charity Donation",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "donation_completed",
+          "social_contribution_completed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 100.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "social.local"
+      ],
+      "parameters": [
+        {
+          "name": "amount",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: amount"
+        },
+        {
+          "name": "charity_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: charity_name"
+        },
+        {
+          "name": "tax_deductible",
+          "type": "boolean",
+          "required": true,
+          "description": "Instantiated input slot: tax_deductible"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CHECK_BALANCE",
+      "family": "finance",
+      "name": "Check Balance",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "account_balance_reviewed",
+          "account_issue_triaged"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CHECK_IN",
+      "family": "travel",
+      "name": "Check In",
+      "requires": {
+        "all_of": [
+          "flight_booked"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "check_in_completed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": 0.0,
+        "time_delta_hours": 2.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "trip.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_COMMUTE_ROUTE",
+      "family": "travel",
+      "name": "Commute Route",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "commute_route_checked"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "trip.local"
+      ],
+      "parameters": [
+        {
+          "name": "commute_time",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: commute_time"
+        },
+        {
+          "name": "destination",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: destination"
+        },
+        {
+          "name": "origin",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: origin"
+        },
+        {
+          "name": "transport_mode",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: transport_mode"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_COMPLEX_AUTOPAY",
+      "family": "composite",
+      "name": "Complex Autopay",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "autopay_enabled",
+          "payment_stack_prepared"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "work.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CONFERENCE_REG",
+      "family": "career",
+      "name": "Conference Reg",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "conference_admin_recorded",
+          "conference_expense_logged"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "event",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: event"
+        },
+        {
+          "name": "registration_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: registration_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CONFERENCE_REGISTRATION",
+      "family": "career",
+      "name": "Conference Registration",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "conference_admin_recorded",
+          "conference_registered",
+          "deadline_coordination_recorded"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 8,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "conferenceId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: conferenceId"
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: email"
+        },
+        {
+          "name": "fullName",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: fullName"
+        },
+        {
+          "name": "invoiceTitle",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: invoiceTitle"
+        },
+        {
+          "name": "paymentMethod",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: paymentMethod"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CONTACT_SUPPORT",
+      "family": "support",
+      "name": "Contact Support",
+      "requires": {
+        "all_of": [
+          "shop_order_delivered"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "support_contacted",
+          "support_ticket_opened"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: description"
+        },
+        {
+          "name": "issue_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: issue_type"
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: order_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "family": "daily",
+      "name": "Coupon Management",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "coupon_available",
+          "daily_order_bundle_prepared",
+          "order_price_secured",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 10,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: code"
+        },
+        {
+          "name": "expiry_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: expiry_date"
+        },
+        {
+          "name": "min_spend",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: min_spend"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: name"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: type"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: value"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_COURSE_ENROLLMENT",
+      "family": "education",
+      "name": "Course Enrollment",
+      "requires": {
+        "all_of": [
+          "education_account_activated"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "course_enrolled"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "school.local"
+      ],
+      "parameters": [
+        {
+          "name": "courseId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: courseId"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_CUSTOMER_SERVICE",
+      "family": "composite",
+      "name": "Customer Service",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "order_followup_prepared",
+          "order_status_checked",
+          "support_contacted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: order_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_DATA_DELETION",
+      "family": "security",
+      "name": "Data Deletion",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "deletion_request_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [
+        {
+          "name": "data_scope",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: data_scope"
+        },
+        {
+          "name": "platform",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: platform"
+        },
+        {
+          "name": "request_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: request_type"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_DISPUTE_TRANSACTION",
+      "family": "finance",
+      "name": "Dispute Transaction",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "transaction_dispute_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 8,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "amount",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: amount"
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: date"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: name"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: type"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_DOCTOR_APPT",
+      "family": "health",
+      "name": "Doctor Appt",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "medical_appointment_booked"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "health.local"
+      ],
+      "parameters": [
+        {
+          "name": "appointmentId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: appointmentId"
+        },
+        {
+          "name": "doctorId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: doctorId"
+        },
+        {
+          "name": "slot",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: slot"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_DOWNLOAD_CERT",
+      "family": "education",
+      "name": "Download Cert",
+      "requires": {
+        "all_of": [],
+        "any_of": [
+          "course_enrolled",
+          "skill_certified"
+        ],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "certificate_downloaded"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "school.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_DOWNLOAD_DATA",
+      "family": "security",
+      "name": "Download Data",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "account_data_exported",
+          "account_exit_prepared"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [
+        {
+          "name": "platform",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: platform"
+        },
+        {
+          "name": "request_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: request_type"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "family": "composite",
+      "name": "Email Calendar",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 9,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "work.local"
+      ],
+      "parameters": [
+        {
+          "name": "email_subject",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: email_subject"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_EMAIL_TRACKING",
+      "family": "career",
+      "name": "Email Tracking",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "career_signal_strengthened",
+          "email_thread_tracked"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 24.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "work.local"
+      ],
+      "parameters": [
+        {
+          "name": "sender",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: sender"
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: subject"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: summary"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_ENERGY_OPTIMIZE",
+      "family": "home",
+      "name": "Energy Optimize",
+      "requires": {
+        "all_of": [
+          "utilities_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "energy_control_configured",
+          "energy_usage_optimized"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "energy.local"
+      ],
+      "parameters": [
+        {
+          "name": "meterId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: meterId"
+        },
+        {
+          "name": "plan",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: plan"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_EVENT_TICKETS",
+      "family": "education",
+      "name": "Event Tickets",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 8,
+        "budget_delta": -50.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "school.local"
+      ],
+      "parameters": [
+        {
+          "name": "event_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: event_name"
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: price"
+        },
+        {
+          "name": "recipient_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: recipient_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_EXPENSE_REPORT",
+      "family": "travel",
+      "name": "Expense Report",
+      "requires": {
+        "all_of": [],
+        "any_of": [
+          "flight_booked",
+          "hotel_booked"
+        ],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "expense_report_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 2.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: description"
+        },
+        {
+          "name": "pnr",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: pnr"
+        },
+        {
+          "name": "reportId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: reportId"
+        },
+        {
+          "name": "total",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: total"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_FILE_TAXES",
+      "family": "career",
+      "name": "File Taxes",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "tax_filing_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 8,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_FIND_HOME",
+      "family": "newcomer",
+      "name": "Find Home",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": [
+          "lease_active"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": -2600.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "housing.local"
+      ],
+      "parameters": [
+        {
+          "name": "leaseTerm",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: leaseTerm"
+        },
+        {
+          "name": "propertyId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: propertyId"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_FIRMWARE_UPDATE",
+      "family": "home",
+      "name": "Firmware Update",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "firmware_updated",
+          "home_device_readiness_confirmed",
+          "home_service_monitored"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 8,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "appliance",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: appliance"
+        },
+        {
+          "name": "problem",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: problem"
+        },
+        {
+          "name": "serial_number",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: serial_number"
+        },
+        {
+          "name": "service_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: service_date"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "family": "travel",
+      "name": "Flight Rebooking",
+      "requires": {
+        "all_of": [
+          "flight_booked"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "itinerary_rebooked"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "trip.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_FOOD_DELIVERY",
+      "family": "daily",
+      "name": "Food Delivery",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "food_order_pending"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": -10.39,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "food.local"
+      ],
+      "parameters": [
+        {
+          "name": "item",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: item"
+        },
+        {
+          "name": "promo_code",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: promo_code"
+        },
+        {
+          "name": "restaurant",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: restaurant"
+        },
+        {
+          "name": "total",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: total"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_FRESH_SUBSCRIPTION",
+      "family": "daily",
+      "name": "Fresh Subscription",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "subscription_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 9,
+        "budget_delta": -120.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "food.local"
+      ],
+      "parameters": [
+        {
+          "name": "items",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: items"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: name"
+        },
+        {
+          "name": "next_delivery_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: next_delivery_date"
+        },
+        {
+          "name": "price",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: price"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_GEAR_RENTAL",
+      "family": "education",
+      "name": "Gear Rental",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": [
+          "rental_listing_active"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "rental_listing_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -20.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "listing_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: listing_type"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: name"
+        },
+        {
+          "name": "price",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: price"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_GIFT_POOLING",
+      "family": "social",
+      "name": "Gift Pooling",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "gift_pool_created",
+          "social_commitment_recorded",
+          "social_contribution_completed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 300.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "social.local"
+      ],
+      "parameters": [
+        {
+          "name": "amount",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: amount"
+        },
+        {
+          "name": "charity_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: charity_name"
+        },
+        {
+          "name": "tax_deductible",
+          "type": "boolean",
+          "required": true,
+          "description": "Instantiated input slot: tax_deductible"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_GROCERY_RUN",
+      "family": "daily",
+      "name": "Grocery Run",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "daily_order_bundle_prepared",
+          "grocery_order_pending"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 9,
+        "budget_delta": -180.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "food.local"
+      ],
+      "parameters": [
+        {
+          "name": "frequency",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: frequency"
+        },
+        {
+          "name": "items",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: items"
+        },
+        {
+          "name": "next_delivery_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: next_delivery_date"
+        },
+        {
+          "name": "plan_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: plan_name"
+        },
+        {
+          "name": "price_per_delivery",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: price_per_delivery"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_HEALTH_PLAN_ACTIVATION",
+      "family": "health",
+      "name": "Health Plan Activation",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "care_continuity_established",
+          "coverage_path_active",
+          "health_plan_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "health.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_HOUSEKEEPING_BOOKING",
+      "family": "daily",
+      "name": "Housekeeping Booking",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "housekeeping_service_booked",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "instructions",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: instructions"
+        },
+        {
+          "name": "service_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: service_date"
+        },
+        {
+          "name": "service_time",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: service_time"
+        },
+        {
+          "name": "service_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: service_type"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_HOUSE_REPAIR",
+      "family": "home",
+      "name": "House Repair",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "home_repair_requested"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 8,
+        "budget_delta": -0.0,
+        "time_delta_hours": 2.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "item",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: item"
+        },
+        {
+          "name": "problem",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: problem"
+        },
+        {
+          "name": "service_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: service_date"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_ILLNESS_REPORTING",
+      "family": "crisis",
+      "name": "Illness Reporting",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "crisis_intake_completed",
+          "illness_report_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 2.0,
+        "risk": "high"
+      },
+      "domains": [
+        "health.local"
+      ],
+      "parameters": [
+        {
+          "name": "end_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: end_date"
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: reason"
+        },
+        {
+          "name": "report_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: report_type"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_INSURANCE_POLICY",
+      "family": "health",
+      "name": "Insurance Policy",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "coverage_path_active",
+          "insurance_policy_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "health.local"
+      ],
+      "parameters": [
+        {
+          "name": "plan_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: plan_name"
+        },
+        {
+          "name": "provider",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: provider"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_INVESTMENT_ACCOUNT",
+      "family": "finance",
+      "name": "Investment Account",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": [
+          "investment_account_active"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "investment_account_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "initial_deposit",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: initial_deposit"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: name"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: type"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_INVESTMENT_GROWTH",
+      "family": "composite",
+      "name": "Investment Growth",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "investment_account_active",
+          "investment_growth_verified"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 9,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "account_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: account_type"
+        },
+        {
+          "name": "deposit",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: deposit"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_JOB_SEARCH",
+      "family": "career",
+      "name": "Job Search",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "job_application_followup_created"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "work.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_LEASE_CONTRACT_REGISTRATION",
+      "family": "newcomer",
+      "name": "Lease Contract Registration",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "housing_finance_prepared",
+          "lease_record_registered"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "housing.local"
+      ],
+      "parameters": [
+        {
+          "name": "deposit",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: deposit"
+        },
+        {
+          "name": "end_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: end_date"
+        },
+        {
+          "name": "lease_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: lease_id"
+        },
+        {
+          "name": "rent",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: rent"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_LEASE_MANAGEMENT_REVIEW",
+      "family": "newcomer",
+      "name": "Lease Management Review",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "housing_finance_prepared",
+          "lease_management_reviewed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 1,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "housing.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_LEAVE_REVIEW",
+      "family": "support",
+      "name": "Leave Review",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "product_review_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: content"
+        },
+        {
+          "name": "merchant",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: merchant"
+        },
+        {
+          "name": "rating",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: rating"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_LIBRARY_SERVICE",
+      "family": "education",
+      "name": "Library Service",
+      "requires": {
+        "all_of": [
+          "education_account_activated",
+          "course_enrolled"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "assignment_resources_provisioned",
+          "library_pickup_reserved"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 11,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "school.local"
+      ],
+      "parameters": [
+        {
+          "name": "applicant_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: applicant_name"
+        },
+        {
+          "name": "book_query",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: book_query"
+        },
+        {
+          "name": "pickup_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: pickup_date"
+        },
+        {
+          "name": "student_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: student_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_LIVE_AUCTION",
+      "family": "composite",
+      "name": "Live Auction",
+      "requires": {
+        "all_of": [
+          "payment_method_available"
+        ],
+        "any_of": [
+          "bank_account_active"
+        ],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "auction_bid_placed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "budget",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: budget"
+        },
+        {
+          "name": "item",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: item"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_LOGISTICS_FIX",
+      "family": "support",
+      "name": "Logistics Fix",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "logistics_ticket_opened",
+          "support_contacted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: description"
+        },
+        {
+          "name": "issue_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: issue_type"
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: order_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_LONG_HAUL_TRIP",
+      "family": "travel",
+      "name": "Long Haul Trip",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "flight_booked",
+          "mobility_clearance_verified",
+          "travel_booking_confirmed",
+          "trip_booked",
+          "visa_approved"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 10,
+        "budget_delta": -0.0,
+        "time_delta_hours": 24.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "gov.local",
+        "trip.local"
+      ],
+      "parameters": [
+        {
+          "name": "destination",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: destination"
+        },
+        {
+          "name": "passport_number",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: passport_number"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_LOST_CARD_FREEZE",
+      "family": "crisis",
+      "name": "Lost Card Freeze",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": [
+          "card_frozen"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "account_access_contained",
+          "card_frozen",
+          "crisis_intake_completed"
+        ],
+        "removes": [
+          "payment_method_available"
+        ],
+        "may_trigger": [
+          "liquidity_frozen"
+        ]
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "card_last4",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: card_last4"
+        },
+        {
+          "name": "reissue",
+          "type": "boolean",
+          "required": true,
+          "description": "Instantiated input slot: reissue"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_MEDICAL_CLAIM",
+      "family": "health",
+      "name": "Medical Claim",
+      "requires": {
+        "all_of": [],
+        "any_of": [
+          "health_plan_active",
+          "insurance_policy_active"
+        ],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "medical_claim_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 250.0,
+        "time_delta_hours": 2.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "health.local"
+      ],
+      "parameters": [
+        {
+          "name": "amount",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: amount"
+        },
+        {
+          "name": "appointment_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: appointment_id"
+        },
+        {
+          "name": "claim_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: claim_id"
+        },
+        {
+          "name": "policy_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: policy_id"
+        },
+        {
+          "name": "visit_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: visit_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_MOBILE_PLAN_SIGNUP",
+      "family": "newcomer",
+      "name": "Mobile Plan Signup",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": [
+          "mobile_service_active"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "mobile_service_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "mobile.local"
+      ],
+      "parameters": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: address"
+        },
+        {
+          "name": "plan",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: plan"
+        },
+        {
+          "name": "user_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: user_name"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_MOBILE_PLAN_SWITCH",
+      "family": "newcomer",
+      "name": "Mobile Plan Switch",
+      "requires": {
+        "all_of": [
+          "mobile_service_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "mobile_plan_updated"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "mobile.local"
+      ],
+      "parameters": [
+        {
+          "name": "planId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: planId"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_MOVIE_TICKETS",
+      "family": "daily",
+      "name": "Movie Tickets",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "school.local"
+      ],
+      "parameters": [
+        {
+          "name": "target_site",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: target_site"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "family": "composite",
+      "name": "Order Arrival",
+      "requires": {
+        "all_of": [
+          "shop_order_exists"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "shop_order_delivered"
+        ],
+        "removes": [
+          "shop_order_pending"
+        ]
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -0.0,
+        "time_delta_hours": 24.0,
+        "risk": "high"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "product_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: product_name"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PAPER_SUBMISSION",
+      "family": "career",
+      "name": "Paper Submission",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": [
+          "paper_submitted"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "paper_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 8,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "work.local"
+      ],
+      "parameters": [
+        {
+          "name": "authors",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: authors"
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: file"
+        },
+        {
+          "name": "journal",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: journal"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: title"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PARKING_PERMIT_APPLICATION",
+      "family": "government",
+      "name": "Parking Permit Application",
+      "requires": {
+        "all_of": [
+          "address_known"
+        ],
+        "any_of": [],
+        "none_of": [
+          "parking_permit_active"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "parking_permit_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "gov.local"
+      ],
+      "parameters": [
+        {
+          "name": "duration_months",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: duration_months"
+        },
+        {
+          "name": "permit_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: permit_type"
+        },
+        {
+          "name": "plate_number",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: plate_number"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PASSWORD_MANAGER",
+      "family": "security",
+      "name": "Password Manager",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "access_surface_reviewed",
+          "credential_vault_updated",
+          "security_hardening_completed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [
+        {
+          "name": "password",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: password"
+        },
+        {
+          "name": "site",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: site"
+        },
+        {
+          "name": "username",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: username"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RECOVERY_E2E",
+      "family": "composite",
+      "name": "Password Recovery E2e",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "account_access_contained",
+          "account_access_restored",
+          "password_reset_completed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 8,
+        "budget_delta": 0.0,
+        "time_delta_hours": 24.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [
+        {
+          "name": "new_password",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: new_password"
+        },
+        {
+          "name": "username",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: username"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RESET_COMPLETION",
+      "family": "crisis",
+      "name": "Password Reset Completion",
+      "requires": {
+        "all_of": [
+          "password_reset_code_requested"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "password_reset_completed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: code"
+        },
+        {
+          "name": "username",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: username"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RESET_REQUEST",
+      "family": "crisis",
+      "name": "Password Reset Request",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "password_reset_code_requested"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [
+        {
+          "name": "username",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: username"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PERMIT_APP",
+      "family": "government",
+      "name": "Permit App",
+      "requires": {
+        "all_of": [
+          "address_known"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "permit_application_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "gov.local"
+      ],
+      "parameters": [
+        {
+          "name": "documents",
+          "type": "json",
+          "required": true,
+          "description": "Instantiated input slot: documents"
+        },
+        {
+          "name": "permit_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: permit_type"
+        },
+        {
+          "name": "vehicle_plate",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: vehicle_plate"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PERMIT_RENEWAL",
+      "family": "government",
+      "name": "Permit Renewal",
+      "requires": {
+        "all_of": [
+          "parking_permit_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "local_vehicle_compliance_verified",
+          "permit_renewed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": -0.0,
+        "time_delta_hours": 24.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "gov.local"
+      ],
+      "parameters": [
+        {
+          "name": "new_expiry",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: new_expiry"
+        },
+        {
+          "name": "payment_method",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: payment_method"
+        },
+        {
+          "name": "permit_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: permit_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PRESCRIPTION_REFILL",
+      "family": "health",
+      "name": "Prescription Refill",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "care_continuity_established",
+          "prescription_refilled"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "health.local"
+      ],
+      "parameters": [
+        {
+          "name": "medication",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: medication"
+        },
+        {
+          "name": "prescriptionId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: prescriptionId"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PRICE_PROTECTION",
+      "family": "daily",
+      "name": "Price Protection",
+      "requires": {
+        "all_of": [],
+        "any_of": [
+          "shop_order_delivered",
+          "shop_order_exists"
+        ],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "order_price_secured",
+          "price_protection_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: order_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_PRIVACY_SETTINGS",
+      "family": "security",
+      "name": "Privacy Settings",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "access_surface_reviewed",
+          "account_exit_prepared",
+          "privacy_settings_updated"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [
+        {
+          "name": "site",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: site"
+        },
+        {
+          "name": "username",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: username"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "family": "career",
+      "name": "Receipt Archiving",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "cloud.local"
+      ],
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: file_path"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_RENEW_PERMIT",
+      "family": "government",
+      "name": "Renew Permit",
+      "requires": {
+        "all_of": [
+          "parking_permit_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "local_vehicle_compliance_verified",
+          "permit_renewed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 24.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "gov.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_RETURN",
+      "family": "support",
+      "name": "Return",
+      "requires": {
+        "all_of": [
+          "shop_order_delivered"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "post_purchase_remedy_requested",
+          "return_requested"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "item_sku",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: item_sku"
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: order_id"
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: reason"
+        },
+        {
+          "name": "refund_method",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: refund_method"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_REVIEWS_BLACKLIST",
+      "family": "support",
+      "name": "Reviews Blacklist",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "merchant_blacklisted",
+          "product_review_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "blacklist_merchant",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: blacklist_merchant"
+        },
+        {
+          "name": "review_content",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: review_content"
+        },
+        {
+          "name": "review_merchant",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: review_merchant"
+        },
+        {
+          "name": "review_rating",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: review_rating"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_ROOMMATE_EXPENSE_SPLIT",
+      "family": "social",
+      "name": "Roommate Expense Split",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "shared_expenses_settled"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "social.local"
+      ],
+      "parameters": [
+        {
+          "name": "month",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: month"
+        },
+        {
+          "name": "rules",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: rules"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_RSVP_EVENT",
+      "family": "social",
+      "name": "Rsvp Event",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "event_rsvp_completed",
+          "social_commitment_recorded"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "social.local"
+      ],
+      "parameters": [
+        {
+          "name": "group_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: group_name"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SECOND_HAND_ITEM_LISTING",
+      "family": "daily",
+      "name": "Second Hand Item Listing",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "market_listing_active",
+          "resale_listing_activated"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "market.local"
+      ],
+      "parameters": [
+        {
+          "name": "category",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: category"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: description"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: name"
+        },
+        {
+          "name": "photo_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: photo_name"
+        },
+        {
+          "name": "price",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: price"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SECOND_HAND_SALE",
+      "family": "daily",
+      "name": "Second Hand Sale",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "resale_listing_activated",
+          "sale_listing_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 50.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "market.local"
+      ],
+      "parameters": [
+        {
+          "name": "category",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: category"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: description"
+        },
+        {
+          "name": "item_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: item_name"
+        },
+        {
+          "name": "price",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: price"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SECURITY_AUDIT",
+      "family": "security",
+      "name": "Security Audit",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "security_audit_completed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SECURITY_ROTATION",
+      "family": "security",
+      "name": "Security Rotation",
+      "requires": {
+        "all_of": [
+          "two_factor_enabled"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "secret_rotated",
+          "security_hardening_completed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "security.local"
+      ],
+      "parameters": [
+        {
+          "name": "providers",
+          "type": "json",
+          "required": true,
+          "description": "Instantiated input slot: providers"
+        },
+        {
+          "name": "rotate",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: rotate"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SHOPPING",
+      "family": "daily",
+      "name": "Shopping",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "shop_order_exists",
+          "shop_order_pending"
+        ],
+        "removes": [],
+        "may_trigger": [
+          "payment_blocked_if_liquidity_frozen"
+        ]
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": -30.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "category",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: category"
+        },
+        {
+          "name": "item_keywords",
+          "type": "json",
+          "required": true,
+          "description": "Instantiated input slot: item_keywords"
+        },
+        {
+          "name": "max_price",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: max_price"
+        },
+        {
+          "name": "payment_method",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: payment_method"
+        },
+        {
+          "name": "shipping_speed",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: shipping_speed"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SKILL_CERTIFICATION",
+      "family": "education",
+      "name": "Skill Certification",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "skill_certified"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "school.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SMART_BULB_SETUP",
+      "family": "home",
+      "name": "Smart Bulb Setup",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "home_device_readiness_confirmed",
+          "smart_bulb_configured"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "energy.local"
+      ],
+      "parameters": [
+        {
+          "name": "color",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: color"
+        },
+        {
+          "name": "deviceId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: deviceId"
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: location"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SMART_METER",
+      "family": "home",
+      "name": "Smart Meter",
+      "requires": {
+        "all_of": [
+          "utilities_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "energy_control_configured",
+          "smart_meter_configured"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "energy.local"
+      ],
+      "parameters": [
+        {
+          "name": "reading",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: reading"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SUBMIT_ASSIGNMENT",
+      "family": "education",
+      "name": "Submit Assignment",
+      "requires": {
+        "all_of": [
+          "course_enrolled",
+          "assignment_resources_provisioned"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "assignment_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "school.local"
+      ],
+      "parameters": [
+        {
+          "name": "course_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: course_id"
+        },
+        {
+          "name": "assignment_title",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: assignment_title"
+        },
+        {
+          "name": "file_name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: file_name"
+        },
+        {
+          "name": "submission_note",
+          "type": "string",
+          "required": false,
+          "description": "Instantiated input slot: submission_note"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SUBSCRIPTION_REFUND",
+      "family": "support",
+      "name": "Subscription Refund",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "refund_requested",
+          "subscription_exit_processed",
+          "support_contacted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "reason",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: reason"
+        },
+        {
+          "name": "subscription_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: subscription_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_SUPPLY_DISRUPTION",
+      "family": "crisis",
+      "name": "Supply Disruption",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "crisis_intake_completed",
+          "supply_issue_reported"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "action",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: action"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_TAX_PREPARATION",
+      "family": "finance",
+      "name": "Tax Preparation",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "tax_documents_prepared",
+          "tax_funding_prepared"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 8,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "amount",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: amount"
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: date"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: name"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: type"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "family": "home",
+      "name": "Thermostat Schedule",
+      "requires": {
+        "all_of": [
+          "utilities_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "thermostat_schedule_configured"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "energy.local"
+      ],
+      "parameters": [
+        {
+          "name": "color",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: color"
+        },
+        {
+          "name": "deviceId",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: deviceId"
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: location"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_TRACK_ORDERS",
+      "family": "daily",
+      "name": "Track Orders",
+      "requires": {
+        "all_of": [
+          "shop_order_exists"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "order_followup_prepared",
+          "order_tracking_opened"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "low"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: order_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_TRANSFER_FUNDS",
+      "family": "finance",
+      "name": "Transfer Funds",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "payment_stack_prepared",
+          "tax_funding_prepared",
+          "transfer_completed"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": 0.0,
+        "time_delta_hours": 2.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "category",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: category"
+        },
+        {
+          "name": "limit",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: limit"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_TRANSPORT_TOPUP",
+      "family": "travel",
+      "name": "Transport Topup",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "transit_balance_topped_up"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 5,
+        "budget_delta": -100.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "trip.local"
+      ],
+      "parameters": [
+        {
+          "name": "auto_recharge_amount",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: auto_recharge_amount"
+        },
+        {
+          "name": "auto_recharge_threshold",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: auto_recharge_threshold"
+        },
+        {
+          "name": "topup_amount",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: topup_amount"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_UPDATE_LINKEDIN",
+      "family": "career",
+      "name": "Update Linkedin",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "career_signal_strengthened",
+          "professional_profile_updated"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "work.local"
+      ],
+      "parameters": [],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_URGENT_LOAN",
+      "family": "crisis",
+      "name": "Urgent Loan",
+      "requires": {
+        "all_of": [
+          "bank_account_active"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "emergency_liquidity_secured"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 3,
+        "budget_delta": 500.0,
+        "time_delta_hours": 1.0,
+        "risk": "high"
+      },
+      "domains": [
+        "bank.local"
+      ],
+      "parameters": [
+        {
+          "name": "amount",
+          "type": "number",
+          "required": true,
+          "description": "Instantiated input slot: amount"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_UTILITY_SETUP",
+      "family": "newcomer",
+      "name": "Utility Setup",
+      "requires": {
+        "all_of": [
+          "lease_active"
+        ],
+        "any_of": [],
+        "none_of": [
+          "utilities_active"
+        ]
+      },
+      "effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 7,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "energy.local"
+      ],
+      "parameters": [
+        {
+          "name": "address",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: address"
+        },
+        {
+          "name": "plans",
+          "type": "json",
+          "required": true,
+          "description": "Instantiated input slot: plans"
+        },
+        {
+          "name": "services",
+          "type": "json",
+          "required": true,
+          "description": "Instantiated input slot: services"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_VACCINE_MGMT",
+      "family": "health",
+      "name": "Vaccine Mgmt",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "vaccination_record_updated"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": -0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "health.local"
+      ],
+      "parameters": [
+        {
+          "name": "appointment_date",
+          "type": "date",
+          "required": true,
+          "description": "Instantiated input slot: appointment_date"
+        },
+        {
+          "name": "appointment_time",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: appointment_time"
+        },
+        {
+          "name": "vaccine_type",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: vaccine_type"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_VEHICLE_ADDRESS_UPDATE",
+      "family": "government",
+      "name": "Vehicle Address Update",
+      "requires": {
+        "all_of": [],
+        "any_of": [
+          "lease_active",
+          "bills_reviewed"
+        ],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "address_records_aligned",
+          "insurance_notified",
+          "local_vehicle_compliance_verified",
+          "vehicle_address_updated"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "gov.local"
+      ],
+      "parameters": [
+        {
+          "name": "new_address",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: new_address"
+        },
+        {
+          "name": "notify_insurance",
+          "type": "boolean",
+          "required": true,
+          "description": "Instantiated input slot: notify_insurance"
+        },
+        {
+          "name": "vehicle_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: vehicle_id"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_VISA_REQUIREMENTS",
+      "family": "travel",
+      "name": "Visa Requirements",
+      "requires": {
+        "all_of": [],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "mobility_clearance_verified",
+          "visa_requirements_checked"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 4,
+        "budget_delta": 0.0,
+        "time_delta_hours": 1.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "trip.local"
+      ],
+      "parameters": [
+        {
+          "name": "destination_country",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: destination_country"
+        },
+        {
+          "name": "passport_country",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: passport_country"
+        }
+      ],
+      "alternatives": []
+    },
+    {
+      "module_id": "MODULE_WARRANTY_CLAIM",
+      "family": "support",
+      "name": "Warranty Claim",
+      "requires": {
+        "all_of": [
+          "shop_order_delivered"
+        ],
+        "any_of": [],
+        "none_of": []
+      },
+      "effects": {
+        "adds": [
+          "post_purchase_remedy_requested",
+          "warranty_claim_submitted"
+        ],
+        "removes": []
+      },
+      "constraints": {
+        "estimated_steps": 6,
+        "budget_delta": 0.0,
+        "time_delta_hours": 2.0,
+        "risk": "medium"
+      },
+      "domains": [
+        "shop.local"
+      ],
+      "parameters": [
+        {
+          "name": "issue",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: issue"
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: order_id"
+        },
+        {
+          "name": "serial",
+          "type": "string",
+          "required": true,
+          "description": "Instantiated input slot: serial"
+        }
+      ],
+      "alternatives": []
+    }
+  ]
+}

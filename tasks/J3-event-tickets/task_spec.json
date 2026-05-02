@@ -1,0 +1,52 @@
+{
+  "task_id": "J3-2025-TICKETS",
+  "family": "J",
+  "goal": "Buy a ticket for Outdoor Film Meetup and transfer it to S112233.",
+  "inputs": {
+    "event_name": "Outdoor Film Meetup",
+    "price": 30,
+    "recipient_id": "S112233"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('tickets.user_tickets.last.status') == 'transferred'",
+    "mem('tickets.user_tickets.last.event_name') == 'Outdoor Film Meetup'",
+    "exists(\"#tickets-list .card .badge.pri\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_j3_1",
+      "name": "cp_j3 checkpoint 1",
+      "assertion": "mem('tickets.user_tickets.last.status') == 'transferred'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j3_2",
+      "name": "cp_j3 checkpoint 2",
+      "assertion": "mem('tickets.user_tickets.last.event_name') == 'Outdoor Film Meetup'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j3_3",
+      "name": "cp_j3 checkpoint 3",
+      "assertion": "exists(\"#tickets-list .card .badge.pri\")",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "school.local"
+  ],
+  "module_group": "event_tickets",
+  "canonical_task_dir": "J3-event-tickets",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

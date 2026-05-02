@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Nebula Bank - Tax Documents</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+      <div class="navlinks">
+        <a href="../bank.local/dashboard.html">Dashboard</a>
+        <a href="../bank.local/transactions.html">Transactions</a>
+        <a href="../bank.local/bill-aggregation.html">Bills</a>
+        <a href="../bank.local/taxes.html" class="active">Taxes</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Tax Documents</h1>
+      <button class="btn pri" id="open-tax-upload" onclick="openUploadModal()">Upload Document</button>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>Tax (2025)</h2>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px">
+            <div>
+                <div style="color:var(--muted); font-size:14px">Uploaded Documents</div>
+                <div style="font-size:24px; font-weight:700" id="doc-count">0</div>
+            </div>
+            <div>
+                <div style="color:var(--muted); font-size:14px">Pending Review</div>
+                <div style="font-size:24px; font-weight:700; color:var(--warn)" id="pending-count">0</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Document List</h2>
+    <div id="tax-docs-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Documents loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const taxParams = new URLSearchParams(window.location.search);
+  const requestedTaxTaskId = taxParams.get('task') || 'D5-2025-TAXPREP';
+  const taxTaskId = resolveTaskId(requestedTaxTaskId);
+
+  function appendOptimisticTaxDoc(doc) {
+    const list = document.getElementById('tax-docs-list');
+    if (!list) return;
+    list.innerHTML = `
+      <div class="card soft invoice">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+          <div>
+            <h3 style="margin:0 0 4px 0">${doc.name} (${doc.type})</h3>
+            <div style="color:var(--muted); font-size:14px">Date: ${doc.date}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:600">¥${doc.amount}</div>
+            <div style="color:var(--muted); font-size:13px">Status: <span class="badge warn">Pending</span></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  async function loadTaxDocs() {
+    const list = document.getElementById('tax-docs-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const docs = env.finance?.tax_documents || {};
+      
+      document.getElementById('doc-count').innerText = Object.keys(docs).length;
+      document.getElementById('pending-count').innerText = Object.values(docs).filter(d => d.status === 'pending').length;
+
+      if (Object.keys(docs).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">📂</div>
+            <div style="color:var(--muted)">No tax documents uploaded yet.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(docs).map(([id, doc]) => {
+        const typeClass = String(doc.type || '')
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-');
+        return `
+        <div class="card soft ${typeClass}">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${doc.name || 'Document'} (${doc.type || ''})</h3>
+              <div style="color:var(--muted); font-size:14px">Date: ${doc.date || ''}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">¥${doc.amount || '0.00'}</div>
+              <div style="color:var(--muted); font-size:13px">Status: <span class="badge ${doc.status === 'verified' ? 'ok' : 'warn'}">${doc.status === 'verified' ? 'Verified' : 'Pending'}</span></div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button id="verify-tax-doc-${id}" class="btn" onclick="verifyDoc('${id}')" ${doc.status === 'verified' ? 'disabled' : ''}>${doc.status === 'verified' ? 'Verified' : 'Verify Document'}</button>
+            <button id="delete-tax-doc-${id}" class="btn secondary" onclick="deleteDoc('${id}')">Delete</button>
+          </div>
+        </div>
+      `;
+      }).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openUploadModal() {
+    new Modal({
+      title: 'Upload Tax Document',
+      content: `
+        <div class="form">
+          <label>Document Name</label>
+          <input id="doc-name" class="input" placeholder="e.g. Employer tax form, conference invoice">
+          
+          <label>Document Type</label>
+          <select id="doc-type" class="input">
+            <option value="invoice">Invoice</option>
+            <option value="receipt">Receipt</option>
+            <option value="statement">Statement</option>
+            <option value="W2">W-2</option>
+            <option value="1099">1099</option>
+          </select>
+
+          <label>Amount</label>
+          <input id="doc-amount" type="number" class="input" placeholder="0.00">
+          
+          <label>Date</label>
+          <input id="doc-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: 'Upload Document',
+      onConfirm: async () => {
+        const name = document.getElementById('doc-name').value;
+        const type = document.getElementById('doc-type').value;
+        const amount = document.getElementById('doc-amount').value;
+        const date = document.getElementById('doc-date').value;
+        
+        if (!name || !amount) {
+          Toast.error("Enter the document name and amount.");
+          return;
+        }
+        
+        await send(taxTaskId, 'upload_tax_document', {
+          action_type: 'upload',
+          name: name,
+          type: type,
+          amount: parseFloat(amount),
+          date: date
+        });
+        appendOptimisticTaxDoc({ name, type, amount, date });
+        
+        setTimeout(loadTaxDocs, 500);
+      }
+    }).open();
+  }
+
+  function verifyDoc(id) {
+    send(taxTaskId, 'upload_tax_document', {
+        action_type: 'verify',
+        doc_id: id
+    });
+    setTimeout(loadTaxDocs, 500);
+  }
+
+  function deleteDoc(id) {
+    new Modal({
+      title: 'Delete Document',
+      content: `Delete document ${id}?`,
+      confirmText: 'Delete',
+      onConfirm: async () => {
+        await send(taxTaskId, 'upload_tax_document', {
+          action_type: 'delete',
+          doc_id: id
+        });
+        setTimeout(loadTaxDocs, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadTaxDocs);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

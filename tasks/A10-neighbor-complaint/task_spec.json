@@ -1,0 +1,81 @@
+{
+  "task_id": "A10-2025-LEASECHECK",
+  "family": "A",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Open the lease management page to review current lease information before filing a neighbor noise complaint.",
+  "inputs": {},
+  "allowed_domains": [
+    "housing.local"
+  ],
+  "preconditions": [
+    "mem('identity.address') != ''"
+  ],
+  "dependencies": [
+    "A1-rent-payment"
+  ],
+  "memory_keys": [],
+  "success_criteria": [
+    "url().includes('/housing.local/lease-management.html')",
+    "exists('#leases-list')",
+    "exists('#add-lease-btn')",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Lease page opened",
+      "assertion": "url().includes('/housing.local/lease-management.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Lease list visible",
+      "assertion": "exists('#leases-list')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Add contract button visible",
+      "assertion": "exists('#add-lease-btn')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Not blank page",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Not chrome error",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "module_group": "lease_management_review",
+  "canonical_task_dir": "A10-neighbor-complaint",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

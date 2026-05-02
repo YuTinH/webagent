@@ -1,0 +1,40 @@
+{
+  "goal_id": "WFG-SECURITY-0018",
+  "theme": "security",
+  "difficulty": 8,
+  "instruction": "Finish the security-hardening workflow only after access surfaces are reviewed, two-factor is enabled, secrets are rotated, the second-factor device is updated, and the final security audit is completed.",
+  "visible_constraints": {
+    "deadline_days": 2,
+    "must_avoid": [
+      "credentials_left_untracked"
+    ],
+    "preferred_outcomes": [
+      "access_surface_reviewed",
+      "two_factor_enabled",
+      "security_hardening_completed",
+      "security_audit_completed",
+      "two_factor_device_updated"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "access_surface_reviewed",
+    "two_factor_enabled",
+    "security_hardening_completed",
+    "security_audit_completed",
+    "two_factor_device_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_ACCESS_HARDENING; security-hardening workflows should continue through explicit second-factor device remediation before the final audit."
+}

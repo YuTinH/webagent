@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-CAREER-0118",
+  "theme": "career",
+  "difficulty": 8,
+  "instruction": "Close the publication-signaling route by completing the submission first, archiving the record, updating the professional signal, and ending with coordinated calendar follow-up.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "paper_submitted",
+      "receipt_archived",
+      "career_signal_strengthened",
+      "deadline_coordination_recorded"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "paper_submitted",
+    "receipt_archived",
+    "career_signal_strengthened",
+    "deadline_coordination_recorded"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CAREER_SIGNAL_PAPER_ALIGNMENT; publication-signaling workflows should continue into deadline coordination after the professional signal is updated."
+}

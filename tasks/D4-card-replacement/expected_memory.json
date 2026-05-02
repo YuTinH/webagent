@@ -1,0 +1,5 @@
+{
+  "payment.cards[0].last4": {"key": "payment.cards[0].last4", "value": "7777", "ts": "2025-12-01T10:00:31Z", "source": "D4-2025-008", "confidence": 1.0},
+  "payment.cards[0].exp_date": {"key": "payment.cards[0].exp_date", "value": "12/2029", "ts": "2025-12-01T10:00:31Z", "source": "D4-2025-008", "confidence": 1.0},
+  "payment.bindings.updated_count": {"key": "payment.bindings.updated_count", "value": 3, "ts": "2025-12-01T10:00:31Z", "source": "D4-2025-008", "confidence": 1.0}
+}

@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-GOV-0085",
+  "theme": "government",
+  "difficulty": 7,
+  "instruction": "Finish the permit-lifecycle packet only after address verification is complete, records are aligned, the permit is submitted, the parking permit is active, and the renewal-driven compliance check is finished.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "address_confirmation_verified",
+      "address_records_aligned",
+      "permit_application_submitted",
+      "parking_permit_active",
+      "permit_renewed",
+      "local_vehicle_compliance_verified"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_confirmation_verified",
+    "address_records_aligned",
+    "permit_application_submitted",
+    "parking_permit_active",
+    "permit_renewed",
+    "local_vehicle_compliance_verified"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 75,
+  "max_module_invocations": 6,
+  "notes": "Generated from BP_GOV_PERMIT_ADDRESS_ALIGNMENT; permit-oriented government workflows should carry through submission, activation, and renewal rather than stopping after the first permit action."
+}

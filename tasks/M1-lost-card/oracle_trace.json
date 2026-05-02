@@ -1,0 +1,20 @@
+{
+  "task_id": "M1-2025-CARD",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/cards.html?clean=true&task=M1-2025-CARD"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#freeze-card-7777"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#card-status-7777"
+    }
+  ]
+}

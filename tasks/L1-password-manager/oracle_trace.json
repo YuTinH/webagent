@@ -1,0 +1,43 @@
+{
+  "task_id": "L1-2025-PASSMGR",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/password-manager.html?clean=true&task=L1-2025-PASSMGR"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#site-name",
+      "value": "Overleaf"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#username-input",
+      "value": "paper.drafts@example.com"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#password-input",
+      "value": "Overleaf$Draft6"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#password-list .card:has-text('Overleaf')"
+    }
+  ]
+}

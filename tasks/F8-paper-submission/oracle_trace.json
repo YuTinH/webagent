@@ -1,0 +1,49 @@
+{
+  "task_id": "F8-2025-PAPERSUB",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/work.local/paper-submission.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#paper-title",
+      "value": "Branch-Aware Benchmarking"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#journal-name",
+      "value": "EMNLP Findings"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#authors",
+      "value": "Tianyu Hu, David Sun"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#paper-file",
+      "value": "branch_aware_benchmarking.pdf"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#submissions-list .card:has-text('Branch-Aware Benchmarking')"
+    }
+  ]
+}

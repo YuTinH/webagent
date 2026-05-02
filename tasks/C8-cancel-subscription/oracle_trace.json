@@ -1,0 +1,29 @@
+{
+  "task_id": "C8-2025-CANCELSUB",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/subscriptions.html?clean=true",
+      "note": "Open subscriptions page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#subscriptions-list .card .btn.secondary",
+      "note": "Click cancel subscription"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm cancellation"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#subscriptions-list .card",
+      "note": "Wait for list refresh"
+    }
+  ]
+}

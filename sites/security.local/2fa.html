@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>security.local -  2FA </title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🔒 Security.local</div>
+      <div class="navlinks">
+        <a href="../security.local/dashboard.html">Security Dashboard</a>
+        <a href="../security.local/password-manager.html">Password Manager</a>
+        <a href="../security.local/data-deletion.html">Data Deletion</a>
+        <a href="../security.local/2fa.html" class="active">2FA Device</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>2FA Device Management</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>2FA Status</h2>
+        <div id="2fa-status">
+          <div id="twofa-status">
+            <div class="loading">Loading......</div>
+          </div>
+        </div>
+    </div>
+
+    <div class="card soft">
+        <h2>Switch 2FA Device</h2>
+        <p style="margin-bottom:16px">Register a replacement 2FA device after confirming the verification code.</p>
+        <div class="form">
+            <label>New Device Name</label>
+            <input id="new-device-name" class="input" placeholder="Details: iPhone 15, Pixel 8">
+            
+            <label>Verification Code</label>
+            <input id="verification-code" class="input" placeholder="Enter the 6-digit verification code">
+            
+            <button id="submit-2fa-device-btn" class="btn pri" style="margin-top:24px; width:100%" onclick="submit2FAChange()">Confirm Device Change</button>
+        </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>2FA Change History</h2>
+        <div id="twofa-history-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- History loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">No 2FA device changes have been recorded yet.</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  const twoFaParams = new URLSearchParams(window.location.search);
+  const requestedTwoFaTaskId = twoFaParams.get('task') || 'L4-2025-2FA';
+  const twoFaTaskId = resolveTaskId(requestedTwoFaTaskId);
+
+  async function load2FAInfo() {
+    const statusDiv = document.getElementById('twofa-status');
+    const historyList = document.getElementById('twofa-history-list');
+    
+    try {
+      const env = await loadEnv();
+      const mfa = env.security?.mfa || {
+          enabled: true,
+          current_device: " (iPhone 12)",
+          last_updated: "2024-01-01"
+      };
+      const history = env.security?.mfa_history || {};
+
+      statusDiv.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center">
+              <div>
+                  <div style="font-size:18px; font-weight:600">${mfa.current_device}</div>
+                  <div style="color:var(--muted); font-size:14px">Details: ${mfa.last_updated}</div>
+              </div>
+              <span class="badge ${mfa.enabled ? 'ok' : 'warn'}">${mfa.enabled ? 'Enabled' : 'Disabled'}</span>
+          </div>
+      `;
+
+      if (Object.keys(history).length === 0) {
+        historyList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">No prior 2FA change history.</div></div>`;
+      } else {
+        historyList.innerHTML = Object.entries(history).map(([id, record]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">${record.device_name}</h3>
+                <div style="color:var(--muted); font-size:14px">Details: ${record.date}</div>
+              </div>
+              <div style="text-align:right">
+                <span class="badge ok">Completed</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      statusDiv.innerHTML = '<div class="error">Load failed</div>';
+      historyList.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  async function submit2FAChange() {
+    const newDevice = document.getElementById('new-device-name').value;
+    const code = document.getElementById('verification-code').value;
+
+    if (!newDevice || !code) {
+      Toast.error("Enter the new device name and verification code.");
+      return;
+    }
+    
+    await send(twoFaTaskId, 'change_2fa_device', {
+      new_device_name: newDevice,
+      verification_code: code
+    });
+    
+    setTimeout(load2FAInfo, 500);
+  }
+
+  document.addEventListener('DOMContentLoaded', load2FAInfo);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

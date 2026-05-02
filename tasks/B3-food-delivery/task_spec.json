@@ -1,0 +1,68 @@
+{
+  "task_id": "B3-2025-FOOD-PROMO",
+  "family": "B",
+  "goal": "Order a 'Margherita' pizza from 'Pizza Palace' with a promo code 'SAVE20' for a total of $10.39.",
+  "inputs": {
+    "restaurant": "Pizza Palace",
+    "item": "Margherita",
+    "promo_code": "SAVE20",
+    "total": 10.39
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/food.local/orders.html')",
+    "json('env','food.orders.last.restaurant') == 'Pizza Palace'",
+    "json('env','food.orders.last.items') includes 'Margherita'",
+    "json('env','food.orders.last.total') == 10.39",
+    "json('env','food.orders.last.promo_code') == 'SAVE20'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "url().includes('/food.local/orders.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "json('env','food.orders.last.restaurant') == 'Pizza Palace'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "json('env','food.orders.last.items') includes 'Margherita'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "json('env','food.orders.last.total') == 10.39",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "json('env','food.orders.last.promo_code') == 'SAVE20'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "food.local"
+  ],
+  "module_group": "food_delivery",
+  "canonical_task_dir": "B3-food-delivery",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

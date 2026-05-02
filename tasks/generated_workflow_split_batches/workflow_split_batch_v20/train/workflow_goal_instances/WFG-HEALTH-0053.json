@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-HEALTH-0053",
+  "theme": "health",
+  "difficulty": 7,
+  "instruction": "Finish the illness-reporting health packet only after coverage is active, the appointment is booked, the illness report is submitted, the prescription is refilled, and the follow-up calendar is synced.",
+  "visible_constraints": {
+    "deadline_days": 2,
+    "preferred_outcomes": [
+      "coverage_path_active",
+      "medical_appointment_booked",
+      "illness_report_submitted",
+      "prescription_refilled",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "coverage_path_active",
+    "medical_appointment_booked",
+    "illness_report_submitted",
+    "prescription_refilled",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HEALTH_COVERAGE_ILLNESS_REPORTING; illness-reporting health workflows should close with a follow-up scheduling step after the refill."
+}

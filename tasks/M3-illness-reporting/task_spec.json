@@ -1,0 +1,92 @@
+{
+  "task_id": "M3-2025-ILLNESS",
+  "family": "M",
+  "goal": "Submit an illness report for migraine recovery day until 2026-01-25.",
+  "inputs": {
+    "report_type": "illness",
+    "reason": "发烧",
+    "end_date": "2026-01-10"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('health.illness_reports.last.id') includes 'ILL-'",
+    "mem('health.illness_reports.last.type') == 'illness'",
+    "mem('health.illness_reports.last.reason') == 'Migraine recovery day'",
+    "mem('health.illness_reports.last.end_date') == '2026-01-25'",
+    "mem('health.illness_reports.last.status') == 'pending'",
+    "json('env','world_state.physical_context.status') == 'impaired'",
+    "json('env','world_state.physical_context.energy_level') == 20"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_m3_1",
+      "name": "cp_m3 checkpoint 1",
+      "assertion": "mem('health.illness_reports.last.id') includes 'ILL-'",
+      "weight": 0.14285714285714285,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m3_2",
+      "name": "cp_m3 checkpoint 2",
+      "assertion": "mem('health.illness_reports.last.type') == 'illness'",
+      "weight": 0.14285714285714285,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m3_3",
+      "name": "cp_m3 checkpoint 3",
+      "assertion": "mem('health.illness_reports.last.reason') == 'Migraine recovery day'",
+      "weight": 0.14285714285714285,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m3_4",
+      "name": "cp_m3 checkpoint 4",
+      "assertion": "mem('health.illness_reports.last.end_date') == '2026-01-25'",
+      "weight": 0.14285714285714285,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m3_5",
+      "name": "cp_m3 checkpoint 5",
+      "assertion": "mem('health.illness_reports.last.status') == 'pending'",
+      "weight": 0.14285714285714285,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m3_6",
+      "name": "cp_m3 checkpoint 6",
+      "assertion": "json('env','world_state.physical_context.status') == 'impaired'",
+      "weight": 0.14285714285714285,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m3_7",
+      "name": "cp_m3 checkpoint 7",
+      "assertion": "json('env','world_state.physical_context.energy_level') == 20",
+      "weight": 0.14285714285714285,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "health.local"
+  ],
+  "module_group": "illness_reporting",
+  "canonical_task_dir": "M3-illness-reporting",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

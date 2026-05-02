@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Shop.local - Appliance Repair</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">Store</a>
+        <a href="../shop.local/orders.html">Orders</a>
+        <a href="../shop.local/repairs.html">Home Repair</a>
+        <a href="../shop.local/appliance-repair.html" class="active">Appliance Repair</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Appliance Repair Requests</h1>
+      <button id="open-submit-appliance-repair-btn" class="btn secondary" onclick="openSubmitApplianceRepairModal()">Submit Repair Request</button>
+    </div>
+
+    <div id="appliance-repair-requests-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Appliance repair requests loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const applianceRepairParams = new URLSearchParams(window.location.search);
+  const requestedApplianceRepairTaskId = applianceRepairParams.get('task') || 'I2-2025-APPREPAIR';
+  const applianceRepairTaskId = resolveTaskId(requestedApplianceRepairTaskId);
+
+  async function loadApplianceRepairRequests() {
+    const list = document.getElementById('appliance-repair-requests-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const allRequests = env.appliance_repairs?.requests || {};
+      const requests = allRequests;
+      
+      if (Object.keys(requests).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🔧</div>
+            <div style="color:var(--muted)">No appliance repair requests yet.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(requests).map(([id, req]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${req.appliance || ''} - ${req.problem || ''} (#${id})</h3>
+              <div style="color:var(--muted); font-size:14px">Serial Number: ${req.serial_number || 'N/A'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">Status: <span class="badge ${req.status === 'completed' ? 'ok' : 'warn'}">${req.status}</span></div>
+              <div style="color:var(--muted); font-size:13px">Submitted: ${req.submitted_at || 'N/A'}</div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button id="track-appliance-request-${id}" class="btn" onclick="trackApplianceRequest('${id}')">View Status</button>
+            <button id="cancel-appliance-request-${id}" class="btn secondary" onclick="cancelApplianceRequest('${id}')" ${req.status === 'completed' || req.status === 'cancelled' ? 'disabled' : ''}>Cancel Request</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openSubmitApplianceRepairModal() {
+    new Modal({
+      title: 'Submit Appliance Repair Request',
+      content: `
+        <div class="form">
+          <label>Appliance</label>
+          <input id="appliance-name" class="input" placeholder="e.g. Dishwasher, Washing Machine">
+          
+          <label>Serial Number / IMEI</label>
+          <input id="serial-number" class="input" placeholder="e.g. ABC123DEF456">
+
+          <label>Problem Description</label>
+          <textarea id="problem-description" class="input" rows="3" placeholder="Describe the issue you are seeing"></textarea>
+          
+          <label>Date</label>
+          <input id="service-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: 'Submit Request',
+      onConfirm: async () => {
+        const appliance = document.getElementById('appliance-name').value;
+        const serialNumber = document.getElementById('serial-number').value;
+        const problem = document.getElementById('problem-description').value;
+        const serviceDate = document.getElementById('service-date').value;
+        
+        if (!appliance || !serialNumber || !problem || !serviceDate) {
+          Toast.error("Complete the appliance, serial number, problem, and service date.");
+          return;
+        }
+        
+        await send(applianceRepairTaskId, 'submit_appliance_repair', {
+          appliance: appliance,
+          serial_number: serialNumber,
+          problem: problem,
+          service_date: serviceDate
+        });
+        
+        setTimeout(loadApplianceRepairRequests, 500);
+      }
+    }).open();
+  }
+
+  function trackApplianceRequest(id) {
+    Toast.info(`Repair request ${id} is being tracked.`);
+  }
+
+  function cancelApplianceRequest(id) {
+    new Modal({
+      title: 'Cancel Repair Request',
+      content: `Cancel repair request ${id}?`,
+      confirmText: 'Confirm Cancellation',
+      onConfirm: async () => {
+        await send(applianceRepairTaskId, 'cancel_appliance_repair', {
+          request_id: id
+        });
+        setTimeout(loadApplianceRepairRequests, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadApplianceRepairRequests);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

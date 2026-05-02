@@ -1,0 +1,53 @@
+{
+  "task_id": "Z1-2025-ARRIVAL",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/product.html?id=WM-5521&clean=true",
+      "note": "Open product page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#add-to-cart-btn",
+      "note": "Add to cart"
+    },
+    {
+      "t": 2,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/cart.html?clean=true",
+      "note": "Go to cart"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#checkout-btn",
+      "note": "Checkout"
+    },
+    {
+      "t": 5,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/orders.html?clean=true",
+      "note": "Go to orders page"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#orders-list .order-card",
+      "note": "Wait for orders list to finish loading"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": "#refresh-latest-order-btn",
+      "note": "Refresh the latest delivery status"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": ".order-status.delivered",
+      "note": "Wait for status update"
+    }
+  ]
+}

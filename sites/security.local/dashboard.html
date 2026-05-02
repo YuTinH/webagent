@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Dashboard - SecureGuard</title>
+    <script>window.RelRoot = "../";</script>
+    <link rel="stylesheet" href="../static/skin.css">
+    <link rel="stylesheet" href="../static/components.css">
+    <script src="../static/common.js"></script>
+    <script src="../static/components.js"></script>
+    <style>
+        .hidden { display: none !important; }
+        .container { max-width: 1080px; margin: 0 auto; }
+        .provider-card { min-height: 180px; }
+        .status-badge { display: inline-flex; align-items: center; justify-content: center; }
+        #rotation-modal { padding: 24px; }
+        #rotation-modal > div { max-height: calc(100vh - 48px); overflow: auto; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <nav class="bg-indigo-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-shield-alt text-2xl text-green-400"></i>
+                <span class="text-xl font-bold tracking-tight">SecureGuard</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm opacity-80">Monitoring Active</span>
+                <div class="w-8 h-8 bg-indigo-700 rounded-full flex items-center justify-center">
+                    <i class="fas fa-user text-sm"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="__toast" class="toast"></div>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Security Dashboard</h1>
+            <p class="text-gray-600 mt-1">Overview of your account security and threat monitoring.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-8">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Rotation Scope</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-gray-600 mb-3">Choose which providers to rotate in this run.</p>
+                    <label class="flex items-center gap-3 mb-2">
+                        <input id="provider-mail" type="checkbox" checked>
+                        <span>Mail Service</span>
+                    </label>
+                    <label class="flex items-center gap-3 mb-2">
+                        <input id="provider-cloud" type="checkbox" checked>
+                        <span>Cloud Storage</span>
+                    </label>
+                    <label class="flex items-center gap-3">
+                        <input id="provider-dev" type="checkbox" checked>
+                        <span>Dev Platform</span>
+                    </label>
+                </div>
+                <div>
+                    <label for="rotation-method" class="block text-sm text-gray-600 mb-2">Rotation method</label>
+                    <select id="rotation-method" class="w-full border border-gray-300 rounded px-3 py-2">
+                        <option value="mfa+api">MFA + API key rotation</option>
+                        <option value="api-only">API keys only</option>
+                        <option value="ssh+api">SSH + API rotation</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Section -->
+        <div id="alert-section" class="bg-red-50 border-l-4 border-red-500 p-4 mb-8 rounded shadow-sm hidden">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-xl"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-medium text-red-800">Security Alert: Compromised Accounts Detected</h3>
+                    <p class="text-sm text-red-700 mt-1">
+                        We have detected a data leak involving 3 of your connected providers. Immediate action is recommended.
+                    </p>
+                    <div class="mt-4">
+                        <button onclick="startRotation()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition shadow-sm font-medium">
+                            <i class="fas fa-sync-alt mr-2"></i>Rotate Keys & Secure Accounts
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Providers Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Mail Provider -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 provider-card" data-provider="mail">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Mail Service</h3>
+                            <p class="text-xs text-gray-500">Last scanned: Today</p>
+                        </div>
+                    </div>
+                    <span class="status-badge px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-800">Secure</span>
+                </div>
+                <div class="border-t pt-4 mt-2">
+                    <div class="text-sm text-gray-600 flex justify-between">
+                        <span>API Access</span>
+                        <span class="font-mono text-xs bg-gray-100 px-1 rounded">●●●●-8X92</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cloud Provider -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 provider-card" data-provider="cloud">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Cloud Storage</h3>
+                            <p class="text-xs text-gray-500">Last scanned: Today</p>
+                        </div>
+                    </div>
+                    <span class="status-badge px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-800">Secure</span>
+                </div>
+                <div class="border-t pt-4 mt-2">
+                    <div class="text-sm text-gray-600 flex justify-between">
+                        <span>Access Key</span>
+                        <span class="font-mono text-xs bg-gray-100 px-1 rounded">●●●●-K2J9</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dev Provider -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 provider-card" data-provider="dev">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-white">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Dev Platform</h3>
+                            <p class="text-xs text-gray-500">Last scanned: Today</p>
+                        </div>
+                    </div>
+                    <span class="status-badge px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-800">Secure</span>
+                </div>
+                <div class="border-t pt-4 mt-2">
+                    <div class="text-sm text-gray-600 flex justify-between">
+                        <span>SSH Key</span>
+                        <span class="font-mono text-xs bg-gray-100 px-1 rounded">SHA256:●●●●</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rotation Modal -->
+    <div id="rotation-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <i class="fas fa-sync fa-spin text-indigo-600 mr-2" id="spinner"></i>
+                <span id="modal-title">Rotating Security Keys...</span>
+            </h2>
+            <div class="space-y-4" id="progress-list">
+                <!-- Progress items will be injected here -->
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button id="close-modal-btn" onclick="finishTask()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 hidden">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate "Leak Detected" state if URL param is present
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedSecurityDashboardTaskId = urlParams.get('task') || 'L3-2025-SEC';
+        const securityDashboardTaskId = resolveTaskId(requestedSecurityDashboardTaskId);
+        const cleanMode = urlParams.get('clean') === 'true';
+        const compromised = ['mail', 'cloud', 'dev'];
+        let rotatedProviders = [];
+
+        async function loadRotationState() {
+            try {
+                const env = await loadEnv();
+                rotatedProviders = env.security?.last_rotation?.providers || [];
+                const lastMethod = env.security?.last_rotation?.method || 'mfa+api';
+                document.getElementById('rotation-method').value = lastMethod;
+            } catch (e) {
+                rotatedProviders = [];
+            }
+        }
+
+        function selectedProviders() {
+            return ['mail', 'cloud', 'dev'].filter(p => {
+                const el = document.getElementById(`provider-${p}`);
+                return !!(el && el.checked);
+            });
+        }
+
+        function renderProviderStatus(provider, secure) {
+            const card = document.querySelector(`.provider-card[data-provider="${provider}"]`);
+            if (!card) return;
+            card.classList.remove('border-red-300', 'bg-red-50');
+            card.classList.add('bg-white');
+            const badge = card.querySelector('.status-badge');
+            const oldMarker = card.querySelector('.rotation-complete');
+            if (oldMarker) oldMarker.remove();
+            if (secure) {
+                badge.className = 'status-badge px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-800';
+                badge.textContent = 'Secure';
+                const marker = document.createElement('div');
+                marker.className = 'rotation-complete text-xs text-green-700 mt-2';
+                marker.textContent = `${provider} rotated`;
+                card.appendChild(marker);
+            } else {
+                card.classList.add('border-red-300', 'bg-red-50');
+                badge.className = 'status-badge px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-800';
+                badge.textContent = 'Compromised';
+            }
+        }
+
+        function renderInitialState() {
+            const hasPersistedRotation = rotatedProviders.length > 0;
+            if (!urlParams.has('rotated') && !hasPersistedRotation) {
+                document.getElementById('alert-section').classList.remove('hidden');
+                compromised.forEach(p => renderProviderStatus(p, false));
+                return;
+            }
+            compromised.forEach(p => renderProviderStatus(p, rotatedProviders.includes(p)));
+            document.getElementById('alert-section').classList.remove('hidden');
+            document.querySelector('#alert-section h3').textContent = 'Security Rotation Completed';
+            document.querySelector('#alert-section p').textContent = `Last rotation covered ${rotatedProviders.length} provider(s).`;
+            document.querySelector('#alert-section button').classList.add('hidden');
+            const banner = document.createElement('div');
+            banner.className = 'bg-green-100 border-l-4 border-green-500 p-4 mb-8 rounded shadow-sm';
+            banner.innerHTML = `<p class="text-green-800 font-medium"><i class="fas fa-check-circle mr-2"></i>Rotation saved for ${rotatedProviders.join(', ')}.</p>`;
+            document.querySelector('main').prepend(banner);
+        }
+
+        function startRotation() {
+            const scope = selectedProviders();
+            if (!scope.length) {
+                alert('Select at least one provider to rotate.');
+                return;
+            }
+            const modal = document.getElementById('rotation-modal');
+            const list = document.getElementById('progress-list');
+            list.innerHTML = '';
+            modal.classList.remove('hidden');
+            
+            const steps = scope.map(provider => ({
+                id: provider,
+                text: `Rotating credentials for ${provider}...`
+            }));
+
+            if (cleanMode) {
+                steps.forEach(step => {
+                    const item = document.createElement('div');
+                    item.className = 'flex items-center text-sm text-gray-700';
+                    item.innerHTML = `<i class="fas fa-check text-green-500 mr-3"></i> ${step.text}`;
+                    list.appendChild(item);
+                });
+                document.getElementById('modal-title').textContent = 'Rotation Complete';
+                document.getElementById('spinner').className = 'fas fa-check-circle text-green-500 mr-2';
+                document.getElementById('close-modal-btn').classList.remove('hidden');
+                return;
+            }
+
+            let delay = 500;
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.className = 'flex items-center text-sm text-gray-700';
+                    item.innerHTML = `<i class="fas fa-circle-notch fa-spin text-gray-400 mr-3"></i> ${step.text}`;
+                    list.appendChild(item);
+                    
+                    // Mark previous as done
+                    if(index > 0) {
+                        const prev = list.children[index-1];
+                        prev.innerHTML = prev.innerHTML.replace('fa-circle-notch fa-spin text-gray-400', 'fa-check text-green-500');
+                    }
+                }, delay);
+                delay += 800;
+            });
+
+            setTimeout(() => {
+                // All done
+                const last = list.lastElementChild;
+                if(last) last.innerHTML = last.innerHTML.replace('fa-circle-notch fa-spin text-gray-400', 'fa-check text-green-500');
+                
+                document.getElementById('modal-title').textContent = 'Rotation Complete';
+                document.getElementById('spinner').className = 'fas fa-check-circle text-green-500 mr-2';
+                document.getElementById('close-modal-btn').classList.remove('hidden');
+            }, delay + 500);
+        }
+
+        async function finishTask() {
+            const btn = document.querySelector('[data-original-id="close-modal-btn"]') || document.getElementById('close-modal-btn');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Saving...';
+            }
+            const providers = selectedProviders();
+            const method = document.getElementById('rotation-method').value;
+            
+            // Send to backend
+            await send(securityDashboardTaskId, 'rotate_keys', {
+                providers: providers,
+                method: method
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadRotationState();
+            renderInitialState();
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

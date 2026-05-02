@@ -1,0 +1,51 @@
+{
+  "task_id": "Z3-2025-AUCTION",
+  "family": "Z",
+  "goal": "Ensure you place a bid of 250 in the live auction and become the highest bidder.",
+  "inputs": {
+    "item": "Ming Vase",
+    "budget": 500
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('auctions.VASE-001.highest_bidder') == 'user'",
+    "json('env','auctions.VASE-001.current_price') == 250.0",
+    "text('#current-price') includes '250.00'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_z3_1",
+      "name": "cp_z3 checkpoint 1",
+      "assertion": "mem('auctions.VASE-001.highest_bidder') == 'user'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z3_2",
+      "name": "cp_z3 checkpoint 2",
+      "assertion": "json('env','auctions.VASE-001.current_price') == 250.0",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z3_3",
+      "name": "cp_z3 checkpoint 3",
+      "assertion": "text('#current-price') includes '250.00'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "live_auction",
+  "canonical_task_dir": "Z3-live-auction",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

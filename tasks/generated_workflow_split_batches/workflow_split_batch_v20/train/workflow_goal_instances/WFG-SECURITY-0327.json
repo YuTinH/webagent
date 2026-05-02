@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-SECURITY-0327",
+  "theme": "security",
+  "difficulty": 6,
+  "instruction": "Close the account-exit security workflow by exporting data first, reviewing privacy settings, enabling two-factor, rotating security, and ending with an audit complete.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "account_data_exported",
+      "access_surface_reviewed",
+      "account_exit_prepared",
+      "privacy_settings_updated",
+      "two_factor_enabled",
+      "security_hardening_completed",
+      "security_audit_completed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "account_data_exported",
+    "access_surface_reviewed",
+    "account_exit_prepared",
+    "privacy_settings_updated",
+    "two_factor_enabled",
+    "security_hardening_completed",
+    "security_audit_completed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_ZTRAIN_13_SURFACE_HARDEN_DUAL; exit-hardening workflows should carry through export, privacy review, 2FA hardening, and audit instead of terminating after a shallow surface action."
+}

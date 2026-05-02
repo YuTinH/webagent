@@ -1,0 +1,38 @@
+{
+  "task_id": "H1-2025-ADDRCHANGE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/address-change.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#new-address",
+      "value": "742 Evergreen Terrace"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#zip-code",
+      "value": "12345"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#proof-document",
+      "value": "proof_of_address.pdf"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#submit-addr-btn"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "body"
+    }
+  ]
+}

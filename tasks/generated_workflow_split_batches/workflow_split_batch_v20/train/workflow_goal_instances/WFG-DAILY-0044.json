@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-DAILY-0044",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Close the daily resale route by preparing the bundle first, securing the price layer, completing both resale listing stages, and ending with the subscription activated.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "daily_order_bundle_prepared",
+      "order_price_secured",
+      "resale_listing_activated",
+      "market_listing_active",
+      "sale_listing_active",
+      "subscription_active"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "daily_order_bundle_prepared",
+    "order_price_secured",
+    "resale_listing_activated",
+    "market_listing_active",
+    "sale_listing_active",
+    "subscription_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_RESALE_DISCOUNT_STACK; daily resale workflows should continue into a recurring-subscription closeout rather than stopping after the two listing stages."
+}

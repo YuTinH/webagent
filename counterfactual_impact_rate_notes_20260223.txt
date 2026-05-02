@@ -1,0 +1,18 @@
+Counterfactual Impact Rate Notes (2026-02-23)
+
+1) Oracle counterfactual (strong, 5x20)
+- File: audit_chain_counterfactual_parallel_depopt_5x20_strong_v8.json
+- impact_rate: 54.0%
+- baseline_task_score: 100.0
+- counterfactual_task_score: 91.5493
+
+2) Agent counterfactual (strong, 5x20)
+- File: audit_chain_counterfactual_agent_5x20_strong_v1.json
+- impact_rate (regression-only): 20.0%
+- divergence_rate (any directional change): 44.0%
+- baseline_task_score: 15.0704
+- counterfactual_task_score: 14.0845
+
+Interpretation:
+- Oracle baseline is near-perfect, so perturbations manifest as regressions more often.
+- Agent baseline is low; perturbations can both hurt and help (floor effect), so regression-only impact is lower while divergence remains high.

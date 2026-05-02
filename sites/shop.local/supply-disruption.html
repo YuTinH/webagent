@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - </title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">Information</a>
+        <a href="../shop.local/orders.html">Information</a>
+        <a href="../shop.local/supply-disruption.html" class="active">Information</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>/</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px; border: 1px solid var(--warn); background: rgba(255, 165, 0, 0.05);">
+        <h2 style="color:var(--warn)">⚠️ </h2>
+        <div id="disruption-alerts">
+            <div class="loading">Loading......</div>
+        </div>
+    </div>
+
+    <h2>Information</h2>
+    <div id="alternative-options-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Options loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const fallbackAlternatives = {
+    'ALT-101': {
+      item_name: 'Protein Powder',
+      alternative_source: 'Downtown pickup locker',
+      action_needed: 'Switch to pickup to receive it today',
+      status: 'available'
+    },
+    'ALT-202': {
+      item_name: 'Baby Formula',
+      alternative_source: 'North hub reroute',
+      action_needed: 'Keep shipping and reroute the package',
+      status: 'available'
+    },
+    'ALT-303': {
+      item_name: 'Spare Water Filter',
+      alternative_source: 'Supplier refund desk',
+      action_needed: 'Cancel the disrupted order and request a refund',
+      status: 'available'
+    },
+    'ALT-404': {
+      item_name: 'Prescription Cold Pack',
+      alternative_source: 'Central pharmacy pickup shelf',
+      action_needed: 'Switch to pickup for same-day medical access',
+      status: 'available'
+    },
+    'ALT-505': {
+      item_name: 'Desk Air Purifier',
+      alternative_source: 'Regional return warehouse',
+      action_needed: 'Cancel the disrupted shipment and request a refund',
+      status: 'available'
+    }
+  };
+
+  const disruptionParams = new URLSearchParams(window.location.search);
+  const requestedSupplyTaskId = disruptionParams.get('task') || 'M2-2025-SUPPLY';
+  const supplyTaskId = resolveTaskId(requestedSupplyTaskId);
+
+  async function loadDisruption() {
+    const alertsDiv = document.getElementById('disruption-alerts');
+    const optionsList = document.getElementById('alternative-options-list');
+    
+    try {
+      const env = await loadEnv();
+      const disruptions = env.supply_chain?.disruptions || {};
+      const alternatives = {
+        ...fallbackAlternatives,
+        ...(env.supply_chain?.alternatives || {})
+      };
+
+      if (Object.keys(disruptions).length === 0) {
+        alertsDiv.innerHTML = `<div style="padding:16px">。</div>`;
+      } else {
+        alertsDiv.innerHTML = Object.entries(disruptions).map(([id, alert]) => `
+          <div style="margin-bottom:12px">
+            <h3 style="margin:0 0 4px 0">${alert.title}</h3>
+            <p>${alert.description}</p>
+            <div style="font-size:13px; color:var(--muted)">Details: ${alert.affected_areas.join(', ')}</div>
+          </div>
+        `).join('');
+      }
+
+      if (Object.keys(alternatives).length === 0) {
+        optionsList.innerHTML = `<div class="card soft" style="text-align:center; padding:24px"><div style="color:var(--muted)">Information</div></div>`;
+      } else {
+        optionsList.innerHTML = Object.entries(alternatives).map(([id, option]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">${option.item_name}</h3>
+                <div style="color:var(--muted); font-size:14px">Details: ${option.alternative_source}</div>
+              </div>
+              <div style="text-align:right">
+                <span class="badge ${option.status === 'available' ? 'ok' : 'warn'}">${option.status === 'available' ? '' : ''}</span>
+              </div>
+            </div>
+            <p>Details: ${option.action_needed}</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap">
+              <button class="btn pri" id="action-pickup-${id}" onclick="confirmAlternative('${id}', 'switch_to_pickup')">Pickup</button>
+              <button class="btn" id="action-ship-${id}" onclick="confirmAlternative('${id}', 'keep_shipping')">Reroute</button>
+              <button class="btn secondary" id="action-cancel-${id}" onclick="confirmAlternative('${id}', 'cancel_order')">Refund</button>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      alertsDiv.innerHTML = '<div class="error">Load failed</div>';
+      optionsList.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function confirmAlternative(id, actionType) {
+    send(supplyTaskId, 'handle_supply_disruption', {
+      action_type: actionType,
+      alternative_id: id
+    }).then(loadDisruption);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadDisruption();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

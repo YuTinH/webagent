@@ -1,0 +1,43 @@
+{
+  "task_id": "A5-2025-LEASE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/housing.local/lease-management.html?clean=true&task=A5-2025-LEASE"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#add-lease-btn"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-id",
+      "value": "CTR-2101"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#new-rent",
+      "value": "1200"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#new-end-date",
+      "value": "2027-06-30"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#leases-list .lease-card:has-text('Contract #CTR-2101')"
+    }
+  ]
+}

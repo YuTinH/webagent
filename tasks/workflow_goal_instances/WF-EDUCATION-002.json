@@ -1,0 +1,31 @@
+{
+  "goal_id": "WF-EDUCATION-002",
+  "theme": "education",
+  "difficulty": 3,
+  "instruction": "Get a downloadable proof of learning this week. You may either take the course path or use the skills certification path, whichever is faster.",
+  "visible_constraints": {
+    "deadline_days": 7,
+    "preferred_outcomes": [
+      "shortest_valid_path"
+    ]
+  },
+  "initial_world_state": {
+    "education_account_ready": true,
+    "course_enrolled": false,
+    "skill_certified": false,
+    "certificate_downloaded": false
+  },
+  "target_state": [
+    "certificate_downloaded"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "initial_world_state.skill_certified",
+      "type": "toggle",
+      "values": [false, true]
+    }
+  ],
+  "max_steps": 50,
+  "max_module_invocations": 2,
+  "notes": "Prototype education goal with explicit alternative success paths."
+}

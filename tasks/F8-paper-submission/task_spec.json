@@ -1,0 +1,86 @@
+{
+  "task_id": "F8-2025-PAPERSUB",
+  "family": "F",
+  "goal": "Your task is to submit the paper Branch-Aware Benchmarking to EMNLP Findings using file branch_aware_benchmarking.pdf.",
+  "inputs": {
+    "title": "Branch-Aware Benchmarking",
+    "journal": "EMNLP Findings",
+    "authors": [
+      "Tianyu Hu",
+      "David Sun"
+    ],
+    "file": "branch_aware_benchmarking.pdf"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('work.paper_submissions.last.id') includes 'SUB-'",
+    "mem('work.paper_submissions.last.title') == 'Branch-Aware Benchmarking'",
+    "mem('work.paper_submissions.last.journal') == 'EMNLP Findings'",
+    "mem('work.paper_submissions.last.file') == 'branch_aware_benchmarking.pdf'",
+    "mem('work.paper_submissions.last.status') == 'submitted'",
+    "exists(\"#submissions-list .card:has-text('Branch-Aware Benchmarking')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_f3_1",
+      "name": "cp_f3 checkpoint 1",
+      "assertion": "mem('work.paper_submissions.last.id') includes 'SUB-'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f3_2",
+      "name": "cp_f3 checkpoint 2",
+      "assertion": "mem('work.paper_submissions.last.title') == 'Branch-Aware Benchmarking'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f3_3",
+      "name": "cp_f3 checkpoint 3",
+      "assertion": "mem('work.paper_submissions.last.journal') == 'EMNLP Findings'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f3_4",
+      "name": "cp_f3 checkpoint 4",
+      "assertion": "mem('work.paper_submissions.last.file') == 'branch_aware_benchmarking.pdf'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f3_5",
+      "name": "cp_f3 checkpoint 5",
+      "assertion": "mem('work.paper_submissions.last.status') == 'submitted'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f3_6",
+      "name": "cp_f3 checkpoint 6",
+      "assertion": "exists(\"#submissions-list .card:has-text('Branch-Aware Benchmarking')\")",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "work.local"
+  ],
+  "module_group": "paper_submission",
+  "canonical_task_dir": "F8-paper-submission",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

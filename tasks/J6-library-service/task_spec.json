@@ -1,0 +1,83 @@
+{
+  "task_id": "J6-2025-LIBRARY",
+  "family": "J",
+  "goal": "Apply for a library card for 王五 and reserve Playwright in Practice for pickup on 2026-03-20.",
+  "inputs": {
+    "applicant_name": "王五",
+    "student_id": "S888999",
+    "book_query": "Playwright in Practice",
+    "pickup_date": "2026-03-20"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('library.card.status') == 'active'",
+    "mem('library.card.student_id') == 'S888999'",
+    "mem('library.reservations.last.status') == 'pending'",
+    "mem('library.reservations.last.book_title') == 'Playwright in Practice'",
+    "mem('library.reservations.last.pickup_date') == '2026-03-20'",
+    "exists('#reservations-list .card')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_j2_1",
+      "name": "cp_j2 checkpoint 1",
+      "assertion": "mem('library.card.status') == 'active'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j2_2",
+      "name": "cp_j2 checkpoint 2",
+      "assertion": "mem('library.card.student_id') == 'S888999'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j2_3",
+      "name": "cp_j2 checkpoint 3",
+      "assertion": "mem('library.reservations.last.status') == 'pending'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j2_4",
+      "name": "cp_j2 checkpoint 4",
+      "assertion": "mem('library.reservations.last.book_title') == 'Playwright in Practice'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j2_5",
+      "name": "cp_j2 checkpoint 5",
+      "assertion": "mem('library.reservations.last.pickup_date') == '2026-03-20'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j2_6",
+      "name": "cp_j2 checkpoint 6",
+      "assertion": "exists('#reservations-list .card')",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "school.local"
+  ],
+  "module_group": "library_service",
+  "canonical_task_dir": "J6-library-service",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

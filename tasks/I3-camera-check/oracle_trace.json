@@ -1,0 +1,44 @@
+{
+  "task_id": "I3-2025-CAMERASETUP",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/energy.local/bulb-setup.html?clean=true&task=I3-2025-CAMERASETUP",
+      "note": "Open device setup page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#device-id",
+      "value": "CAM-001",
+      "note": "Enter camera ID"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#location",
+      "value": "玄关",
+      "note": "Set camera location"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#color",
+      "value": "white",
+      "note": "Pick camera profile"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button.btn.pri.lg",
+      "note": "Submit camera setup"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "div:has-text('玄关')",
+      "note": "Wait for camera to appear in dashboard list"
+    }
+  ]
+}

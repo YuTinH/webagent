@@ -1,0 +1,69 @@
+{
+  "task_id": "F5-2025-ARCHIVE2::WFG-CAREER-0001-M2",
+  "family": "F",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Archive event_receipt_june.pdf as a receipt.",
+  "inputs": {
+    "file_path": "event_receipt_june.pdf"
+  },
+  "allowed_domains": [
+    "cloud.local"
+  ],
+  "preconditions": [],
+  "dependencies": [],
+  "memory_keys": [
+    "cloud.documents.last.id"
+  ],
+  "success_criteria": [
+    "mem('cloud.documents.last.id') includes 'DOC-'",
+    "mem('cloud.documents.last.type') == 'receipt'",
+    "mem('cloud.documents.last.name') == 'event_receipt_june.pdf'"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "scoring_checkpoints": [
+    {
+      "id": "cp_f5_1",
+      "name": "cp_f5 checkpoint 1",
+      "assertion": "mem('cloud.documents.last.id') includes 'DOC-'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f5_2",
+      "name": "cp_f5 checkpoint 2",
+      "assertion": "mem('cloud.documents.last.type') == 'receipt'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_f5_3",
+      "name": "cp_f5 checkpoint 3",
+      "assertion": "mem('cloud.documents.last.name') == 'event_receipt_june.pdf'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "module_group": "receipt_archiving",
+  "variant_kind": "distinct",
+  "canonical_task_dir": "F5-receipt-archive",
+  "lifecycle_status": "active",
+  "module_notes": "Archive existing taxi invoice receipt.",
+  "binding_task_id": "F5-2025-ARCHIVE2",
+  "source_task_id": "F5-2025-ARCHIVE2"
+}

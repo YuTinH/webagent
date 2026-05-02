@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Nebula Housing - Find Your Home</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🏠 Nebula Housing</div>
+      <div class="navlinks">
+        <a href="index.html" class="active">Find Home</a>
+        <a href="lease-management.html">My Lease</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Available Properties</h1>
+      <div class="filters" style="display:flex; gap:12px; align-items:center">
+        <input id="search-price" class="input" type="number" min="0" step="50" style="width:150px" placeholder="Max price" aria-label="Maximum monthly rent" oninput="renderDisplay()">
+        <span style="font-size:14px; color:var(--muted)">Sort by:</span>
+        <select id="sort-order" class="input" style="width:auto" onchange="handleSortChange()">
+            <option value="default">Default</option>
+            <option value="price_low">Price: Low to High</option>
+            <option value="price_high">Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+    
+    <div id="property-list" class="grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:24px">
+        <div class="loading">Loading properties...</div>
+    </div>
+  </div>
+
+  <script>
+  let allProperties = [];
+  const housingIndexParams = new URLSearchParams(window.location.search);
+  const requestedHousingTaskId = housingIndexParams.get('task') || 'A1-2025-HOME';
+  const housingTaskId = resolveTaskId(requestedHousingTaskId);
+
+  async function loadProperties() {
+    const list = document.getElementById('property-list');
+    try {
+      const env = await loadEnv();
+      allProperties = env.housing?.properties || [];
+      renderDisplay();
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed. Please check backend connection.</div>';
+    }
+  }
+
+  function renderDisplay() {
+    const list = document.getElementById('property-list');
+    const sort = document.getElementById('sort-order').value;
+    const cleanMode = new URLSearchParams(window.location.search).get('clean') === 'true';
+    
+    if (allProperties.length === 0) {
+      list.innerHTML = '<div class="card soft" style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--muted)">No properties found.</div>';
+      return;
+    }
+
+    let properties = [...allProperties];
+    const priceInput = document.getElementById('search-price');
+    const maxPrice = priceInput ? Number(priceInput.value || 0) : 0;
+    if (maxPrice) {
+      properties = properties.filter((p) => Number(p.price || 0) <= maxPrice);
+    }
+    if (sort === 'price_low') properties.sort((a, b) => a.price - b.price);
+    else if (sort === 'price_high') properties.sort((a, b) => b.price - a.price);
+
+    list.innerHTML = properties.map(p => `
+        <div class="property-card" onclick="location.href='property.html?id=${p.id}${cleanMode ? '&clean=true' : ''}&task=${encodeURIComponent(housingTaskId)}'" style="border:1px solid var(--border); border-radius:12px; overflow:hidden; cursor:pointer; background:var(--card); transition: 0.2s">
+            <div style="height:160px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; font-size:40px">🏠</div>
+            <div style="padding:16px">
+                <div class="property-title" style="font-weight:700; font-size:18px">${p.title}</div>
+                <div style="color:var(--muted); font-size:14px; margin:4px 0">${p.meta || ''}</div>
+                <div style="color:var(--pri); font-weight:700; font-size:20px; margin-top:8px">$${p.price}/mo</div>
+            </div>
+        </div>
+      `).join('');
+  }
+
+  function handleSortChange() {
+    renderDisplay();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadProperties();
+  });
+  </script>
+</body>
+</html>

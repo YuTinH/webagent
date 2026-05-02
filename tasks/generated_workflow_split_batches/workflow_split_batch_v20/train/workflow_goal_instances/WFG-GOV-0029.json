@@ -1,0 +1,33 @@
+{
+  "goal_id": "WFG-GOV-0029",
+  "theme": "government",
+  "difficulty": 8,
+  "instruction": "Finish the civic records workflow only after address records are aligned, billing is reviewed, and the permit application is submitted for the new residence.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "address_records_aligned",
+      "bills_reviewed",
+      "permit_application_submitted"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_records_aligned",
+    "bills_reviewed",
+    "permit_application_submitted"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_GOV_ADDRESS_BILL_VERIFICATION; civic record workflows should continue into permit submission after address and billing verification."
+}

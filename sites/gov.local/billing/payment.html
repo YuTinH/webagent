@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../../";</script>
+  <meta charset="utf-8">
+  <title>gov.local - Bills</title>
+  <link rel="stylesheet" href="../../static/skin.css">
+  <script src="../../static/common.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Gov Services</div>
+    </div>
+  </div>
+  <div class="container">
+    <h1>Information</h1>
+    <div class="card">
+      <div class="payment-method merchant-binding" data-merchant="gov.local">
+        <div>City Utilities - ****1234</div>
+        <button class="btn update" onclick="document.getElementById('update-panel').style.display='block'">Information</button>
+      </div>
+      <div id="update-panel" style="display:none; margin-top:12px">
+        <label>Information</label>
+        <input id="card-last4" class="input" placeholder="7777">
+        <button class="btn pri save" onclick="saveGov()">Information</button>
+      </div>
+      <div class="payment-updated" style="display:none; margin-top:12px">✅ </div>
+    </div>
+  </div>
+  <script>
+  async function saveGov(){
+    let last4 = document.getElementById('card-last4').value || '7777';
+    last4 = last4.replace(/[^0-9]/g,'').slice(-4) || '7777';
+    const res = await fetch('../../api/merchant_bindings/update', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({merchant:'gov.local', last4})
+    });
+    const data = await res.json();
+    if (data.success){
+      document.querySelector('.payment-updated').style.display = 'block';
+      render();
+    } else {
+      alert('');
+    }
+  }
+  </script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

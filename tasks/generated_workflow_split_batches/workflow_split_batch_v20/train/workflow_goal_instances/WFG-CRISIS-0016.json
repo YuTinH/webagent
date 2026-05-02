@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-CRISIS-0016",
+  "theme": "crisis",
+  "difficulty": 7,
+  "instruction": "Finish the health-access packet only after password reset is complete, illness reporting is submitted, the medical appointment is booked, and the calendar event is synced.",
+  "visible_constraints": {
+    "deadline_days": 1,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "illness_report_submitted",
+      "medical_appointment_booked",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "password_reset_completed",
+    "illness_report_submitted",
+    "medical_appointment_booked",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CRISIS_HEALTH_ACCESS_REPORTING; health-access crisis workflows should continue into explicit calendar follow-up after the medical appointment is booked."
+}

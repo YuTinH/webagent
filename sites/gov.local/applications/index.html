@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../../";</script>
+<meta charset="utf-8">
+<title> - Gov Services</title>
+<link rel="stylesheet" href="../../static/skin.css">
+<style>
+.applications-list { margin: 20px 0; }
+.app-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.app-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px; }
+.app-type { font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+.app-id { color: var(--muted); font-size: 13px; }
+.app-timeline { margin-top: 16px; padding-left: 24px; border-left: 2px solid var(--border); }
+.timeline-item { position: relative; padding-bottom: 16px; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot { position: absolute; left: -29px; width: 12px; height: 12px; border-radius: 50%; background: var(--muted); }
+.timeline-item.active .timeline-dot { background: var(--ok); }
+.timeline-item.current .timeline-dot { background: var(--pri); animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.timeline-title { font-weight: 500; margin-bottom: 4px; }
+.timeline-time { color: var(--muted); font-size: 12px; }
+.status-filters { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.status-filter { padding: 8px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: .2s; }
+.status-filter.active { background: var(--pri); border-color: var(--pri); }
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Gov Services</div>
+    <div class="navlinks">
+      <a href="../../gov.local/index.html">Home</a>
+      <a href="../../gov.local/billing/index.html">Bills</a>
+      <a href="../../gov.local/permits/index.html">Permit</a>
+      <a href="../../gov.local/applications/index.html" class="active">Information</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+<div class="container">
+  <h1>Information</h1>
+  <p style="color:var(--muted);margin-bottom:20px">Submit</p>
+
+  <div class="status-filters">
+    <div class="status-filter active" onclick="filterApps('all')">Information</div>
+    <div class="status-filter" onclick="filterApps('submitted')">Information</div>
+    <div class="status-filter" onclick="filterApps('processing')">Processing</div>
+    <div class="status-filter" onclick="filterApps('approved')">Information</div>
+    <div class="status-filter" onclick="filterApps('rejected')">Decline</div>
+  </div>
+
+  <div id="applications-list" class="applications-list"></div>
+
+  <div style="margin-top:20px">
+    <a href="../../gov.local/permits/index.html" class="btn pri">Permit</a>
+  </div>
+
+  <div class="footer">Gov Services · Government</div>
+</div>
+<script src="../../static/common.js"></script>
+<script>
+let allApps = [];
+let currentFilter = 'all';
+
+async function loadApplications() {
+  const list = document.getElementById('applications-list');
+  try {
+    const res = await fetch('../../api/applications?user_id=1');
+    const data = await res.json();
+    if (data.success) {
+      allApps = data.applications;
+      renderApps();
+      // Update memory for H2 task
+      await fetch('../api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({key:'applications.count',value:String(allApps.length),source:'system'})
+      });
+      await fetch('../api/memory', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({key:'applications.last_check',value:new Date().toISOString(),source:'user'})
+      });
+    }
+  } catch(e) {
+    list.innerHTML = '<div class="card">Load failed</div>';
+  }
+}
+
+function filterApps(status) {
+  currentFilter = status;
+  document.querySelectorAll('.status-filter').forEach(f => {
+    const isActive = (status === 'all' && f.textContent === '') ||
+                     (status === 'submitted' && f.textContent === '') ||
+                     (status === 'processing' && f.textContent === 'Processing') ||
+                     (status === 'approved' && f.textContent === '') ||
+                     (status === 'rejected' && f.textContent === 'Decline');
+    f.classList.toggle('active', isActive);
+  });
+  renderApps();
+}
+
+function renderApps() {
+  const list = document.getElementById('applications-list');
+  let filtered = allApps;
+  if (currentFilter !== 'all') {
+    filtered = allApps.filter(app => app.state === currentFilter);
+  }
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="card" style="text-align:center;padding:40px;color:var(--muted)">Information</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(app => `
+    <div class="app-item">
+      <div class="app-header">
+        <div>
+          <div class="app-type">${getAppType(app.type)}</div>
+          <div class="app-id">Details: ${app.id}</div>
+        </div>
+        <span class="badge ${getStatusClass(app.state)}">${getStatusText(app.state)}</span>
+      </div>
+      <div style="color:var(--muted);font-size:14px">
+        SubmitDetails: ${new Date(app.created_at).toLocaleString('zh-CN')}
+      </div>
+      ${app.details ? `<div style="margin-top:8px;font-size:14px">${formatDetails(app.details)}</div>` : ''}
+      <div class="app-timeline">
+        <div class="timeline-item active">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">Submit</div>
+          <div class="timeline-time">${new Date(app.created_at).toLocaleString('zh-CN')}</div>
+        </div>
+        <div class="timeline-item ${['processing','approved','rejected'].includes(app.state)?'active':''}">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">Information</div>
+          <div class="timeline-time">${app.state==='submitted'?'':'-'}</div>
+        </div>
+        <div class="timeline-item ${['approved','rejected'].includes(app.state)?'active':''}">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">${app.state==='rejected'?'Decline':''}</div>
+          <div class="timeline-time">${app.updated_at?new Date(app.updated_at).toLocaleString('zh-CN'):'-'}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getAppType(type) {
+  const types = {
+    'parking_permit': 'Permit',
+    'business_license': '',
+    'building_permit': 'Permit',
+    'event_permit': 'Permit'
+  };
+  return types[type] || type;
+}
+
+function getStatusClass(state) {
+  const classes = {
+    'submitted': 'warn',
+    'processing': '',
+    'approved': 'ok',
+    'rejected': 'err'
+  };
+  return classes[state] || '';
+}
+
+function getStatusText(state) {
+  const texts = {
+    'submitted': '',
+    'processing': 'Processing',
+    'approved': '',
+    'rejected': 'Decline'
+  };
+  return texts[state] || state;
+}
+
+function formatDetails(details) {
+  if (typeof details === 'string') {
+    try { details = JSON.parse(details); } catch(e) { return details; }
+  }
+  return Object.entries(details).map(([k,v]) => `${k}: ${v}`).join(' · ');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('__toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+loadApplications();
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

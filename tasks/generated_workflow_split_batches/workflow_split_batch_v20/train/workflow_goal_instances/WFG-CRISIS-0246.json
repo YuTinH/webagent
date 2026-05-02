@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-CRISIS-0246",
+  "theme": "crisis",
+  "difficulty": 8,
+  "instruction": "Close the containment-triage route by containing the account first, completing the crisis triage, reviewing the balance, and ending only after credential-vault remediation is completed.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "crisis_intake_completed",
+      "account_access_contained",
+      "account_balance_reviewed",
+      "credential_vault_updated"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "password_reset_completed",
+    "crisis_intake_completed",
+    "account_access_contained",
+    "account_balance_reviewed",
+    "credential_vault_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 6,
+  "notes": "Generated from BP_CRISIS_ZTRAIN_05_CONTAINMENT_TRIAGE_DUAL; containment-triage crisis workflows should continue through balance review and credential-vault remediation."
+}

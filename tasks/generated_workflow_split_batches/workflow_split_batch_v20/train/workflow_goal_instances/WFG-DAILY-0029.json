@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-DAILY-0029",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Finish the service-subscription workflow only after the service stack is prepared, the daily bundle is prepared, a food order is pending, the subscription is active, and the routine is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "service_stack_prepared",
+      "daily_order_bundle_prepared",
+      "food_order_pending",
+      "subscription_active",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "service_stack_prepared",
+    "daily_order_bundle_prepared",
+    "food_order_pending",
+    "subscription_active",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_SUBSCRIPTION_SERVICE_STACK; daily service-and-subscription workflows should end with an explicit calendar handoff."
+}

@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-TRAVEL-0055",
+  "theme": "travel",
+  "difficulty": 8,
+  "instruction": "Finish the travel-readiness workflow only after clearance is checked, transfer is arranged, check-in is completed, and the final commute route is confirmed.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "flight_booked",
+      "mobility_clearance_verified",
+      "airport_transfer_arranged",
+      "check_in_completed",
+      "commute_route_checked",
+      "visa_requirements_checked"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "flight_booked",
+    "mobility_clearance_verified",
+    "airport_transfer_arranged",
+    "check_in_completed",
+    "commute_route_checked",
+    "visa_requirements_checked"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_TRAVEL_CLEARANCE_TRANSFER_SYNC; readiness travel workflows should include an explicit clearance-check step on both alternative routes."
+}

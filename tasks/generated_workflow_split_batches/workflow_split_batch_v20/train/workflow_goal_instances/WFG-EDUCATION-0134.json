@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-EDUCATION-0134",
+  "theme": "education",
+  "difficulty": 7,
+  "instruction": "Close the credential-event workflow by completing skill certification, downloading the certificate artifact, booking the event access, syncing the calendar, and ending with gear-rental readiness.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "skill_certified",
+      "certificate_downloaded",
+      "event_ticket_booked",
+      "calendar_event_synced",
+      "rental_listing_active"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "skill_certified",
+    "certificate_downloaded",
+    "event_ticket_booked",
+    "calendar_event_synced",
+    "rental_listing_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_EDUCATION_WORKFLOW_CERT_EVENT_ACCESS; credential-event education workflows should continue into equipment readiness after the event and calendar steps."
+}

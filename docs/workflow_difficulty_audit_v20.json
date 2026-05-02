@@ -1,0 +1,3094 @@
+{
+  "version": 1,
+  "batch_root": "/Users/masteryth/Documents/webagent/tasks/generated_workflow_split_batches/workflow_split_batch_v20",
+  "blueprints_file": "/Users/masteryth/Documents/webagent/tasks/workflow_generation_blueprints.json",
+  "blueprints": {
+    "count": 504,
+    "theme_counts": {
+      "career": 36,
+      "composite": 36,
+      "crisis": 36,
+      "daily": 36,
+      "education": 36,
+      "finance": 36,
+      "government": 36,
+      "health": 36,
+      "home": 36,
+      "newcomer": 36,
+      "security": 36,
+      "social": 36,
+      "support": 36,
+      "travel": 36
+    },
+    "difficulty_counts": {
+      "2": 1,
+      "3": 76,
+      "4": 159,
+      "5": 268
+    },
+    "path_count_stats": {
+      "count": 504,
+      "mean": 1.8552,
+      "median": 2.0,
+      "min": 1,
+      "max": 3
+    },
+    "path_step_length_stats": {
+      "count": 935,
+      "mean": 3.1572,
+      "median": 3,
+      "min": 1,
+      "max": 6
+    }
+  },
+  "global": {
+    "goal_count": 5040,
+    "theme_counts": {
+      "career": 360,
+      "composite": 360,
+      "crisis": 360,
+      "daily": 360,
+      "education": 360,
+      "finance": 360,
+      "government": 360,
+      "health": 360,
+      "home": 360,
+      "newcomer": 360,
+      "security": 360,
+      "social": 360,
+      "support": 360,
+      "travel": 360
+    },
+    "difficulty_counts": {
+      "2": 10,
+      "3": 760,
+      "4": 1590,
+      "5": 2680
+    },
+    "shortest_path_len_stats": {
+      "count": 5040,
+      "mean": 3.1766,
+      "median": 3.0,
+      "min": 1,
+      "max": 6
+    },
+    "longest_path_len_stats": {
+      "count": 5040,
+      "mean": 3.25,
+      "median": 3.0,
+      "min": 1,
+      "max": 6
+    },
+    "num_success_paths_stats": {
+      "count": 5040,
+      "mean": 1.8552,
+      "median": 2.0,
+      "min": 1,
+      "max": 3
+    },
+    "target_state_size_stats": {
+      "count": 5040,
+      "mean": 2.8135,
+      "median": 2.0,
+      "min": 1,
+      "max": 5
+    },
+    "visible_constraint_count_stats": {
+      "count": 5040,
+      "mean": 3.6964,
+      "median": 3.0,
+      "min": 2,
+      "max": 6
+    },
+    "counterfactual_axis_count_stats": {
+      "count": 5040,
+      "mean": 4.0238,
+      "median": 4.0,
+      "min": 4,
+      "max": 8
+    },
+    "max_steps_stats": {
+      "count": 5040,
+      "mean": 44.2024,
+      "median": 40.0,
+      "min": 20,
+      "max": 85
+    },
+    "max_module_invocations_stats": {
+      "count": 5040,
+      "mean": 3.6647,
+      "median": 4.0,
+      "min": 2,
+      "max": 7
+    },
+    "step_budget_ratio_stats": {
+      "count": 5040,
+      "mean": 14.1015,
+      "median": 15.0,
+      "min": 6.6667,
+      "max": 27.5
+    },
+    "module_budget_slack_stats": {
+      "count": 5040,
+      "mean": 0.4881,
+      "median": 0.0,
+      "min": -1,
+      "max": 3
+    },
+    "saturation_risk_score_counts": {
+      "2": 330,
+      "3": 3100,
+      "4": 1210,
+      "5": 400
+    },
+    "share_shortest_path_le_2": 0.3155,
+    "share_target_size_le_2": 0.5456,
+    "share_success_paths_le_2": 0.996,
+    "share_step_budget_ratio_ge_15": 0.5595,
+    "share_module_budget_slack_le_1": 0.9167
+  },
+  "per_split": {
+    "dev": {
+      "goal_count": 140,
+      "theme_counts": {
+        "career": 10,
+        "composite": 10,
+        "crisis": 10,
+        "daily": 10,
+        "education": 10,
+        "finance": 10,
+        "government": 10,
+        "health": 10,
+        "home": 10,
+        "newcomer": 10,
+        "security": 10,
+        "social": 10,
+        "support": 10,
+        "travel": 10
+      },
+      "difficulty_counts": {
+        "3": 30,
+        "4": 30,
+        "5": 80
+      },
+      "shortest_path_len_stats": {
+        "count": 140,
+        "mean": 3.5714,
+        "median": 3.5,
+        "min": 2,
+        "max": 6
+      },
+      "longest_path_len_stats": {
+        "count": 140,
+        "mean": 3.5714,
+        "median": 3.5,
+        "min": 2,
+        "max": 6
+      },
+      "num_success_paths_stats": {
+        "count": 140,
+        "mean": 1.7143,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 140,
+        "mean": 2.8571,
+        "median": 2.0,
+        "min": 2,
+        "max": 5
+      },
+      "visible_constraint_count_stats": {
+        "count": 140,
+        "mean": 3.7857,
+        "median": 3.0,
+        "min": 2,
+        "max": 6
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 140,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 140,
+        "mean": 46.6429,
+        "median": 44.0,
+        "min": 20,
+        "max": 70
+      },
+      "max_module_invocations_stats": {
+        "count": 140,
+        "mean": 3.7143,
+        "median": 3.5,
+        "min": 2,
+        "max": 7
+      },
+      "step_budget_ratio_stats": {
+        "count": 140,
+        "mean": 13.4643,
+        "median": 14.5,
+        "min": 7.1667,
+        "max": 20.0
+      },
+      "module_budget_slack_stats": {
+        "count": 140,
+        "mean": 0.1429,
+        "median": 0.0,
+        "min": -1,
+        "max": 2
+      },
+      "saturation_risk_score_counts": {
+        "2": 20,
+        "3": 80,
+        "4": 30,
+        "5": 10
+      },
+      "share_shortest_path_le_2": 0.2143,
+      "share_target_size_le_2": 0.5714,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.5,
+      "share_module_budget_slack_le_1": 0.9286
+    },
+    "test": {
+      "goal_count": 140,
+      "theme_counts": {
+        "career": 10,
+        "composite": 10,
+        "crisis": 10,
+        "daily": 10,
+        "education": 10,
+        "finance": 10,
+        "government": 10,
+        "health": 10,
+        "home": 10,
+        "newcomer": 10,
+        "security": 10,
+        "social": 10,
+        "support": 10,
+        "travel": 10
+      },
+      "difficulty_counts": {
+        "3": 10,
+        "4": 20,
+        "5": 110
+      },
+      "shortest_path_len_stats": {
+        "count": 140,
+        "mean": 3.5714,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "longest_path_len_stats": {
+        "count": 140,
+        "mean": 3.5714,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "num_success_paths_stats": {
+        "count": 140,
+        "mean": 1.8571,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 140,
+        "mean": 2.7143,
+        "median": 2.0,
+        "min": 2,
+        "max": 4
+      },
+      "visible_constraint_count_stats": {
+        "count": 140,
+        "mean": 3.7143,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 140,
+        "mean": 4.2857,
+        "median": 4.0,
+        "min": 4,
+        "max": 8
+      },
+      "max_steps_stats": {
+        "count": 140,
+        "mean": 45.5,
+        "median": 42.5,
+        "min": 20,
+        "max": 70
+      },
+      "max_module_invocations_stats": {
+        "count": 140,
+        "mean": 4.0714,
+        "median": 4.0,
+        "min": 2,
+        "max": 6
+      },
+      "step_budget_ratio_stats": {
+        "count": 140,
+        "mean": 13.4226,
+        "median": 14.5,
+        "min": 7.0,
+        "max": 22.5
+      },
+      "module_budget_slack_stats": {
+        "count": 140,
+        "mean": 0.5,
+        "median": 0.0,
+        "min": 0,
+        "max": 2
+      },
+      "saturation_risk_score_counts": {
+        "2": 10,
+        "3": 100,
+        "4": 20,
+        "5": 10
+      },
+      "share_shortest_path_le_2": 0.2143,
+      "share_target_size_le_2": 0.5714,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.5,
+      "share_module_budget_slack_le_1": 0.9286
+    },
+    "train": {
+      "goal_count": 4760,
+      "theme_counts": {
+        "career": 340,
+        "composite": 340,
+        "crisis": 340,
+        "daily": 340,
+        "education": 340,
+        "finance": 340,
+        "government": 340,
+        "health": 340,
+        "home": 340,
+        "newcomer": 340,
+        "security": 340,
+        "social": 340,
+        "support": 340,
+        "travel": 340
+      },
+      "difficulty_counts": {
+        "2": 10,
+        "3": 720,
+        "4": 1540,
+        "5": 2490
+      },
+      "shortest_path_len_stats": {
+        "count": 4760,
+        "mean": 3.1534,
+        "median": 3.0,
+        "min": 1,
+        "max": 6
+      },
+      "longest_path_len_stats": {
+        "count": 4760,
+        "mean": 3.2311,
+        "median": 3.0,
+        "min": 1,
+        "max": 6
+      },
+      "num_success_paths_stats": {
+        "count": 4760,
+        "mean": 1.8592,
+        "median": 2.0,
+        "min": 1,
+        "max": 3
+      },
+      "target_state_size_stats": {
+        "count": 4760,
+        "mean": 2.8151,
+        "median": 2.0,
+        "min": 1,
+        "max": 5
+      },
+      "visible_constraint_count_stats": {
+        "count": 4760,
+        "mean": 3.6933,
+        "median": 3.0,
+        "min": 2,
+        "max": 6
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 4760,
+        "mean": 4.0168,
+        "median": 4.0,
+        "min": 4,
+        "max": 8
+      },
+      "max_steps_stats": {
+        "count": 4760,
+        "mean": 44.0924,
+        "median": 39.0,
+        "min": 20,
+        "max": 85
+      },
+      "max_module_invocations_stats": {
+        "count": 4760,
+        "mean": 3.6513,
+        "median": 4.0,
+        "min": 2,
+        "max": 7
+      },
+      "step_budget_ratio_stats": {
+        "count": 4760,
+        "mean": 14.1402,
+        "median": 15.0,
+        "min": 6.6667,
+        "max": 27.5
+      },
+      "module_budget_slack_stats": {
+        "count": 4760,
+        "mean": 0.4979,
+        "median": 0.0,
+        "min": -1,
+        "max": 3
+      },
+      "saturation_risk_score_counts": {
+        "2": 300,
+        "3": 2920,
+        "4": 1160,
+        "5": 380
+      },
+      "share_shortest_path_le_2": 0.3214,
+      "share_target_size_le_2": 0.5441,
+      "share_success_paths_le_2": 0.9958,
+      "share_step_budget_ratio_ge_15": 0.563,
+      "share_module_budget_slack_le_1": 0.916
+    }
+  },
+  "per_theme": {
+    "career": {
+      "goal_count": 360,
+      "theme_counts": {
+        "career": 360
+      },
+      "difficulty_counts": {
+        "3": 10,
+        "4": 10,
+        "5": 340
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 3.9167,
+        "median": 4.0,
+        "min": 2,
+        "max": 4
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 3.9167,
+        "median": 4.0,
+        "min": 2,
+        "max": 4
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.9722,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 3.75,
+        "median": 4.0,
+        "min": 2,
+        "max": 4
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 4.7222,
+        "median": 5.0,
+        "min": 2,
+        "max": 5
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 62.5,
+        "median": 65.0,
+        "min": 35,
+        "max": 65
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.9444,
+        "median": 4.0,
+        "min": 3,
+        "max": 4
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 15.9722,
+        "median": 16.25,
+        "min": 13.75,
+        "max": 17.5
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.0278,
+        "median": 0.0,
+        "min": 0,
+        "max": 1
+      },
+      "saturation_risk_score_counts": {
+        "2": 10,
+        "3": 330,
+        "4": 10,
+        "5": 10
+      },
+      "share_shortest_path_le_2": 0.0278,
+      "share_target_size_le_2": 0.0556,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.9722,
+      "share_module_budget_slack_le_1": 1.0
+    },
+    "composite": {
+      "goal_count": 360,
+      "theme_counts": {
+        "composite": 360
+      },
+      "difficulty_counts": {
+        "4": 190,
+        "5": 170
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 2.7222,
+        "median": 2.0,
+        "min": 2,
+        "max": 5
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 2.7222,
+        "median": 2.0,
+        "min": 2,
+        "max": 5
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.9167,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 2.25,
+        "median": 2.0,
+        "min": 2,
+        "max": 4
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 3.1111,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 38.9444,
+        "median": 36.0,
+        "min": 20,
+        "max": 70
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 15.2407,
+        "median": 17.0,
+        "min": 7.5,
+        "max": 22.5
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 1.2778,
+        "median": 1.5,
+        "min": 0,
+        "max": 3
+      },
+      "saturation_risk_score_counts": {
+        "2": 50,
+        "3": 60,
+        "4": 230,
+        "5": 20
+      },
+      "share_shortest_path_le_2": 0.6389,
+      "share_target_size_le_2": 0.8611,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.6111,
+      "share_module_budget_slack_le_1": 0.5
+    },
+    "crisis": {
+      "goal_count": 360,
+      "theme_counts": {
+        "crisis": 360
+      },
+      "difficulty_counts": {
+        "3": 40,
+        "4": 100,
+        "5": 220
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 2.8333,
+        "median": 3.0,
+        "min": 1,
+        "max": 4
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 3.2778,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.8889,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 2.7778,
+        "median": 2.0,
+        "min": 2,
+        "max": 4
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 3.6111,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4.2222,
+        "median": 4.0,
+        "min": 4,
+        "max": 8
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 48.3056,
+        "median": 45.0,
+        "min": 20,
+        "max": 75
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.4167,
+        "median": 3.5,
+        "min": 2,
+        "max": 5
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 16.6065,
+        "median": 17.5,
+        "min": 8.3333,
+        "max": 22.5
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.5833,
+        "median": 1.0,
+        "min": 0,
+        "max": 2
+      },
+      "saturation_risk_score_counts": {
+        "3": 180,
+        "4": 140,
+        "5": 40
+      },
+      "share_shortest_path_le_2": 0.4167,
+      "share_target_size_le_2": 0.5278,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.6944,
+      "share_module_budget_slack_le_1": 0.9722
+    },
+    "daily": {
+      "goal_count": 360,
+      "theme_counts": {
+        "daily": 360
+      },
+      "difficulty_counts": {
+        "2": 10,
+        "3": 40,
+        "4": 70,
+        "5": 240
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 3.2778,
+        "median": 3.0,
+        "min": 2,
+        "max": 4
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 3.3889,
+        "median": 4.0,
+        "min": 2,
+        "max": 4
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.8333,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 3,
+        "median": 3.0,
+        "min": 2,
+        "max": 4
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 3.9444,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 46.1389,
+        "median": 50.0,
+        "min": 20,
+        "max": 60
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.6111,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 14.1782,
+        "median": 15.0,
+        "min": 8.5,
+        "max": 18.3333
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.3333,
+        "median": 0.0,
+        "min": 0,
+        "max": 1
+      },
+      "saturation_risk_score_counts": {
+        "2": 60,
+        "3": 240,
+        "4": 50,
+        "5": 10
+      },
+      "share_shortest_path_le_2": 0.1389,
+      "share_target_size_le_2": 0.1667,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.7222,
+      "share_module_budget_slack_le_1": 1.0
+    },
+    "education": {
+      "goal_count": 360,
+      "theme_counts": {
+        "education": 360
+      },
+      "difficulty_counts": {
+        "3": 120,
+        "4": 180,
+        "5": 60
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 2.7222,
+        "median": 3.0,
+        "min": 1,
+        "max": 4
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 2.7222,
+        "median": 3.0,
+        "min": 1,
+        "max": 4
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.8333,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 1.9722,
+        "median": 2.0,
+        "min": 1,
+        "max": 3
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 2.8333,
+        "median": 3.0,
+        "min": 2,
+        "max": 3
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 31.6389,
+        "median": 33.0,
+        "min": 20,
+        "max": 55
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.1389,
+        "median": 3.0,
+        "min": 2,
+        "max": 4
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 12.4028,
+        "median": 10.0,
+        "min": 8.0,
+        "max": 27.5
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.4167,
+        "median": 0.0,
+        "min": 0,
+        "max": 1
+      },
+      "saturation_risk_score_counts": {
+        "3": 200,
+        "4": 70,
+        "5": 90
+      },
+      "share_shortest_path_le_2": 0.4167,
+      "share_target_size_le_2": 0.9722,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.3056,
+      "share_module_budget_slack_le_1": 1.0
+    },
+    "finance": {
+      "goal_count": 360,
+      "theme_counts": {
+        "finance": 360
+      },
+      "difficulty_counts": {
+        "3": 100,
+        "4": 70,
+        "5": 190
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 2.8056,
+        "median": 2.0,
+        "min": 2,
+        "max": 5
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 2.8056,
+        "median": 2.0,
+        "min": 2,
+        "max": 5
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.9722,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 2.3611,
+        "median": 2.0,
+        "min": 2,
+        "max": 4
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 3.25,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 37.7222,
+        "median": 34.0,
+        "min": 20,
+        "max": 70
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.4722,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 13.5278,
+        "median": 14.0,
+        "min": 8.3333,
+        "max": 22.5
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.6667,
+        "median": 0.0,
+        "min": 0,
+        "max": 2
+      },
+      "saturation_risk_score_counts": {
+        "2": 60,
+        "3": 90,
+        "4": 170,
+        "5": 40
+      },
+      "share_shortest_path_le_2": 0.5556,
+      "share_target_size_le_2": 0.8056,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.3611,
+      "share_module_budget_slack_le_1": 0.8056
+    },
+    "government": {
+      "goal_count": 360,
+      "theme_counts": {
+        "government": 360
+      },
+      "difficulty_counts": {
+        "3": 10,
+        "4": 170,
+        "5": 180
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 4.2778,
+        "median": 4.0,
+        "min": 3,
+        "max": 6
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 4.2778,
+        "median": 4.0,
+        "min": 3,
+        "max": 6
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.2222,
+        "median": 1.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 2,
+        "median": 2.0,
+        "min": 2,
+        "max": 2
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 2.8333,
+        "median": 3.0,
+        "min": 2,
+        "max": 3
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 39.25,
+        "median": 39.0,
+        "min": 20,
+        "max": 65
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 4.7778,
+        "median": 5.0,
+        "min": 2,
+        "max": 7
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 9.3963,
+        "median": 8.75,
+        "min": 6.6667,
+        "max": 16.25
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.5,
+        "median": 1.0,
+        "min": -1,
+        "max": 1
+      },
+      "saturation_risk_score_counts": {
+        "3": 330,
+        "4": 30
+      },
+      "share_shortest_path_le_2": 0.0,
+      "share_target_size_le_2": 1.0,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.0833,
+      "share_module_budget_slack_le_1": 1.0
+    },
+    "health": {
+      "goal_count": 360,
+      "theme_counts": {
+        "health": 360
+      },
+      "difficulty_counts": {
+        "5": 360
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 2,
+        "median": 2.0,
+        "min": 2,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 5.0278,
+        "median": 5.0,
+        "min": 5,
+        "max": 6
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 68.0556,
+        "median": 70.0,
+        "min": 60,
+        "max": 70
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 17.0139,
+        "median": 17.5,
+        "min": 15.0,
+        "max": 17.5
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0,
+        "median": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "saturation_risk_score_counts": {
+        "3": 360
+      },
+      "share_shortest_path_le_2": 0.0,
+      "share_target_size_le_2": 0.0,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 1.0,
+      "share_module_budget_slack_le_1": 1.0
+    },
+    "home": {
+      "goal_count": 360,
+      "theme_counts": {
+        "home": 360
+      },
+      "difficulty_counts": {
+        "3": 160,
+        "4": 140,
+        "5": 60
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 2.5833,
+        "median": 2.0,
+        "min": 2,
+        "max": 4
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 2.75,
+        "median": 3.0,
+        "min": 2,
+        "max": 4
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 2,
+        "median": 2.0,
+        "min": 2,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 2.2222,
+        "median": 2.0,
+        "min": 2,
+        "max": 3
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 3.1111,
+        "median": 3.0,
+        "min": 2,
+        "max": 4
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 31.2222,
+        "median": 34.0,
+        "min": 20,
+        "max": 55
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.3611,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 12.4537,
+        "median": 10.0,
+        "min": 8.3333,
+        "max": 20.0
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.7778,
+        "median": 1.0,
+        "min": 0,
+        "max": 2
+      },
+      "saturation_risk_score_counts": {
+        "3": 200,
+        "4": 140,
+        "5": 20
+      },
+      "share_shortest_path_le_2": 0.5833,
+      "share_target_size_le_2": 0.7778,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.3056,
+      "share_module_budget_slack_le_1": 0.8333
+    },
+    "newcomer": {
+      "goal_count": 360,
+      "theme_counts": {
+        "newcomer": 360
+      },
+      "difficulty_counts": {
+        "3": 20,
+        "4": 160,
+        "5": 180
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.9167,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 2.6389,
+        "median": 2.0,
+        "min": 2,
+        "max": 4
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 3.3333,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 47.6667,
+        "median": 45.0,
+        "min": 20,
+        "max": 70
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 4.2222,
+        "median": 4.0,
+        "min": 2,
+        "max": 6
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 11.9903,
+        "median": 12.5,
+        "min": 7.0,
+        "max": 18.3333
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.2222,
+        "median": 0.0,
+        "min": -1,
+        "max": 1
+      },
+      "saturation_risk_score_counts": {
+        "2": 60,
+        "3": 260,
+        "4": 40
+      },
+      "share_shortest_path_le_2": 0.0833,
+      "share_target_size_le_2": 0.5833,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.2778,
+      "share_module_budget_slack_le_1": 1.0
+    },
+    "security": {
+      "goal_count": 360,
+      "theme_counts": {
+        "security": 360
+      },
+      "difficulty_counts": {
+        "3": 90,
+        "4": 210,
+        "5": 60
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 2.8056,
+        "median": 3.0,
+        "min": 2,
+        "max": 4
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 2.8056,
+        "median": 3.0,
+        "min": 2,
+        "max": 4
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.4167,
+        "median": 1.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 2.5,
+        "median": 2.0,
+        "min": 2,
+        "max": 4
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 3.3611,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4.1111,
+        "median": 4.0,
+        "min": 4,
+        "max": 8
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 31.2778,
+        "median": 31.0,
+        "min": 20,
+        "max": 75
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.4167,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 11.4375,
+        "median": 10.6667,
+        "min": 8.0,
+        "max": 20.0
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.6111,
+        "median": 1.0,
+        "min": 0,
+        "max": 1
+      },
+      "saturation_risk_score_counts": {
+        "2": 90,
+        "3": 130,
+        "4": 70,
+        "5": 70
+      },
+      "share_shortest_path_le_2": 0.3611,
+      "share_target_size_le_2": 0.7222,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.25,
+      "share_module_budget_slack_le_1": 1.0
+    },
+    "social": {
+      "goal_count": 360,
+      "theme_counts": {
+        "social": 360
+      },
+      "difficulty_counts": {
+        "5": 360
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 3.1389,
+        "median": 3.0,
+        "min": 3,
+        "max": 4
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 3.25,
+        "median": 3.0,
+        "min": 3,
+        "max": 4
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 2,
+        "median": 2.0,
+        "min": 2,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 4.1389,
+        "median": 4.0,
+        "min": 4,
+        "max": 5
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 5.1389,
+        "median": 5.0,
+        "min": 5,
+        "max": 6
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 51.9444,
+        "median": 50.0,
+        "min": 50,
+        "max": 60
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.25,
+        "median": 3.0,
+        "min": 3,
+        "max": 4
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 16.6204,
+        "median": 16.6667,
+        "min": 15.0,
+        "max": 18.3333
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.1111,
+        "median": 0.0,
+        "min": 0,
+        "max": 1
+      },
+      "saturation_risk_score_counts": {
+        "3": 360
+      },
+      "share_shortest_path_le_2": 0.0,
+      "share_target_size_le_2": 0.0,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 1.0,
+      "share_module_budget_slack_le_1": 1.0
+    },
+    "support": {
+      "goal_count": 360,
+      "theme_counts": {
+        "support": 360
+      },
+      "difficulty_counts": {
+        "3": 80,
+        "4": 140,
+        "5": 140
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 2.4722,
+        "median": 2.0,
+        "min": 2,
+        "max": 5
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 2.4722,
+        "median": 2.0,
+        "min": 2,
+        "max": 5
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 2.0278,
+        "median": 2.0,
+        "min": 1,
+        "max": 3
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 2.4722,
+        "median": 2.0,
+        "min": 2,
+        "max": 5
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 3.3889,
+        "median": 3.0,
+        "min": 2,
+        "max": 6
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 41,
+        "median": 34.0,
+        "min": 20,
+        "max": 85
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.3333,
+        "median": 3.5,
+        "min": 2,
+        "max": 5
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 16.1458,
+        "median": 17.0,
+        "min": 10.0,
+        "max": 25.0
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.8611,
+        "median": 1.0,
+        "min": 0,
+        "max": 2
+      },
+      "saturation_risk_score_counts": {
+        "3": 80,
+        "4": 210,
+        "5": 70
+      },
+      "share_shortest_path_le_2": 0.7778,
+      "share_target_size_le_2": 0.7778,
+      "share_success_paths_le_2": 0.9444,
+      "share_step_budget_ratio_ge_15": 0.75,
+      "share_module_budget_slack_le_1": 0.7222
+    },
+    "travel": {
+      "goal_count": 360,
+      "theme_counts": {
+        "travel": 360
+      },
+      "difficulty_counts": {
+        "3": 90,
+        "4": 150,
+        "5": 120
+      },
+      "shortest_path_len_stats": {
+        "count": 360,
+        "mean": 2.9167,
+        "median": 3.0,
+        "min": 2,
+        "max": 4
+      },
+      "longest_path_len_stats": {
+        "count": 360,
+        "mean": 3.1111,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "num_success_paths_stats": {
+        "count": 360,
+        "mean": 1.9722,
+        "median": 2.0,
+        "min": 1,
+        "max": 2
+      },
+      "target_state_size_stats": {
+        "count": 360,
+        "mean": 3.3056,
+        "median": 4.0,
+        "min": 2,
+        "max": 5
+      },
+      "visible_constraint_count_stats": {
+        "count": 360,
+        "mean": 4.0833,
+        "median": 5.0,
+        "min": 2,
+        "max": 6
+      },
+      "counterfactual_axis_count_stats": {
+        "count": 360,
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "max_steps_stats": {
+        "count": 360,
+        "mean": 43.1667,
+        "median": 40.0,
+        "min": 20,
+        "max": 70
+      },
+      "max_module_invocations_stats": {
+        "count": 360,
+        "mean": 3.3611,
+        "median": 3.0,
+        "min": 2,
+        "max": 5
+      },
+      "step_budget_ratio_stats": {
+        "count": 360,
+        "mean": 14.4352,
+        "median": 15.375,
+        "min": 8.0,
+        "max": 22.5
+      },
+      "module_budget_slack_stats": {
+        "count": 360,
+        "mean": 0.4444,
+        "median": 0.0,
+        "min": 0,
+        "max": 1
+      },
+      "saturation_risk_score_counts": {
+        "3": 280,
+        "4": 50,
+        "5": 30
+      },
+      "share_shortest_path_le_2": 0.4167,
+      "share_target_size_le_2": 0.3889,
+      "share_success_paths_le_2": 1.0,
+      "share_step_budget_ratio_ge_15": 0.5,
+      "share_module_budget_slack_le_1": 1.0
+    }
+  },
+  "easiest_candidates": [
+    {
+      "goal_id": "WFG-EDUCATION-0011",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0012",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0013",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0014",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0015",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0016",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0017",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0018",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0019",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-EDUCATION-0020",
+      "split": "train",
+      "theme": "education",
+      "difficulty": 3,
+      "target_state_size": 1,
+      "visible_constraint_count": 2,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 1,
+      "module_union_size": 2,
+      "mean_required_path_len": 1,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 25,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 25.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0061",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0062",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0063",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0064",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0065",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0066",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0067",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0068",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0069",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0070",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0151",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0152",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0153",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0154",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    },
+    {
+      "goal_id": "WFG-CRISIS-0155",
+      "split": "train",
+      "theme": "crisis",
+      "difficulty": 4,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 1,
+      "num_success_paths": 2,
+      "shortest_path_len": 1,
+      "longest_path_len": 2,
+      "module_union_size": 3,
+      "mean_required_path_len": 1.5,
+      "mean_path_overlap_jaccard": 0.0,
+      "max_steps": 20,
+      "max_module_invocations": 2,
+      "step_budget_ratio_vs_shortest_path": 20.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "shortest_path_le_2",
+        "target_size_le_2",
+        "success_paths_le_2",
+        "step_budget_ratio_ge_15",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 5
+    }
+  ],
+  "hardest_candidates": [
+    {
+      "goal_id": "WFG-GOV-0001",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0002",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0003",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0004",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0005",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0006",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0007",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0008",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0009",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0010",
+      "split": "dev",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 43,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.1667,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0211",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0212",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0213",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0214",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0215",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0216",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0217",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0218",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0219",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0220",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0251",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0252",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0253",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0254",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    },
+    {
+      "goal_id": "WFG-GOV-0255",
+      "split": "train",
+      "theme": "government",
+      "difficulty": 5,
+      "target_state_size": 2,
+      "visible_constraint_count": 3,
+      "counterfactual_axis_count": 4,
+      "initial_state_size": 0,
+      "num_success_paths": 1,
+      "shortest_path_len": 6,
+      "longest_path_len": 6,
+      "module_union_size": 6,
+      "mean_required_path_len": 6,
+      "mean_path_overlap_jaccard": null,
+      "max_steps": 42,
+      "max_module_invocations": 7,
+      "step_budget_ratio_vs_shortest_path": 7.0,
+      "module_budget_slack_vs_shortest_path": 1,
+      "saturation_risk_flags": [
+        "target_size_le_2",
+        "success_paths_le_2",
+        "module_budget_slack_le_1"
+      ],
+      "saturation_risk_score": 3
+    }
+  ]
+}

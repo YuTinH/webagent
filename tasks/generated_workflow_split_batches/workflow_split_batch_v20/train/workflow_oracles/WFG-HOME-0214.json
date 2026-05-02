@@ -1,0 +1,404 @@
+{
+  "goal_id": "WFG-HOME-0214",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full home-control route to completion and do not stop before camera verification completed."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CAMERA_CHECK",
+      "role": "required",
+      "produces": [
+        "camera_config_verified",
+        "home_service_monitored"
+      ]
+    },
+    {
+      "module_id": "MODULE_ENERGY_OPTIMIZE",
+      "role": "alternative",
+      "produces": [
+        "energy_control_configured",
+        "energy_usage_optimized"
+      ]
+    },
+    {
+      "module_id": "MODULE_FIND_HOME",
+      "role": "required",
+      "produces": [
+        "address_known",
+        "housing_secured",
+        "lease_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_SMART_METER",
+      "role": "alternative",
+      "produces": [
+        "energy_control_configured",
+        "smart_meter_configured"
+      ]
+    },
+    {
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "role": "required",
+      "produces": [
+        "thermostat_schedule_configured"
+      ]
+    },
+    {
+      "module_id": "MODULE_UTILITY_SETUP",
+      "role": "required",
+      "produces": [
+        "address_confirmation_verified",
+        "electricity_active",
+        "residency_record_verified",
+        "utilities_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_ENERGY_OPTIMIZE",
+      "to": "MODULE_THERMOSTAT_SCHEDULE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FIND_HOME",
+      "to": "MODULE_UTILITY_SETUP",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_SMART_METER",
+      "to": "MODULE_THERMOSTAT_SCHEDULE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_THERMOSTAT_SCHEDULE",
+      "to": "MODULE_CAMERA_CHECK",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_ENERGY_OPTIMIZE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_SMART_METER",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_alpha_extended",
+      "required_modules": [
+        "MODULE_FIND_HOME",
+        "MODULE_UTILITY_SETUP",
+        "MODULE_SMART_METER",
+        "MODULE_THERMOSTAT_SCHEDULE",
+        "MODULE_CAMERA_CHECK"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HOME-0214-M1",
+        "WFG-HOME-0214-M2",
+        "WFG-HOME-0214-M3",
+        "WFG-HOME-0214-M4",
+        "WFG-HOME-0214-M5"
+      ],
+      "terminal_predicates": [
+        "energy_control_configured",
+        "thermostat_schedule_configured",
+        "camera_config_verified"
+      ]
+    },
+    {
+      "path_id": "path_beta_extended",
+      "required_modules": [
+        "MODULE_FIND_HOME",
+        "MODULE_UTILITY_SETUP",
+        "MODULE_ENERGY_OPTIMIZE",
+        "MODULE_THERMOSTAT_SCHEDULE",
+        "MODULE_CAMERA_CHECK"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HOME-0214-M6",
+        "WFG-HOME-0214-M7",
+        "WFG-HOME-0214-M8",
+        "WFG-HOME-0214-M9",
+        "WFG-HOME-0214-M10"
+      ],
+      "terminal_predicates": [
+        "energy_control_configured",
+        "thermostat_schedule_configured",
+        "camera_config_verified"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-HOME-0214-M1",
+      "module_id": "MODULE_FIND_HOME",
+      "binding_id": "BIND_A1_FIND_HOME",
+      "binding_task_id": "A1-2025-HOME",
+      "parameter_values": {
+        "propertyId": "PROP-EXT-10",
+        "leaseTerm": "6"
+      },
+      "description": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $2600/month, then pick the largest area. Set lease term to 6 months and then apply.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0214-M2",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "88 River Rd, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0214-M3",
+      "module_id": "MODULE_SMART_METER",
+      "binding_id": "BIND_I4_SMART_METER",
+      "binding_task_id": "I4-2025-SMARTMETER",
+      "parameter_values": {
+        "reading": "13020.75"
+      },
+      "description": "Submit a smart meter reading of 13020.75 kWh.",
+      "expected_observables": [
+        "exists(\"#meter-reading:has-text('13020.75')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "energy_control_configured",
+          "smart_meter_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0214-M4",
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "binding_id": "BIND_I7_THERMOSTAT_SCHEDULE",
+      "binding_task_id": "I7-2025-THERMOSTAT",
+      "parameter_values": {
+        "deviceId": "THERMO-001",
+        "location": "卧室",
+        "color": "warm_white"
+      },
+      "description": "Configure thermostat device THERMO-001 in 卧室 with profile warm_white.",
+      "expected_observables": [
+        "exists(\"div:has-text('卧室')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "thermostat_schedule_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0214-M5",
+      "module_id": "MODULE_CAMERA_CHECK",
+      "binding_id": "BIND_I3_CAMERA_CHECK",
+      "binding_task_id": "I3-2025-CAMERASETUP",
+      "parameter_values": {
+        "deviceId": "CAM-001",
+        "location": "玄关",
+        "color": "white"
+      },
+      "description": "Add a camera device and verify it appears online in the home dashboard.",
+      "expected_observables": [
+        "exists(\"div:has-text('玄关')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "camera_config_verified",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0214-M6",
+      "module_id": "MODULE_FIND_HOME",
+      "binding_id": "BIND_A1_FIND_HOME",
+      "binding_task_id": "A1-2025-HOME",
+      "parameter_values": {
+        "propertyId": "PROP-EXT-10",
+        "leaseTerm": "6"
+      },
+      "description": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $2600/month, then pick the largest area. Set lease term to 6 months and then apply.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0214-M7",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "88 River Rd, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0214-M8",
+      "module_id": "MODULE_ENERGY_OPTIMIZE",
+      "binding_id": "BIND_I5_ENERGY_OPTIMIZE",
+      "binding_task_id": "I5-2025-ENERGY",
+      "parameter_values": {
+        "meterId": "M-321",
+        "plan": "green_offpeak"
+      },
+      "description": "Switch to an eco-friendly energy plan.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "energy_control_configured",
+          "energy_usage_optimized"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0214-M9",
+      "module_id": "MODULE_THERMOSTAT_SCHEDULE",
+      "binding_id": "BIND_I7_THERMOSTAT_SCHEDULE",
+      "binding_task_id": "I7-2025-THERMOSTAT",
+      "parameter_values": {
+        "deviceId": "THERMO-001",
+        "location": "卧室",
+        "color": "warm_white"
+      },
+      "description": "Configure thermostat device THERMO-001 in 卧室 with profile warm_white.",
+      "expected_observables": [
+        "exists(\"div:has-text('卧室')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "thermostat_schedule_configured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HOME-0214-M10",
+      "module_id": "MODULE_CAMERA_CHECK",
+      "binding_id": "BIND_I3_CAMERA_CHECK",
+      "binding_task_id": "I3-2025-CAMERASETUP",
+      "parameter_values": {
+        "deviceId": "CAM-001",
+        "location": "玄关",
+        "color": "white"
+      },
+      "description": "Add a camera device and verify it appears online in the home dashboard.",
+      "expected_observables": [
+        "exists(\"div:has-text('玄关')\")",
+        "url().includes('/energy.local/index.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "camera_config_verified",
+          "home_service_monitored"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "energy_control_configured",
+      "thermostat_schedule_configured",
+      "camera_config_verified"
+    ],
+    "checkpoint_predicates": [
+      "address_confirmation_verified",
+      "address_known",
+      "camera_config_verified",
+      "electricity_active",
+      "energy_control_configured",
+      "energy_usage_optimized",
+      "home_service_monitored",
+      "housing_secured",
+      "lease_active",
+      "residency_record_verified",
+      "smart_meter_configured",
+      "thermostat_schedule_configured",
+      "utilities_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

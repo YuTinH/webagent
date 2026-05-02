@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-FINANCE-0259",
+  "theme": "finance",
+  "difficulty": 5,
+  "instruction": "End the finance route after reviewing the bills, activating banking, turning on autopay, and updating the budget limit.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "bills_reviewed",
+      "bank_account_active",
+      "autopay_enabled",
+      "budget_limit_updated"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bills_reviewed",
+    "bank_account_active",
+    "autopay_enabled",
+    "budget_limit_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 70,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_ZTRAIN_06_AUTOPAY_BUDGET_DUAL; stable recurring-payment discipline should first gather and review the bills, then activate banking, and only then finish autopay plus budget control."
+}

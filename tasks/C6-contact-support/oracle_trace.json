@@ -1,0 +1,44 @@
+{
+  "task_id": "C6-2025-SUPPORTCONTACT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/help.html?clean=true&task=C6-2025-SUPPORTCONTACT",
+      "note": "Open support page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#order-id",
+      "value": "O-98321",
+      "note": "Fill order id"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#issue-type",
+      "value": "missing",
+      "note": "Pick missing item issue type"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#description",
+      "value": "An item was missing from my delivered package.",
+      "note": "Fill issue description"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button.btn.pri.lg",
+      "note": "Submit ticket"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "body",
+      "note": "Wait for success redirect"
+    }
+  ]
+}

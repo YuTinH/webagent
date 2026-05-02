@@ -1,0 +1,48 @@
+{
+  "task_id": "Z5-2025-RESET",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+    "url": "http://localhost:8014/security.local/forgot-password.html?clean=true&task=Z5-2025-RESET"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#username",
+      "value": "byteblaze"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('Verification Code')"
+    },
+    {
+      "t": 3,
+      "act": "open",
+    "url": "http://localhost:8014/security.local/reset-password.html?clean=true&task=Z5-2025-RESET"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#code",
+      "value": "1234"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#new-password",
+      "value": "ByteBlaze#2026"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": "button:has-text('ResetPassword')"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#reset-success"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "goal_id": "WFG-SUPPORT-0157",
+  "theme": "support",
+  "difficulty": 8,
+  "instruction": "Finish the subscription-exit support workflow only after delivery is confirmed, support is contacted, customer service is engaged, the refund is requested, and the subscription is canceled.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "delivery_visibility_confirmed",
+      "shop_order_delivered",
+      "support_contacted",
+      "refund_requested",
+      "subscription_canceled",
+      "subscription_exit_processed"
+    ]
+  },
+  "initial_world_state": [
+    "subscription_active",
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "delivery_visibility_confirmed",
+    "shop_order_delivered",
+    "support_contacted",
+    "refund_requested",
+    "subscription_canceled",
+    "subscription_exit_processed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SUPPORT_REFUND_CONTACT; subscription-exit support workflows should include an explicit customer-service handoff before refund and cancellation closure."
+}

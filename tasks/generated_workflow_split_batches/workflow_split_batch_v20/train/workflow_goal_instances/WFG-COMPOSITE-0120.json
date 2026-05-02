@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-COMPOSITE-0120",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Close the finance-travel route by turning on autopay, filing the expense packet, and ending with archival.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "autopay_enabled",
+      "expense_report_submitted",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "autopay_enabled",
+    "expense_report_submitted",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_AUTOPAY_EXPENSE_ALIGNMENT; autopay-and-expense composite workflows should archive the proof after the expense packet is filed."
+}

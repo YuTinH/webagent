@@ -1,0 +1,390 @@
+{
+  "goal_id": "WFG-GOV-0210",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either verify the address through address proof before alignment, parking-permit activation, and renewal, or verify the address through utility setup before the same activation-and-renewal compliance closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_ADDRESS_CHANGE",
+      "role": "required",
+      "produces": [
+        "address_records_aligned",
+        "mailing_address_current",
+        "permit_readiness_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_ADDRESS_PROOF",
+      "role": "alternative",
+      "produces": [
+        "address_confirmation_verified",
+        "address_proof_available",
+        "residency_record_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_FIND_HOME",
+      "role": "required",
+      "produces": [
+        "address_known",
+        "housing_secured",
+        "lease_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_PARKING_PERMIT_APPLICATION",
+      "role": "required",
+      "produces": [
+        "parking_permit_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_PERMIT_RENEWAL",
+      "role": "required",
+      "produces": [
+        "local_vehicle_compliance_verified",
+        "permit_renewed"
+      ]
+    },
+    {
+      "module_id": "MODULE_UTILITY_SETUP",
+      "role": "alternative",
+      "produces": [
+        "address_confirmation_verified",
+        "electricity_active",
+        "residency_record_verified",
+        "utilities_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_ADDRESS_CHANGE",
+      "to": "MODULE_PARKING_PERMIT_APPLICATION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_ADDRESS_PROOF",
+      "to": "MODULE_ADDRESS_CHANGE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FIND_HOME",
+      "to": "MODULE_ADDRESS_PROOF",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FIND_HOME",
+      "to": "MODULE_UTILITY_SETUP",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_PARKING_PERMIT_APPLICATION",
+      "to": "MODULE_PERMIT_RENEWAL",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_ADDRESS_CHANGE",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_home_proof_change_activate_renew",
+      "required_modules": [
+        "MODULE_FIND_HOME",
+        "MODULE_ADDRESS_PROOF",
+        "MODULE_ADDRESS_CHANGE",
+        "MODULE_PARKING_PERMIT_APPLICATION",
+        "MODULE_PERMIT_RENEWAL"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-GOV-0210-M1",
+        "WFG-GOV-0210-M2",
+        "WFG-GOV-0210-M3",
+        "WFG-GOV-0210-M4",
+        "WFG-GOV-0210-M5"
+      ],
+      "terminal_predicates": [
+        "address_confirmation_verified",
+        "address_records_aligned",
+        "parking_permit_active",
+        "permit_renewed",
+        "local_vehicle_compliance_verified"
+      ]
+    },
+    {
+      "path_id": "path_home_utility_change_activate_renew",
+      "required_modules": [
+        "MODULE_FIND_HOME",
+        "MODULE_UTILITY_SETUP",
+        "MODULE_ADDRESS_CHANGE",
+        "MODULE_PARKING_PERMIT_APPLICATION",
+        "MODULE_PERMIT_RENEWAL"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-GOV-0210-M6",
+        "WFG-GOV-0210-M7",
+        "WFG-GOV-0210-M8",
+        "WFG-GOV-0210-M9",
+        "WFG-GOV-0210-M10"
+      ],
+      "terminal_predicates": [
+        "address_confirmation_verified",
+        "address_records_aligned",
+        "parking_permit_active",
+        "permit_renewed",
+        "local_vehicle_compliance_verified"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-GOV-0210-M1",
+      "module_id": "MODULE_FIND_HOME",
+      "binding_id": "BIND_A1_FIND_HOME",
+      "binding_task_id": "A1-2025-HOME",
+      "parameter_values": {
+        "propertyId": "PROP-EXT-10",
+        "leaseTerm": "6"
+      },
+      "description": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $2600/month, then pick the largest area. Set lease term to 6 months and then apply.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0210-M2",
+      "module_id": "MODULE_ADDRESS_PROOF",
+      "binding_id": "BIND_A6_ADDRESS_PROOF",
+      "binding_task_id": "A6-2025-PROOF",
+      "parameter_values": {
+        "docType": "utility_bill",
+        "fileName": "utility_bill_dec.pdf"
+      },
+      "description": "Upload a utility bill named utility_bill_dec.pdf as address proof.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "address_proof_available",
+          "residency_record_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0210-M3",
+      "module_id": "MODULE_ADDRESS_CHANGE",
+      "binding_id": "BIND_H1_ADDRESS_CHANGE",
+      "binding_task_id": "H1-2025-ADDRCHANGE",
+      "parameter_values": {
+        "new_address": "742 Evergreen Terrace",
+        "zip_code": "12345",
+        "proof_document": "proof_of_address.pdf"
+      },
+      "description": "Submit an address change to 742 Evergreen Terrace with zip code 12345.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_records_aligned",
+          "mailing_address_current",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0210-M4",
+      "module_id": "MODULE_PARKING_PERMIT_APPLICATION",
+      "binding_id": "BIND_H4_PARKING_PERMIT",
+      "binding_task_id": "H4-2025-PARKING",
+      "parameter_values": {
+        "plate_number": "C-55021",
+        "permit_type": "residential",
+        "duration_months": "3"
+      },
+      "description": "Apply for a residential parking permit for plate C-55021 for 3 months.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "parking_permit_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0210-M5",
+      "module_id": "MODULE_PERMIT_RENEWAL",
+      "binding_id": "BIND_H3_PERMIT_RENEWAL",
+      "binding_task_id": "H3-2025-RENEWAL",
+      "parameter_values": {
+        "permit_id": "RP-2024-77",
+        "new_expiry": "2026-12-01",
+        "payment_method": "card"
+      },
+      "description": "Renew permit RP-2024-77 to 2026-12-01 and pay by card.",
+      "expected_observables": [
+        "url().includes('/gov.local/permits.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "local_vehicle_compliance_verified",
+          "permit_renewed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0210-M6",
+      "module_id": "MODULE_FIND_HOME",
+      "binding_id": "BIND_A1_FIND_HOME",
+      "binding_task_id": "A1-2025-HOME",
+      "parameter_values": {
+        "propertyId": "PROP-EXT-10",
+        "leaseTerm": "6"
+      },
+      "description": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $2600/month, then pick the largest area. Set lease term to 6 months and then apply.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0210-M7",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "88 River Rd, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0210-M8",
+      "module_id": "MODULE_ADDRESS_CHANGE",
+      "binding_id": "BIND_H1_ADDRESS_CHANGE",
+      "binding_task_id": "H1-2025-ADDRCHANGE",
+      "parameter_values": {
+        "new_address": "742 Evergreen Terrace",
+        "zip_code": "12345",
+        "proof_document": "proof_of_address.pdf"
+      },
+      "description": "Submit an address change to 742 Evergreen Terrace with zip code 12345.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_records_aligned",
+          "mailing_address_current",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0210-M9",
+      "module_id": "MODULE_PARKING_PERMIT_APPLICATION",
+      "binding_id": "BIND_H4_PARKING_PERMIT",
+      "binding_task_id": "H4-2025-PARKING",
+      "parameter_values": {
+        "plate_number": "C-55021",
+        "permit_type": "residential",
+        "duration_months": "3"
+      },
+      "description": "Apply for a residential parking permit for plate C-55021 for 3 months.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "parking_permit_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-GOV-0210-M10",
+      "module_id": "MODULE_PERMIT_RENEWAL",
+      "binding_id": "BIND_H3_PERMIT_RENEWAL",
+      "binding_task_id": "H3-2025-RENEWAL",
+      "parameter_values": {
+        "permit_id": "RP-2024-77",
+        "new_expiry": "2026-12-01",
+        "payment_method": "card"
+      },
+      "description": "Renew permit RP-2024-77 to 2026-12-01 and pay by card.",
+      "expected_observables": [
+        "url().includes('/gov.local/permits.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "local_vehicle_compliance_verified",
+          "permit_renewed"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "address_confirmation_verified",
+      "address_records_aligned",
+      "parking_permit_active",
+      "permit_renewed",
+      "local_vehicle_compliance_verified"
+    ],
+    "checkpoint_predicates": [
+      "address_confirmation_verified",
+      "address_known",
+      "address_proof_available",
+      "address_records_aligned",
+      "electricity_active",
+      "housing_secured",
+      "lease_active",
+      "local_vehicle_compliance_verified",
+      "mailing_address_current",
+      "parking_permit_active",
+      "permit_readiness_verified",
+      "permit_renewed",
+      "residency_record_verified",
+      "utilities_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "goal_id": "WFG-SECURITY-0005",
+  "theme": "security",
+  "difficulty": 6,
+  "instruction": "Close the account-recovery route by completing the reset first, restoring 2FA, updating the device, and ending with the credential vault refreshed.",
+  "visible_constraints": {
+    "deadline_days": 1,
+    "must_avoid": [
+      "two_factor_disabled_at_finish"
+    ],
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "two_factor_enabled",
+      "two_factor_device_updated",
+      "credential_vault_updated"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "password_reset_completed",
+    "two_factor_enabled",
+    "two_factor_device_updated",
+    "credential_vault_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    },
+    {
+      "path": "initial_world_state.two_factor_enabled",
+      "type": "toggle",
+      "values": [
+        false,
+        true
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_ACCOUNT_RECOVERY; account-recovery security workflows should continue into credential-vault maintenance rather than stopping after device setup."
+}

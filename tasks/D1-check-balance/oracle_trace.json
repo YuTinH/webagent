@@ -1,0 +1,20 @@
+{
+  "task_id": "D1-2025-FINANCE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/dashboard.html?clean=true&task=D1-2025-FINANCE"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#view-total"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#balance-view-label"
+    }
+  ]
+}

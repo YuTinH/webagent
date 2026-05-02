@@ -1,0 +1,35 @@
+{
+  "goal_id": "WF-NEWCOMER-002",
+  "theme": "newcomer",
+  "difficulty": 4,
+  "instruction": "After moving in, review the lease management record and secure a valid residential parking permit without missing any dependency steps.",
+  "visible_constraints": {
+    "budget_limit": 3600,
+    "deadline_days": 5,
+    "must_avoid": [
+      "invalid_permit_application"
+    ]
+  },
+  "initial_world_state": {
+    "lease_active": false,
+    "address_known": false,
+    "lease_management_reviewed": false,
+    "parking_permit_active": false,
+    "checking_balance": 4300
+  },
+  "target_state": [
+    "lease_active",
+    "lease_management_reviewed",
+    "parking_permit_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "initial_world_state.checking_balance",
+      "type": "numeric_shift",
+      "values": [3200, 4300, 5600]
+    }
+  ],
+  "max_steps": 80,
+  "max_module_invocations": 3,
+  "notes": "Prototype newcomer workflow combining lease setup and permit readiness."
+}

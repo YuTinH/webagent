@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-DAILY-0071",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Finish the service-resale packet only after the service stack is prepared, the order price is secured, both resale listing stages are active, and the subscription is active.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "service_stack_prepared",
+      "order_price_secured",
+      "resale_listing_activated",
+      "market_listing_active",
+      "sale_listing_active",
+      "subscription_active"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "service_stack_prepared",
+    "order_price_secured",
+    "resale_listing_activated",
+    "market_listing_active",
+    "sale_listing_active",
+    "subscription_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_SERVICE_RESALE_BRIDGE; service-oriented daily resale workflows should continue into a recurring-subscription closeout rather than stopping after the listing stages."
+}

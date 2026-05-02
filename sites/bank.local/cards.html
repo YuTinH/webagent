@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nebula Bank - My Cards</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">Nebula Bank</div>
+    <div class="navlinks">
+      <a href="dashboard.html">Accounts</a>
+      <a href="cards.html" class="active">Cards</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+<div class="container">
+  <h1>My Cards</h1>
+  <div id="cards-grid" class="cards-grid" style="min-height: 100px;">
+    <!-- Cards load here -->
+  </div>
+</div>
+
+<script>
+window.RelRoot = "../";
+const cardsUrlParams = new URLSearchParams(window.location.search);
+const requestedCardsTaskId = cardsUrlParams.get('task') || cardsUrlParams.get('task_id') || '';
+const cardsTaskId = resolveTaskId(requestedCardsTaskId || '');
+
+function withCardsTask(url) {
+  const parsed = new URL(url, window.location.href);
+  if (cardsTaskId) {
+    parsed.searchParams.set('task', cardsTaskId);
+  }
+  return parsed.pathname + parsed.search + parsed.hash;
+}
+
+function isLostCardTask(taskId) {
+  return /^M1-/.test(taskId || '');
+}
+
+function isReplacementTask(taskId) {
+  return /^D4-/.test(taskId || '') || /^D6-/.test(taskId || '') || String(taskId || '').includes('CARDREPLACE');
+}
+
+function getFreezeTaskId() {
+  if (isLostCardTask(cardsTaskId)) return cardsTaskId;
+  if (isReplacementTask(cardsTaskId)) return cardsTaskId;
+  return 'M1-2025-CARD';
+}
+
+function getReplacementTaskId() {
+  if (isReplacementTask(cardsTaskId)) return cardsTaskId;
+  return 'D6-2025-CARDREPLACE';
+}
+
+async function loadCards() {
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = '<div class="loading">Loading...</div>';
+  try {
+    const res = await fetch(window.RelRoot + 'api/cards?user_id=1');
+    const data = await res.json();
+    if (data.success && data.cards) {
+      grid.innerHTML = data.cards.map(card => {
+        const isBlocked = card.state === 'blocked' || card.status === 'blocked';
+        return `
+        <div id="card-${card.last4}" class="card-item ${isBlocked ? 'blocked' : ''}" style="padding:20px; border:1px solid #ddd; border-radius:8px; margin-bottom:15px">
+          <div style="font-weight:bold">${card.type === 'physical' ? 'Physical Card' : 'Virtual Card'} (**** ${card.last4})</div>
+          <div style="margin:10px 0">Status: <span id="card-status-${card.last4}" class="badge ${isBlocked ? 'warn' : 'ok'}">${isBlocked ? 'Blocked' : 'Active'}</span></div>
+          <div class="card-actions">
+            ${!isBlocked ? `<button id="freeze-card-${card.last4}" class="btn" onclick="blockCard('${card.last4}')">Freeze Card</button>` : `
+              <button id="unfreeze-card-${card.last4}" class="btn ok" onclick="unblockCard('${card.last4}')">Unfreeze</button>
+              <button id="replace-card-${card.last4}" class="btn pri" onclick="requestReplacement('${card.last4}')">Replace Card</button>
+            `}
+          </div>
+        </div>`;
+      }).join('');
+    }
+  } catch(e) {
+    grid.innerHTML = '<div class="error">Load failed: ' + e.message + '</div>';
+  }
+}
+
+async function blockCard(last4) {
+  await send(getFreezeTaskId(), 'deactivate_card', { last4 });
+  loadCards();
+}
+
+async function unblockCard(last4) {
+  await send(getReplacementTaskId(), 'rebind_confirm', { last4, action: 'unblock' });
+  loadCards();
+}
+
+async function requestReplacement(last4) {
+  new Modal({
+    title: 'Security Verification',
+    content: '<p>A verification code has been sent to your mobile.</p>',
+    confirmText: 'Enter Code',
+    onConfirm: () => promptOTP(last4)
+  }).open();
+  await send(getReplacementTaskId(), 'request_otp', { last4 });
+}
+
+function promptOTP(last4) {
+  new Modal({
+    title: 'Verification',
+    content: '<div class="form"><input id="otp-input" class="input" placeholder="6-digit code"><input id="new-last4" class="input" placeholder="New last 4 digits" value="8888" style="margin-top:12px"></div>',
+    confirmText: 'Confirm',
+    onConfirm: async () => {
+      const otp = document.getElementById('otp-input').value;
+      await send(getReplacementTaskId(), 'rebind_confirm', { newLast4: document.getElementById('new-last4').value, otp: otp });
+      Toast.success("Replacement successful");
+      setTimeout(() => location.reload(), 1000);
+    }
+  }).open();
+}
+
+document.addEventListener('DOMContentLoaded', loadCards);
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.navlinks a').forEach((link) => {
+    link.href = withCardsTask(link.getAttribute('href'));
+  });
+});
+</script>
+
+
+

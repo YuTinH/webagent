@@ -1,0 +1,78 @@
+{
+  "task_id": "M6-2025-PWRECOVERY",
+  "family": "M",
+  "goal": "Complete account recovery by resetting the password with verification code.",
+  "inputs": {
+    "username": "demo_user",
+    "code": "1234"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('security.password_reset.status') == 'success'",
+    "url().includes('/security.local/login.html?reset=success')",
+    "exists(\"#reset-success\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state observed",
+      "assertion": "mem('security.password_reset.status') != ''",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('security.password_reset.status') == 'success'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "url().includes('/security.local/login.html?reset=success')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"#reset-success\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "security.local"
+  ],
+  "module_group": "password_reset_completion",
+  "variant_kind": "distinct",
+  "canonical_task_dir": "M6-account-recovery",
+  "lifecycle_status": "active",
+  "module_notes": "Verification-code completion stage."
+}

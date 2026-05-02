@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowQualityRequirements",
+  "description": "Dataset-level quality gates for compositional workflow benchmark generation and validation.",
+  "type": "object",
+  "required": [
+    "version",
+    "dataset",
+    "multi_path",
+    "single_path",
+    "semantic_distinctness"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "dataset": {
+      "type": "object",
+      "required": ["min_multi_path_ratio"],
+      "properties": {
+        "min_multi_path_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "multi_path": {
+      "type": "object",
+      "required": [
+        "min_success_paths",
+        "min_semantically_distinct_paths",
+        "require_distinct_required_module_sets",
+        "max_required_set_jaccard"
+      ],
+      "properties": {
+        "min_success_paths": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "min_semantically_distinct_paths": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "require_distinct_required_module_sets": {
+          "type": "boolean"
+        },
+        "max_required_set_jaccard": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "single_path": {
+      "type": "object",
+      "required": ["max_success_paths", "required_declared_distinct_paths"],
+      "properties": {
+        "max_success_paths": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "required_declared_distinct_paths": {
+          "type": "integer",
+          "const": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "semantic_distinctness": {
+      "type": "object",
+      "required": ["must_vary_by", "not_sufficient_by_themselves"],
+      "properties": {
+        "must_vary_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "not_sufficient_by_themselves": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

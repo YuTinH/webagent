@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-COMPOSITE-0006",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Finish the autopay packet only after the bank account is active, bills are aggregated, autopay is enabled, the receipt is archived, and the calendar is synced.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "bank_account_active",
+      "bills_aggregated",
+      "autopay_enabled",
+      "receipt_archived",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bank_account_active",
+    "bills_aggregated",
+    "autopay_enabled",
+    "receipt_archived",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_AUTOPAY_ORCHESTRATION; autopay composite workflows should schedule a concrete reminder after archival rather than stopping at payment setup."
+}

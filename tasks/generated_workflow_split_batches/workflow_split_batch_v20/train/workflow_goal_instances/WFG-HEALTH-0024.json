@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-HEALTH-0024",
+  "theme": "health",
+  "difficulty": 7,
+  "instruction": "Close the health claim workflow by activating coverage first, booking the appointment, completing continuity, submitting the claim, and ending with archival.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "coverage_path_active",
+      "medical_appointment_booked",
+      "care_continuity_established",
+      "medical_claim_submitted",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "coverage_path_active",
+    "medical_appointment_booked",
+    "care_continuity_established",
+    "medical_claim_submitted",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HEALTH_REIMBURSEMENT_CLOSURE; claim-oriented health workflows should archive the claim proof after submission."
+}

@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-COMPOSITE-0109",
+  "theme": "composite",
+  "difficulty": 5,
+  "instruction": "Finish the composite route after reviewing the bill stack, turning on autopay, and leaving a receipt archive behind.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "bills_reviewed",
+      "bank_account_active",
+      "autopay_enabled",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bills_reviewed",
+    "bank_account_active",
+    "autopay_enabled",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_AUTOPAY_RECEIPT_ALIGNMENT; the payment route should first gather and review the bills, then activate banking, and only afterwards close with autopay plus receipt archiving."
+}

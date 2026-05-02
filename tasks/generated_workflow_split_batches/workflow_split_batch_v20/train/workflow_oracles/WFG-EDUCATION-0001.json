@@ -1,0 +1,352 @@
+{
+  "goal_id": "WFG-EDUCATION-0001",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either use the event-ticket route before calendar sync and rental readiness, or use the movie-ticket route before the same calendar and rental closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_DOWNLOAD_CERT",
+      "role": "required",
+      "produces": [
+        "certificate_downloaded"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_EVENT_TICKETS",
+      "role": "alternative",
+      "produces": [
+        "event_ticket_booked"
+      ]
+    },
+    {
+      "module_id": "MODULE_GEAR_RENTAL",
+      "role": "required",
+      "produces": [
+        "rental_listing_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_MOVIE_TICKETS",
+      "role": "alternative",
+      "produces": [
+        "event_ticket_booked"
+      ]
+    },
+    {
+      "module_id": "MODULE_SKILL_CERTIFICATION",
+      "role": "required",
+      "produces": [
+        "skill_certified"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_DOWNLOAD_CERT",
+      "to": "MODULE_EVENT_TICKETS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_DOWNLOAD_CERT",
+      "to": "MODULE_MOVIE_TICKETS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_EMAIL_CALENDAR",
+      "to": "MODULE_GEAR_RENTAL",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_EVENT_TICKETS",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_MOVIE_TICKETS",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SKILL_CERTIFICATION",
+      "to": "MODULE_DOWNLOAD_CERT",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_skill_cert_event_calendar_gear",
+      "required_modules": [
+        "MODULE_SKILL_CERTIFICATION",
+        "MODULE_DOWNLOAD_CERT",
+        "MODULE_EVENT_TICKETS",
+        "MODULE_EMAIL_CALENDAR",
+        "MODULE_GEAR_RENTAL"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-EDUCATION-0001-M1",
+        "WFG-EDUCATION-0001-M2",
+        "WFG-EDUCATION-0001-M3",
+        "WFG-EDUCATION-0001-M4",
+        "WFG-EDUCATION-0001-M5"
+      ],
+      "terminal_predicates": [
+        "skill_certified",
+        "certificate_downloaded",
+        "event_ticket_booked",
+        "calendar_event_synced",
+        "rental_listing_active"
+      ]
+    },
+    {
+      "path_id": "path_skill_cert_movie_calendar_gear",
+      "required_modules": [
+        "MODULE_SKILL_CERTIFICATION",
+        "MODULE_DOWNLOAD_CERT",
+        "MODULE_MOVIE_TICKETS",
+        "MODULE_EMAIL_CALENDAR",
+        "MODULE_GEAR_RENTAL"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-EDUCATION-0001-M6",
+        "WFG-EDUCATION-0001-M7",
+        "WFG-EDUCATION-0001-M8",
+        "WFG-EDUCATION-0001-M9",
+        "WFG-EDUCATION-0001-M10"
+      ],
+      "terminal_predicates": [
+        "skill_certified",
+        "certificate_downloaded",
+        "event_ticket_booked",
+        "calendar_event_synced",
+        "rental_listing_active"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M1",
+      "module_id": "MODULE_SKILL_CERTIFICATION",
+      "binding_id": "BIND_J5_SKILL_CERTIFICATION",
+      "binding_task_id": "J5-2025-CERT",
+      "parameter_values": {},
+      "description": "Apply for the Certified Python Expert certification.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "skill_certified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M2",
+      "module_id": "MODULE_DOWNLOAD_CERT",
+      "binding_id": "BIND_J8_DOWNLOAD_CERT",
+      "binding_task_id": "J8-2025-CERTISSUE",
+      "parameter_values": {},
+      "description": "Issue and verify a course completion certificate.",
+      "expected_observables": [
+        "url().includes('/school.local/certification.html')",
+        "exists(\"button:has-text('Apply Now')\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "certificate_downloaded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M3",
+      "module_id": "MODULE_EVENT_TICKETS",
+      "binding_id": "BIND_J3_EVENT_TICKETS",
+      "binding_task_id": "J3-2025-TICKETS",
+      "parameter_values": {
+        "event_name": "Outdoor Film Meetup",
+        "price": 30,
+        "recipient_id": "S112233"
+      },
+      "description": "Buy a ticket for Outdoor Film Meetup and transfer it to S112233.",
+      "expected_observables": [
+        "exists(\"#tickets-list .card .badge.pri\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M4",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M5",
+      "module_id": "MODULE_GEAR_RENTAL",
+      "binding_id": "BIND_J4_GEAR_RENTAL",
+      "binding_task_id": "J4-2025-GEAR",
+      "parameter_values": {
+        "name": "Trail Backpack",
+        "listing_type": "rent",
+        "price": "22"
+      },
+      "description": "List Trail Backpack as rental gear for 22 per day.",
+      "expected_observables": [
+        "exists(\"#rental-gear-list .card:has-text('Trail Backpack')\")",
+        "text('#rental-gear-list') includes '¥22/'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "rental_listing_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M6",
+      "module_id": "MODULE_SKILL_CERTIFICATION",
+      "binding_id": "BIND_J5_SKILL_CERTIFICATION",
+      "binding_task_id": "J5-2025-CERT",
+      "parameter_values": {},
+      "description": "Apply for the Certified Python Expert certification.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "skill_certified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M7",
+      "module_id": "MODULE_DOWNLOAD_CERT",
+      "binding_id": "BIND_J8_DOWNLOAD_CERT",
+      "binding_task_id": "J8-2025-CERTISSUE",
+      "parameter_values": {},
+      "description": "Issue and verify a course completion certificate.",
+      "expected_observables": [
+        "url().includes('/school.local/certification.html')",
+        "exists(\"button:has-text('Apply Now')\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "certificate_downloaded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M8",
+      "module_id": "MODULE_MOVIE_TICKETS",
+      "binding_id": "BIND_B9_MOVIE_TICKETS",
+      "binding_task_id": "B9-2025-EVENTBOOKING",
+      "parameter_values": {
+        "target_site": "school.local/event-tickets.html"
+      },
+      "description": "Book a ticket for an available event.",
+      "expected_observables": [
+        "url().includes('/school.local/event-tickets.html')",
+        "exists(\"#tickets-list .card .badge.ok\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M9",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-EDUCATION-0001-M10",
+      "module_id": "MODULE_GEAR_RENTAL",
+      "binding_id": "BIND_J4_GEAR_RENTAL",
+      "binding_task_id": "J4-2025-GEAR",
+      "parameter_values": {
+        "name": "Trail Backpack",
+        "listing_type": "rent",
+        "price": "22"
+      },
+      "description": "List Trail Backpack as rental gear for 22 per day.",
+      "expected_observables": [
+        "exists(\"#rental-gear-list .card:has-text('Trail Backpack')\")",
+        "text('#rental-gear-list') includes '¥22/'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "rental_listing_active"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "skill_certified",
+      "certificate_downloaded",
+      "event_ticket_booked",
+      "calendar_event_synced",
+      "rental_listing_active"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_synced",
+      "certificate_downloaded",
+      "event_ticket_booked",
+      "rental_listing_active",
+      "skill_certified"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

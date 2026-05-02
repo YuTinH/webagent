@@ -1,0 +1,407 @@
+{
+  "goal_id": "WFG-CRISIS-0256",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full access-liquidity route to completion and do not stop before access recovery, containment, balance review, and emergency liquidity are all completed."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CHECK_BALANCE",
+      "role": "required",
+      "produces": [
+        "account_balance_reviewed",
+        "account_issue_triaged"
+      ]
+    },
+    {
+      "module_id": "MODULE_ILLNESS_REPORTING",
+      "role": "alternative",
+      "produces": [
+        "crisis_intake_completed",
+        "illness_report_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_LOST_CARD_FREEZE",
+      "role": "required",
+      "produces": [
+        "account_access_contained",
+        "card_frozen",
+        "crisis_intake_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RECOVERY_E2E",
+      "role": "alternative",
+      "produces": [
+        "account_access_contained",
+        "account_access_restored",
+        "password_reset_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RESET_COMPLETION",
+      "role": "alternative",
+      "produces": [
+        "password_reset_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RESET_REQUEST",
+      "role": "alternative",
+      "produces": [
+        "password_reset_code_requested"
+      ]
+    },
+    {
+      "module_id": "MODULE_URGENT_LOAN",
+      "role": "required",
+      "produces": [
+        "emergency_liquidity_secured"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_CHECK_BALANCE",
+      "to": "MODULE_URGENT_LOAN",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_ILLNESS_REPORTING",
+      "to": "MODULE_CHECK_BALANCE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_LOST_CARD_FREEZE",
+      "to": "MODULE_CHECK_BALANCE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_LOST_CARD_FREEZE",
+      "to": "MODULE_ILLNESS_REPORTING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_PASSWORD_RECOVERY_E2E",
+      "to": "MODULE_LOST_CARD_FREEZE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_PASSWORD_RESET_COMPLETION",
+      "to": "MODULE_LOST_CARD_FREEZE",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_PASSWORD_RESET_REQUEST",
+      "to": "MODULE_PASSWORD_RESET_COMPLETION",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_reset_freeze_balance_liquidity",
+      "required_modules": [
+        "MODULE_PASSWORD_RESET_REQUEST",
+        "MODULE_PASSWORD_RESET_COMPLETION",
+        "MODULE_LOST_CARD_FREEZE",
+        "MODULE_CHECK_BALANCE",
+        "MODULE_URGENT_LOAN"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CRISIS-0256-M1",
+        "WFG-CRISIS-0256-M2",
+        "WFG-CRISIS-0256-M3",
+        "WFG-CRISIS-0256-M4",
+        "WFG-CRISIS-0256-M5"
+      ],
+      "terminal_predicates": [
+        "password_reset_completed",
+        "account_access_contained",
+        "crisis_intake_completed",
+        "emergency_liquidity_secured",
+        "account_balance_reviewed"
+      ]
+    },
+    {
+      "path_id": "path_recovery_freeze_illness_balance_liquidity",
+      "required_modules": [
+        "MODULE_PASSWORD_RECOVERY_E2E",
+        "MODULE_LOST_CARD_FREEZE",
+        "MODULE_ILLNESS_REPORTING",
+        "MODULE_CHECK_BALANCE",
+        "MODULE_URGENT_LOAN"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CRISIS-0256-M6",
+        "WFG-CRISIS-0256-M7",
+        "WFG-CRISIS-0256-M8",
+        "WFG-CRISIS-0256-M9",
+        "WFG-CRISIS-0256-M10"
+      ],
+      "terminal_predicates": [
+        "password_reset_completed",
+        "account_access_contained",
+        "crisis_intake_completed",
+        "emergency_liquidity_secured",
+        "account_balance_reviewed"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-CRISIS-0256-M1",
+      "module_id": "MODULE_PASSWORD_RESET_REQUEST",
+      "binding_id": "BIND_M5_RESET_PASSWORD",
+      "binding_task_id": "M5-2025-RESETCODE",
+      "parameter_values": {
+        "username": "demo_user"
+      },
+      "description": "Request a password reset code for account recovery.",
+      "expected_observables": [
+        "url().includes('/security.local/reset-password.html')",
+        "exists(\"#new-password\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "password_reset_code_requested"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0256-M2",
+      "module_id": "MODULE_PASSWORD_RESET_COMPLETION",
+      "binding_id": "BIND_M6_ACCOUNT_RECOVERY",
+      "binding_task_id": "M6-2025-PWRECOVERY",
+      "parameter_values": {
+        "username": "demo_user",
+        "code": "1234"
+      },
+      "description": "Complete account recovery by resetting the password with verification code.",
+      "expected_observables": [
+        "url().includes('/security.local/login.html?reset=success')",
+        "exists(\"#reset-success\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "password_reset_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0256-M3",
+      "module_id": "MODULE_LOST_CARD_FREEZE",
+      "binding_id": "BIND_M1_LOST_CARD",
+      "binding_task_id": "M1-2025-CARD",
+      "parameter_values": {
+        "card_last4": "7777",
+        "reissue": false
+      },
+      "description": "Report the card ending in 7777 as lost and freeze it immediately.",
+      "expected_observables": [
+        "json('env','world_state.financial_context.liquidity') == 'frozen'",
+        "exists('#card-7777.blocked')",
+        "text('#card-status-7777') == 'Blocked'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_access_contained",
+          "card_frozen",
+          "crisis_intake_completed"
+        ],
+        "removes": [
+          "payment_method_available"
+        ]
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0256-M4",
+      "module_id": "MODULE_CHECK_BALANCE",
+      "binding_id": "BIND_D1_CHECK_BALANCE",
+      "binding_task_id": "D1-2025-FINANCE",
+      "parameter_values": {},
+      "description": "Open the bank dashboard and check the total balance view.",
+      "expected_observables": [
+        "url().includes('/bank.local/dashboard.html')",
+        "text('#balance-display') includes '6,523.45'",
+        "text('#balance-view-label') includes 'total'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_balance_reviewed",
+          "account_issue_triaged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0256-M5",
+      "module_id": "MODULE_URGENT_LOAN",
+      "binding_id": "BIND_M4_URGENT_LOAN",
+      "binding_task_id": "M4-2025-EMERGENCYLOAN",
+      "parameter_values": {
+        "amount": 500
+      },
+      "description": "Submit an emergency loan request from bank dashboard.",
+      "expected_observables": [
+        "url().includes('/bank.local/dashboard.html?loan=submitted')",
+        "exists(\"#balance-display\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "emergency_liquidity_secured"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0256-M6",
+      "module_id": "MODULE_PASSWORD_RECOVERY_E2E",
+      "binding_id": "BIND_Z5_PASSWORD_RECOVERY",
+      "binding_task_id": "Z5-2025-RESET",
+      "parameter_values": {
+        "username": "byteblaze",
+        "new_password": "ByteBlaze#2026"
+      },
+      "description": "Recover the password for byteblaze and set a new password ByteBlaze#2026.",
+      "expected_observables": [
+        "url().includes('/security.local/login.html')",
+        "url().includes('reset=success')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_access_contained",
+          "account_access_restored",
+          "password_reset_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0256-M7",
+      "module_id": "MODULE_LOST_CARD_FREEZE",
+      "binding_id": "BIND_M1_LOST_CARD",
+      "binding_task_id": "M1-2025-CARD",
+      "parameter_values": {
+        "card_last4": "7777",
+        "reissue": false
+      },
+      "description": "Report the card ending in 7777 as lost and freeze it immediately.",
+      "expected_observables": [
+        "json('env','world_state.financial_context.liquidity') == 'frozen'",
+        "exists('#card-7777.blocked')",
+        "text('#card-status-7777') == 'Blocked'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_access_contained",
+          "card_frozen",
+          "crisis_intake_completed"
+        ],
+        "removes": [
+          "payment_method_available"
+        ]
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0256-M8",
+      "module_id": "MODULE_ILLNESS_REPORTING",
+      "binding_id": "BIND_M3_ILLNESS_REPORTING",
+      "binding_task_id": "M3-2025-ILLNESS",
+      "parameter_values": {
+        "report_type": "illness",
+        "reason": "Migraine recovery day",
+        "end_date": "2026-01-25"
+      },
+      "description": "Submit an illness report for migraine recovery day until 2026-01-25.",
+      "expected_observables": [
+        "json('env','world_state.physical_context.status') == 'impaired'",
+        "json('env','world_state.physical_context.energy_level') == 20"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "crisis_intake_completed",
+          "illness_report_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0256-M9",
+      "module_id": "MODULE_CHECK_BALANCE",
+      "binding_id": "BIND_D1_CHECK_BALANCE",
+      "binding_task_id": "D1-2025-FINANCE",
+      "parameter_values": {},
+      "description": "Open the bank dashboard and check the total balance view.",
+      "expected_observables": [
+        "url().includes('/bank.local/dashboard.html')",
+        "text('#balance-display') includes '6,523.45'",
+        "text('#balance-view-label') includes 'total'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_balance_reviewed",
+          "account_issue_triaged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0256-M10",
+      "module_id": "MODULE_URGENT_LOAN",
+      "binding_id": "BIND_M4_URGENT_LOAN",
+      "binding_task_id": "M4-2025-EMERGENCYLOAN",
+      "parameter_values": {
+        "amount": 500
+      },
+      "description": "Submit an emergency loan request from bank dashboard.",
+      "expected_observables": [
+        "url().includes('/bank.local/dashboard.html?loan=submitted')",
+        "exists(\"#balance-display\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "emergency_liquidity_secured"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "password_reset_completed",
+      "account_access_contained",
+      "crisis_intake_completed",
+      "emergency_liquidity_secured",
+      "account_balance_reviewed"
+    ],
+    "checkpoint_predicates": [
+      "account_access_contained",
+      "account_access_restored",
+      "account_balance_reviewed",
+      "account_issue_triaged",
+      "card_frozen",
+      "crisis_intake_completed",
+      "emergency_liquidity_secured",
+      "illness_report_submitted",
+      "password_reset_code_requested",
+      "password_reset_completed"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

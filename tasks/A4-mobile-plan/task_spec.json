@@ -1,0 +1,41 @@
+{
+  "task_id": "A4-2025-MOBILE",
+  "family": "A",
+  "goal": "Your task is to switch your mobile plan to Unlimited.",
+  "inputs": {
+    "planId": "pro"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('mobile.subscription.status') == 'active'",
+    "mem('mobile.subscription.plan_id') == 'unlimited'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_a4_1",
+      "name": "cp_a4 checkpoint 1",
+      "assertion": "mem('mobile.subscription.status') == 'active'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a4_2",
+      "name": "cp_a4 checkpoint 2",
+      "assertion": "mem('mobile.subscription.plan_id') == 'unlimited'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "mobile.local"
+  ],
+  "module_group": "mobile_plan_switch",
+  "variant_kind": "distinct",
+  "canonical_task_dir": "A4-mobile-plan",
+  "lifecycle_status": "active",
+  "module_notes": "Existing-account plan switch flow from account page."
+}

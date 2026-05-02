@@ -1,0 +1,95 @@
+{
+  "task_id": "E6-2025-FLIGHTCHANGE",
+  "family": "E",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Ensure you rebook flight PNR9ZZ with the flexible change policy for 2025-01-18.",
+  "inputs": {},
+  "allowed_domains": [
+    "trip.local"
+  ],
+  "preconditions": [],
+  "dependencies": [
+    "E1-book-flight"
+  ],
+  "memory_keys": [],
+  "success_criteria": [
+    "mem('travel.rebook.last.pnr') == 'PNR9ZZ'",
+    "mem('travel.rebook.last.policy') == 'flexible-change'",
+    "mem('travel.rebook.last.date') == '2025-01-18'",
+    "text('#ticket-status') == 'Rebooked'",
+    "text('#status-message') includes '2025-01-18'",
+    "url().includes('status=rebooked')"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "scoring_checkpoints": [
+    {
+      "id": "cp_e6_1",
+      "name": "cp_e6 checkpoint 1",
+      "assertion": "mem('travel.rebook.last.pnr') == 'PNR9ZZ'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e6_2",
+      "name": "cp_e6 checkpoint 2",
+      "assertion": "mem('travel.rebook.last.policy') == 'flexible-change'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e6_3",
+      "name": "cp_e6 checkpoint 3",
+      "assertion": "mem('travel.rebook.last.date') == '2025-01-18'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e6_4",
+      "name": "cp_e6 checkpoint 4",
+      "assertion": "text('#ticket-status') == 'Rebooked'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e6_5",
+      "name": "cp_e6 checkpoint 5",
+      "assertion": "text('#status-message') includes '2025-01-18'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e6_6",
+      "name": "cp_e6 checkpoint 6",
+      "assertion": "url().includes('status=rebooked')",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "module_group": "flight_rebooking",
+  "variant_kind": "distinct",
+  "canonical_task_dir": "E6-flight-change",
+  "lifecycle_status": "active",
+  "module_notes": "Flexible-change policy variant with explicit target date."
+}

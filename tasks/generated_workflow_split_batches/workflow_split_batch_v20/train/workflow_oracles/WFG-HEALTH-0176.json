@@ -1,0 +1,356 @@
+{
+  "goal_id": "WFG-HEALTH-0176",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either start from the insurance-policy route before appointment, vaccine management, claim submission, and archival, or start from health-plan activation before the same appointment, vaccine, claim, and archival closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_DOCTOR_APPT",
+      "role": "required",
+      "produces": [
+        "medical_appointment_booked"
+      ]
+    },
+    {
+      "module_id": "MODULE_HEALTH_PLAN_ACTIVATION",
+      "role": "alternative",
+      "produces": [
+        "care_continuity_established",
+        "coverage_path_active",
+        "health_plan_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_INSURANCE_POLICY",
+      "role": "alternative",
+      "produces": [
+        "coverage_path_active",
+        "insurance_policy_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_MEDICAL_CLAIM",
+      "role": "required",
+      "produces": [
+        "medical_claim_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "role": "required",
+      "produces": [
+        "receipt_archived"
+      ]
+    },
+    {
+      "module_id": "MODULE_VACCINE_MGMT",
+      "role": "required",
+      "produces": [
+        "vaccination_record_updated"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_DOCTOR_APPT",
+      "to": "MODULE_VACCINE_MGMT",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_HEALTH_PLAN_ACTIVATION",
+      "to": "MODULE_DOCTOR_APPT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_INSURANCE_POLICY",
+      "to": "MODULE_DOCTOR_APPT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_MEDICAL_CLAIM",
+      "to": "MODULE_RECEIPT_ARCHIVING",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_VACCINE_MGMT",
+      "to": "MODULE_MEDICAL_CLAIM",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_policy_appt_vaccine_claim_archive",
+      "required_modules": [
+        "MODULE_INSURANCE_POLICY",
+        "MODULE_DOCTOR_APPT",
+        "MODULE_VACCINE_MGMT",
+        "MODULE_MEDICAL_CLAIM",
+        "MODULE_RECEIPT_ARCHIVING"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HEALTH-0176-M1",
+        "WFG-HEALTH-0176-M2",
+        "WFG-HEALTH-0176-M3",
+        "WFG-HEALTH-0176-M4",
+        "WFG-HEALTH-0176-M5"
+      ],
+      "terminal_predicates": [
+        "coverage_path_active",
+        "medical_appointment_booked",
+        "vaccination_record_updated",
+        "medical_claim_submitted",
+        "receipt_archived"
+      ]
+    },
+    {
+      "path_id": "path_plan_appt_vaccine_claim_archive",
+      "required_modules": [
+        "MODULE_HEALTH_PLAN_ACTIVATION",
+        "MODULE_DOCTOR_APPT",
+        "MODULE_VACCINE_MGMT",
+        "MODULE_MEDICAL_CLAIM",
+        "MODULE_RECEIPT_ARCHIVING"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HEALTH-0176-M6",
+        "WFG-HEALTH-0176-M7",
+        "WFG-HEALTH-0176-M8",
+        "WFG-HEALTH-0176-M9",
+        "WFG-HEALTH-0176-M10"
+      ],
+      "terminal_predicates": [
+        "coverage_path_active",
+        "medical_appointment_booked",
+        "vaccination_record_updated",
+        "medical_claim_submitted",
+        "receipt_archived"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-HEALTH-0176-M1",
+      "module_id": "MODULE_INSURANCE_POLICY",
+      "binding_id": "BIND_G2_INSURANCE_POLICY",
+      "binding_task_id": "G2-2025-INSURANCE",
+      "parameter_values": {
+        "plan_name": "Premium Plus Plan",
+        "provider": "Prime Shield"
+      },
+      "description": "Purchase the Premium Plus Plan from Prime Shield.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coverage_path_active",
+          "insurance_policy_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0176-M2",
+      "module_id": "MODULE_DOCTOR_APPT",
+      "binding_id": "BIND_G1_DOCTOR_APPT",
+      "binding_task_id": "G1-2025-HEALTH",
+      "parameter_values": {
+        "appointmentId": "APT-9060",
+        "doctorId": "DR-015",
+        "slot": "2025-12-14T10:20"
+      },
+      "description": "Book doctor appointment APT-9060 with doctor DR-015 at 2025-12-14T10:20.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "medical_appointment_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0176-M3",
+      "module_id": "MODULE_VACCINE_MGMT",
+      "binding_id": "BIND_G6_VACCINE_MGMT",
+      "binding_task_id": "G6-2025-VACCINE",
+      "parameter_values": {
+        "vaccine_type": "mmr",
+        "appointment_date": "2025-12-19",
+        "appointment_time": "11:00"
+      },
+      "description": "Book an MMR vaccine appointment for 2025-12-19 at 11:00.",
+      "expected_observables": [
+        "exists('#records-list .badge.ok')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "vaccination_record_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0176-M4",
+      "module_id": "MODULE_MEDICAL_CLAIM",
+      "binding_id": "BIND_G3_MEDICAL_CLAIM",
+      "binding_task_id": "G3-2025-HEALTH",
+      "parameter_values": {
+        "visit_id": "V-5567",
+        "policy_id": "P-9012",
+        "claim_id": "CLM-6602",
+        "appointment_id": "APT-9012",
+        "amount": "180"
+      },
+      "description": "Submit insurance claim CLM-6602 for appointment APT-9012 under policy P-9012 for 180.",
+      "expected_observables": [
+        "exists('#claim-state')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "medical_claim_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0176-M5",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0176-M6",
+      "module_id": "MODULE_HEALTH_PLAN_ACTIVATION",
+      "binding_id": "BIND_G5_HEALTH_PLAN",
+      "binding_task_id": "G5-2025-PLAN",
+      "parameter_values": {},
+      "description": "Activate the Premium Health Plan.",
+      "expected_observables": [
+        "exists('#plan-premium.active')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "care_continuity_established",
+          "coverage_path_active",
+          "health_plan_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0176-M7",
+      "module_id": "MODULE_DOCTOR_APPT",
+      "binding_id": "BIND_G1_DOCTOR_APPT",
+      "binding_task_id": "G1-2025-HEALTH",
+      "parameter_values": {
+        "appointmentId": "APT-9060",
+        "doctorId": "DR-015",
+        "slot": "2025-12-14T10:20"
+      },
+      "description": "Book doctor appointment APT-9060 with doctor DR-015 at 2025-12-14T10:20.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "medical_appointment_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0176-M8",
+      "module_id": "MODULE_VACCINE_MGMT",
+      "binding_id": "BIND_G6_VACCINE_MGMT",
+      "binding_task_id": "G6-2025-VACCINE",
+      "parameter_values": {
+        "vaccine_type": "mmr",
+        "appointment_date": "2025-12-19",
+        "appointment_time": "11:00"
+      },
+      "description": "Book an MMR vaccine appointment for 2025-12-19 at 11:00.",
+      "expected_observables": [
+        "exists('#records-list .badge.ok')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "vaccination_record_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0176-M9",
+      "module_id": "MODULE_MEDICAL_CLAIM",
+      "binding_id": "BIND_G3_MEDICAL_CLAIM",
+      "binding_task_id": "G3-2025-HEALTH",
+      "parameter_values": {
+        "visit_id": "V-5567",
+        "policy_id": "P-9012",
+        "claim_id": "CLM-6602",
+        "appointment_id": "APT-9012",
+        "amount": "180"
+      },
+      "description": "Submit insurance claim CLM-6602 for appointment APT-9012 under policy P-9012 for 180.",
+      "expected_observables": [
+        "exists('#claim-state')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "medical_claim_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0176-M10",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "coverage_path_active",
+      "medical_appointment_booked",
+      "vaccination_record_updated",
+      "medical_claim_submitted",
+      "receipt_archived"
+    ],
+    "checkpoint_predicates": [
+      "care_continuity_established",
+      "coverage_path_active",
+      "health_plan_active",
+      "insurance_policy_active",
+      "medical_appointment_booked",
+      "medical_claim_submitted",
+      "receipt_archived",
+      "vaccination_record_updated"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

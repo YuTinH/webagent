@@ -1,0 +1,80 @@
+{
+  "task_id": "Z4-2025-EMAIL",
+  "family": "Z",
+  "goal": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+  "inputs": {
+    "email_subject": "项目启动会邀请"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('calendar.events.last.id') includes 'EVE-'",
+    "mem('calendar.events.last.title') == 'Client Kickoff'",
+    "mem('calendar.events.last.date') == '2026-01-12'",
+    "mem('calendar.events.last.time') == '09:30'",
+    "mem('calendar.events.last.type') == 'work'",
+    "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_z4_1",
+      "name": "cp_z4 checkpoint 1",
+      "assertion": "mem('calendar.events.last.id') includes 'EVE-'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z4_2",
+      "name": "cp_z4 checkpoint 2",
+      "assertion": "mem('calendar.events.last.title') == 'Client Kickoff'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z4_3",
+      "name": "cp_z4 checkpoint 3",
+      "assertion": "mem('calendar.events.last.date') == '2026-01-12'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z4_4",
+      "name": "cp_z4 checkpoint 4",
+      "assertion": "mem('calendar.events.last.time') == '09:30'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z4_5",
+      "name": "cp_z4 checkpoint 5",
+      "assertion": "mem('calendar.events.last.type') == 'work'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_z4_6",
+      "name": "cp_z4 checkpoint 6",
+      "assertion": "exists(\"#event-list .card:has-text('Client Kickoff')\")",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "work.local"
+  ],
+  "module_group": "email_calendar",
+  "canonical_task_dir": "Z4-email-calendar",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

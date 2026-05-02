@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-NEWCOMER-0085",
+  "theme": "newcomer",
+  "difficulty": 7,
+  "instruction": "Finish the newcomer address-finance bootstrap only after housing is secured, residency is verified, address records are aligned, the bank account is active, and mobile service is active.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "lease_active",
+      "residency_record_verified",
+      "address_records_aligned",
+      "bank_account_active",
+      "mobile_service_active"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "lease_active",
+    "residency_record_verified",
+    "address_records_aligned",
+    "bank_account_active",
+    "mobile_service_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 65,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_NEWCOMER_FINANCE_ADDRESS_BOOTSTRAP; newcomer address/bootstrap flows should align address records before concluding the banking and connectivity setup."
+}

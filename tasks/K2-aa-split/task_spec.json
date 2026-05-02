@@ -1,0 +1,87 @@
+{
+  "task_id": "K2-2025-010",
+  "family": "K",
+  "goal": "Settle shared expenses for November using amount-based split.",
+  "inputs": {
+    "month": "2025-11",
+    "rules": "by_amount"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('settlements.2025-11.state') == 'settled'",
+    "url().includes('/social.local/split.html')",
+    "url().includes('month=2025-11')",
+    "exists(\"#month\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('settlements.2025-11.state') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('settlements.2025-11.state') == 'settled'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "url().includes('/social.local/split.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "url().includes('month=2025-11')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "exists(\"#month\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_6_final",
+      "name": "Criterion 6 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "social.local"
+  ],
+  "module_group": "roommate_expense_split",
+  "variant_kind": "distinct",
+  "canonical_task_dir": "K2-aa-split",
+  "lifecycle_status": "active",
+  "module_notes": "November split-by-amount instance."
+}

@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-SUPPORT-0060",
+  "theme": "support",
+  "difficulty": 5,
+  "instruction": "Finish the support workflow only after the order is tracked, delivery is confirmed, support is contacted, the remedy is requested, and the final review step is submitted.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "order_followup_prepared",
+      "delivery_visibility_confirmed",
+      "support_contacted",
+      "post_purchase_remedy_requested",
+      "product_review_submitted"
+    ]
+  },
+  "initial_world_state": [
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "order_followup_prepared",
+    "delivery_visibility_confirmed",
+    "support_contacted",
+    "post_purchase_remedy_requested",
+    "product_review_submitted"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 85,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SUPPORT_POST_PURCHASE_REMEDY_TRACK; a realistic remediation track should verify the order, open the right support channel, request the remedy, and only then close with the feedback step."
+}

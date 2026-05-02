@@ -1,0 +1,35 @@
+{
+  "task_id": "K4-2025-RSVPGROUP",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/social.local/index.html?clean=true&task=K4-2025-RSVPGROUP",
+      "note": "Open group discovery page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#groups-list .card:nth-child(2) button.btn.pri",
+      "note": "Open Tech Enthusiasts join modal"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#rules-check",
+      "note": "Agree to group rules"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "#join-modal button.btn.pri",
+      "note": "Confirm join"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#my-groups-list .badge.ok",
+      "note": "Wait for joined-group badge"
+    }
+  ]
+}

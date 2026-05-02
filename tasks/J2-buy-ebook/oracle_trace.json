@@ -1,0 +1,41 @@
+{
+  "task_id": "J2-2025-EBOOK",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/catalog.html?clean=true",
+      "note": "Open ebook catalog"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": ".book-card",
+      "note": "Wait for books to load"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": ".book-card[href*='id=BK-102']",
+      "note": "Click on Python Data Analysis book"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#book-price",
+      "note": "Wait for book details"
+    },
+    {
+      "t": 8,
+      "act": "click",
+      "selector": "button.btn.pri.lg",
+      "note": "Click 'Buy Ebook' button"
+    },
+    {
+      "t": 10,
+      "act": "wait",
+      "selector": "#enrolled-courses-grid",
+      "note": "Wait for My Learning page to load"
+    }
+  ]
+}

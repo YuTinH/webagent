@@ -1,0 +1,44 @@
+{
+  "goal_id": "WFG-DAILY-0007",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Finish the discounted-order protection workflow only after price protection is secured, tracking is open, delivery is visible, the order is delivered, support contact is completed, and the follow-up is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "order_price_secured",
+      "order_followup_prepared",
+      "order_tracking_opened",
+      "delivery_visibility_confirmed",
+      "shop_order_delivered",
+      "support_contacted",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active",
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "order_price_secured",
+    "order_followup_prepared",
+    "order_tracking_opened",
+    "delivery_visibility_confirmed",
+    "shop_order_delivered",
+    "support_contacted",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_DISCOUNTED_ORDER_PROTECTION; discounted-order protection workflows should include a scheduled follow-up after customer service."
+}

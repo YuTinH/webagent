@@ -1,0 +1,410 @@
+{
+  "goal_id": "WFG-DAILY-0017",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either use the direct tracking route before price protection, delivery, and customer service, or use the coupon-assisted tracking route before the same protection, delivery, and service closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "role": "alternative",
+      "produces": [
+        "coupon_available",
+        "daily_order_bundle_prepared",
+        "order_price_secured",
+        "service_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_CUSTOMER_SERVICE",
+      "role": "required",
+      "produces": [
+        "delivery_visibility_confirmed",
+        "order_followup_prepared",
+        "order_status_checked",
+        "support_contacted"
+      ]
+    },
+    {
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "role": "required",
+      "produces": [
+        "delivery_visibility_confirmed",
+        "shop_order_delivered"
+      ]
+    },
+    {
+      "module_id": "MODULE_PRICE_PROTECTION",
+      "role": "alternative",
+      "produces": [
+        "order_price_secured",
+        "price_protection_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_SHOPPING",
+      "role": "required",
+      "produces": [
+        "shop_order_exists",
+        "shop_order_pending"
+      ]
+    },
+    {
+      "module_id": "MODULE_TRACK_ORDERS",
+      "role": "required",
+      "produces": [
+        "order_followup_prepared",
+        "order_tracking_opened"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_COUPON_MANAGEMENT",
+      "to": "MODULE_TRACK_ORDERS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_ORDER_ARRIVAL",
+      "to": "MODULE_CUSTOMER_SERVICE",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_PRICE_PROTECTION",
+      "to": "MODULE_ORDER_ARRIVAL",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SHOPPING",
+      "to": "MODULE_COUPON_MANAGEMENT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SHOPPING",
+      "to": "MODULE_TRACK_ORDERS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_TRACK_ORDERS",
+      "to": "MODULE_ORDER_ARRIVAL",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_TRACK_ORDERS",
+      "to": "MODULE_PRICE_PROTECTION",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_shop_track_price_arrival_service",
+      "required_modules": [
+        "MODULE_SHOPPING",
+        "MODULE_TRACK_ORDERS",
+        "MODULE_PRICE_PROTECTION",
+        "MODULE_ORDER_ARRIVAL",
+        "MODULE_CUSTOMER_SERVICE"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0017-M1",
+        "WFG-DAILY-0017-M2",
+        "WFG-DAILY-0017-M3",
+        "WFG-DAILY-0017-M4",
+        "WFG-DAILY-0017-M5"
+      ],
+      "terminal_predicates": [
+        "order_followup_prepared",
+        "order_price_secured",
+        "delivery_visibility_confirmed",
+        "shop_order_delivered",
+        "support_contacted"
+      ]
+    },
+    {
+      "path_id": "path_shop_coupon_track_arrival_service",
+      "required_modules": [
+        "MODULE_SHOPPING",
+        "MODULE_COUPON_MANAGEMENT",
+        "MODULE_TRACK_ORDERS",
+        "MODULE_ORDER_ARRIVAL",
+        "MODULE_CUSTOMER_SERVICE"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0017-M6",
+        "WFG-DAILY-0017-M7",
+        "WFG-DAILY-0017-M8",
+        "WFG-DAILY-0017-M9",
+        "WFG-DAILY-0017-M10"
+      ],
+      "terminal_predicates": [
+        "order_followup_prepared",
+        "order_price_secured",
+        "delivery_visibility_confirmed",
+        "shop_order_delivered",
+        "support_contacted"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-DAILY-0017-M1",
+      "module_id": "MODULE_SHOPPING",
+      "binding_id": "BIND_B1_SHOPPING",
+      "binding_task_id": "B1-2025-001",
+      "parameter_values": {
+        "category": "electronics",
+        "item_keywords": [
+          "wireless",
+          "mouse"
+        ],
+        "max_price": 30,
+        "shipping_speed": "same_day",
+        "payment_method": "credit_card_1234"
+      },
+      "description": "Purchase a wireless mouse with same-day shipping.",
+      "expected_observables": [
+        "ANY[mem('shop.orders.last.total') == 29.99, ALL[json('env','world_state.financial_context.liquidity') == 'frozen', json('env','shop.orders.last.id') == null]]",
+        "ANY[ALL[NOT[json('env','world_state.financial_context.liquidity') == 'frozen'], mem('shop.orders.last.shipping_speed') == 'same_day'], json('env','world_state.financial_context.liquidity') == 'frozen']"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "shop_order_exists",
+          "shop_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0017-M2",
+      "module_id": "MODULE_TRACK_ORDERS",
+      "binding_id": "BIND_B4_TRACK_ORDERS",
+      "binding_task_id": "B4-2025-TRACKING",
+      "parameter_values": {
+        "order_id": "O-93902"
+      },
+      "description": "Track the status of order O-93902 and verify it is confirmed.",
+      "expected_observables": [
+        "url().includes('/shop.local/track.html?order_id=O-93902')",
+        "text('h1') includes '订单跟踪'",
+        "text('#order-id') includes 'O-93902'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "order_followup_prepared",
+          "order_tracking_opened"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0017-M3",
+      "module_id": "MODULE_PRICE_PROTECTION",
+      "binding_id": "BIND_B5_PRICE_PROTECTION",
+      "binding_task_id": "B5-2025-PRICE",
+      "parameter_values": {
+        "order_id": "O-11890"
+      },
+      "description": "Submit a price protection claim for order O-11890.",
+      "expected_observables": [
+        "url().includes('/shop.local/price-protection.html?status=submitted')",
+        "exists('.status-badge.submitted')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "order_price_secured",
+          "price_protection_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0017-M4",
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "binding_id": "BIND_Z1_ORDER_ARRIVAL",
+      "binding_task_id": "Z1-2025-ARRIVAL",
+      "parameter_values": {
+        "product_name": "Wireless Mouse"
+      },
+      "description": "Wait for your order to be delivered.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "shop_order_delivered"
+        ],
+        "removes": [
+          "shop_order_pending"
+        ]
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0017-M5",
+      "module_id": "MODULE_CUSTOMER_SERVICE",
+      "binding_id": "BIND_Z6_CUSTOMER_SERVICE",
+      "binding_task_id": "Z6-2025-CHAT",
+      "parameter_values": {
+        "order_id": "O-11890"
+      },
+      "description": "Ask customer service to check order O-10005.",
+      "expected_observables": [
+        "exists(\"#messages .message.bot:has-text('O-10005')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "order_followup_prepared",
+          "order_status_checked",
+          "support_contacted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0017-M6",
+      "module_id": "MODULE_SHOPPING",
+      "binding_id": "BIND_B1_SHOPPING",
+      "binding_task_id": "B1-2025-001",
+      "parameter_values": {
+        "category": "electronics",
+        "item_keywords": [
+          "wireless",
+          "mouse"
+        ],
+        "max_price": 30,
+        "shipping_speed": "same_day",
+        "payment_method": "credit_card_1234"
+      },
+      "description": "Purchase a wireless mouse with same-day shipping.",
+      "expected_observables": [
+        "ANY[mem('shop.orders.last.total') == 29.99, ALL[json('env','world_state.financial_context.liquidity') == 'frozen', json('env','shop.orders.last.id') == null]]",
+        "ANY[ALL[NOT[json('env','world_state.financial_context.liquidity') == 'frozen'], mem('shop.orders.last.shipping_speed') == 'same_day'], json('env','world_state.financial_context.liquidity') == 'frozen']"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "shop_order_exists",
+          "shop_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0017-M7",
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "binding_id": "BIND_B10_COUPON_MANAGEMENT",
+      "binding_task_id": "B10-2025-COUPONS",
+      "parameter_values": {
+        "name": "Spring Saver",
+        "code": "SAVE20",
+        "type": "discount",
+        "value": "20.0",
+        "min_spend": "100.0",
+        "expiry_date": "2026-04-30"
+      },
+      "description": "Add a discount coupon SAVE20 worth 20.0 off with a minimum spend of 100.0.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coupon_available",
+          "daily_order_bundle_prepared",
+          "order_price_secured",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0017-M8",
+      "module_id": "MODULE_TRACK_ORDERS",
+      "binding_id": "BIND_B4_TRACK_ORDERS",
+      "binding_task_id": "B4-2025-TRACKING",
+      "parameter_values": {
+        "order_id": "O-93902"
+      },
+      "description": "Track the status of order O-93902 and verify it is confirmed.",
+      "expected_observables": [
+        "url().includes('/shop.local/track.html?order_id=O-93902')",
+        "text('h1') includes '订单跟踪'",
+        "text('#order-id') includes 'O-93902'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "order_followup_prepared",
+          "order_tracking_opened"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0017-M9",
+      "module_id": "MODULE_ORDER_ARRIVAL",
+      "binding_id": "BIND_Z1_ORDER_ARRIVAL",
+      "binding_task_id": "Z1-2025-ARRIVAL",
+      "parameter_values": {
+        "product_name": "Wireless Mouse"
+      },
+      "description": "Wait for your order to be delivered.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "shop_order_delivered"
+        ],
+        "removes": [
+          "shop_order_pending"
+        ]
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0017-M10",
+      "module_id": "MODULE_CUSTOMER_SERVICE",
+      "binding_id": "BIND_Z6_CUSTOMER_SERVICE",
+      "binding_task_id": "Z6-2025-CHAT",
+      "parameter_values": {
+        "order_id": "O-11890"
+      },
+      "description": "Ask customer service to check order O-10005.",
+      "expected_observables": [
+        "exists(\"#messages .message.bot:has-text('O-10005')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "delivery_visibility_confirmed",
+          "order_followup_prepared",
+          "order_status_checked",
+          "support_contacted"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "order_followup_prepared",
+      "order_price_secured",
+      "delivery_visibility_confirmed",
+      "shop_order_delivered",
+      "support_contacted"
+    ],
+    "checkpoint_predicates": [
+      "coupon_available",
+      "daily_order_bundle_prepared",
+      "delivery_visibility_confirmed",
+      "order_followup_prepared",
+      "order_price_secured",
+      "order_status_checked",
+      "order_tracking_opened",
+      "price_protection_submitted",
+      "service_stack_prepared",
+      "shop_order_delivered",
+      "shop_order_exists",
+      "shop_order_pending",
+      "support_contacted"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

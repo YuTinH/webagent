@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>food.local - Subscribe</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🥗 FreshDelight</div>
+      <div class="navlinks">
+        <a href="../food.local/index.html">Home</a>
+        <a href="../food.local/orders.html">My Orders</a>
+        <a href="../food.local/subscription.html" class="active">Subscriptions</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Meal & Grocery Subscriptions</h1>
+      <button class="btn pri" id="open-subscribe-modal-btn" onclick="openSubscribeModal()">Create Subscription</button>
+    </div>
+
+    <div id="subscriptions-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Subscriptions loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const subscriptionParams = new URLSearchParams(window.location.search);
+  const requestedSubscriptionTaskId = subscriptionParams.get('task') || 'B2-2025-FRESHSUB';
+
+  function getSubscriptionTaskId() {
+    return resolveTaskId(requestedSubscriptionTaskId);
+  }
+
+  function buildSubscriptionPayload() {
+    const name = document.getElementById('new-name').value.trim();
+    const frequency = document.getElementById('new-frequency').value;
+    const rawItems = document.getElementById('new-items').value.trim();
+    const items = rawItems.split(',').map(s => s.trim()).filter(Boolean);
+    const price = document.getElementById('new-price').value.trim();
+    const deliveryDate = document.getElementById('new-delivery-date').value;
+    return { name, frequency, items, price, deliveryDate };
+  }
+
+  async function loadSubscriptions() {
+    const list = document.getElementById('subscriptions-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const subscriptions = env.food?.subscriptions || {};
+      
+      if (Object.keys(subscriptions).length === 0) {
+        list.innerHTML = `
+          <div class="soft" style="text-align:center; padding:48px; border:1px dashed var(--border); border-radius:var(--radius)">
+            <div style="font-size:48px; margin-bottom:16px">🍅</div>
+            <div style="color:var(--muted)">No active subscriptions yet.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(subscriptions).map(([id, sub]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${sub.name || 'Subscribe'} #${id}</h3>
+              <div style="color:var(--muted); font-size:14px">Status: <span class="badge ${sub.status === 'active' ? 'ok' : 'warn'}">${sub.status === 'active' ? 'Active' : ''}</span></div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">¥${sub.price_per_delivery || 'N/A'} / </div>
+              <div style="color:var(--muted); font-size:13px">Details: ${sub.frequency || ''}</div>
+            </div>
+          </div>
+          
+          <div style="background:rgba(0,0,0,0.03); padding:16px; border-radius:8px; display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px">
+            <div>
+              <div style="font-size:12px; color:var(--muted)">Next Delivery</div>
+              <div>${sub.next_delivery_date || ''}</div>
+            </div>
+            <div>
+              <div style="font-size:12px; color:var(--muted)">Included Items</div>
+              <div>${sub.items ? sub.items.join(', ') : ''}</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px">
+            <button class="btn" id="reschedule-subscription-${id}" onclick="openRescheduleModal('${id}')">Reschedule Delivery</button>
+            <button class="btn ${sub.status === 'active' ? 'secondary' : 'pri'}" id="toggle-subscription-${id}" onclick="toggleSubscriptionStatus('${id}', '${sub.status}')">${sub.status === 'active' ? 'Pause Subscription' : 'Resume Subscription'}</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openSubscribeModal() {
+    new Modal({
+      title: 'Create Subscription',
+      content: `
+        <div class="form">
+          <label>Plan Name</label>
+          <input id="new-name" class="input" placeholder="e.g. Weekly Grocery Basket">
+          
+          <label>Delivery Frequency</label>
+          <select id="new-frequency" class="input">
+            <option value="weekly">Weekly</option>
+            <option value="bi-weekly">Bi-weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+
+          <label>Items (comma separated)</label>
+          <input id="new-items" class="input" placeholder="e.g. fruit, vegetables, yogurt">
+          
+          <label>Price per Delivery</label>
+          <input id="new-price" type="number" class="input" placeholder="99">
+          
+          <label>Next Delivery Date</label>
+          <input id="new-delivery-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: 'Create Subscription',
+      onConfirm: async () => {
+        const { name, frequency, items, price, deliveryDate } = buildSubscriptionPayload();
+        
+        if (!name || items.length === 0 || !price || !deliveryDate) {
+          Toast.error("Enter a plan name, items, price, and next delivery date.");
+          return false;
+        }
+        
+        await send(getSubscriptionTaskId(), 'manage_subscription', {
+          action_type: 'subscribe',
+          name: name,
+          frequency: frequency,
+          items: items,
+          price_per_delivery: price,
+          next_delivery_date: deliveryDate
+        });
+        
+        setTimeout(loadSubscriptions, 500);
+        return true;
+      }
+    }).open();
+  }
+
+  function openRescheduleModal(id) {
+    new Modal({
+      title: `Reschedule Subscription ${id}`,
+      content: `
+        <div class="form">
+          <label>New Delivery Date</label>
+          <input id="reschedule-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: 'Save Delivery Date',
+      onConfirm: async () => {
+        const rescheduleDate = document.getElementById('reschedule-date').value;
+        
+        if (!rescheduleDate) {
+          Toast.error("Choose a delivery date.");
+          return false;
+        }
+        
+        await send(getSubscriptionTaskId(), 'manage_subscription', {
+          action_type: 'reschedule',
+          subscription_id: id,
+          next_delivery_date: rescheduleDate
+        });
+        
+        setTimeout(loadSubscriptions, 500);
+        return true;
+      }
+    }).open();
+  }
+
+  function toggleSubscriptionStatus(id, currentStatus) {
+    const newStatus = currentStatus === 'active' ? 'paused' : 'active';
+    new Modal({
+      title: `${newStatus === 'paused' ? 'Pause' : 'Resume'} Subscription ${id}`,
+      content: `${newStatus === 'paused' ? 'Pause' : 'Resume'} subscription ${id}?`,
+      confirmText: newStatus === 'paused' ? 'Pause Subscription' : 'Resume Subscription',
+      onConfirm: async () => {
+        await send(getSubscriptionTaskId(), 'manage_subscription', {
+          action_type: 'toggle_status',
+          subscription_id: id,
+          status: newStatus
+        });
+        setTimeout(loadSubscriptions, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadSubscriptions();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

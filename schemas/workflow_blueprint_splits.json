@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowBlueprintSplits",
+  "description": "Blueprint-level split assignments for compositional workflow benchmark generation.",
+  "type": "object",
+  "required": ["version", "source_blueprint_library", "policy", "splits", "summary"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "source_blueprint_library": { "type": "string" },
+    "policy": {
+      "type": "object",
+      "required": ["split_unit", "instance_assignment_rule", "theme_allocation_rule", "notes"],
+      "properties": {
+        "split_unit": { "type": "string" },
+        "instance_assignment_rule": { "type": "string" },
+        "theme_allocation_rule": { "type": "object" },
+        "notes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "splits": {
+      "type": "object",
+      "required": ["train", "dev", "test"],
+      "properties": {
+        "train": { "type": "array", "items": { "type": "string" } },
+        "dev": { "type": "array", "items": { "type": "string" } },
+        "test": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": ["train", "dev", "test"],
+      "properties": {
+        "train": { "type": "object" },
+        "dev": { "type": "object" },
+        "test": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

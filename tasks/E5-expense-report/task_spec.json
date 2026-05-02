@@ -1,0 +1,73 @@
+{
+  "task_id": "E5-2025-EXPENSE",
+  "family": "E",
+  "goal": "Ensure you submit travel expense report EXP-6631 for 860 linked to PNR-6631.",
+  "inputs": {
+    "reportId": "EXP-3344",
+    "total": 1200,
+    "description": "Conference travel expenses",
+    "pnr": "PNR-0000"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('expenses.last.id') == 'EXP-6631'",
+    "mem('expenses.last.total') == '860.0'",
+    "mem('expenses.last.pnr') == 'PNR-6631'",
+    "mem('expenses.last.description') includes 'Hotel'",
+    "url().includes('/bank.local/expense-report.html')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_e5_1",
+      "name": "cp_e5 checkpoint 1",
+      "assertion": "mem('expenses.last.id') == 'EXP-6631'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e5_2",
+      "name": "cp_e5 checkpoint 2",
+      "assertion": "mem('expenses.last.total') == '860.0'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e5_3",
+      "name": "cp_e5 checkpoint 3",
+      "assertion": "mem('expenses.last.pnr') == 'PNR-6631'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e5_4",
+      "name": "cp_e5 checkpoint 4",
+      "assertion": "mem('expenses.last.description') includes 'Hotel'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e5_5",
+      "name": "cp_e5 checkpoint 5",
+      "assertion": "url().includes('/bank.local/expense-report.html')",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "expense_report",
+  "canonical_task_dir": "E5-expense-report",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

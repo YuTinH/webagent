@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy.local - Smart Device Setup</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.setup-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 15px;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      Energy.local
+    </div>
+    <div class="navlinks">
+      <a href="../energy.local/index.html">Home</a>
+      <a href="../energy.local/usage.html">Usage Analysis</a>
+      <a href="../energy.local/plan.html">Energy Plans</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 id="setup-heading" style="text-align:center; font-size:28px; font-weight:700; margin:32px 0">Set Up Smart Bulb</h1>
+
+  <div class="setup-card">
+    <div class="form-group">
+      <label for="device-id">Device ID</label>
+      <input type="text" id="device-id" value="">
+    </div>
+    <div class="form-group">
+      <label for="location">Room Location</label>
+      <input type="text" id="location" value="">
+    </div>
+    <div class="form-group">
+      <label for="color">Device Profile</label>
+      <select id="color">
+        <option value="white">White</option>
+        <option value="warm_white">Warm White</option>
+        <option value="daylight">Daylight</option>
+        <option value="rgb">RGB</option>
+      </select>
+    </div>
+    <button id="setup-bulb-btn" class="btn pri lg" style="width:100%" onclick="setupBulb()">Set Up Smart Bulb</button>
+  </div>
+
+  <div class="setup-card" style="margin-top:24px">
+    <h2 style="margin-top:0">Configured Devices</h2>
+    <div id="devices-list">
+      <div class="loading">Loading......</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer"> · Synthetic UI for Web Agent Research</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const bulbParams = new URLSearchParams(window.location.search);
+const requestedBulbTaskId = bulbParams.get('task') || 'I6-2025-SMARTBULB';
+const bulbTaskId = resolveTaskId(requestedBulbTaskId);
+const bulbTaskConfig = {
+  'I3-2025-CAMERASETUP': {
+    heading: 'Add Security Camera',
+    actionLabel: 'Add Camera',
+    successMessage: 'Camera added to the smart-home dashboard.',
+    redirectToIndex: true
+  },
+  'I6-2025-SMARTBULB': {
+    heading: 'Set Up Smart Bulb',
+    actionLabel: 'Set Up Smart Bulb',
+    successMessage: 'Smart bulb configured.',
+    redirectToIndex: false
+  },
+  'I7-2025-THERMOSTAT': {
+    heading: 'Configure Thermostat Profile',
+    actionLabel: 'Configure Thermostat',
+    successMessage: 'Thermostat profile configured.',
+    redirectToIndex: true
+  }
+};
+
+function getBulbConfig() {
+  return bulbTaskConfig[bulbTaskId] || bulbTaskConfig['I6-2025-SMARTBULB'];
+}
+
+function withBulbTask(url) {
+  const parsed = new URL(url, window.location.href);
+  parsed.searchParams.set('task', bulbTaskId);
+  return parsed.pathname + parsed.search + parsed.hash;
+}
+
+function applyBulbTaskCopy() {
+  const config = getBulbConfig();
+  document.getElementById('setup-heading').textContent = config.heading;
+  document.getElementById('setup-bulb-btn').textContent = config.actionLabel;
+}
+
+async function loadDevicesList() {
+  const list = document.getElementById('devices-list');
+  if (!list) return;
+
+  try {
+    const env = await loadEnv();
+    const devices = env.devices || {};
+
+    if (Object.keys(devices).length === 0) {
+      list.innerHTML = '<div style="color:var(--muted)">No configured devices yet.</div>';
+      return;
+    }
+
+    list.innerHTML = Object.entries(devices).map(([id, dev]) => `
+      <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding:8px 0">
+        <div>${id} · ${dev.type} · ${dev.location}</div>
+        <div class="badge ${dev.status==='active'?'ok':'warn'}">${dev.status}</div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Failed to load devices:', error);
+    list.innerHTML = '<div style="color:var(--danger)">Failed to load devices.</div>';
+  }
+}
+
+async function setupBulb() {
+  const deviceId = document.getElementById('device-id').value;
+  const location = document.getElementById('location').value;
+  const color = document.getElementById('color').value;
+  const config = getBulbConfig();
+
+  if (!deviceId || !location || !color) {
+    Toast.error('Enter the device ID, location, and profile.');
+    return;
+  }
+
+  Toast.info('Saving device setup...');
+
+  try {
+    const response = await send(bulbTaskId, 'setup_smart_bulb', {
+      deviceId: deviceId,
+      location: location,
+      color: color
+    });
+
+    if (response && response.redirect) {
+      window.location.href = withBulbTask(response.redirect);
+      return;
+    }
+
+    if (response && response.success) {
+      Toast.success(config.successMessage);
+      if (config.redirectToIndex) {
+        window.location.href = withBulbTask('../energy.local/index.html?setup_success=true');
+        return;
+      }
+      await loadDevicesList();
+    } else {
+        console.warn('Response invalid, refreshing configured devices instead.');
+        if (config.redirectToIndex) {
+          window.location.href = withBulbTask('../energy.local/index.html?setup_success=true');
+          return;
+        }
+        await loadDevicesList();
+    }
+  } catch (error) {
+    console.error('Details:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, refreshing configured devices instead.');
+        if (config.redirectToIndex) {
+            window.location.href = withBulbTask('../energy.local/index.html?setup_success=true');
+            return;
+        }
+        await loadDevicesList();
+    } else {
+        Toast.error('Could not save the device setup. Please try again.');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    applyBulbTaskCopy();
+    loadDevicesList();
+    if (bulbParams.get('setup_success') === 'true' || bulbParams.get('configured') === 'true') {
+        Toast.success(getBulbConfig().successMessage);
+    }
+});
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

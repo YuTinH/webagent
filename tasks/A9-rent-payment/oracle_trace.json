@@ -1,0 +1,10 @@
+{
+  "task_id": "A9-2025-LEASEOPEN",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/housing.local/lease-management.html?task=A9-2025-LEASEOPEN"
+    }
+  ]
+}

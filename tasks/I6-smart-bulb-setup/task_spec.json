@@ -1,0 +1,62 @@
+{
+  "task_id": "I6-2025-SMARTBULB",
+  "family": "I",
+  "goal": "Ensure you set up smart bulb BULB-101 in the Bedroom using RGB mode.",
+  "inputs": {
+    "deviceId": "BULB-101",
+    "location": "Bedroom",
+    "color": "rgb"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('devices.BULB-101.status') == 'active'",
+    "mem('devices.BULB-101.location') == 'Bedroom'",
+    "json('env','devices.BULB-101.color') == 'rgb'",
+    "exists(\"#devices-list:has-text('Bedroom')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_i1_1",
+      "name": "cp_i1 checkpoint 1",
+      "assertion": "mem('devices.BULB-101.status') == 'active'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_i1_2",
+      "name": "cp_i1 checkpoint 2",
+      "assertion": "mem('devices.BULB-101.location') == 'Bedroom'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_i1_3",
+      "name": "cp_i1 checkpoint 3",
+      "assertion": "json('env','devices.BULB-101.color') == 'rgb'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_i1_4",
+      "name": "cp_i1 checkpoint 4",
+      "assertion": "exists(\"#devices-list:has-text('Bedroom')\")",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "energy.local"
+  ],
+  "module_group": "smart_bulb_setup",
+  "canonical_task_dir": "I6-smart-bulb-setup",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,42 @@
+{
+  "goal_id": "WFG-SUPPORT-0263",
+  "theme": "support",
+  "difficulty": 8,
+  "instruction": "Close the subscription-exit route by confirming delivery first, opening the support channel, engaging customer service, and ending only after refund and cancellation are both complete.",
+  "visible_constraints": {
+    "deadline_days": 6,
+    "preferred_outcomes": [
+      "delivery_visibility_confirmed",
+      "shop_order_delivered",
+      "support_contacted",
+      "refund_requested",
+      "subscription_canceled",
+      "subscription_exit_processed"
+    ]
+  },
+  "initial_world_state": [
+    "subscription_active",
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "delivery_visibility_confirmed",
+    "shop_order_delivered",
+    "support_contacted",
+    "refund_requested",
+    "subscription_canceled",
+    "subscription_exit_processed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        5,
+        6
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SUPPORT_ZTRAIN_07_EXIT_CONTACT_DUAL; subscription-exit support workflows should include an explicit customer-service handoff before refund and cancellation closure."
+}

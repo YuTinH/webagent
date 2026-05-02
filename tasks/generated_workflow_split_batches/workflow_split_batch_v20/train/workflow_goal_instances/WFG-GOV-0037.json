@@ -1,0 +1,30 @@
+{
+  "goal_id": "WFG-GOV-0037",
+  "theme": "government",
+  "difficulty": 4,
+  "instruction": "Finish the permit workflow with an active permit and the supporting readiness check completed.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "permit_and_bills_ready"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "parking_permit_active",
+    "permit_readiness_verified"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Complete secure housing, then activate utilities, then collect address proof, then submit the address change, then submit the parking permit application to reach the target."
+}

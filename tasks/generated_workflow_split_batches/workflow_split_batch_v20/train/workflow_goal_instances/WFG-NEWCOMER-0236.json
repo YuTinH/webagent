@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-NEWCOMER-0236",
+  "theme": "newcomer",
+  "difficulty": 5,
+  "instruction": "Close the newcomer route after formalizing housing, confirming the address, activating banking, and turning mobile service on.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "housing_finance_prepared",
+      "address_confirmation_verified",
+      "bank_account_active",
+      "mobile_service_active"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "housing_finance_prepared",
+    "address_confirmation_verified",
+    "bank_account_active",
+    "mobile_service_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 70,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_NEWCOMER_ZTRAIN_04_FINANCE_CONNECTIVITY_DUAL; newcomer connectivity should come only after the housing route is formalized, the address is confirmed, and banking is active."
+}

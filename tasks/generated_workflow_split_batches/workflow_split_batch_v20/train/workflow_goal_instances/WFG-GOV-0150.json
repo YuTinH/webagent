@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-GOV-0150",
+  "theme": "government",
+  "difficulty": 8,
+  "instruction": "Finish the civic address packet only after address records are aligned, the permit is submitted, and the residence billing review is completed.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "address_confirmation_verified",
+      "address_records_aligned",
+      "mailing_address_current",
+      "permit_application_submitted",
+      "bills_reviewed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_confirmation_verified",
+    "address_records_aligned",
+    "mailing_address_current",
+    "permit_application_submitted",
+    "bills_reviewed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_GOV_WORKFLOW_ALIGNMENT_READINESS; address-permit workflows should not stop at permit submission and should continue into billing verification."
+}

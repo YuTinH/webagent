@@ -1,0 +1,229 @@
+{
+  "goal_id": "WFG-COMPOSITE-0018",
+  "composition": {
+    "composition_type": "single_path",
+    "num_semantically_distinct_paths": 1,
+    "distinctness_rule": "Reach the target through the full reset, portfolio-growth, calendar-sync, and password-manager closure rather than through a shorter access subset."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_INVESTMENT_GROWTH",
+      "role": "required",
+      "produces": [
+        "investment_account_active",
+        "investment_growth_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_MANAGER",
+      "role": "required",
+      "produces": [
+        "access_surface_reviewed",
+        "credential_vault_updated",
+        "security_hardening_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RESET_COMPLETION",
+      "role": "required",
+      "produces": [
+        "password_reset_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RESET_REQUEST",
+      "role": "required",
+      "produces": [
+        "password_reset_code_requested"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_EMAIL_CALENDAR",
+      "to": "MODULE_PASSWORD_MANAGER",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_INVESTMENT_GROWTH",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_PASSWORD_RESET_COMPLETION",
+      "to": "MODULE_INVESTMENT_GROWTH",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_PASSWORD_RESET_REQUEST",
+      "to": "MODULE_PASSWORD_RESET_COMPLETION",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_reset_growth_calendar_vault",
+      "required_modules": [
+        "MODULE_PASSWORD_RESET_REQUEST",
+        "MODULE_PASSWORD_RESET_COMPLETION",
+        "MODULE_INVESTMENT_GROWTH",
+        "MODULE_EMAIL_CALENDAR",
+        "MODULE_PASSWORD_MANAGER"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-COMPOSITE-0018-M1",
+        "WFG-COMPOSITE-0018-M2",
+        "WFG-COMPOSITE-0018-M3",
+        "WFG-COMPOSITE-0018-M4",
+        "WFG-COMPOSITE-0018-M5"
+      ],
+      "terminal_predicates": [
+        "password_reset_completed",
+        "investment_growth_verified",
+        "calendar_event_synced",
+        "access_surface_reviewed",
+        "credential_vault_updated"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-COMPOSITE-0018-M1",
+      "module_id": "MODULE_PASSWORD_RESET_REQUEST",
+      "binding_id": "BIND_M5_RESET_PASSWORD",
+      "binding_task_id": "M5-2025-RESETCODE",
+      "parameter_values": {
+        "username": "cloudpiper"
+      },
+      "description": "Request a password reset code for account recovery.",
+      "expected_observables": [
+        "url().includes('/security.local/reset-password.html')",
+        "exists(\"#new-password\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "password_reset_code_requested"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0018-M2",
+      "module_id": "MODULE_PASSWORD_RESET_COMPLETION",
+      "binding_id": "BIND_M6_ACCOUNT_RECOVERY",
+      "binding_task_id": "M6-2025-PWRECOVERY",
+      "parameter_values": {
+        "username": "cloudpiper",
+        "code": "4455"
+      },
+      "description": "Complete account recovery by resetting the password with verification code.",
+      "expected_observables": [
+        "url().includes('/security.local/login.html?reset=success')",
+        "exists(\"#reset-success\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "password_reset_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0018-M3",
+      "module_id": "MODULE_INVESTMENT_GROWTH",
+      "binding_id": "BIND_Z2_INVESTMENT_GROWTH",
+      "binding_task_id": "Z2-2025-GROWTH",
+      "parameter_values": {
+        "account_type": "funds",
+        "deposit": "1200"
+      },
+      "description": "Open an Income Builder funds account with 1200 and verify the balance grows to 1260.00 after time passes.",
+      "expected_observables": [
+        "exists(\"#investment-accounts-list .card:has-text('Income Builder')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "investment_account_active",
+          "investment_growth_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0018-M4",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0018-M5",
+      "module_id": "MODULE_PASSWORD_MANAGER",
+      "binding_id": "BIND_L1_PASSWORD_MANAGER",
+      "binding_task_id": "L1-2025-PASSMGR",
+      "parameter_values": {
+        "site": "Overleaf",
+        "username": "paper.drafts@example.com",
+        "password": "Overleaf$Draft6"
+      },
+      "description": "Add a password manager entry for Overleaf using username paper.drafts@example.com.",
+      "expected_observables": [
+        "exists(\"#password-list .card:has-text('Overleaf')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "access_surface_reviewed",
+          "credential_vault_updated",
+          "security_hardening_completed"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "password_reset_completed",
+      "investment_growth_verified",
+      "calendar_event_synced",
+      "access_surface_reviewed",
+      "credential_vault_updated"
+    ],
+    "checkpoint_predicates": [
+      "access_surface_reviewed",
+      "calendar_event_synced",
+      "credential_vault_updated",
+      "investment_account_active",
+      "investment_growth_verified",
+      "password_reset_code_requested",
+      "password_reset_completed",
+      "security_hardening_completed"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "orders.tracking.last_check": {
+    "key": "orders.tracking.last_check",
+    "value": "2025-11-20T09:00:21Z",
+    "ts": "2025-11-20T09:00:21Z",
+    "source": "B5-2025-005",
+    "confidence": 1.0
+  },
+  "orders.tracking.overdue_count": {
+    "key": "orders.tracking.overdue_count",
+    "value": 1,
+    "ts": "2025-11-20T09:00:21Z",
+    "source": "B5-2025-005",
+    "confidence": 1.0
+  },
+  "orders.tracking.issue_reported": {
+    "key": "orders.tracking.issue_reported",
+    "value": true,
+    "ts": "2025-11-20T09:00:21Z",
+    "source": "B5-2025-005",
+    "confidence": 1.0
+  }
+}

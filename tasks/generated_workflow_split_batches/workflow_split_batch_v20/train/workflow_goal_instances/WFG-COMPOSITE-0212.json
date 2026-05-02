@@ -1,0 +1,44 @@
+{
+  "goal_id": "WFG-COMPOSITE-0212",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Close the access-followup composite workflow by containing the access issue first, completing the service-tracking follow-up, syncing the calendar, and ending with password-manager hygiene.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "account_access_contained",
+      "delivery_visibility_confirmed",
+      "order_followup_prepared",
+      "order_tracking_opened",
+      "calendar_event_synced",
+      "access_surface_reviewed",
+      "credential_vault_updated"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active",
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "account_access_contained",
+    "delivery_visibility_confirmed",
+    "order_followup_prepared",
+    "order_tracking_opened",
+    "calendar_event_synced",
+    "access_surface_reviewed",
+    "credential_vault_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_ZTRAIN_02_ACCESS_FOLLOWUP_DUAL; access-followup composite workflows should continue into credential-surface hygiene after the service and calendar steps."
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "B10-2025-COUPONS",
+  "family": "B",
+  "goal": "Add a fixed discount coupon SAVE20 worth 20 off with a minimum spend of 100.",
+  "inputs": {
+    "name": "Spring Saver",
+    "code": "SAVE20",
+    "type": "discount",
+    "value": 20.0,
+    "min_spend": 100.0,
+    "expiry_date": "2026-04-30"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('shop.coupons.last.status') == 'active'",
+    "mem('shop.coupons.last.code') == 'SAVE20'",
+    "mem('shop.coupons.last.type') == 'discount'",
+    "mem('shop.coupons.last.value') == '20.0'",
+    "mem('shop.coupons.last.min_spend') == '100.0'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_b5_1",
+      "name": "cp_b5 checkpoint 1",
+      "assertion": "mem('shop.coupons.last.status') == 'active'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_b5_2",
+      "name": "cp_b5 checkpoint 2",
+      "assertion": "mem('shop.coupons.last.code') == 'SAVE20'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_b5_3",
+      "name": "cp_b5 checkpoint 3",
+      "assertion": "mem('shop.coupons.last.type') == 'discount'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_b5_4",
+      "name": "cp_b5 checkpoint 4",
+      "assertion": "mem('shop.coupons.last.value') == '20.0'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_b5_5",
+      "name": "cp_b5 checkpoint 5",
+      "assertion": "mem('shop.coupons.last.min_spend') == '100.0'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "coupon_management",
+  "canonical_task_dir": "B10-coupon-management",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

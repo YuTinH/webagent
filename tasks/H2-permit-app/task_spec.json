@@ -1,0 +1,150 @@
+{
+  "task_id": "H2-2025-PERMITAPP",
+  "family": "H",
+  "episode_id": "ep-002",
+  "priority": 3,
+  "seed": 77,
+  "time": "2025-11-22T09:00:00Z",
+  "persona": {
+    "vehicle_owner": true
+  },
+  "goal": "Apply for parking permit by filling form and uploading documents",
+  "inputs": {
+    "permit_type": "parking",
+    "vehicle_plate": "ABC123",
+    "documents": [
+      "vehicle_registration.pdf",
+      "proof_of_address.pdf"
+    ]
+  },
+  "allowed_domains": [
+    "gov.local"
+  ],
+  "preconditions": [],
+  "memory_keys": [
+    "permits.parking.application_id",
+    "permits.parking.state",
+    "permits.parking.documents_uploaded"
+  ],
+  "success_criteria": [
+    "mem('gov.parking_permits.last.status') == 'active'",
+    "mem('permits.parking.state') == 'submitted'",
+    "mem('gov.parking_permits.last.plate_number') == 'ABC123'",
+    "exists(\"#permits-list .card\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "artifacts": [
+    "application_receipt",
+    "upload_confirmation"
+  ],
+  "rubrics": {
+    "SR": 1.0,
+    "LH-F1": 0.4
+  },
+  "timeout": 400,
+  "step_timeout": 45,
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {
+      "strategy": "retry",
+      "max_retries": 3,
+      "retry_delay_ms": 1000
+    },
+    "on_element_not_found": {
+      "strategy": "wait_and_retry",
+      "wait_seconds": 10
+    },
+    "on_assertion_fail": {
+      "strategy": "save_trace_and_report",
+      "capture_screenshot": true,
+      "capture_dom": true,
+      "capture_memory": true
+    },
+    "on_precondition_fail": "abort_with_warning"
+  },
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('gov.parking_permits.last.status') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('gov.parking_permits.last.status') == 'active'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Criterion 2 state set",
+      "assertion": "mem('permits.parking.state') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "mem('permits.parking.state') == 'submitted'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_state",
+      "name": "Criterion 3 state set",
+      "assertion": "mem('gov.parking_permits.last.plate_number') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "mem('gov.parking_permits.last.plate_number') == 'ABC123'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_3_state"
+      ]
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "exists(\"#permits-list .card\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_6_final",
+      "name": "Criterion 6 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "module_group": "permit_app",
+  "canonical_task_dir": "H2-permit-app",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-FINANCE-0009",
+  "theme": "finance",
+  "difficulty": 5,
+  "instruction": "Build a controlled bill-payment setup by reviewing current bills, locking a tighter budget, and ending with a working autopay path.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "must_avoid": [
+      "autopay_left_disabled"
+    ],
+    "preferred_outcomes": [
+      "recurring_payments_under_control"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bills_reviewed",
+    "budget_limit_updated",
+    "bank_account_active",
+    "autopay_enabled"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 70,
+  "max_module_invocations": 5,
+  "notes": "Complete aggregate the bills, then review current bills, then activate the bank account, then tighten the budget limit, then finish complex autopay setup to reach the target."
+}

@@ -1,0 +1,41 @@
+{
+  "task_id": "L7-2025-CLOUDROTATE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/dashboard.html?clean=true&task=L7-2025-CLOUDROTATE"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#provider-mail"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#rotation-method",
+      "value": "api-only"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#alert-section button"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#close-modal-btn:not(.hidden)"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#close-modal-btn"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": ".rotation-complete"
+    }
+  ]
+}

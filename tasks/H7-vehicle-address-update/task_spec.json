@@ -1,0 +1,62 @@
+{
+  "task_id": "H7-2025-VEHICLEADDR",
+  "family": "H",
+  "goal": "Update vehicle V-8821 to 742 Evergreen Terrace and notify insurance.",
+  "inputs": {
+    "vehicle_id": "V-8821",
+    "new_address": "742 Evergreen Terrace",
+    "notify_insurance": true
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('gov.vehicles.last.id') == 'V-8821'",
+    "mem('gov.vehicles.last.address') == '742 Evergreen Terrace'",
+    "mem('gov.vehicles.last.insurance_notified') == '1'",
+    "exists(\"#vehicle-list div:has-text('742 Evergreen Terrace')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_h2_1",
+      "name": "cp_h2 checkpoint 1",
+      "assertion": "mem('gov.vehicles.last.id') == 'V-8821'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h2_2",
+      "name": "cp_h2 checkpoint 2",
+      "assertion": "mem('gov.vehicles.last.address') == '742 Evergreen Terrace'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h2_3",
+      "name": "cp_h2 checkpoint 3",
+      "assertion": "mem('gov.vehicles.last.insurance_notified') == '1'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h2_4",
+      "name": "cp_h2 checkpoint 4",
+      "assertion": "exists(\"#vehicle-list div:has-text('742 Evergreen Terrace')\")",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "gov.local"
+  ],
+  "module_group": "vehicle_address_update",
+  "canonical_task_dir": "H7-vehicle-address-update",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

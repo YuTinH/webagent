@@ -1,0 +1,166 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowOracle",
+  "description": "Hidden evaluator-only graph for a compositional workflow goal.",
+  "type": "object",
+  "required": [
+    "goal_id",
+    "composition",
+    "module_nodes",
+    "dependency_edges",
+    "success_paths",
+    "reference_invocations",
+    "evaluation"
+  ],
+  "properties": {
+    "goal_id": {
+      "type": "string"
+    },
+    "composition": {
+      "type": "object",
+      "required": ["composition_type", "num_semantically_distinct_paths"],
+      "properties": {
+        "composition_type": {
+          "type": "string",
+          "enum": ["single_path", "multi_path"]
+        },
+        "num_semantically_distinct_paths": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "distinctness_rule": {
+          "type": "string",
+          "description": "Human-readable note explaining why multiple paths count as semantically distinct."
+        }
+      },
+      "additionalProperties": false
+    },
+    "module_nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["module_id", "role"],
+        "properties": {
+          "module_id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["required", "optional", "alternative", "recovery"]
+          },
+          "produces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "dependency_edges": {
+      "type": "array",
+      "description": "Directed edges over module nodes.",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "kind"],
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["hard", "soft", "alternative", "recovery"]
+          },
+          "condition": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "success_paths": {
+      "type": "array",
+      "description": "Alternative module compositions that satisfy the goal.",
+      "items": {
+        "type": "object",
+        "required": ["path_id", "required_modules", "terminal_predicates"],
+        "properties": {
+          "path_id": {
+            "type": "string"
+          },
+          "required_modules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "optional_modules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reference_invocation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "terminal_predicates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "reference_invocations": {
+      "type": "array",
+      "description": "Concrete invocation examples used to instantiate modules for this workflow goal.",
+      "items": {
+        "$ref": "workflow_module_invocation.json"
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "required": ["final_success", "checkpoint_predicates"],
+      "properties": {
+        "final_success": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "checkpoint_predicates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unnecessary_module_penalty": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "invalid_transition_penalty": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "recovery_bonus": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

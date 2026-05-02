@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-FINANCE-0094",
+  "theme": "finance",
+  "difficulty": 7,
+  "instruction": "Close the filing workflow by opening the account, preparing funding, submitting the filing, archiving the receipt record, and ending with a synced follow-up reminder.",
+  "visible_constraints": {
+    "deadline_days": 6,
+    "preferred_outcomes": [
+      "bank_account_active",
+      "tax_funding_prepared",
+      "tax_filing_submitted",
+      "receipt_archived",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bank_account_active",
+    "tax_funding_prepared",
+    "tax_filing_submitted",
+    "receipt_archived",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        5,
+        6
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_TAX_FUNDING_ALIGNMENT; tax-filing finance workflows should include a post-filing calendar follow-up after archival."
+}

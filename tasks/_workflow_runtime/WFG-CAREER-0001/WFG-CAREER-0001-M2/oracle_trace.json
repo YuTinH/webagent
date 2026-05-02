@@ -1,0 +1,37 @@
+{
+  "task_id": "F5-2025-ARCHIVE2",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/cloud.local/index.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": ".upload-area"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#doc-type",
+      "value": "receipt"
+    },
+    {
+      "t": 3,
+      "act": "upload",
+      "selector": "#file-upload",
+      "value": "event_receipt_june.pdf"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": ".file-item"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "task_id": "M5-2025-RESETCODE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/forgot-password.html?clean=true&task=M5-2025-RESETCODE",
+      "note": "Open forgot password page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#username",
+      "value": "northsignal",
+      "note": "Enter username"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Request verification code"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#code",
+      "note": "Wait for reset form"
+    }
+  ]
+}

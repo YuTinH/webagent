@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Management - PNR9ZZ</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: #333; }
+        .container { background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: center; max-width: 600px; width: 90%; margin-top: 50px; }
+        h1 { color: #34495e; margin-bottom: 25px; font-size: 2.2em; }
+        .pnr-display { background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+        .pnr-display p { margin: 5px 0; font-size: 1.1em; }
+        .pnr-display .pnr-number { font-size: 1.8em; font-weight: bold; letter-spacing: 2px; color: #e74c3c; }
+        .ticket-status { font-size: 1.2em; font-weight: bold; margin-bottom: 20px; color: #3498db; }
+        .btn-rebook { background-color: #f39c12; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; text-decoration: none; display: inline-block; margin-top: 20px; }
+        .btn-rebook:hover { background-color: #e67e22; }
+        .message { margin-top: 20px; font-weight: bold; }
+        .success { color: #28a745; }
+    </style>
+    <script>window.RelRoot = "../../";</script>
+    <script src="../../static/common.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Trip Management</h1>
+        
+        <div class="pnr-display">
+            <p>Booking Reference (PNR)</p>
+            <p class="pnr-number" id="pnr">PNR9ZZ</p>
+            <p>Flight from New York to London</p>
+            <p>Departure: 2025-01-15</p>
+        </div>
+
+        <p class="ticket-status" id="ticket-status">Confirmed</p>
+        <p id="task-guidance" style="margin-bottom:20px; color:#6b7280">Choose the rebooking policy and date, then click Rebook Flight to finish this task.</p>
+
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:center">
+            <select id="rebook-policy" style="padding:10px; border-radius:8px; width:260px">
+                <option value="">Select rebooking policy</option>
+                <option value="min-cost">Lowest fare replacement</option>
+                <option value="morning-priority">Morning departure priority</option>
+                <option value="flexible-change">Flexible change policy</option>
+            </select>
+            <input id="rebook-date" type="date" value="" style="padding:10px; border-radius:8px; width:260px">
+            <button id="rebook-flight-btn" class="btn-rebook" onclick="rebookTrip()">Rebook Flight</button>
+        </div>
+
+        <p class="message" id="status-message"></p>
+    </div>
+
+	    <script>
+	        const urlParams = new URLSearchParams(window.location.search);
+	        const requestedTripManageTaskId = urlParams.get('task') || 'E6-2025-FLIGHTCHANGE';
+	        const tripManageTaskId = resolveTaskId(requestedTripManageTaskId);
+	        const status = urlParams.get('status');
+	        const pnr = document.getElementById('pnr').textContent;
+
+	        if (status === 'rebooked') {
+	            document.getElementById('ticket-status').textContent = 'Rebooked';
+	            document.getElementById('ticket-status').style.color = '#28a745';
+	            document.getElementById('status-message').className = 'message success';
+	            const policy = urlParams.get('policy') || '';
+	            const date = urlParams.get('date') || '';
+	            document.getElementById('status-message').textContent = `Your flight has been successfully rebooked with ${policy} for ${date}.`;
+	            document.getElementById('rebook-policy').value = policy;
+	            document.getElementById('rebook-date').value = date;
+            document.getElementById('rebook-flight-btn').style.display = 'none';
+        }
+        console.log('Ticket Status after update:', document.getElementById('ticket-status').textContent);
+
+	        async function rebookTrip() {
+	            const policy = document.getElementById('rebook-policy').value;
+	            const newDate = document.getElementById('rebook-date').value;
+	            if (!policy || !newDate) {
+	                document.getElementById('status-message').className = 'message';
+	                document.getElementById('status-message').textContent = 'Choose a rebooking policy and date first.';
+	                return;
+	            }
+	            await send(tripManageTaskId, 'rebook_ok', {
+	                pnr: pnr,
+	                policy: policy,
+	                new_date: newDate
+	            });
+	        }
+	    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

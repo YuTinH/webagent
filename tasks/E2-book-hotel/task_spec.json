@@ -1,0 +1,70 @@
+{
+  "task_id": "E2-2025-HOTEL",
+  "family": "E",
+  "goal": "Book a hotel in Shanghai from 2025-12-31 to 2026-01-03 for 1 guest.",
+  "inputs": {
+    "city": "上海",
+    "check_in_date": "2025-12-31",
+    "check_out_date": "2026-01-03",
+    "guests": 1,
+    "hotel_name": "浦东香格里拉大酒店",
+    "price": 1200.0
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/trip.local/manage.html')",
+    "json('env','trips.hotel.id') != ''",
+    "json('env','trips.hotel.city') == '上海'",
+    "json('env','trips.hotel.checkin') == '2025-12-31'",
+    "json('env','trips.hotel.nights') == 3"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "url().includes('/trip.local/manage.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "json('env','trips.hotel.id') != ''",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "json('env','trips.hotel.city') == '上海'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "json('env','trips.hotel.checkin') == '2025-12-31'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "json('env','trips.hotel.nights') == 3",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "trip.local"
+  ],
+  "module_group": "book_hotel",
+  "canonical_task_dir": "E2-book-hotel",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

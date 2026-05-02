@@ -1,0 +1,44 @@
+{
+  "task_id": "B8-2025-HOUSEKEEPING",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/housekeeping.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#service-type",
+      "value": "deep_cleaning"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#service-date",
+      "value": "2026-01-18"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#service-time",
+      "value": "13:00"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#instructions",
+      "value": "Focus on kitchen and bathroom"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": "#book-btn"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#bookings-list .badge.ok"
+    }
+  ]
+}

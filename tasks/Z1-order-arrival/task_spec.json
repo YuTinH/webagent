@@ -1,0 +1,39 @@
+{
+  "task_id": "Z1-2025-ARRIVAL",
+  "family": "Z",
+  "goal": "Your task is to wait for your order to be delivered.",
+  "inputs": {
+    "product_name": "Wireless Mouse"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('shop.orders.last.state') == 'delivered'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('shop.orders.last.state') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('shop.orders.last.state') == 'delivered'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "order_arrival",
+  "canonical_task_dir": "Z1-order-arrival",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

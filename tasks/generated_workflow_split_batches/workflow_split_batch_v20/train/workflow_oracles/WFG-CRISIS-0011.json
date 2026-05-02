@@ -1,0 +1,221 @@
+{
+  "goal_id": "WFG-CRISIS-0011",
+  "composition": {
+    "composition_type": "single_path",
+    "num_semantically_distinct_paths": 1,
+    "distinctness_rule": "Reach the target through the full reset, illness-report, doctor-appointment, and calendar-sync chain rather than through a shorter health-access subset."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_DOCTOR_APPT",
+      "role": "required",
+      "produces": [
+        "medical_appointment_booked"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_ILLNESS_REPORTING",
+      "role": "required",
+      "produces": [
+        "crisis_intake_completed",
+        "illness_report_submitted"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RESET_COMPLETION",
+      "role": "required",
+      "produces": [
+        "password_reset_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_PASSWORD_RESET_REQUEST",
+      "role": "required",
+      "produces": [
+        "password_reset_code_requested"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_DOCTOR_APPT",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_ILLNESS_REPORTING",
+      "to": "MODULE_DOCTOR_APPT",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_PASSWORD_RESET_COMPLETION",
+      "to": "MODULE_ILLNESS_REPORTING",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_PASSWORD_RESET_REQUEST",
+      "to": "MODULE_PASSWORD_RESET_COMPLETION",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_reset_illness_doctor_calendar",
+      "required_modules": [
+        "MODULE_PASSWORD_RESET_REQUEST",
+        "MODULE_PASSWORD_RESET_COMPLETION",
+        "MODULE_ILLNESS_REPORTING",
+        "MODULE_DOCTOR_APPT",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-CRISIS-0011-M1",
+        "WFG-CRISIS-0011-M2",
+        "WFG-CRISIS-0011-M3",
+        "WFG-CRISIS-0011-M4",
+        "WFG-CRISIS-0011-M5"
+      ],
+      "terminal_predicates": [
+        "password_reset_completed",
+        "illness_report_submitted",
+        "medical_appointment_booked",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-CRISIS-0011-M1",
+      "module_id": "MODULE_PASSWORD_RESET_REQUEST",
+      "binding_id": "BIND_M5_RESET_PASSWORD",
+      "binding_task_id": "M5-2025-RESETCODE",
+      "parameter_values": {
+        "username": "rivermesh"
+      },
+      "description": "Request a password reset code for account recovery.",
+      "expected_observables": [
+        "url().includes('/security.local/reset-password.html')",
+        "exists(\"#new-password\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "password_reset_code_requested"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0011-M2",
+      "module_id": "MODULE_PASSWORD_RESET_COMPLETION",
+      "binding_id": "BIND_M6_ACCOUNT_RECOVERY",
+      "binding_task_id": "M6-2025-PWRECOVERY",
+      "parameter_values": {
+        "username": "rivermesh",
+        "code": "9812"
+      },
+      "description": "Complete account recovery by resetting the password with verification code.",
+      "expected_observables": [
+        "url().includes('/security.local/login.html?reset=success')",
+        "exists(\"#reset-success\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "password_reset_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0011-M3",
+      "module_id": "MODULE_ILLNESS_REPORTING",
+      "binding_id": "BIND_M3_ILLNESS_REPORTING",
+      "binding_task_id": "M3-2025-ILLNESS",
+      "parameter_values": {
+        "report_type": "illness",
+        "reason": "Migraine recovery day",
+        "end_date": "2026-01-25"
+      },
+      "description": "Submit an illness report for migraine recovery day until 2026-01-25.",
+      "expected_observables": [
+        "json('env','world_state.physical_context.status') == 'impaired'",
+        "json('env','world_state.physical_context.energy_level') == 20"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "crisis_intake_completed",
+          "illness_report_submitted"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0011-M4",
+      "module_id": "MODULE_DOCTOR_APPT",
+      "binding_id": "BIND_G1_DOCTOR_APPT",
+      "binding_task_id": "G1-2025-HEALTH",
+      "parameter_values": {
+        "appointmentId": "APT-9060",
+        "doctorId": "DR-015",
+        "slot": "2025-12-14T10:20"
+      },
+      "description": "Book doctor appointment APT-9060 with doctor DR-015 at 2025-12-14T10:20.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "medical_appointment_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-CRISIS-0011-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "password_reset_completed",
+      "illness_report_submitted",
+      "medical_appointment_booked",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_synced",
+      "crisis_intake_completed",
+      "illness_report_submitted",
+      "medical_appointment_booked",
+      "password_reset_code_requested",
+      "password_reset_completed"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

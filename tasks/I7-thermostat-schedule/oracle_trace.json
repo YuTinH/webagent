@@ -1,0 +1,44 @@
+{
+  "task_id": "I7-2025-THERMOSTAT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/energy.local/bulb-setup.html?clean=true&task=I7-2025-THERMOSTAT",
+      "note": "Open smart-home setup page"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#device-id",
+      "value": "THERMO-001",
+      "note": "Enter thermostat device ID"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#location",
+      "value": "卧室",
+      "note": "Set thermostat location"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#color",
+      "value": "warm_white",
+      "note": "Set profile mode"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button.btn.pri.lg",
+      "note": "Submit thermostat profile"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "div:has-text('卧室')",
+      "note": "Wait for device to appear on dashboard"
+    }
+  ]
+}

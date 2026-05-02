@@ -1,0 +1,20 @@
+{
+  "task_id": "D4-2025-CARD",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/pay.local/wallet/cards.html?newLast4=7777&oldLast4=1234&clean=true"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn-replace"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#active-card-last4"
+    }
+  ]
+}

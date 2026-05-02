@@ -1,0 +1,62 @@
+{
+  "task_id": "M1-2025-CARD",
+  "family": "M",
+  "goal": "Complete the following task: report the card ending in 7777 as lost and freeze it immediately.",
+  "inputs": {
+    "card_last4": "7777",
+    "reissue": false
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "json('env','payments.cards.7777.state') == 'blocked'",
+    "json('env','world_state.financial_context.liquidity') == 'frozen'",
+    "exists('#card-7777.blocked')",
+    "text('#card-status-7777') == 'Blocked'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_m1_1",
+      "name": "cp_m1 checkpoint 1",
+      "assertion": "json('env','payments.cards.7777.state') == 'blocked'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m1_2",
+      "name": "cp_m1 checkpoint 2",
+      "assertion": "json('env','world_state.financial_context.liquidity') == 'frozen'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m1_3",
+      "name": "cp_m1 checkpoint 3",
+      "assertion": "exists('#card-7777.blocked')",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_m1_4",
+      "name": "cp_m1 checkpoint 4",
+      "assertion": "text('#card-status-7777') == 'Blocked'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "lost_card_freeze",
+  "variant_kind": "distinct",
+  "canonical_task_dir": "M1-lost-card",
+  "lifecycle_status": "active",
+  "module_notes": "Freeze card immediately."
+}

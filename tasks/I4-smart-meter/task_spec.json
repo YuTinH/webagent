@@ -1,0 +1,50 @@
+{
+  "task_id": "I4-2025-SMARTMETER",
+  "family": "I",
+  "goal": "Submit a smart meter reading of 13020.75 kWh.",
+  "inputs": {
+    "reading": 12500.5
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('meters.meter_data.current_reading') == 13020.75",
+    "mem('meters.meter_data.last_submitted_reading') == 13020.75",
+    "exists(\"#meter-reading:has-text('13020.75')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_i4_1",
+      "name": "cp_i4 checkpoint 1",
+      "assertion": "mem('meters.meter_data.current_reading') == 13020.75",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_i4_2",
+      "name": "cp_i4 checkpoint 2",
+      "assertion": "mem('meters.meter_data.last_submitted_reading') == 13020.75",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_i4_3",
+      "name": "cp_i4 checkpoint 3",
+      "assertion": "exists(\"#meter-reading:has-text('13020.75')\")",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "energy.local"
+  ],
+  "module_group": "smart_meter",
+  "canonical_task_dir": "I4-smart-meter",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,47 @@
+{
+  "task_id": "B4-2025-TRACKING",
+  "family": "B",
+  "goal": "Track the status of order O-93902 and verify it is confirmed.",
+  "inputs": {
+    "order_id": "O-93902"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/shop.local/track.html?order_id=O-93902')",
+    "text('h1') includes '订单跟踪'",
+    "text('#order-id') includes 'O-93902'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "url().includes('/shop.local/track.html?order_id=O-93902')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "text('h1') includes '订单跟踪'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "text('#order-id') includes 'O-93902'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "track_orders",
+  "canonical_task_dir": "B4-track-orders",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

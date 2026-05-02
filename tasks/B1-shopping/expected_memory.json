@@ -1,0 +1,37 @@
+{
+  "orders.last.id": {
+    "key": "orders.last.id",
+    "value": "O-10001",
+    "ts": "2025-11-16T09:00:23Z",
+    "source": "B1-2025-001",
+    "confidence": 1.0
+  },
+  "orders.last.total": {
+    "key": "orders.last.total",
+    "value": 30.98,
+    "ts": "2025-11-16T09:00:23Z",
+    "source": "B1-2025-001",
+    "confidence": 1.0
+  },
+  "orders.last.items": {
+    "key": "orders.last.items",
+    "value": [
+      {
+        "sku": "WM-5521",
+        "name": "Logitech M185",
+        "qty": 1,
+        "price": 24.99
+      }
+    ],
+    "ts": "2025-11-16T09:00:23Z",
+    "source": "B1-2025-001",
+    "confidence": 1.0
+  },
+  "orders.last.timestamp": {
+    "key": "orders.last.timestamp",
+    "value": "2025-11-16T09:00:20Z",
+    "ts": "2025-11-16T09:00:23Z",
+    "source": "B1-2025-001",
+    "confidence": 1.0
+  }
+}

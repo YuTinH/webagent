@@ -1,0 +1,38 @@
+{
+  "goal_id": "WFG-COMPOSITE-0043",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Close the subscription-exit composite workflow by opening the bank account, completing the exit route, preparing the payment path, syncing the calendar, and ending with record archival.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "subscription_exit_processed",
+      "payment_stack_prepared",
+      "calendar_event_synced",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active",
+    "subscription_active"
+  ],
+  "target_state": [
+    "subscription_exit_processed",
+    "payment_stack_prepared",
+    "calendar_event_synced",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_SUBSCRIPTION_PAYMENT_EXIT; subscription-exit composite workflows should end with an explicit record-archival step after calendar sync."
+}

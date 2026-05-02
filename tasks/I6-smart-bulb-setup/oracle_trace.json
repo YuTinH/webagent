@@ -1,0 +1,38 @@
+{
+  "task_id": "I6-2025-SMARTBULB",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/energy.local/bulb-setup.html?clean=true&task=I6-2025-SMARTBULB"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#device-id",
+      "value": "BULB-101"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#location",
+      "value": "Bedroom"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#color",
+      "value": "rgb"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button.btn.pri.lg"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#devices-list:has-text('Bedroom')"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "task_id": "B8-2025-HOUSEKEEPING",
+  "family": "B",
+  "goal": "Complete the following task: book a deep cleaning session for 2026-01-18 at 13:00.",
+  "inputs": {
+    "service_type": "deep_cleaning",
+    "service_date": "2026-01-18",
+    "service_time": "13:00",
+    "instructions": "Focus on kitchen and bathroom"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('local_services.housekeeping_bookings.last.status') == 'confirmed'",
+    "mem('local_services.housekeeping_bookings.last.type') == 'deep_cleaning'",
+    "mem('local_services.housekeeping_bookings.last.date') == '2026-01-18'",
+    "mem('local_services.housekeeping_bookings.last.time') == '13:00'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_b3_1",
+      "name": "cp_b3 checkpoint 1",
+      "assertion": "mem('local_services.housekeeping_bookings.last.status') == 'confirmed'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_b3_2",
+      "name": "cp_b3 checkpoint 2",
+      "assertion": "mem('local_services.housekeeping_bookings.last.type') == 'deep_cleaning'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_b3_3",
+      "name": "cp_b3 checkpoint 3",
+      "assertion": "mem('local_services.housekeeping_bookings.last.date') == '2026-01-18'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_b3_4",
+      "name": "cp_b3 checkpoint 4",
+      "assertion": "mem('local_services.housekeeping_bookings.last.time') == '13:00'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "housekeeping_booking",
+  "canonical_task_dir": "B8-housekeeping-booking",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

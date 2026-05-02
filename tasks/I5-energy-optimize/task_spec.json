@@ -1,0 +1,40 @@
+{
+  "task_id": "I5-2025-ENERGY",
+  "family": "I",
+  "goal": "Your task is to switch to an eco-friendly energy plan.",
+  "inputs": {
+    "meterId": "M-321",
+    "plan": "green_offpeak"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('meters.M-321.plan') == 'green_offpeak'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('meters.M-321.plan') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('meters.M-321.plan') == 'green_offpeak'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    }
+  ],
+  "allowed_domains": [
+    "energy.local"
+  ],
+  "module_group": "energy_optimize",
+  "canonical_task_dir": "I5-energy-optimize",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

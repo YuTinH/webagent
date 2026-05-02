@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-CRISIS-0286",
+  "theme": "crisis",
+  "difficulty": 8,
+  "instruction": "During the crisis workflow, restore access, contain the account, complete intake as needed, review the account balance, and secure liquidity before you stop.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "account_access_contained",
+      "crisis_intake_completed",
+      "emergency_liquidity_secured",
+      "account_balance_reviewed"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "password_reset_completed",
+    "account_access_contained",
+    "crisis_intake_completed",
+    "emergency_liquidity_secured",
+    "account_balance_reviewed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CRISIS_ZTRAIN_09_ACCESS_LIQUIDITY_DUAL; access-liquidity crisis workflows should include an explicit balance review before closure."
+}

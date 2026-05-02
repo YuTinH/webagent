@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - Repair Requests</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">Home</a>
+        <a href="../shop.local/orders.html">Orders</a>
+        <a href="../shop.local/repairs.html" class="active">Repair Requests</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Appliance Repair</h1>
+      <button id="open-submit-repair-btn" class="btn pri" onclick="openSubmitRepairModal()">Submit Request</button>
+    </div>
+
+    <div id="repair-requests-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Repair requests loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const repairParams = new URLSearchParams(window.location.search);
+  const requestedRepairTaskId = repairParams.get('task') || 'I1-2025-REPAIR';
+  const repairTaskId = resolveTaskId(requestedRepairTaskId);
+
+  async function loadRepairRequests() {
+    const list = document.getElementById('repair-requests-list');
+    list.innerHTML = '<div class="loading">Loading repair requests...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const requests = env.repairs?.requests || {};
+      
+      if (Object.keys(requests).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🛠️</div>
+            <div style="color:var(--muted)">No repair requests submitted yet.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(requests).map(([id, req]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${req.item || ''} - ${req.problem || ''} (#${id})</h3>
+              <div style="color:var(--muted); font-size:14px">Date: ${req.service_date || 'N/A'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">Status: <span class="badge ${req.status === 'completed' ? 'ok' : 'warn'}">${req.status}</span></div>
+              <div style="color:var(--muted); font-size:13px">Submitted: ${req.submitted_at || 'N/A'}</div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button id="view-repair-status-${id}" class="btn" onclick="trackRequest('${id}')">View Status</button>
+            <button id="cancel-repair-${id}" class="btn secondary" onclick="cancelRequest('${id}')" ${req.status === 'completed' || req.status === 'cancelled' ? 'disabled' : ''}>Cancel Request</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openSubmitRepairModal() {
+    new Modal({
+      title: 'Submit Repair Request',
+      content: `
+        <div class="form">
+          <label>Item Name</label>
+          <input id="item-name" class="input" placeholder="Washing machine, laptop, water heater">
+          
+          <label>Problem Description</label>
+          <textarea id="problem-description" class="input" rows="3" placeholder="Describe the issue and any troubleshooting already tried."></textarea>
+          
+          <label>Preferred Service Date</label>
+          <input id="service-date" type="date" class="input">
+
+          <label>Contact Phone</label>
+          <input id="contact-phone" class="input" placeholder="138-0000-0000">
+        </div>
+      `,
+      confirmText: 'Submit Request',
+      onConfirm: async () => {
+        const item = document.getElementById('item-name').value;
+        const problem = document.getElementById('problem-description').value;
+        const serviceDate = document.getElementById('service-date').value;
+        const contactPhone = document.getElementById('contact-phone').value;
+        
+        if (!item || !problem || !serviceDate) {
+          Toast.error("Enter the item, problem description, and preferred service date.");
+          return;
+        }
+        
+        await send(repairTaskId, 'submit_repair_request', {
+          item: item,
+          problem: problem,
+          service_date: serviceDate,
+          contact_phone: contactPhone
+        });
+        
+        setTimeout(loadRepairRequests, 500);
+      }
+    }).open();
+  }
+
+  function trackRequest(id) {
+    Toast.info(`Viewing repair request ${id}.`);
+  }
+
+  function cancelRequest(id) {
+    new Modal({
+      title: 'Cancel Repair Request',
+      content: `Cancel repair request ${id}?`,
+      confirmText: 'Cancel Request',
+      onConfirm: async () => {
+        await send(repairTaskId, 'cancel_repair_request', {
+          request_id: id
+        });
+        setTimeout(loadRepairRequests, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadRepairRequests);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

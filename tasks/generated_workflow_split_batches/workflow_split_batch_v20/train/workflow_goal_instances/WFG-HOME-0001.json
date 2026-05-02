@@ -1,0 +1,42 @@
+{
+  "goal_id": "WFG-HOME-0001",
+  "theme": "home",
+  "difficulty": 7,
+  "instruction": "Close the home-automation workflow by activating utilities, configuring energy control, setting the thermostat schedule, and ending with monitoring confirmed, and finish with a synced control follow-up calendar.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "must_avoid": [
+      "utilities_left_inactive"
+    ],
+    "preferred_outcomes": [
+      "utilities_active",
+      "energy_control_configured",
+      "thermostat_schedule_configured",
+      "home_service_monitored",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "utilities_active",
+    "energy_control_configured",
+    "thermostat_schedule_configured",
+    "home_service_monitored",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HOME_ENERGY_CONTROL; energy-control home workflows should schedule a follow-up after monitoring and thermostat setup."
+}

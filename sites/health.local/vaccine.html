@@ -1,0 +1,139 @@
+<script>window.RelRoot = "../";</script>
+<!doctype html><meta charset="utf-8"><title>Vaccination - Health Connect</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<script src="../static/common.js"></script>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo" style="background: linear-gradient(135deg, #10b981, #6ee7b7)"></div>
+      Health Connect
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="doctors.html">Doctors</a>
+      <a href="records.html">My Records</a>
+      <a href="plan.html">Health Plan</a>
+      <a href="vaccine.html" class="active">Vaccine</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs"><a href="index.html">Home</a> / <span>Vaccination</span></div>
+
+  <h1 style="margin-bottom: 24px">My Vaccination Records</h1>
+  
+  <div id="records-list" class="card mb-4">
+    <div style="text-align:center; padding:40px; color:var(--muted)">
+      No vaccination records found.
+    </div>
+  </div>
+
+  <h2 style="margin-top: 40px; margin-bottom: 24px">Book a Vaccination</h2>
+  <div class="card">
+    <div class="mb-4">
+      <label class="muted">Vaccine Type</label>
+      <select id="vaccine-type" class="input mt-1">
+        <option value="">Select a vaccine</option>
+        <option value="flu">Flu Shot</option>
+        <option value="covid">COVID-19 Booster</option>
+        <option value="covid_booster">COVID-19 Booster Plus</option>
+        <option value="mmr">MMR</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="muted">Appointment Date</label>
+      <input type="date" id="appt-date" class="input mt-1">
+    </div>
+    <div class="mb-4">
+      <label class="muted">Appointment Time</label>
+      <select id="appt-time" class="input mt-1">
+        <option value="">Select a time</option>
+        <option value="09:00">09:00 AM</option>
+        <option value="10:00">10:00 AM</option>
+        <option value="11:00">11:00 AM</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="muted">Clinic</label>
+      <select id="appt-clinic" class="input mt-1">
+        <option value="">Select a clinic</option>
+        <option value="City Health Clinic">City Health Clinic</option>
+        <option value="Central Hospital">Central Hospital</option>
+        <option value="Harbor Family Clinic">Harbor Family Clinic</option>
+      </select>
+    </div>
+    <button class="btn pri" id="book-vaccine-btn" onclick="bookVaccination()">Book Appointment</button>
+  </div>
+</div>
+
+<script>
+const vaccineParams = new URLSearchParams(window.location.search);
+const requestedVaccineTaskId = vaccineParams.get('task') || 'G6-2025-VACCINE';
+const vaccineTaskId = resolveTaskId(requestedVaccineTaskId);
+
+function renderBookedCard(record) {
+  const list = document.getElementById('records-list');
+  list.innerHTML = `
+    <div class="card mb-3">
+      <div class="flex justify-between items-center">
+        <div>
+          <div class="title">${record.type.toUpperCase()}</div>
+          <p class="muted text-sm">Date: ${record.date} | Time: ${record.time} | Clinic: ${record.clinic}</p>
+        </div>
+        <span class="badge ok">Booked</span>
+      </div>
+    </div>
+  `;
+}
+
+async function init() {
+  try {
+    const env = await loadEnv();
+    const vaccines = env.health?.vaccines || {};
+    const entries = Object.values(vaccines).filter(v => typeof v === 'object' && v);
+    if (entries.length > 0) {
+      const latest = entries[entries.length - 1];
+      renderBookedCard({
+        type: latest.type,
+        date: latest.date,
+        time: latest.time,
+        clinic: latest.clinic || 'Unknown clinic'
+      });
+      return;
+    }
+  } catch(e) {
+    console.warn("Could not load vaccine records from env.");
+  }
+}
+
+async function bookVaccination() {
+  const type = document.getElementById('vaccine-type').value;
+  const date = document.getElementById('appt-date').value;
+  const time = document.getElementById('appt-time').value;
+  const clinic = document.getElementById('appt-clinic').value;
+  
+  if (!type || !date || !time || !clinic) {
+    Toast.error('Please select the vaccine, date, time, and clinic.');
+    return;
+  }
+  
+  const response = await send(vaccineTaskId, 'book_vaccine', {
+    type: type,
+    date: date,
+    time: time,
+    clinic: clinic
+  });
+  renderBookedCard({ type, date, time, clinic });
+  if (response && response.redirect) {
+    Toast.success('Vaccination booked!');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  init();
+});
+</script>

@@ -1,0 +1,48 @@
+{
+  "task_id": "G7-2025-HEALTH",
+  "family": "G",
+  "goal": "Refill prescription RX-1001 (Amoxicillin 250mg).",
+  "inputs": {
+    "prescriptionId": "RX-1001",
+    "medication": "Amoxicillin 250mg"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes(\"/health.local/records.html\")",
+    "json(\"env\",\"health.prescriptions.RX-1001.refills_left\") == 1",
+    "json(\"env\",\"health.prescriptions.RX-1001.last_refill\") != \"\""
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "url().includes(\"/health.local/records.html\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "json(\"env\",\"health.prescriptions.RX-1001.refills_left\") == 1",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "json(\"env\",\"health.prescriptions.RX-1001.last_refill\") != \"\"",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "health.local"
+  ],
+  "module_group": "prescription_refill",
+  "canonical_task_dir": "G7-prescription-refill",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,35 @@
+{
+  "task_id": "G7-2025-HEALTH",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/records.html",
+      "note": "Open health records page"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button[data-rx-id='RX-1001']",
+      "note": "Click 'Order Refill' button for RX-1001"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#refill-form",
+      "note": "Wait for refill form to load"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": "button.btn-submit",
+      "note": "Request Refill"
+    },
+    {
+      "t": 10,
+      "act": "wait",
+      "selector": "#records-list",
+      "note": "Wait for records page to reload/update"
+    }
+  ]
+}

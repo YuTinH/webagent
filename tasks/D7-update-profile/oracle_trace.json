@@ -1,0 +1,31 @@
+{
+  "task_id": "D7-2025-SPENDPROFILE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/budget.html?clean=true&task=D7-2025-SPENDPROFILE"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": ".budget-item[data-category='food'] .btn-edit"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-limit",
+      "value": "450"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": ".btn-save"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#limit-food"
+    }
+  ]
+}

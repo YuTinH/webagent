@@ -1,0 +1,43 @@
+{
+  "task_id": "H4-2025-PARKING",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/parking-permits.html?clean=true&task=H4-2025-PARKING"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#open-apply-permit"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#plate-number",
+      "value": "C-55021"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#permit-type",
+      "value": "residential"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#duration-months",
+      "value": "3"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#permits-list .badge.ok"
+    }
+  ]
+}

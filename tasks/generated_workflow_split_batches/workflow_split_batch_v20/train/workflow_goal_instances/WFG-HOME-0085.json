@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-HOME-0085",
+  "theme": "home",
+  "difficulty": 7,
+  "instruction": "Close the energy-device workflow by activating utilities, preparing the control path, confirming device readiness, and ending with thermostat scheduling complete, and finish with a synced device follow-up calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "utilities_active",
+      "energy_control_configured",
+      "home_device_readiness_confirmed",
+      "thermostat_schedule_configured",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "utilities_active",
+    "energy_control_configured",
+    "home_device_readiness_confirmed",
+    "thermostat_schedule_configured",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HOME_DEVICE_ENERGY_BALANCE_LOOP; energy-device balance workflows should end with a scheduled follow-up after the final control step."
+}

@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-CAREER-0040",
+  "theme": "career",
+  "difficulty": 8,
+  "instruction": "Finish the submission-deadline workflow only after the paper is submitted, deadlines are coordinated, records are archived, and the professional profile is updated to reflect the submission.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "paper_submitted",
+      "deadline_coordination_recorded",
+      "receipt_archived",
+      "professional_profile_updated"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "paper_submitted",
+    "deadline_coordination_recorded",
+    "receipt_archived",
+    "professional_profile_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CAREER_SUBMISSION_DEADLINE_SYNC; submission-deadline workflows should end with an explicit profile update after calendar coordination and archiving."
+}

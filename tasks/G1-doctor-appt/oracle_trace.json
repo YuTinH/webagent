@@ -1,0 +1,38 @@
+{
+  "task_id": "G1-2025-HEALTH",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/appointments.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#appointmentId",
+      "value": "APT-9060"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#doctorId",
+      "value": "DR-015"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#slot",
+      "value": "2025-12-14T10:20"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#book-appointment-btn"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "body"
+    }
+  ]
+}

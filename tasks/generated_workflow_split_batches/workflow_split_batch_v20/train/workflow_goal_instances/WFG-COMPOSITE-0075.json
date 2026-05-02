@@ -1,0 +1,40 @@
+{
+  "goal_id": "WFG-COMPOSITE-0075",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Finish the visibility-payment packet only after the calendar is synced, delivery visibility is confirmed, the payment path is prepared, order tracking is open, and the record is archived.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "calendar_event_synced",
+      "delivery_visibility_confirmed",
+      "payment_stack_prepared",
+      "order_tracking_opened",
+      "receipt_archived"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active",
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "calendar_event_synced",
+    "delivery_visibility_confirmed",
+    "payment_stack_prepared",
+    "order_tracking_opened",
+    "receipt_archived"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_VISIBILITY_PAYMENT_STACK; visibility-payment composite workflows should close with explicit archival after the payment and tracking steps."
+}

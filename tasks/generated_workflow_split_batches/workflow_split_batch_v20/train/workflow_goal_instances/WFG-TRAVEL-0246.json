@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-TRAVEL-0246",
+  "theme": "travel",
+  "difficulty": 7,
+  "instruction": "Close the clearance route by confirming travel clearance first, arranging transfer and commute readiness, and ending with completed check-in.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "flight_booked",
+      "mobility_clearance_verified",
+      "visa_requirements_checked",
+      "airport_transfer_arranged",
+      "commute_route_checked",
+      "check_in_completed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "flight_booked",
+    "mobility_clearance_verified",
+    "visa_requirements_checked",
+    "airport_transfer_arranged",
+    "commute_route_checked",
+    "check_in_completed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_TRAVEL_ZTRAIN_05_BOOKING_CLEARANCE_DUAL; booking-clearance travel workflows should continue through check-in rather than stopping at commute prep."
+}

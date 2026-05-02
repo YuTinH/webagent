@@ -1,0 +1,31 @@
+{
+  "task_id": "D9-2025-TRANSPORTBUDGET",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/budget.html?clean=true&task=D9-2025-TRANSPORTBUDGET"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": ".budget-item[data-category='transport'] .btn-edit"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-limit",
+      "value": "150"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": ".btn-save"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#limit-transport"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-FINANCE-0172",
+  "theme": "finance",
+  "difficulty": 7,
+  "instruction": "Finish the active-investment packet only after the investment account is active, the transfer is completed, the budget limit is updated, the receipt trail is archived, and the investment follow-up is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "investment_account_active",
+      "transfer_completed",
+      "budget_limit_updated",
+      "receipt_archived",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "investment_account_active",
+    "transfer_completed",
+    "budget_limit_updated",
+    "receipt_archived",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_TRANSFER_INVESTMENT; active-investment finance workflows should schedule a follow-up after archival."
+}

@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-SOCIAL-0323",
+  "theme": "social",
+  "difficulty": 7,
+  "instruction": "Finish the social contribution packet only after the RSVP is completed, the social commitment is recorded, the contribution is completed, shared expenses are settled, and the event ticket is booked, and finish with the event follow-up synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "event_rsvp_completed",
+      "social_commitment_recorded",
+      "social_contribution_completed",
+      "shared_expenses_settled",
+      "event_ticket_booked",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "event_rsvp_completed",
+    "social_commitment_recorded",
+    "social_contribution_completed",
+    "shared_expenses_settled",
+    "event_ticket_booked",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SOCIAL_ZTRAIN_13_COMMITMENT_CONTRIBUTION_DUAL; social RSVP-and-settlement workflows should end with a calendar handoff after ticketing."
+}

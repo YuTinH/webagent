@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-NEWCOMER-0218",
+  "theme": "newcomer",
+  "difficulty": 7,
+  "instruction": "Finish the newcomer finance-switch packet only after housing finance is prepared, the address is confirmed, the bank account is active, mobile service is active, and the mobile plan is updated.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "housing_finance_prepared",
+      "address_confirmation_verified",
+      "bank_account_active",
+      "mobile_service_active",
+      "mobile_plan_updated"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "housing_finance_prepared",
+    "address_confirmation_verified",
+    "bank_account_active",
+    "mobile_service_active",
+    "mobile_plan_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 75,
+  "max_module_invocations": 6,
+  "notes": "Generated from BP_NEWCOMER_ZTRAIN_02_PROOF_BANK_DUAL; newcomer finance/bootstrap flows should continue past bank activation into a live mobile-service and plan-update closure."
+}

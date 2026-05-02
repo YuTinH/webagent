@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nebula Bank - Autopay</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+<div class="navbar">
+  <div class="inner"><div class="brand">Nebula Bank</div></div>
+</div>
+<div class="container" style="max-width:600px">
+    <h1>Set Up Autopay</h1>
+    <div class="card soft" id="autopay-form-container">
+        <div class="form">
+            <div class="form-group">
+                <label>Payee</label>
+                <input type="text" id="payee" class="input" value="Electricity Dept">
+            </div>
+            <div class="form-group">
+                <label>Account Number (AccountNumber)</label>
+                <input type="text" id="account-number" class="input" placeholder="Enter Account Number">
+            </div>
+            <div class="form-group">
+                <label>Monthly Limit</label>
+                <input type="number" id="amount" class="input" value="200">
+            </div>
+            <button type="button" id="setup-btn" class="btn pri lg" style="width:100%" onclick="setupAutopay()">Confirm</button>
+        </div>
+    </div>
+    <div id="success-card" class="card ok" style="display:none; background:#e8f5e9; color:#2e7d32; padding:20px; border-radius:8px">
+        <h2>✅ Success</h2>
+        <p>Autopay has been activated.</p>
+        <p id="success-summary"></p>
+    </div>
+</div>
+
+<script>
+window.RelRoot = "../";
+const urlParams = new URLSearchParams(window.location.search);
+const requestedAutopayTaskId = urlParams.get('task') || 'D3-2025-AUTOPAY';
+const autopayTaskId = resolveTaskId(requestedAutopayTaskId);
+
+function getAutopayPrefill(key, fallback = '') {
+    if (key === 'account_number') {
+        return urlParams.get('acc') || fallback;
+    }
+    return urlParams.get(key) || fallback;
+}
+
+document.getElementById('payee').value = getAutopayPrefill('payee', '');
+document.getElementById('account-number').value = getAutopayPrefill('account_number', '');
+document.getElementById('amount').value = getAutopayPrefill('amount', '');
+if (urlParams.get('state') === 'active') {
+    document.getElementById('autopay-form-container').style.display = 'none';
+    document.getElementById('success-card').style.display = 'block';
+    const payee = getAutopayPrefill('payee', document.getElementById('payee').value);
+    const acc = getAutopayPrefill('account_number', document.getElementById('account-number').value);
+    const amount = getAutopayPrefill('amount', document.getElementById('amount').value);
+    document.getElementById('success-summary').textContent = `${payee} · ${acc} · limit ${amount}`;
+}
+
+async function setupAutopay() {
+    const payee = document.getElementById('payee').value.trim();
+    const acc = document.getElementById('account-number').value;
+    const amount = document.getElementById('amount').value;
+    if (!payee) { Toast.error("Please enter payee"); return; }
+    if (!acc) { Toast.error("Please enter account number"); return; }
+    if (!amount || Number(amount) <= 0) { Toast.error("Please enter a valid monthly limit"); return; }
+    await send(autopayTaskId, 'setup_autopay', {
+        payee: payee,
+        account_number: acc,
+        amount: amount
+    });
+}
+</script>

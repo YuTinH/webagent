@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowModuleBinding",
+  "description": "Template-level execution and evaluation binding from a reusable workflow module to the current atomic task library.",
+  "type": "object",
+  "required": [
+    "binding_id",
+    "module_id",
+    "backing_task_id",
+    "task_dir",
+    "description_template",
+    "default_parameter_values",
+    "observable_templates",
+    "writes_memory",
+    "writes_env"
+  ],
+  "properties": {
+    "binding_id": {
+      "type": "string",
+      "description": "Unique execution-binding ID for one concrete atomic-task binding under a workflow module."
+    },
+    "module_id": {
+      "type": "string",
+      "description": "Workflow module ID defined in the core module library. Multiple bindings may share the same module_id."
+    },
+    "backing_task_id": {
+      "type": "string",
+      "description": "Atomic task ID used to execute this module in the current task library."
+    },
+    "task_dir": {
+      "type": "string",
+      "description": "Task directory providing the current execution binding."
+    },
+    "description_template": {
+      "type": "string",
+      "description": "Parameterized description with placeholders aligned to parameter names."
+    },
+    "default_parameter_values": {
+      "type": "object",
+      "description": "Default or seed parameter values inferred from the current bound task instance."
+    },
+    "observable_templates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Parameterized success signals with placeholders aligned to parameter names."
+    },
+    "seed_example": {
+      "type": "object",
+      "description": "One concrete instantiation exported from the current bound task library. This is illustrative, not fixed benchmark content.",
+      "required": ["description", "observables"],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "observables": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "writes_memory": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Memory keys expected to be written by the current bound task."
+    },
+    "writes_env": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Environment state paths expected to be written by the current bound task."
+    }
+  },
+  "additionalProperties": false
+}

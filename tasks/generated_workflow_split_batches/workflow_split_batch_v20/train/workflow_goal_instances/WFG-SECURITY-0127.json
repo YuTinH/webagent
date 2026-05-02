@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-SECURITY-0127",
+  "theme": "security",
+  "difficulty": 8,
+  "instruction": "Finish the account-exit security workflow only after export-or-privacy prep is completed, the password vault is updated, deletion is requested, the security audit is completed, and the follow-up is synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "account_exit_prepared",
+      "access_surface_reviewed",
+      "credential_vault_updated",
+      "deletion_request_submitted",
+      "security_audit_completed",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "account_exit_prepared",
+    "access_surface_reviewed",
+    "credential_vault_updated",
+    "deletion_request_submitted",
+    "security_audit_completed",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_EXIT_PRIVACY_ALIGNMENT; account-exit security workflows should carry a concrete follow-up reminder after deletion and audit closure."
+}

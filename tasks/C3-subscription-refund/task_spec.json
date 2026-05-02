@@ -1,0 +1,71 @@
+{
+  "task_id": "C3-2025-REFUND",
+  "family": "C",
+  "goal": "Request a prorated refund for subscription SUB-8821 because the service is no longer needed.",
+  "inputs": {
+    "subscription_id": "SUB-8821",
+    "reason": "Service is no longer needed."
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('support.refund_requests.last.subscription_id') == 'SUB-8821'",
+    "mem('support.refund_requests.last.status') == 'processing'",
+    "mem('support.refund_requests.last.estimated_refund') == '133.33'",
+    "mem('support.refund_requests.last.reason') includes 'Service'",
+    "exists(\"#refund-requests-list .card\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_c3_1",
+      "name": "cp_c3 checkpoint 1",
+      "assertion": "mem('support.refund_requests.last.subscription_id') == 'SUB-8821'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_c3_2",
+      "name": "cp_c3 checkpoint 2",
+      "assertion": "mem('support.refund_requests.last.status') == 'processing'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_c3_3",
+      "name": "cp_c3 checkpoint 3",
+      "assertion": "mem('support.refund_requests.last.estimated_refund') == '133.33'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_c3_4",
+      "name": "cp_c3 checkpoint 4",
+      "assertion": "mem('support.refund_requests.last.reason') includes 'Service'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_c3_5",
+      "name": "cp_c3 checkpoint 5",
+      "assertion": "exists(\"#refund-requests-list .card\")",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "subscription_refund",
+  "canonical_task_dir": "C3-subscription-refund",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

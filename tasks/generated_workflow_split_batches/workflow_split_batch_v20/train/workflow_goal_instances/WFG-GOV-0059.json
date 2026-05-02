@@ -1,0 +1,35 @@
+{
+  "goal_id": "WFG-GOV-0059",
+  "theme": "government",
+  "difficulty": 8,
+  "instruction": "Finish the civic vehicle workflow only after address confirmation is verified, the permit is activated, and the local vehicle record is brought through final compliance renewal.",
+  "visible_constraints": {
+    "deadline_days": 6,
+    "preferred_outcomes": [
+      "address_confirmation_verified",
+      "parking_permit_active",
+      "local_vehicle_compliance_verified",
+      "permit_renewed"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "address_confirmation_verified",
+    "parking_permit_active",
+    "local_vehicle_compliance_verified",
+    "permit_renewed"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        5,
+        6
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_GOV_LOCAL_VEHICLE_COMPLIANCE; local vehicle workflows should continue through the final permit-renewal checkpoint."
+}

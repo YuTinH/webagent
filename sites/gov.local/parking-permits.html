@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Gov.local - Parking Permits</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🏛️ Gov.local</div>
+      <div class="navlinks">
+        <a href="../gov.local/profile.html">Profile</a>
+        <a href="../gov.local/permits.html">Permits</a>
+        <a href="../gov.local/parking-permits.html" class="active">Parking Permits</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Parking Permits</h1>
+      <button class="btn pri" id="open-apply-permit" onclick="openApplyPermitModal()">Apply for Permit</button>
+    </div>
+
+    <div id="permits-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Permits loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const parkingParams = new URLSearchParams(window.location.search);
+  const requestedParkingTaskId = parkingParams.get('task') || 'H4-2025-PARKING';
+  const parkingTaskId = resolveTaskId(requestedParkingTaskId);
+
+  async function submitParkingPermitApplication() {
+    const plateNumber = document.getElementById('plate-number')?.value;
+    const permitType = document.getElementById('permit-type')?.value;
+    const durationMonths = document.getElementById('duration-months')?.value;
+
+    if (!plateNumber || !permitType || !durationMonths) {
+      Toast.error("Enter the plate number, permit type, and duration.");
+      return false;
+    }
+
+    await send(parkingTaskId, 'manage_parking_permit', {
+      action_type: 'apply',
+      plate_number: plateNumber,
+      permit_type: permitType,
+      duration_months: parseInt(durationMonths)
+    });
+
+    setTimeout(loadPermits, 500);
+    return true;
+  }
+
+  async function loadPermits() {
+    const list = document.getElementById('permits-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const permits = env.gov?.parking_permits || {};
+      
+      if (Object.keys(permits).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🅿️</div>
+            <div style="color:var(--muted)">No parking permits found for this account.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(permits).map(([id, permit]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">Permit #${id}</h3>
+              <div style="color:var(--muted); font-size:14px">Plate: ${permit.plate_number || 'N/A'}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">Expires: ${permit.expiry_date || 'N/A'}</div>
+              <div style="color:var(--muted); font-size:13px">Status: <span class="badge ${permit.status === 'active' ? 'ok' : 'warn'}">${permit.status === 'active' ? 'Active' : (permit.status || 'Pending')}</span></div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button id="renew-parking-permit-${id}" class="btn" onclick="renewPermit('${id}')" ${permit.status !== 'active' ? 'disabled' : ''}>Renew Permit</button>
+            <button id="cancel-parking-permit-${id}" class="btn secondary" onclick="cancelPermit('${id}')">Cancel Permit</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openApplyPermitModal() {
+    const modal = new Modal({
+      title: 'Apply for Parking Permit',
+      content: `
+        <div class="form">
+          <label>Plate Number</label>
+          <input id="plate-number" class="input" placeholder="e.g. A-12345">
+          
+          <label>Permit Type</label>
+          <select id="permit-type" class="input">
+            <option value="">Select permit type</option>
+            <option value="residential">Residential</option>
+            <option value="business">Business</option>
+            <option value="district_resident">District Resident</option>
+            <option value="local_resident">Local Resident</option>
+            <option value="street_parking">Street Parking</option>
+            <option value="resident_night">Resident Night</option>
+            <option value="visitor">Visitor</option>
+          </select>
+
+          <label>Duration (Months)</label>
+          <input id="duration-months" type="number" class="input" min="1" placeholder="3">
+        </div>
+      `,
+      confirmText: 'Submit Application',
+      onConfirm: submitParkingPermitApplication
+    });
+    modal.open();
+  }
+
+  function renewPermit(id) {
+    new Modal({
+      title: `Renew Parking Permit #${id}`,
+      content: `
+        <div class="form">
+          <label>Renewal Duration (Months)</label>
+          <input id="renew-duration-months" type="number" class="input" value="12">
+        </div>
+      `,
+      confirmText: 'Renew Permit',
+      onConfirm: async () => {
+        const durationMonths = document.getElementById('renew-duration-months').value;
+        await send(parkingTaskId, 'manage_parking_permit', {
+          action_type: 'renew',
+          permit_id: id,
+          duration_months: parseInt(durationMonths)
+        });
+        setTimeout(loadPermits, 500);
+      }
+    }).open();
+  }
+
+  function cancelPermit(id) {
+    new Modal({
+      title: 'Cancel Parking Permit',
+      content: `Cancel permit #${id}?`,
+      confirmText: 'Confirm Cancellation',
+      onConfirm: async () => {
+        await send(parkingTaskId, 'manage_parking_permit', {
+          action_type: 'cancel',
+          permit_id: id
+        });
+        setTimeout(loadPermits, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadPermits);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

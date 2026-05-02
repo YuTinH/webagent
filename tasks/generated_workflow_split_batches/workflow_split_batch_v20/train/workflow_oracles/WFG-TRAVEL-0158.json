@@ -1,0 +1,361 @@
+{
+  "goal_id": "WFG-TRAVEL-0158",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full rebook-topup route to completion and do not stop before check-in is completed."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "role": "required",
+      "produces": [
+        "airport_transfer_arranged"
+      ]
+    },
+    {
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "travel_booking_confirmed"
+      ]
+    },
+    {
+      "module_id": "MODULE_CHECK_IN",
+      "role": "required",
+      "produces": [
+        "check_in_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "role": "required",
+      "produces": [
+        "itinerary_rebooked"
+      ]
+    },
+    {
+      "module_id": "MODULE_LONG_HAUL_TRIP",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "mobility_clearance_verified",
+        "travel_booking_confirmed",
+        "trip_booked",
+        "visa_approved"
+      ]
+    },
+    {
+      "module_id": "MODULE_TRANSPORT_TOPUP",
+      "role": "required",
+      "produces": [
+        "transit_balance_topped_up"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_AIRPORT_TRANSFER",
+      "to": "MODULE_TRANSPORT_TOPUP",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_BOOK_FLIGHT",
+      "to": "MODULE_FLIGHT_REBOOKING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FLIGHT_REBOOKING",
+      "to": "MODULE_AIRPORT_TRANSFER",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_LONG_HAUL_TRIP",
+      "to": "MODULE_FLIGHT_REBOOKING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_TRANSPORT_TOPUP",
+      "to": "MODULE_CHECK_IN",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_flight_rebook_transfer_topup_checkin",
+      "required_modules": [
+        "MODULE_BOOK_FLIGHT",
+        "MODULE_FLIGHT_REBOOKING",
+        "MODULE_AIRPORT_TRANSFER",
+        "MODULE_TRANSPORT_TOPUP",
+        "MODULE_CHECK_IN"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-TRAVEL-0158-M1",
+        "WFG-TRAVEL-0158-M2",
+        "WFG-TRAVEL-0158-M3",
+        "WFG-TRAVEL-0158-M4",
+        "WFG-TRAVEL-0158-M5"
+      ],
+      "terminal_predicates": [
+        "flight_booked",
+        "itinerary_rebooked",
+        "airport_transfer_arranged",
+        "transit_balance_topped_up",
+        "check_in_completed"
+      ]
+    },
+    {
+      "path_id": "path_longhaul_rebook_transfer_topup_checkin",
+      "required_modules": [
+        "MODULE_LONG_HAUL_TRIP",
+        "MODULE_FLIGHT_REBOOKING",
+        "MODULE_AIRPORT_TRANSFER",
+        "MODULE_TRANSPORT_TOPUP",
+        "MODULE_CHECK_IN"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-TRAVEL-0158-M6",
+        "WFG-TRAVEL-0158-M7",
+        "WFG-TRAVEL-0158-M8",
+        "WFG-TRAVEL-0158-M9",
+        "WFG-TRAVEL-0158-M10"
+      ],
+      "terminal_predicates": [
+        "flight_booked",
+        "itinerary_rebooked",
+        "airport_transfer_arranged",
+        "transit_balance_topped_up",
+        "check_in_completed"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M1",
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "binding_id": "BIND_E1_BOOK_FLIGHT",
+      "binding_task_id": "E1-2025-FLIGHT",
+      "parameter_values": {
+        "departure": "北京",
+        "destination": "上海",
+        "depart_date": "2025-12-31",
+        "passengers": "1",
+        "class": "economy",
+        "flight_number": "CA1881",
+        "price": 450.0
+      },
+      "description": "Book a flight from 北京 to 上海 on 2025-12-31 for 1 passenger.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M2",
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "binding_id": "BIND_E6_FLIGHT_CHANGE",
+      "binding_task_id": "E6-2025-FLIGHTCHANGE",
+      "parameter_values": {},
+      "description": "Rebook flight PNR9ZZ with the flexible change policy for 2025-01-18.",
+      "expected_observables": [
+        "text('#ticket-status') == 'Rebooked'",
+        "text('#status-message') includes '2025-01-18'",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "itinerary_rebooked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M3",
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "binding_id": "BIND_E3_AIRPORT_TRANSFER",
+      "binding_task_id": "E3-2025-TRANSFER",
+      "parameter_values": {},
+      "description": "Book airport transfer and choose self_drive when the vehicle is healthy, otherwise choose taxi.",
+      "expected_observables": [
+        "ANY[ALL[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken'], mem('trips.transfer.method') == 'taxi'], ALL[NOT[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken']], mem('trips.transfer.method') == 'self_drive']]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "airport_transfer_arranged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M4",
+      "module_id": "MODULE_TRANSPORT_TOPUP",
+      "binding_id": "BIND_E9_TRANSPORT_TOPUP",
+      "binding_task_id": "E9-2025-TOPUP",
+      "parameter_values": {
+        "topup_amount": "120",
+        "auto_recharge_threshold": 20,
+        "auto_recharge_amount": 50
+      },
+      "description": "Top up the transport card by 120.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "transit_balance_topped_up"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M5",
+      "module_id": "MODULE_CHECK_IN",
+      "binding_id": "BIND_E4_CHECK_IN",
+      "binding_task_id": "E4-2025-CHECKIN",
+      "parameter_values": {},
+      "description": "Online check-in for flight",
+      "expected_observables": [
+        "text(\"#pnr\") == \"PNR9ZZ\"",
+        "text(\"#ticket-status\") == \"Rebooked\"",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "check_in_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M6",
+      "module_id": "MODULE_LONG_HAUL_TRIP",
+      "binding_id": "BIND_E7_LONG_HAUL_TRIP",
+      "binding_task_id": "E7-LONG-HAUL",
+      "parameter_values": {
+        "destination": "Japan",
+        "passport_number": "J24681012"
+      },
+      "description": "Apply for a Japan visa with passport J24681012, wait for approval, then book the Japan flight from Shenzhen on 2026-05-09.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "mobility_clearance_verified",
+          "travel_booking_confirmed",
+          "trip_booked",
+          "visa_approved"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M7",
+      "module_id": "MODULE_FLIGHT_REBOOKING",
+      "binding_id": "BIND_E6_FLIGHT_CHANGE",
+      "binding_task_id": "E6-2025-FLIGHTCHANGE",
+      "parameter_values": {},
+      "description": "Rebook flight PNR9ZZ with the flexible change policy for 2025-01-18.",
+      "expected_observables": [
+        "text('#ticket-status') == 'Rebooked'",
+        "text('#status-message') includes '2025-01-18'",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "itinerary_rebooked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M8",
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "binding_id": "BIND_E3_AIRPORT_TRANSFER",
+      "binding_task_id": "E3-2025-TRANSFER",
+      "parameter_values": {},
+      "description": "Book airport transfer and choose self_drive when the vehicle is healthy, otherwise choose taxi.",
+      "expected_observables": [
+        "ANY[ALL[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken'], mem('trips.transfer.method') == 'taxi'], ALL[NOT[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken']], mem('trips.transfer.method') == 'self_drive']]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "airport_transfer_arranged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M9",
+      "module_id": "MODULE_TRANSPORT_TOPUP",
+      "binding_id": "BIND_E9_TRANSPORT_TOPUP",
+      "binding_task_id": "E9-2025-TOPUP",
+      "parameter_values": {
+        "topup_amount": "120",
+        "auto_recharge_threshold": 20,
+        "auto_recharge_amount": 50
+      },
+      "description": "Top up the transport card by 120.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "transit_balance_topped_up"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0158-M10",
+      "module_id": "MODULE_CHECK_IN",
+      "binding_id": "BIND_E4_CHECK_IN",
+      "binding_task_id": "E4-2025-CHECKIN",
+      "parameter_values": {},
+      "description": "Online check-in for flight",
+      "expected_observables": [
+        "text(\"#pnr\") == \"PNR9ZZ\"",
+        "text(\"#ticket-status\") == \"Rebooked\"",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "check_in_completed"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "flight_booked",
+      "itinerary_rebooked",
+      "airport_transfer_arranged",
+      "transit_balance_topped_up",
+      "check_in_completed"
+    ],
+    "checkpoint_predicates": [
+      "airport_transfer_arranged",
+      "check_in_completed",
+      "flight_booked",
+      "itinerary_rebooked",
+      "mobility_clearance_verified",
+      "transit_balance_topped_up",
+      "travel_booking_confirmed",
+      "trip_booked",
+      "visa_approved"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

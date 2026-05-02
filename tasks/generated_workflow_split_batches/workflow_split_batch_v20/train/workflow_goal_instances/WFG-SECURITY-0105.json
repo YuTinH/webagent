@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-SECURITY-0105",
+  "theme": "security",
+  "difficulty": 8,
+  "instruction": "Close the security-hardening route by reviewing the account surface first, enabling two-factor, rotating secrets, updating the second-factor device, and ending with a completed audit.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "access_surface_reviewed",
+      "two_factor_enabled",
+      "security_hardening_completed",
+      "security_audit_completed",
+      "two_factor_device_updated"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "access_surface_reviewed",
+    "two_factor_enabled",
+    "security_hardening_completed",
+    "security_audit_completed",
+    "two_factor_device_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_SURFACE_TWOFA_ALIGNMENT; security-hardening workflows should continue through explicit second-factor device remediation before the final audit."
+}

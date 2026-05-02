@@ -1,0 +1,49 @@
+{
+  "goal_id": "WFG-CRISIS-0002",
+  "theme": "crisis",
+  "difficulty": 8,
+  "instruction": "Finish the crisis-liquidity workflow only after access is contained, recovery is completed, the credential vault is updated, the account balance is reviewed, and emergency liquidity is secured.",
+  "visible_constraints": {
+    "deadline_days": 1,
+    "preferred_outcomes": [
+      "account_access_contained",
+      "crisis_intake_completed",
+      "password_reset_completed",
+      "account_balance_reviewed",
+      "emergency_liquidity_secured",
+      "credential_vault_updated"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "account_access_contained",
+    "crisis_intake_completed",
+    "password_reset_completed",
+    "account_balance_reviewed",
+    "emergency_liquidity_secured",
+    "credential_vault_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    },
+    {
+      "path": "shared_variable_pools.amount",
+      "type": "numeric_shift",
+      "values": [
+        900,
+        1800
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CRISIS_CARD_LIQUIDITY_CONTAINMENT; crisis-liquidity workflows should continue through credential-vault remediation before balance review and liquidity actions."
+}

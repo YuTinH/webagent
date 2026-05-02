@@ -1,0 +1,64 @@
+{
+  "task_id": "J6-2025-LIBRARY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+    "url": "http://localhost:8014/school.local/library.html?clean=true&task=J6-2025-LIBRARY"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button[onclick='openApplyCardModal()']"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#applicant-name",
+      "value": "王五"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#student-id",
+      "value": "S888999"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#library-card-info .badge.ok"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#book-query",
+      "value": "Playwright in Practice"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": "button[onclick='searchAndReserveBook()']"
+    },
+    {
+      "t": 8,
+      "act": "type",
+      "selector": "#pickup-date",
+      "value": "2026-03-20"
+    },
+    {
+      "t": 9,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 10,
+      "act": "wait",
+      "selector": "#reservations-list .card:has-text('Playwright in Practice')"
+    }
+  ]
+}

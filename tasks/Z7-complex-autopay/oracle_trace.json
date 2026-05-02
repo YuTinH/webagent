@@ -1,0 +1,36 @@
+{
+  "task_id": "Z7-complex-autopay",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/work.local/email.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#email-search",
+      "value": "UTIL-7710"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#email-item-billing-electricity-7710"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#setup-autopay-from-email"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#setup-autopay-from-email"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#success-summary"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowModuleInvocation",
+  "description": "One instantiated use of a reusable workflow module inside a concrete workflow-goal sample.",
+  "type": "object",
+  "required": [
+    "invocation_id",
+    "module_id",
+    "parameter_values",
+    "description",
+    "expected_observables"
+  ],
+  "properties": {
+    "invocation_id": {
+      "type": "string",
+      "description": "Unique invocation identifier within a workflow-goal sample."
+    },
+    "module_id": {
+      "type": "string",
+      "description": "Workflow module ID from the core module library."
+    },
+    "binding_task_id": {
+      "type": "string",
+      "description": "Optional atomic task binding selected for this invocation."
+    },
+    "binding_id": {
+      "type": "string",
+      "description": "Optional binding template ID selected for this invocation."
+    },
+    "parameter_values": {
+      "type": "object",
+      "description": "Concrete parameter values chosen for this invocation."
+    },
+    "description": {
+      "type": "string",
+      "description": "Instantiated natural-language description shown in the current workflow sample."
+    },
+    "expected_observables": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Concrete observable success signals for this invocation."
+    },
+    "instantiated_effects": {
+      "type": "object",
+      "description": "Optional concrete effects derived from parameter values.",
+      "properties": {
+        "adds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "removes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "writes_state": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "instantiated_constraints": {
+      "type": "object",
+      "description": "Optional concrete cost/risk overrides after parameter instantiation."
+    }
+  },
+  "additionalProperties": false
+}

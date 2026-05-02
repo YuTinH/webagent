@@ -1,0 +1,32 @@
+{
+  "task_id": "A1-2025-HOME",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/housing.local/index.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#sort-order",
+      "value": "price_low"
+    },
+    {
+      "t": 2,
+      "act": "open",
+      "url": "http://localhost:8014/housing.local/property.html?id=PROP-EXT-10&clean=true"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#lease-term",
+      "value": "6"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#apply-btn"
+    }
+  ]
+}

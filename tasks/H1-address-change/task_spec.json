@@ -1,0 +1,52 @@
+{
+  "task_id": "H1-2025-ADDRCHANGE",
+  "family": "H",
+  "goal": "Submit an address change to 742 Evergreen Terrace with zip code 12345.",
+  "inputs": {
+    "new_address": "上海市浦东新区张江高科张衡路XXX号",
+    "zip_code": "201203",
+    "proof_document": "proof_of_address.pdf"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('gov.profile.address.verified') == 'true'",
+    "mem('user_profile.address.current_address') == '742 Evergreen Terrace'",
+    "mem('user_profile.address.zip_code') == '12345'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_h1_1",
+      "name": "cp_h1 checkpoint 1",
+      "assertion": "mem('gov.profile.address.verified') == 'true'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h1_2",
+      "name": "cp_h1 checkpoint 2",
+      "assertion": "mem('user_profile.address.current_address') == '742 Evergreen Terrace'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h1_3",
+      "name": "cp_h1 checkpoint 3",
+      "assertion": "mem('user_profile.address.zip_code') == '12345'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "gov.local"
+  ],
+  "module_group": "address_change",
+  "canonical_task_dir": "H1-address-change",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

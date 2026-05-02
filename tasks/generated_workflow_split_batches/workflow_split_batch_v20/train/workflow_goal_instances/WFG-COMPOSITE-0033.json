@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-COMPOSITE-0033",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Close the support-access route by completing the reset first, contacting support, opening tracking, preparing follow-up, and ending with the calendar synced.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "support_contacted",
+      "order_tracking_opened",
+      "order_followup_prepared",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "password_reset_completed",
+    "support_contacted",
+    "order_tracking_opened",
+    "order_followup_prepared",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_SUPPORT_ACCESS_SYNC; support-access composite workflows should include a calendar-sync closure after support and tracking follow-up."
+}

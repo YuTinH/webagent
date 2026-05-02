@@ -1,0 +1,153 @@
+{
+  "goal_id": "WF-SECURITY-001",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either modular reset (request + completion) or end-to-end recovery, then re-harden 2FA."
+  },
+  "module_nodes": [
+    {"module_id": "MODULE_PASSWORD_RESET_REQUEST", "role": "alternative", "produces": ["password_reset_code_requested"]},
+    {"module_id": "MODULE_PASSWORD_RESET_COMPLETION", "role": "alternative", "produces": ["password_reset_completed"]},
+    {"module_id": "MODULE_PASSWORD_RECOVERY_E2E", "role": "recovery", "produces": ["password_reset_completed", "account_access_restored"]},
+    {"module_id": "MODULE_2FA_SETUP", "role": "required", "produces": ["two_factor_enabled"]},
+    {"module_id": "MODULE_2FA_DEVICE", "role": "required", "produces": ["two_factor_device_updated"]}
+  ],
+  "dependency_edges": [
+    {"from": "MODULE_PASSWORD_RESET_REQUEST", "to": "MODULE_PASSWORD_RESET_COMPLETION", "kind": "hard"},
+    {"from": "MODULE_PASSWORD_RESET_COMPLETION", "to": "MODULE_2FA_SETUP", "kind": "hard"},
+    {"from": "MODULE_PASSWORD_RECOVERY_E2E", "to": "MODULE_2FA_SETUP", "kind": "recovery"},
+    {"from": "MODULE_2FA_SETUP", "to": "MODULE_2FA_DEVICE", "kind": "hard"}
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_reset_then_harden",
+      "required_modules": [
+        "MODULE_PASSWORD_RESET_REQUEST",
+        "MODULE_PASSWORD_RESET_COMPLETION",
+        "MODULE_2FA_SETUP",
+        "MODULE_2FA_DEVICE"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WF-SECURITY-001-M1",
+        "WF-SECURITY-001-M2",
+        "WF-SECURITY-001-M3",
+        "WF-SECURITY-001-M4"
+      ],
+      "terminal_predicates": [
+        "password_reset_completed",
+        "two_factor_enabled",
+        "two_factor_device_updated"
+      ]
+    },
+    {
+      "path_id": "path_e2e_recovery",
+      "required_modules": [
+        "MODULE_PASSWORD_RECOVERY_E2E",
+        "MODULE_2FA_SETUP",
+        "MODULE_2FA_DEVICE"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WF-SECURITY-001-M5",
+        "WF-SECURITY-001-M3",
+        "WF-SECURITY-001-M4"
+      ],
+      "terminal_predicates": [
+        "password_reset_completed",
+        "two_factor_enabled",
+        "two_factor_device_updated"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WF-SECURITY-001-M1",
+      "module_id": "MODULE_PASSWORD_RESET_REQUEST",
+      "binding_task_id": "M5-2025-RESETCODE",
+      "parameter_values": {"username": "orbitfox"},
+      "description": "Request a password reset code for orbitfox.",
+      "expected_observables": [
+        "url().includes('/security.local/reset-password.html')",
+        "exists('#new-password')"
+      ],
+      "instantiated_effects": {
+        "adds": ["password_reset_code_requested"],
+        "writes_state": {"reset_user": "orbitfox"}
+      }
+    },
+    {
+      "invocation_id": "WF-SECURITY-001-M2",
+      "module_id": "MODULE_PASSWORD_RESET_COMPLETION",
+      "binding_task_id": "M6-2025-PWRECOVERY",
+      "parameter_values": {"username": "orbitfox", "code": "482911"},
+      "description": "Complete the password reset for orbitfox using code 482911.",
+      "expected_observables": [
+        "url().includes('/security.local/login.html?reset=success')",
+        "exists('#reset-success')"
+      ],
+      "instantiated_effects": {
+        "adds": ["password_reset_completed"],
+        "writes_state": {"reset_code_used": "482911"}
+      }
+    },
+    {
+      "invocation_id": "WF-SECURITY-001-M3",
+      "module_id": "MODULE_2FA_SETUP",
+      "binding_task_id": "L8-2025-2FASETUP",
+      "parameter_values": {},
+      "description": "Set up 2FA again after recovering the account.",
+      "expected_observables": [
+        "exists(\"div[id='2fa-status']\")"
+      ],
+      "instantiated_effects": {
+        "adds": ["two_factor_enabled"]
+      }
+    },
+    {
+      "invocation_id": "WF-SECURITY-001-M4",
+      "module_id": "MODULE_2FA_DEVICE",
+      "binding_task_id": "L4-2025-2FA",
+      "parameter_values": {"new_device_name": "Pixel 9 Pro", "verification_code": "778899"},
+      "description": "Move 2FA to the new Pixel 9 Pro device.",
+      "expected_observables": [
+        "exists(\"#twofa-history-list .card:has-text('Pixel 9 Pro')\")"
+      ],
+      "instantiated_effects": {
+        "adds": ["two_factor_device_updated"],
+        "writes_state": {"current_2fa_device": "Pixel 9 Pro"}
+      }
+    },
+    {
+      "invocation_id": "WF-SECURITY-001-M5",
+      "module_id": "MODULE_PASSWORD_RECOVERY_E2E",
+      "binding_task_id": "Z5-2025-RESET",
+      "parameter_values": {"username": "orbitfox", "new_password": "OrbitFox#2026"},
+      "description": "Recover the orbitfox account end-to-end and set a fresh password.",
+      "expected_observables": [
+        "url().includes('/security.local/login.html')",
+        "url().includes('reset=success')"
+      ],
+      "instantiated_effects": {
+        "adds": ["password_reset_completed", "account_access_restored"],
+        "writes_state": {"reset_user": "orbitfox"}
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "password_reset_completed",
+      "two_factor_enabled",
+      "two_factor_device_updated"
+    ],
+    "checkpoint_predicates": [
+      "password_reset_code_requested",
+      "password_reset_completed",
+      "two_factor_enabled",
+      "two_factor_device_updated"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.5
+  }
+}

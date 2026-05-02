@@ -1,0 +1,465 @@
+{
+  "goal_id": "WFG-NEWCOMER-0166",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either follow the find-home, lease-registration, address-proof, banking, mobile-activation, and plan-switch route, or follow the find-home, lease-review, utility-backed residency, banking, mobile-activation, and plan-switch route."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_ADDRESS_PROOF",
+      "role": "alternative",
+      "produces": [
+        "address_confirmation_verified",
+        "address_proof_available",
+        "residency_record_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_BANK_OPENING",
+      "role": "required",
+      "produces": [
+        "bank_account_active",
+        "payment_method_available"
+      ]
+    },
+    {
+      "module_id": "MODULE_FIND_HOME",
+      "role": "required",
+      "produces": [
+        "address_known",
+        "housing_secured",
+        "lease_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_LEASE_CONTRACT_REGISTRATION",
+      "role": "alternative",
+      "produces": [
+        "housing_finance_prepared",
+        "lease_record_registered"
+      ]
+    },
+    {
+      "module_id": "MODULE_LEASE_MANAGEMENT_REVIEW",
+      "role": "alternative",
+      "produces": [
+        "housing_finance_prepared",
+        "lease_management_reviewed"
+      ]
+    },
+    {
+      "module_id": "MODULE_MOBILE_PLAN_SIGNUP",
+      "role": "required",
+      "produces": [
+        "mobile_service_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_MOBILE_PLAN_SWITCH",
+      "role": "required",
+      "produces": [
+        "mobile_plan_updated"
+      ]
+    },
+    {
+      "module_id": "MODULE_UTILITY_SETUP",
+      "role": "alternative",
+      "produces": [
+        "address_confirmation_verified",
+        "electricity_active",
+        "residency_record_verified",
+        "utilities_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_ADDRESS_PROOF",
+      "to": "MODULE_BANK_OPENING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_BANK_OPENING",
+      "to": "MODULE_MOBILE_PLAN_SIGNUP",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_FIND_HOME",
+      "to": "MODULE_LEASE_CONTRACT_REGISTRATION",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_FIND_HOME",
+      "to": "MODULE_LEASE_MANAGEMENT_REVIEW",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_LEASE_CONTRACT_REGISTRATION",
+      "to": "MODULE_ADDRESS_PROOF",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_LEASE_MANAGEMENT_REVIEW",
+      "to": "MODULE_UTILITY_SETUP",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_MOBILE_PLAN_SIGNUP",
+      "to": "MODULE_MOBILE_PLAN_SWITCH",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_BANK_OPENING",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_home_register_proof_bank_mobile_switch",
+      "required_modules": [
+        "MODULE_FIND_HOME",
+        "MODULE_LEASE_CONTRACT_REGISTRATION",
+        "MODULE_ADDRESS_PROOF",
+        "MODULE_BANK_OPENING",
+        "MODULE_MOBILE_PLAN_SIGNUP",
+        "MODULE_MOBILE_PLAN_SWITCH"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-NEWCOMER-0166-M1",
+        "WFG-NEWCOMER-0166-M2",
+        "WFG-NEWCOMER-0166-M3",
+        "WFG-NEWCOMER-0166-M4",
+        "WFG-NEWCOMER-0166-M5",
+        "WFG-NEWCOMER-0166-M6"
+      ],
+      "terminal_predicates": [
+        "housing_finance_prepared",
+        "bank_account_active",
+        "mobile_service_active",
+        "residency_record_verified",
+        "mobile_plan_updated"
+      ]
+    },
+    {
+      "path_id": "path_home_review_utility_bank_mobile_switch",
+      "required_modules": [
+        "MODULE_FIND_HOME",
+        "MODULE_LEASE_MANAGEMENT_REVIEW",
+        "MODULE_UTILITY_SETUP",
+        "MODULE_BANK_OPENING",
+        "MODULE_MOBILE_PLAN_SIGNUP",
+        "MODULE_MOBILE_PLAN_SWITCH"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-NEWCOMER-0166-M7",
+        "WFG-NEWCOMER-0166-M8",
+        "WFG-NEWCOMER-0166-M9",
+        "WFG-NEWCOMER-0166-M10",
+        "WFG-NEWCOMER-0166-M11",
+        "WFG-NEWCOMER-0166-M12"
+      ],
+      "terminal_predicates": [
+        "housing_finance_prepared",
+        "bank_account_active",
+        "mobile_service_active",
+        "residency_record_verified",
+        "mobile_plan_updated"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M1",
+      "module_id": "MODULE_FIND_HOME",
+      "binding_id": "BIND_A1_FIND_HOME",
+      "binding_task_id": "A1-2025-HOME",
+      "parameter_values": {
+        "propertyId": "PROP-EXT-10",
+        "leaseTerm": "6"
+      },
+      "description": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $2600/month, then pick the largest area. Set lease term to 6 months and then apply.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M2",
+      "module_id": "MODULE_LEASE_CONTRACT_REGISTRATION",
+      "binding_id": "BIND_A5_LEASE_MANAGEMENT",
+      "binding_task_id": "A5-2025-LEASE",
+      "parameter_values": {
+        "lease_id": "CTR-2101",
+        "rent": "1200",
+        "deposit": 3500,
+        "end_date": "2027-06-30"
+      },
+      "description": "Add lease contract CTR-2101 with monthly rent 1200 ending on 2027-06-30.",
+      "expected_observables": [
+        "json('env','housing.leases.CTR-2101.status') == 'active'",
+        "json('env','housing.leases.CTR-2101.end_date') == '2027-06-30'",
+        "json('env','housing.leases.CTR-2101.rent') == '1200'",
+        "exists(\"#leases-list .lease-card:has-text('Contract #CTR-2101')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "housing_finance_prepared",
+          "lease_record_registered"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M3",
+      "module_id": "MODULE_ADDRESS_PROOF",
+      "binding_id": "BIND_A6_ADDRESS_PROOF",
+      "binding_task_id": "A6-2025-PROOF",
+      "parameter_values": {
+        "docType": "utility_bill",
+        "fileName": "utility_bill_dec.pdf"
+      },
+      "description": "Upload a utility bill named utility_bill_dec.pdf as address proof.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "address_proof_available",
+          "residency_record_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M4",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M5",
+      "module_id": "MODULE_MOBILE_PLAN_SIGNUP",
+      "binding_id": "BIND_A8_INTERNET_UPGRADE",
+      "binding_task_id": "A8-2025-MOBILESUB",
+      "parameter_values": {
+        "plan": "unlimited",
+        "user_name": "Test User",
+        "address": "123 Main St"
+      },
+      "description": "Subscribe to the Unlimited mobile plan on mobile.local",
+      "expected_observables": [
+        "ALL[url().includes('/mobile.local/account.html'), mem('mobile.subscription.status') == 'active']",
+        "exists(\".plan-badge\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "mobile_service_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M6",
+      "module_id": "MODULE_MOBILE_PLAN_SWITCH",
+      "binding_id": "BIND_A4_MOBILE_PLAN",
+      "binding_task_id": "A4-2025-MOBILE",
+      "parameter_values": {
+        "planId": "pro"
+      },
+      "description": "Switch your mobile plan to Unlimited.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "mobile_plan_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M7",
+      "module_id": "MODULE_FIND_HOME",
+      "binding_id": "BIND_A1_FIND_HOME",
+      "binding_task_id": "A1-2025-HOME",
+      "parameter_values": {
+        "propertyId": "PROP-EXT-10",
+        "leaseTerm": "6"
+      },
+      "description": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $2600/month, then pick the largest area. Set lease term to 6 months and then apply.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M8",
+      "module_id": "MODULE_LEASE_MANAGEMENT_REVIEW",
+      "binding_id": "BIND_A10_NEIGHBOR_COMPLAINT",
+      "binding_task_id": "A10-2025-LEASECHECK",
+      "parameter_values": {},
+      "description": "Open the lease management page to review current lease information before filing a neighbor noise complaint.",
+      "expected_observables": [
+        "url().includes('/housing.local/lease-management.html')",
+        "exists('#leases-list')",
+        "exists('#add-lease-btn')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "housing_finance_prepared",
+          "lease_management_reviewed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M9",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "88 River Rd, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M10",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M11",
+      "module_id": "MODULE_MOBILE_PLAN_SIGNUP",
+      "binding_id": "BIND_A8_INTERNET_UPGRADE",
+      "binding_task_id": "A8-2025-MOBILESUB",
+      "parameter_values": {
+        "plan": "unlimited",
+        "user_name": "Test User",
+        "address": "123 Main St"
+      },
+      "description": "Subscribe to the Unlimited mobile plan on mobile.local",
+      "expected_observables": [
+        "ALL[url().includes('/mobile.local/account.html'), mem('mobile.subscription.status') == 'active']",
+        "exists(\".plan-badge\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "mobile_service_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0166-M12",
+      "module_id": "MODULE_MOBILE_PLAN_SWITCH",
+      "binding_id": "BIND_A4_MOBILE_PLAN",
+      "binding_task_id": "A4-2025-MOBILE",
+      "parameter_values": {
+        "planId": "pro"
+      },
+      "description": "Switch your mobile plan to Unlimited.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "mobile_plan_updated"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "housing_finance_prepared",
+      "bank_account_active",
+      "mobile_service_active",
+      "residency_record_verified",
+      "mobile_plan_updated"
+    ],
+    "checkpoint_predicates": [
+      "address_confirmation_verified",
+      "address_known",
+      "address_proof_available",
+      "bank_account_active",
+      "electricity_active",
+      "housing_finance_prepared",
+      "housing_secured",
+      "lease_active",
+      "lease_management_reviewed",
+      "lease_record_registered",
+      "mobile_plan_updated",
+      "mobile_service_active",
+      "payment_method_available",
+      "residency_record_verified",
+      "utilities_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

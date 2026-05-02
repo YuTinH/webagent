@@ -1,0 +1,86 @@
+{
+  "task_id": "L8-2025-2FASETUP::WFG-SECURITY-0002-M3",
+  "family": "L",
+  "goal": "Set up 2FA with a new primary device.",
+  "inputs": {},
+  "preconditions": [],
+  "success_criteria": [
+    "mem('security.mfa.current_device') == 'Pixel 8'",
+    "mem('security.mfa_history.last.device_name') == 'Pixel 8'",
+    "exists(\"div[id='2fa-status']\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('security.mfa.current_device') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('security.mfa.current_device') == 'Pixel 8'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Criterion 2 state set",
+      "assertion": "mem('security.mfa_history.last.device_name') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "mem('security.mfa_history.last.device_name') == 'Pixel 8'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"div[id='2fa-status']\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "security.local"
+  ],
+  "module_group": "2fa_setup",
+  "canonical_task_dir": "L8-2fa-setup",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active",
+  "binding_task_id": "L8-2025-2FASETUP",
+  "source_task_id": "L8-2025-2FASETUP"
+}

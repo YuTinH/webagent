@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-COMPOSITE-0064",
+  "theme": "composite",
+  "difficulty": 8,
+  "instruction": "Finish the investment bootstrap packet only after the investment account is active, growth is verified, the auction bid is placed, and the calendar event is synced.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "investment_account_active",
+      "investment_growth_verified",
+      "auction_bid_placed",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "investment_account_active",
+    "investment_growth_verified",
+    "auction_bid_placed",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 55,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_COMPOSITE_INVESTMENT_CALENDAR_BOOTSTRAP; investment bootstrap workflows should verify account growth before the auction-and-calendar closeout."
+}

@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-CAREER-0055",
+  "theme": "career",
+  "difficulty": 6,
+  "instruction": "Close the conference route by recording admin first, archiving the receipt, coordinating the calendar, strengthening the signal, and ending with the public profile updated.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "conference_admin_recorded",
+      "receipt_archived",
+      "deadline_coordination_recorded",
+      "career_signal_strengthened",
+      "professional_profile_updated"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "conference_admin_recorded",
+    "receipt_archived",
+    "deadline_coordination_recorded",
+    "career_signal_strengthened",
+    "professional_profile_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CAREER_CONFERENCE_COORDINATION_CLOSURE; conference coordination workflows should continue into profile maintenance rather than stopping after email tracking."
+}

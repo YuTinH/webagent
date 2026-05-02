@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>gov.local - </title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🏛️ Gov.local</div>
+      <div class="navlinks">
+        <a href="../gov.local/profile.html">Information</a>
+        <a href="../gov.local/permits.html">Permit</a>
+        <a href="../gov.local/address-change.html">Address</a>
+        <a href="../gov.local/vehicle-registration.html" class="active">Information</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Address</h1>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>Information</h2>
+        <div id="vehicle-list">
+            <div class="loading">Loading......</div>
+        </div>
+    </div>
+
+    <div class="card soft">
+        <h2>Address</h2>
+        <div class="form">
+            <label>Information</label>
+            <select id="vehicle-select" class="input">
+                <!-- Options populated by JS -->
+            </select>
+            
+            <label>Address</label>
+            <textarea id="new-address" class="input" rows="3" placeholder="Address"></textarea>
+            
+            <div style="margin-top:16px; display:flex; align-items:center; gap:8px">
+              <input type="checkbox" id="notify-insurance">
+              <label for="notify-insurance" style="margin:0">InsuranceAddress</label>
+            </div>
+            
+            <button class="btn pri" id="submit-vehicle-address" style="margin-top:24px; width:100%" onclick="updateAddress()">Submit</button>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  const vehicleAddressParams = new URLSearchParams(window.location.search);
+  const requestedVehicleAddressTaskId = vehicleAddressParams.get('task') || 'H7-2025-VEHICLEADDR';
+  const vehicleAddressTaskId = resolveTaskId(requestedVehicleAddressTaskId);
+
+  async function loadVehicles() {
+    const list = document.getElementById('vehicle-list');
+    const select = document.getElementById('vehicle-select');
+    
+    try {
+      const env = await loadEnv();
+      const vehicles = env.gov?.vehicles || {
+          "V-8821": { "plate": "A-12345", "model": "Tesla Model 3", "address": "Address..." }
+      };
+
+      list.innerHTML = Object.entries(vehicles).map(([id, v]) => `
+        <div style="padding:12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px">
+            <div style="font-weight:600">${v.plate} - ${v.model}</div>
+            <div style="font-size:13px; color:var(--muted)">Address: ${v.address}</div>
+        </div>
+      `).join('');
+
+      select.innerHTML = Object.entries(vehicles).map(([id, v]) => `
+        <option value="${id}">${v.plate} - ${v.model}</option>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  async function updateAddress() {
+    const vehicleId = document.getElementById('vehicle-select').value;
+    const newAddress = document.getElementById('new-address').value;
+    const notifyInsurance = document.getElementById('notify-insurance').checked;
+
+    if (!newAddress) {
+      Toast.error("Address");
+      return;
+    }
+    
+    await send(vehicleAddressTaskId, 'update_vehicle_address', {
+      vehicle_id: vehicleId,
+      new_address: newAddress,
+      notify_insurance: notifyInsurance
+    });
+    
+    setTimeout(loadVehicles, 500);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadVehicles);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

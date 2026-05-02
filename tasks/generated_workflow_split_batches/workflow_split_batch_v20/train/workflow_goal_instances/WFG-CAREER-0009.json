@@ -1,0 +1,40 @@
+{
+  "goal_id": "WFG-CAREER-0009",
+  "theme": "career",
+  "difficulty": 8,
+  "instruction": "Finish the expense-archive career workflow only after travel spend is captured, receipts are archived, conference administration is recorded, and the related milestone is placed on the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "must_avoid": [
+      "receipt_left_unarchived"
+    ],
+    "preferred_outcomes": [
+      "expense_report_submitted",
+      "receipt_archived",
+      "conference_expense_logged",
+      "conference_admin_recorded",
+      "calendar_event_created"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "expense_report_submitted",
+    "receipt_archived",
+    "conference_expense_logged",
+    "conference_admin_recorded",
+    "calendar_event_created"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CAREER_EXPENSE_ARCHIVE; expense-archive career workflows should end with an explicit calendar milestone after conference administration is recorded."
+}

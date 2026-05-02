@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-HOME-0200",
+  "theme": "home",
+  "difficulty": 7,
+  "instruction": "Close the housing-repair workflow by securing the home first, activating utilities, requesting the repair, and ending with monitoring confirmed, and finish with a synced repair follow-up calendar.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "lease_active",
+      "utilities_active",
+      "home_repair_requested",
+      "home_service_monitored",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "lease_active",
+    "utilities_active",
+    "home_repair_requested",
+    "home_service_monitored",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HOME_REPAIR_MONITOR_DUAL; repair-monitor home workflows should end with a scheduled follow-up after the repair and monitoring steps."
+}

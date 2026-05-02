@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account - Nebula Mobile</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.account-header {
+  background: radial-gradient(100% 140% at 0% 0%, rgba(59, 130, 246, .12), transparent 40%), var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.plan-badge { background: var(--pri); color: white; padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+.usage-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+.plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.plan-card { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 24px; cursor: pointer; transition: .2s; position: relative; }
+.plan-card.active { border-color: var(--ok); background: rgba(16, 185, 129, 0.05); }
+.plan-card.active::after { content: 'CURRENT'; position: absolute; top: 12px; right: 12px; background: var(--ok); color: white; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; }
+</style>
+</head>
+<body class="page">
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula Mobile</div>
+    <div class="navlinks">
+      <a href="index.html">Plans</a>
+      <a href="messages.html">Messages</a>
+      <a href="account.html" class="active">My Account</a>
+      <a href="support.html">Support</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Account Overview</h1>
+
+  <div class="account-header">
+    <div style="display:flex; justify-content:space-between; align-items:center">
+      <div>
+        <h2 style="margin:0 0 8px 0">555-219-8937</h2>
+        <div style="color:var(--muted)">Next Bill Date: <span id="bill-date">2026-03-16</span></div>
+      </div>
+      <div class="plan-badge" id="current-plan-badge">Unlimited Plan</div>
+    </div>
+  </div>
+
+  <div class="usage-card">
+    <h3 style="margin:0 0 16px 0">Monthly Usage</h3>
+    <div style="display:flex; gap:40px">
+      <div>
+        <div style="font-size:14px; color:var(--muted)">Data Usage</div>
+        <div style="font-size:24px; font-weight:700">12.5 GB / <span id="data-limit">Unlimited</span></div>
+      </div>
+      <div>
+        <div style="font-size:14px; color:var(--muted)">Talk Time</div>
+        <div style="font-size:24px; font-weight:700">145 mins</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin:32px 0 16px 0">Switch Plan</h2>
+  <div class="plan-grid">
+    <div class="plan-card" id="plan-starter">
+      <div style="font-weight:700; font-size:18px">Starter</div>
+      <div style="color:var(--pri); font-weight:700; margin:8px 0">$20/mo</div>
+      <button class="btn sm" style="width:100%" onclick="selectPlan('starter')">Upgrade</button>
+    </div>
+    <div class="plan-card" id="plan-unlimited">
+      <div style="font-weight:700; font-size:18px">Unlimited</div>
+      <div style="color:var(--pri); font-weight:700; margin:8px 0">$45/mo</div>
+      <button class="btn sm" style="width:100%" onclick="selectPlan('unlimited')">Active</button>
+    </div>
+    <div class="plan-card" id="plan-pro">
+      <div style="font-weight:700; font-size:18px">Pro Max</div>
+      <div style="color:var(--pri); font-weight:700; margin:8px 0">$60/mo</div>
+      <button class="btn sm" style="width:100%" onclick="selectPlan('pro')">Upgrade</button>
+    </div>
+  </div>
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const mobileAccountParams = new URLSearchParams(window.location.search);
+const requestedMobileTaskId = mobileAccountParams.get('task') || 'A4-2025-MOBILE';
+const mobileAccountTaskId = resolveTaskId(requestedMobileTaskId);
+
+async function loadAccount() {
+  const env = await loadEnv();
+  const sub = env.mobile?.subscription;
+  if (sub) {
+    document.getElementById('current-plan-badge').textContent = sub.plan_name;
+    document.getElementById('data-limit').textContent = sub.data_limit;
+    document.getElementById('bill-date').textContent = sub.next_bill_date;
+    
+    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('active'));
+    const activeCard = document.getElementById(`plan-${sub.plan_id}`);
+    if (activeCard) {
+      activeCard.classList.add('active');
+      activeCard.querySelector('button').disabled = true;
+      activeCard.querySelector('button').textContent = "Current Plan";
+    }
+  }
+}
+
+async function selectPlan(planId) {
+  await send(mobileAccountTaskId, 'mobile_subscribe', { planId });
+  Toast.success("Plan updated!");
+  setTimeout(() => location.reload(), 1000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadAccount();
+});
+</script>
+</body>
+</html>

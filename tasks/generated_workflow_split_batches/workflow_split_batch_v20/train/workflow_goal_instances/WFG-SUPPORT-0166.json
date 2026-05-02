@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-SUPPORT-0166",
+  "theme": "support",
+  "difficulty": 7,
+  "instruction": "Close the review-support route by confirming delivery first, escalating support next, and only then finishing the review and blacklist actions, and finish with the support follow-up synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "delivery_visibility_confirmed",
+      "shop_order_delivered",
+      "support_contacted",
+      "product_review_submitted",
+      "merchant_blacklisted",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "shop_order_exists"
+  ],
+  "target_state": [
+    "delivery_visibility_confirmed",
+    "shop_order_delivered",
+    "support_contacted",
+    "product_review_submitted",
+    "merchant_blacklisted",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SUPPORT_REVIEW_CONTACT; support workflows should end with an explicit follow-up scheduling step."
+}

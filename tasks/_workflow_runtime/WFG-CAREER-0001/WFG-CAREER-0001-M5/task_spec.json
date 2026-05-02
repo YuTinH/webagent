@@ -1,0 +1,99 @@
+{
+  "task_id": "F1-2025-JOBSEARCH::WFG-CAREER-0001-M5",
+  "family": "F",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Search and apply for jobs",
+  "inputs": {},
+  "allowed_domains": [
+    "work.local"
+  ],
+  "preconditions": [],
+  "dependencies": [],
+  "memory_keys": [],
+  "success_criteria": [
+    "mem('work.email_threads.last.subject') == 'Job Application Follow-up'",
+    "mem('work.email_threads.last.status') == 'pending'",
+    "exists(\"#email-list .card\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('work.email_threads.last.subject') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('work.email_threads.last.subject') == 'Job Application Follow-up'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Criterion 2 state set",
+      "assertion": "mem('work.email_threads.last.status') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "mem('work.email_threads.last.status') == 'pending'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "exists(\"#email-list .card\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "module_group": "job_search",
+  "canonical_task_dir": "F1-job-search",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active",
+  "binding_task_id": "F1-2025-JOBSEARCH",
+  "source_task_id": "F1-2025-JOBSEARCH"
+}

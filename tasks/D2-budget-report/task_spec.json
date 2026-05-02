@@ -1,0 +1,42 @@
+{
+  "task_id": "D2-2025-BUDGET",
+  "family": "D",
+  "goal": "Set a tight budget for utilities.",
+  "inputs": {
+    "category": "utilities",
+    "limit": 200
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('finance.budgets.utilities.limit') == 200"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_budget_limit_set",
+      "name": "Utility budget set",
+      "assertion": "mem('finance.budgets.utilities.limit') == 200",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_budget_high_cost_warning",
+      "name": "Warning appears under high projected energy cost",
+      "assertion": "json('env','finance.warnings.0') includes 'Budget Alert'",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": [
+        "cp_budget_limit_set"
+      ],
+      "when": "json('env','world_state.energy_context.projected_cost') == 'high'"
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "budget_limit_update",
+  "canonical_task_dir": "D2-budget-report",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

@@ -1,0 +1,50 @@
+{
+  "task_id": "L5-2025-CREDENTIALADD",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/password-manager.html?clean=true&task=L5-2025-CREDENTIALADD",
+      "note": "Open password manager"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Open add-password modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#site-name",
+      "value": "SocialHub",
+      "note": "Enter site"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#username-input",
+      "value": "privacy_user",
+      "note": "Enter username"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#password-input",
+      "value": "N3bula!Safe123",
+      "note": "Enter strong password"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Save credential"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#password-list .card",
+      "note": "Wait for password card"
+    }
+  ]
+}

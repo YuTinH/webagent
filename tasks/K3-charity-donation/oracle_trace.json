@@ -1,0 +1,42 @@
+{
+  "task_id": "K3-2025-CHARITY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/social.local/charity.html?clean=true&task=K3-2025-CHARITY"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#charity-name",
+      "value": "社区基金"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#donation-amount",
+      "value": "200"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#tax-deductible"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#donations-list .card"
+    }
+  ]
+}

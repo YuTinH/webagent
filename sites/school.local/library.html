@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>school.local - </title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🎓 School.local</div>
+      <div class="navlinks">
+        <a href="../school.local/my-learning.html">My Learning</a>
+        <a href="../school.local/library.html" class="active">Library</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Library Services</h1>
+      <button class="btn pri" id="open-apply-card-btn" onclick="openApplyCardModal()">Apply for Card</button>
+    </div>
+
+    <div class="card soft" style="margin-bottom:24px">
+        <h2>Library Card</h2>
+        <div id="library-card-info">
+            <div class="loading">Loading......</div>
+        </div>
+    </div>
+
+    <h2>Reserve a Book</h2>
+    <div class="card soft">
+        <div class="form">
+            <label>Book Title</label>
+            <input id="book-query" class="input" placeholder="e.g. Playwright in Practice">
+            
+            <button class="btn pri" id="search-reserve-book-btn" style="margin-top:24px; width:100%" onclick="searchAndReserveBook()">Search and Reserve</button>
+        </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>Reservations</h2>
+        <div id="reservations-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Reservations loaded here -->
+            <div class="soft" style="text-align:center; padding:24px; border:1px dashed var(--border); border-radius:var(--radius)">
+              <div style="color:var(--muted)">No reservations yet.</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  const libraryParams = new URLSearchParams(window.location.search);
+  const requestedLibraryTaskId = libraryParams.get('task') || 'J6-2025-LIBRARY';
+  const libraryTaskId = resolveTaskId(requestedLibraryTaskId);
+  let libraryCardStatus = 'inactive';
+
+  async function waitForLibraryState(predicate, attempts = 10, delayMs = 200) {
+    for (let i = 0; i < attempts; i += 1) {
+      const env = await loadEnv();
+      if (predicate(env || {})) {
+        return env || {};
+      }
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+    return loadEnv();
+  }
+
+  function openReserveModal(bookQuery) {
+    new Modal({
+      title: `Reserve Book: ${bookQuery}`,
+      content: `
+        <div class="form">
+          <label>Selected Book</label>
+          <input class="input" value="${bookQuery}" readonly>
+          <label>Pickup Date</label>
+          <input id="pickup-date" type="date" class="input">
+        </div>
+      `,
+      confirmText: 'Reserve Book',
+      onConfirm: async () => {
+        const pickupDate = document.getElementById('pickup-date').value;
+        if (!pickupDate) {
+            Toast.error("Choose a pickup date.");
+            return false;
+        }
+        await send(libraryTaskId, 'manage_library_service', {
+          action_type: 'reserve_book',
+          book_query: bookQuery,
+          pickup_date: pickupDate
+        });
+        await waitForLibraryState((env) => {
+          const reservations = env.library?.reservations || {};
+          return Object.keys(reservations).length > 0;
+        });
+        await loadLibraryInfo();
+        return true;
+      }
+    }).open();
+  }
+
+  async function loadLibraryInfo() {
+    const cardInfoDiv = document.getElementById('library-card-info');
+    const reservationsList = document.getElementById('reservations-list');
+    
+    try {
+      const env = await loadEnv();
+      const card = env.library?.card || {};
+      const reservations = env.library?.reservations || {};
+      const applyCardButton = document.getElementById('open-apply-card-btn');
+      libraryCardStatus = card.status || 'inactive';
+
+      if (card.status === 'active') {
+        if (applyCardButton) {
+          applyCardButton.textContent = 'Library Card Active';
+          applyCardButton.disabled = true;
+          applyCardButton.classList.remove('pri');
+        }
+        cardInfoDiv.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center">
+                <div>
+                    <div style="font-size:18px; font-weight:600">Card Number: ${card.card_number}</div>
+                    <div style="color:var(--muted); font-size:14px">Expires: ${card.expiry_date}</div>
+                </div>
+                <span class="badge ok">Active</span>
+            </div>
+            <div style="margin-top:12px; font-size:14px">
+                <div>Borrow Limit: ${card.borrow_limit}</div>
+                <div>Borrowed Books: ${card.borrowed_count}</div>
+                <div style="margin-top:8px; color:var(--muted)">Library card is active. Reserve your book below.</div>
+            </div>
+        `;
+      } else {
+        if (applyCardButton) {
+          applyCardButton.textContent = 'Apply for Card';
+          applyCardButton.disabled = false;
+          applyCardButton.classList.add('pri');
+        }
+        cardInfoDiv.innerHTML = `<div style="color:var(--muted)">No active library card.</div>`;
+      }
+
+      if (Object.keys(reservations).length === 0) {
+        reservationsList.innerHTML = `<div class="soft" style="text-align:center; padding:24px; border:1px dashed var(--border); border-radius:var(--radius)"><div style="color:var(--muted)">No reservations yet.</div></div>`;
+      } else {
+        reservationsList.innerHTML = Object.entries(reservations).map(([id, res]) => `
+          <div class="card soft">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+              <div>
+                <h3 style="margin:0 0 4px 0">${res.book_title}</h3>
+                <div style="color:var(--muted); font-size:14px">AppointmentDate: ${res.reserve_date}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:600">Status: <span class="badge ${res.status === 'ready' ? 'ok' : 'warn'}">${res.status === 'ready' ? '' : 'Pending'}</span></div>
+                <div style="color:var(--muted); font-size:13px">Details: ${res.pickup_deadline || 'N/A'}</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+    } catch (e) {
+      console.error(e);
+      cardInfoDiv.innerHTML = '<div class="error">Load failed</div>';
+      reservationsList.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openApplyCardModal() {
+    window.__libraryProfileReviewed = false;
+    new Modal({
+      title: 'Apply for Library Card',
+      content: `
+        <div class="form">
+          <div class="card soft" style="margin-bottom:16px">
+            <div style="font-weight:600">Verified Student Profile</div>
+            <div style="color:var(--muted); font-size:14px">The application will use the signed-in student profile shown below.</div>
+          </div>
+          <label>Name</label>
+          <input id="applicant-name" class="input" autocomplete="off" oninput="window.__libraryProfileReviewed = true" onchange="window.__libraryProfileReviewed = true" placeholder="Enter your full name">
+          
+          <label>Student ID</label>
+          <input id="student-id" class="input" autocomplete="off" oninput="window.__libraryProfileReviewed = true" onchange="window.__libraryProfileReviewed = true" placeholder="Enter student ID">
+        </div>
+      `,
+      confirmText: 'Submit Application',
+      onConfirm: async () => {
+        const typedName = document.getElementById('applicant-name').value.trim();
+        const typedStudentId = document.getElementById('student-id').value.trim();
+        const hasReviewedProfile = Boolean(window.__libraryProfileReviewed);
+        const name = typedName;
+        const studentId = typedStudentId;
+        
+        if (!hasReviewedProfile) {
+          Toast.error("Review the student profile before submitting.");
+          return false;
+        }
+
+        if (!name || !studentId) {
+          Toast.error("Enter name and student ID.");
+          return false;
+        }
+        
+        await send(libraryTaskId, 'manage_library_service', {
+          action_type: 'apply_card',
+          applicant_name: name,
+          student_id: studentId
+        });
+
+        await waitForLibraryState((env) => {
+          const card = env.library?.card || {};
+          return card.status === 'active';
+        });
+        await loadLibraryInfo();
+        return true;
+      }
+    }).open();
+    window.__libraryProfileReviewed = false;
+  }
+
+  function searchAndReserveBook() {
+    const bookQuery = document.getElementById('book-query').value;
+    if (libraryCardStatus !== 'active') {
+        Toast.error("Apply for a library card first.");
+        return;
+    }
+    if (!bookQuery) {
+        Toast.error("Enter a book title to search.");
+        return;
+    }
+    openReserveModal(bookQuery);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadLibraryInfo();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+

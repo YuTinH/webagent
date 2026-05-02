@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - Subscribe</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">Information</a>
+        <a href="../shop.local/orders.html">Information</a>
+        <a href="../shop.local/help.html" class="active">Information</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Subscription Refunds</h1>
+    </div>
+
+    <div class="card soft">
+        <div class="form">
+            <label>Subscription</label>
+            <select id="subscription-select" class="input">
+                <option value="">Select subscription</option>
+                <option value="SUB-8821">Meal Kit Annual - 8 months remaining</option>
+                <option value="SUB-9932">Streaming Monthly - 10 days remaining</option>
+            </select>
+            
+            <label>Refund Reason</label>
+            <textarea id="refund-reason" class="input" rows="3" placeholder="Explain why the service is no longer needed."></textarea>
+            
+            <div class="info-box" style="background:rgba(99,102,241,0.1); padding:16px; border-radius:8px; margin-bottom:16px">
+                <p style="margin:0; font-size:14px">Submit the refund request for the highlighted subscription, then confirm the request appears below.</p>
+            </div>
+            
+            <button class="btn pri" id="submit-refund-btn" style="margin-top:24px; width:100%" onclick="submitRefund()">Submit Refund Request</button>
+        </div>
+    </div>
+
+    <div style="margin-top:32px">
+        <h2>Refund Requests</h2>
+        <div id="refund-requests-list" style="display:flex; flex-direction:column; gap:16px">
+            <!-- Requests loaded here -->
+            <div class="card soft" style="text-align:center; padding:24px">
+              <div style="color:var(--muted)">No refund requests yet.</div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+  const refundPageParams = new URLSearchParams(window.location.search);
+  const requestedRefundTaskId = refundPageParams.get('task') || 'C3-2025-REFUND';
+  const refundPageTaskId = resolveTaskId(requestedRefundTaskId);
+
+  async function loadRefundRequests() {
+    const list = document.getElementById('refund-requests-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const requests = env.support?.refund_requests || {};
+      
+      if (Object.keys(requests).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:24px">
+            <div style="color:var(--muted)">No refund requests yet.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(requests).map(([id, req]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+            <div>
+              <h3 style="margin:0 0 4px 0">Refund Request #${id}</h3>
+              <div style="color:var(--muted); font-size:14px">Subscribe: ${req.subscription_id}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">Status: <span class="badge ${req.status === 'approved' ? 'ok' : 'warn'}">${req.status === 'approved' ? 'Approved' : req.status}</span></div>
+              <div style="color:var(--muted); font-size:13px">Estimated Refund: ${req.estimated_refund ? '¥' + req.estimated_refund : 'Pending'}</div>
+            </div>
+          </div>
+          <div style="font-size:13px; color:var(--muted)">Reason: ${req.reason}</div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function appendOptimisticRefundCard(subId, reason) {
+    const list = document.getElementById('refund-requests-list');
+    if (!list) return;
+    list.innerHTML = `
+      <div class="card soft">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+          <div>
+            <h3 style="margin:0 0 4px 0">Refund Request Pending</h3>
+            <div style="color:var(--muted); font-size:14px">Subscription: ${subId}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:600">Status: <span class="badge warn">processing</span></div>
+          </div>
+        </div>
+        <div style="font-size:13px; color:var(--muted)">Reason: ${reason}</div>
+      </div>
+    `;
+  }
+
+  async function submitRefund() {
+    const subId = document.getElementById('subscription-select').value;
+    const reason = document.getElementById('refund-reason').value;
+
+    if (!subId || !reason) {
+      Toast.error("Select a subscription and enter a refund reason.");
+      return;
+    }
+    
+    await send(refundPageTaskId, 'request_prorated_refund', {
+      subscription_id: subId,
+      reason: reason
+    });
+    
+    appendOptimisticRefundCard(subId, reason);
+    setTimeout(loadRefundRequests, 500);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadRefundRequests();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

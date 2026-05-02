@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-FINANCE-0105",
+  "theme": "finance",
+  "difficulty": 7,
+  "instruction": "Close the card-remediation workflow by triaging the issue, freezing exposure, requesting a replacement card, archiving the receipt trail, and ending with a synced follow-up reminder.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "account_issue_triaged",
+      "account_access_contained",
+      "replacement_card_requested",
+      "receipt_archived",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "account_issue_triaged",
+    "account_access_contained",
+    "replacement_card_requested",
+    "receipt_archived",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_TRIAGE_REPLACEMENT_ALIGNMENT; replacement-oriented finance workflows should include an explicit follow-up scheduling step after archival."
+}

@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-SUPPORT-0006",
+  "theme": "support",
+  "difficulty": 7,
+  "instruction": "Finish the direct-remedy escalation only after support is contacted, a concrete remedy is requested, a review is submitted, and the merchant is blacklisted, and finish with the support follow-up synced to the calendar.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "support_contacted",
+      "post_purchase_remedy_requested",
+      "product_review_submitted",
+      "merchant_blacklisted",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "shop_order_delivered"
+  ],
+  "target_state": [
+    "support_contacted",
+    "post_purchase_remedy_requested",
+    "product_review_submitted",
+    "merchant_blacklisted",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SUPPORT_DIRECT_REMEDY_ESCALATION; support workflows should end with an explicit follow-up scheduling step."
+}

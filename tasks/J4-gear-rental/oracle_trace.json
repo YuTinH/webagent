@@ -1,0 +1,43 @@
+{
+  "task_id": "J4-2025-GEAR",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/gear-rental.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#gear-name",
+      "value": "Trail Backpack"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#listing-type",
+      "value": "rent"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#gear-price",
+      "value": "22"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#rental-gear-list .card:has-text('Trail Backpack')"
+    }
+  ]
+}

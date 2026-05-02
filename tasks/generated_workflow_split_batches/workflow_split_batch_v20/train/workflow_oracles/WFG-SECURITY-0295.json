@@ -1,0 +1,233 @@
+{
+  "goal_id": "WFG-SECURITY-0295",
+  "composition": {
+    "composition_type": "single_path",
+    "num_semantically_distinct_paths": 1,
+    "distinctness_rule": "Reach the target state through the full export, privacy, two-factor, rotation, and audit chain rather than through a shorter subset route."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_2FA_SETUP",
+      "role": "required",
+      "produces": [
+        "two_factor_enabled"
+      ]
+    },
+    {
+      "module_id": "MODULE_DOWNLOAD_DATA",
+      "role": "required",
+      "produces": [
+        "account_data_exported",
+        "account_exit_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_PRIVACY_SETTINGS",
+      "role": "required",
+      "produces": [
+        "access_surface_reviewed",
+        "account_exit_prepared",
+        "privacy_settings_updated"
+      ]
+    },
+    {
+      "module_id": "MODULE_SECURITY_AUDIT",
+      "role": "required",
+      "produces": [
+        "security_audit_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_SECURITY_ROTATION",
+      "role": "required",
+      "produces": [
+        "secret_rotated",
+        "security_hardening_completed"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_2FA_SETUP",
+      "to": "MODULE_SECURITY_ROTATION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_DOWNLOAD_DATA",
+      "to": "MODULE_PRIVACY_SETTINGS",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_PRIVACY_SETTINGS",
+      "to": "MODULE_2FA_SETUP",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_SECURITY_ROTATION",
+      "to": "MODULE_SECURITY_AUDIT",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_export_privacy_twofa_rotation_audit",
+      "required_modules": [
+        "MODULE_DOWNLOAD_DATA",
+        "MODULE_PRIVACY_SETTINGS",
+        "MODULE_2FA_SETUP",
+        "MODULE_SECURITY_ROTATION",
+        "MODULE_SECURITY_AUDIT"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-SECURITY-0295-M1",
+        "WFG-SECURITY-0295-M2",
+        "WFG-SECURITY-0295-M3",
+        "WFG-SECURITY-0295-M4",
+        "WFG-SECURITY-0295-M5"
+      ],
+      "terminal_predicates": [
+        "account_data_exported",
+        "access_surface_reviewed",
+        "account_exit_prepared",
+        "privacy_settings_updated",
+        "two_factor_enabled",
+        "security_hardening_completed",
+        "security_audit_completed"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-SECURITY-0295-M1",
+      "module_id": "MODULE_DOWNLOAD_DATA",
+      "binding_id": "BIND_L6_DOWNLOAD_DATA",
+      "binding_task_id": "L6-2025-DATAEXPORT",
+      "parameter_values": {
+        "request_type": "export",
+        "platform": "NebulaCloud"
+      },
+      "description": "Submit a personal data export request.",
+      "expected_observables": [
+        "exists(\"#requests-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_data_exported",
+          "account_exit_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0295-M2",
+      "module_id": "MODULE_PRIVACY_SETTINGS",
+      "binding_id": "BIND_L5_PRIVACY_SETTINGS",
+      "binding_task_id": "L5-2025-CREDENTIALADD",
+      "parameter_values": {
+        "site": "SocialHub",
+        "username": "privacy_user"
+      },
+      "description": "Add a new privacy credential entry in password manager.",
+      "expected_observables": [
+        "exists(\"#password-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "access_surface_reviewed",
+          "account_exit_prepared",
+          "privacy_settings_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0295-M3",
+      "module_id": "MODULE_2FA_SETUP",
+      "binding_id": "BIND_L8_2FA_SETUP",
+      "binding_task_id": "L8-2025-2FASETUP",
+      "parameter_values": {},
+      "description": "Set up 2FA with a new primary device.",
+      "expected_observables": [
+        "exists(\"div[id='2fa-status']\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "two_factor_enabled"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0295-M4",
+      "module_id": "MODULE_SECURITY_ROTATION",
+      "binding_id": "BIND_L3_SECURITY_ROTATION",
+      "binding_task_id": "L3-2025-SEC",
+      "parameter_values": {
+        "providers": [
+          "mail",
+          "cloud",
+          "dev"
+        ],
+        "rotate": "mfa+api"
+      },
+      "description": "Check the security dashboard for compromised accounts and rotate keys for all affected providers.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "secret_rotated",
+          "security_hardening_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SECURITY-0295-M5",
+      "module_id": "MODULE_SECURITY_AUDIT",
+      "binding_id": "BIND_L7_SECURITY_AUDIT",
+      "binding_task_id": "L7-2025-CLOUDROTATE",
+      "parameter_values": {},
+      "description": "Rotate credentials for Cloud Storage and Dev Platform using API-only rotation.",
+      "expected_observables": [
+        "json('env','security.last_rotation.providers.0') == 'cloud'",
+        "json('env','security.last_rotation.providers.1') == 'dev'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "security_audit_completed"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "account_data_exported",
+      "access_surface_reviewed",
+      "account_exit_prepared",
+      "privacy_settings_updated",
+      "two_factor_enabled",
+      "security_hardening_completed",
+      "security_audit_completed"
+    ],
+    "checkpoint_predicates": [
+      "access_surface_reviewed",
+      "account_data_exported",
+      "account_exit_prepared",
+      "privacy_settings_updated",
+      "secret_rotated",
+      "security_audit_completed",
+      "security_hardening_completed",
+      "two_factor_enabled"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

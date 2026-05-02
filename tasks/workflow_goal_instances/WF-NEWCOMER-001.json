@@ -1,0 +1,47 @@
+{
+  "goal_id": "WF-NEWCOMER-001",
+  "theme": "newcomer",
+  "difficulty": 4,
+  "instruction": "You just moved to a new city. Secure a place to live, get utilities running, update your mailing address, and make sure you have a working bank account this week without overspending.",
+  "visible_constraints": {
+    "budget_limit": 3200,
+    "deadline_days": 7,
+    "must_avoid": [
+      "duplicate_service_contract",
+      "late_fee"
+    ],
+    "preferred_outcomes": [
+      "single_address_used_everywhere"
+    ]
+  },
+  "initial_world_state": {
+    "lease_active": false,
+    "address_known": false,
+    "address_proof_available": false,
+    "mailing_address_current": false,
+    "utilities_active": false,
+    "bank_account_active": false,
+    "checking_balance": 5200
+  },
+  "target_state": [
+    "lease_active",
+    "utilities_active",
+    "mailing_address_current",
+    "bank_account_active"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.budget_limit",
+      "type": "numeric_shift",
+      "values": [2600, 3200, 3800]
+    },
+    {
+      "path": "initial_world_state.checking_balance",
+      "type": "numeric_shift",
+      "values": [4200, 5200, 6800]
+    }
+  ],
+  "max_steps": 90,
+  "max_module_invocations": 5,
+  "notes": "Prototype move-in workflow with shared address propagation across modules."
+}

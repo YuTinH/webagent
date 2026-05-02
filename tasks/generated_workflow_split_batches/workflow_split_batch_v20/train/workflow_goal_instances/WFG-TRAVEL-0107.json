@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-TRAVEL-0107",
+  "theme": "travel",
+  "difficulty": 7,
+  "instruction": "Close the booking-checkin route by confirming pre-departure readiness, submitting the expense report, and ending with a synced travel calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "mobility_clearance_verified",
+      "travel_booking_confirmed",
+      "check_in_completed",
+      "expense_report_submitted",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "mobility_clearance_verified",
+    "travel_booking_confirmed",
+    "check_in_completed",
+    "expense_report_submitted",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_TRAVEL_BOOKING_CHECKIN_ALIGNMENT; booking-checkin travel workflows should end with a calendar handoff after expense submission."
+}

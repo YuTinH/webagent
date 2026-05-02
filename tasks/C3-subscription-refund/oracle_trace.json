@@ -1,0 +1,32 @@
+{
+  "task_id": "C3-2025-REFUND",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/help-refund.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#subscription-select",
+      "value": "SUB-8821"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#refund-reason",
+      "value": "Service is no longer needed."
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "#submit-refund-btn"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#refund-requests-list .card"
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>bank.local - Bills</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand"><div class="logo"></div> Nebula Bank</div>
+      <div class="navlinks">
+        <a href="../bank.local/dashboard.html">Information</a>
+        <a href="../bank.local/transactions.html">Information</a>
+        <a href="../bank.local/bill-aggregation.html" class="active">Bills</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Bills</h1>
+      <button class="btn pri" id="open-add-bill-source-btn" onclick="openAddBillSourceModal()">Add Bill Source</button>
+    </div>
+
+    <div id="bill-sources-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Bill sources loaded here -->
+    </div>
+  </div>
+
+  <script>
+  async function loadBillSources() {
+    const list = document.getElementById('bill-sources-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const bills = env.bills?.sources || {};
+      
+      if (Object.keys(bills).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🧾</div>
+            <div style="color:var(--muted)">Bills</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(bills).map(([id, source]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${source.name || 'Bills'} (#${id})</h3>
+              <div style="color:var(--muted); font-size:14px">Details: ${source.type || ''}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">Details: ${source.last_synced || 'N/A'}</div>
+              <div style="color:var(--muted); font-size:13px">Status: <span class="badge ${source.status === 'active' ? 'ok' : 'warn'}">${source.status === 'active' ? 'Active' : ''}</span></div>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap:8px">
+            <button class="btn" id="sync-bill-source-${id}" onclick="syncBills('${id}')">Sync Source</button>
+            <button class="btn secondary" id="remove-bill-source-${id}" onclick="removeBillSource('${id}')">Remove Source</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openAddBillSourceModal() {
+    new Modal({
+      title: 'Add Bill Source',
+      content: `
+        <div class="form">
+          <label>Source Name</label>
+          <input id="new-name" class="input" placeholder="e.g. 电力公司">
+          
+          <label>Source Type</label>
+          <input id="new-type" class="input" placeholder="e.g. utility">
+
+          <label>Account ID</label>
+          <input id="new-account-id" class="input" placeholder="e.g. ACCT-12345">
+        </div>
+      `,
+      confirmText: 'Add Source',
+      onConfirm: async () => {
+        const name = document.getElementById('new-name').value;
+        const type = document.getElementById('new-type').value;
+        const accountId = document.getElementById('new-account-id').value;
+        
+        if (!name || !type) {
+          Toast.error("Enter a source name and type.");
+          return;
+        }
+        
+        await send(resolveTaskId('D8-2025-BILLAGG'), 'manage_bill_source', {
+          action_type: 'add',
+          name: name,
+          type: type,
+          account_id: accountId || null
+        });
+        
+        setTimeout(loadBillSources, 500);
+      }
+    }).open();
+  }
+
+  function syncBills(id) {
+    Toast.info(`Syncing bill source ${id}...`);
+    send(resolveTaskId('D8-2025-BILLAGG'), 'manage_bill_source', {
+        action_type: 'sync',
+        source_id: id
+    });
+    setTimeout(loadBillSources, 1000);
+  }
+
+  function removeBillSource(id) {
+    new Modal({
+      title: 'Remove Bill Source',
+      content: `Remove bill source ${id}?`,
+      confirmText: 'Remove Source',
+      onConfirm: async () => {
+        await send(resolveTaskId('D8-2025-BILLAGG'), 'manage_bill_source', {
+          action_type: 'remove',
+          source_id: id
+        });
+        setTimeout(loadBillSources, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadBillSources();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

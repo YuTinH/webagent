@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-DAILY-0175",
+  "theme": "daily",
+  "difficulty": 6,
+  "instruction": "Close the daily shopping route by opening the payment rail first, building the bundle, confirming order arrival, and ending with explicit price protection.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "bank_account_active",
+      "payment_method_available",
+      "daily_order_bundle_prepared",
+      "order_price_secured",
+      "delivery_visibility_confirmed",
+      "shop_order_delivered"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "bank_account_active",
+    "payment_method_available",
+    "daily_order_bundle_prepared",
+    "order_price_secured",
+    "delivery_visibility_confirmed",
+    "shop_order_delivered"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 65,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_PRICE_BUNDLE_DUAL; daily price-bundle workflows should continue through visible order arrival before the price-protection closeout."
+}

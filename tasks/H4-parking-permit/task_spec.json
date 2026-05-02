@@ -1,0 +1,73 @@
+{
+  "task_id": "H4-2025-PARKING",
+  "family": "H",
+  "goal": "Apply for a residential parking permit for plate C-55021 for 3 months.",
+  "inputs": {
+    "plate_number": "C-55021",
+    "permit_type": "residential",
+    "duration_months": 3
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('permits.parking.state') == 'submitted'",
+    "mem('gov.parking_permits.last.status') == 'active'",
+    "mem('gov.parking_permits.last.plate_number') == 'C-55021'",
+    "mem('gov.parking_permits.last.permit_type') == 'residential'",
+    "mem('gov.parking_permits.last.duration_months') == '3'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_h4_1",
+      "name": "cp_h4 checkpoint 1",
+      "assertion": "mem('permits.parking.state') == 'submitted'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h4_2",
+      "name": "cp_h4 checkpoint 2",
+      "assertion": "mem('gov.parking_permits.last.status') == 'active'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h4_3",
+      "name": "cp_h4 checkpoint 3",
+      "assertion": "mem('gov.parking_permits.last.plate_number') == 'C-55021'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h4_4",
+      "name": "cp_h4 checkpoint 4",
+      "assertion": "mem('gov.parking_permits.last.permit_type') == 'residential'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_h4_5",
+      "name": "cp_h4 checkpoint 5",
+      "assertion": "mem('gov.parking_permits.last.duration_months') == '3'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "gov.local"
+  ],
+  "module_group": "parking_permit_application",
+  "variant_kind": "distinct",
+  "canonical_task_dir": "H4-parking-permit",
+  "lifecycle_status": "active",
+  "module_notes": "Residential permit instance for plate C-55021, 3 months."
+}

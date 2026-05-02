@@ -1,0 +1,20 @@
+{
+  "task_id": "J5-2025-CERT",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/certification.html?clean=true&task=J5-2025-CERT"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#cert-python button"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "body"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "bills.electricity.amount": {
+    "key": "bills.electricity.amount",
+    "value": 85.50,
+    "ts": "2025-11-16T11:00:10Z",
+    "source": "H1-2025-003",
+    "confidence": 1.0
+  },
+  "bills.electricity.due_date": {
+    "key": "bills.electricity.due_date",
+    "value": "2025-12-01",
+    "ts": "2025-11-16T11:00:10Z",
+    "source": "H1-2025-003",
+    "confidence": 1.0
+  },
+  "bills.water.amount": {
+    "key": "bills.water.amount",
+    "value": 45.00,
+    "ts": "2025-11-16T11:00:10Z",
+    "source": "H1-2025-003",
+    "confidence": 1.0
+  },
+  "bills.water.due_date": {
+    "key": "bills.water.due_date",
+    "value": "2025-12-01",
+    "ts": "2025-11-16T11:00:10Z",
+    "source": "H1-2025-003",
+    "confidence": 1.0
+  }
+}

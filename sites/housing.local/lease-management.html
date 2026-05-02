@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<title>Lease Management - Nebula Housing</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.lease-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+.lease-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px; }
+.lease-details { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: rgba(0,0,0,0.02); padding: 16px; border-radius: 8px; }
+.detail-item label { font-size: 12px; color: var(--muted); display: block; }
+</style>
+</head>
+<body class="page">
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">🏠 Nebula Housing</div>
+    <div class="navlinks">
+      <a href="index.html">Find Home</a>
+      <a href="lease-management.html" class="active">My Leases</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+    <h1>My Leases</h1>
+    <div style="display:flex; gap:12px; align-items:center">
+      <button class="btn pri" id="add-lease-btn" onclick="openAddLeaseModal()">+ Add Contract</button>
+    </div>
+  </div>
+
+  <div id="leases-list">
+    <div class="loading">Loading leases...</div>
+  </div>
+</div>
+
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const leaseManagementParams = new URLSearchParams(window.location.search);
+const requestedLeaseManagementTaskId = leaseManagementParams.get('task') || '';
+const leaseManagementTaskId = resolveTaskId(requestedLeaseManagementTaskId || '');
+
+async function loadLeases() {
+  const list = document.getElementById('leases-list');
+  const env = await loadEnv();
+  const leases = env.housing?.leases || {};
+  
+  if (Object.keys(leases).length === 0) {
+    list.innerHTML = '<div class="card soft" style="text-align:center; padding:40px">No active leases found.</div>';
+    return;
+  }
+
+  list.innerHTML = Object.entries(leases).map(([id, lease]) => `
+    <div class="lease-card">
+      <div class="lease-header">
+        <div>
+          <h3 style="margin:0">Contract #${id}</h3>
+          <span class="badge ok">${lease.status}</span>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:700; color:var(--pri)">$${lease.rent}/mo</div>
+        </div>
+      </div>
+      <div class="lease-details">
+        <div class="detail-item"><label>End Date</label><div>${lease.end_date || 'N/A'}</div></div>
+        <div class="detail-item"><label>Deposit</label><div>$${lease.deposit || '0'}</div></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAddLeaseModal() {
+  new Modal({
+    title: 'Add New Lease Contract',
+    content: `
+      <div class="form">
+        <div class="form-group">
+          <label>Contract ID</label>
+          <input id="new-id" class="input" placeholder="CTR-2101">
+        </div>
+        <div class="form-group">
+          <label>Monthly Rent ($)</label>
+          <input id="new-rent" type="number" class="input" min="0" placeholder="1200">
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <input id="new-end-date" type="date" class="input">
+        </div>
+      </div>
+    `,
+    onConfirm: async () => {
+      const id = document.getElementById('new-id').value.trim();
+      const rent = document.getElementById('new-rent').value;
+      const endDate = document.getElementById('new-end-date').value;
+      if (!id || !rent || !endDate) {
+        Toast.error("Enter the contract ID, rent, and end date.");
+        return;
+      }
+      await send(leaseManagementTaskId || 'A5-2025-LEASE', 'manage_lease', {
+        action_type: 'add', lease_id: id, rent: rent, end_date: endDate
+      });
+      Toast.success("Contract Added");
+      setTimeout(loadLeases, 1000);
+    }
+  }).open();
+}
+document.addEventListener('DOMContentLoaded', loadLeases);
+</script>
+</body>
+</html>

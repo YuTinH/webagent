@@ -1,0 +1,95 @@
+{
+  "task_id": "F7-2025-CONFINVOICE::WFG-CAREER-0001-M1",
+  "family": "F",
+  "goal": "Upload the conference invoice document 'Conference-Invoice' for amount 980 dated 2025-12-31 for tax review.",
+  "inputs": {
+    "document_name": "Conference-Invoice",
+    "document_type": "invoice",
+    "amount": "980",
+    "date": "2025-12-31",
+    "paymentMethod": "card",
+    "conferenceId": "RB-2105",
+    "fullName": "Riley Morgan",
+    "email": "casey.lin@example.com",
+    "invoiceTitle": "Data Platform Team"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('finance.tax_documents.last.status') == 'pending'",
+    "mem('finance.tax_documents.last.id') includes 'TAX-'",
+    "exists(\"#tax-docs-list .card:has-text('Conference-Invoice')\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Tax document status populated",
+      "assertion": "mem('finance.tax_documents.last.status') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Tax document pending",
+      "assertion": "mem('finance.tax_documents.last.status') == 'pending'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Tax document id populated",
+      "assertion": "mem('finance.tax_documents.last.id') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Tax document id assigned",
+      "assertion": "mem('finance.tax_documents.last.id') includes 'TAX-'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Named conference invoice visible",
+      "assertion": "exists(\"#tax-docs-list .card:has-text('Conference-Invoice')\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Not blank page",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Not chrome error",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "conference_registration",
+  "canonical_task_dir": "F7-conference-registration",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active",
+  "binding_task_id": "F7-2025-CONFINVOICE",
+  "source_task_id": "F7-2025-CONFINVOICE"
+}

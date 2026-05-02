@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "modules": [
+    {
+      "module_id": "MODULE_BILLING_REVIEW",
+      "binding_count": 2,
+      "recommend_explicit_binding_id": true,
+      "reason": "Bindings differ in parameter surface or observable behavior.",
+      "bindings": [
+        {
+          "binding_id": "BIND_H5_LIBRARY_CARD",
+          "backing_task_id": "H5-2025-BILLVIEW",
+          "task_dir": "H5-library-card",
+          "default_parameter_keys": []
+        },
+        {
+          "binding_id": "BIND_H6_CHECK_BILL",
+          "backing_task_id": "H6-2025-003",
+          "task_dir": "H6-check-bill",
+          "default_parameter_keys": [
+            "utility_types"
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "MODULE_BUDGET_LIMIT_UPDATE",
+      "binding_count": 2,
+      "recommend_explicit_binding_id": true,
+      "reason": "Bindings differ in parameter surface or observable behavior.",
+      "bindings": [
+        {
+          "binding_id": "BIND_D2_BUDGET_REPORT",
+          "backing_task_id": "D2-2025-BUDGET",
+          "task_dir": "D2-budget-report",
+          "default_parameter_keys": [
+            "category",
+            "limit"
+          ]
+        },
+        {
+          "binding_id": "BIND_D7_UPDATE_PROFILE",
+          "backing_task_id": "D7-2025-SPENDPROFILE",
+          "task_dir": "D7-update-profile",
+          "default_parameter_keys": [
+            "category",
+            "limit"
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "MODULE_LEASE_MANAGEMENT_REVIEW",
+      "binding_count": 3,
+      "recommend_explicit_binding_id": true,
+      "reason": "Bindings differ in parameter surface or observable behavior.",
+      "bindings": [
+        {
+          "binding_id": "BIND_A10_NEIGHBOR_COMPLAINT",
+          "backing_task_id": "A10-2025-LEASECHECK",
+          "task_dir": "A10-neighbor-complaint",
+          "default_parameter_keys": []
+        },
+        {
+          "binding_id": "BIND_A7_MAINTENANCE_REQUEST",
+          "backing_task_id": "A7-2025-LEASEVIEW",
+          "task_dir": "A7-maintenance-request",
+          "default_parameter_keys": []
+        },
+        {
+          "binding_id": "BIND_A9_RENT_PAYMENT",
+          "backing_task_id": "A9-2025-LEASEOPEN",
+          "task_dir": "A9-rent-payment",
+          "default_parameter_keys": []
+        }
+      ]
+    }
+  ]
+}

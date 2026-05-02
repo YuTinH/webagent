@@ -1,0 +1,41 @@
+{
+  "task_id": "D4-2025-CARD",
+  "family": "D",
+  "goal": "Complete the following task: replace the current card and set the new card digits to 7777.",
+  "inputs": {
+    "old_last4": "1234",
+    "new_last4": "7777"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('payment.cards[0].status') == 'active'",
+    "mem('payment.cards[0].last4') == '7777'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_d4_1",
+      "name": "cp_d4 checkpoint 1",
+      "assertion": "mem('payment.cards[0].status') == 'active'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_d4_2",
+      "name": "cp_d4 checkpoint 2",
+      "assertion": "mem('payment.cards[0].last4') == '7777'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "pay.local"
+  ],
+  "module_group": "card_replacement",
+  "canonical_task_dir": "D4-card-replacement",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

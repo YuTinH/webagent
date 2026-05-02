@@ -1,0 +1,52 @@
+{
+  "task_id": "B11-2025-GIGLISTING",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/market.local/list-item.html?clean=true&task=B11-2025-GIGLISTING",
+      "note": "Open List Item page"
+    },
+    {
+      "t": 1.0,
+      "act": "type",
+      "selector": "#item-name",
+      "value": "Apartment Deep Cleaning Consultation",
+      "note": "Enter item name"
+    },
+    {
+      "t": 2.0,
+      "act": "type",
+      "selector": "#description",
+      "value": "Offer a professional home cleaning consultation and quote site visit.",
+      "note": "Enter description"
+    },
+    {
+      "t": 3.0,
+      "act": "type",
+      "selector": "#price",
+      "value": "100",
+      "note": "Enter price"
+    },
+    {
+      "t": 4.0,
+      "act": "select",
+      "selector": "#category",
+      "value": "service",
+      "note": "Select category"
+    },
+    {
+      "t": 5.0,
+      "act": "click",
+      "selector": "button.pri",
+      "note": "Submit listing"
+    },
+    {
+      "t": 6.0,
+      "act": "wait",
+      "selector": "#listing-list",
+      "note": "Wait for items list on index page"
+    }
+  ]
+}

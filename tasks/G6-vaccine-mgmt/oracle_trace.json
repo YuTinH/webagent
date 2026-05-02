@@ -1,0 +1,39 @@
+{
+  "task_id": "G6-2025-VACCINE",
+  "agent_version": "oracle-v1.0.0",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/vaccine.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#vaccine-type",
+      "value": "mmr"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#appt-date",
+      "value": "2025-12-19"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#appt-time",
+      "value": "11:00"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#book-vaccine-btn"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#records-list .badge.ok"
+    }
+  ]
+}

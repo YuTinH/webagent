@@ -1,0 +1,20 @@
+{
+  "task_id": "G2-2025-INSURANCE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/health.local/insurance.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#plan-premium-plus button"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#current-policy .badge.ok"
+    }
+  ]
+}

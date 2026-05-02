@@ -1,0 +1,64 @@
+{
+  "task_id": "F1-2025-JOBSEARCH",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+    "url": "http://localhost:8014/work.local/email-tracking.html?clean=true&task=F1-2025-JOBSEARCH",
+      "note": "Open email tracker"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Open add thread modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#email-subject",
+      "value": "Job Application Follow-up",
+      "note": "Subject"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#email-sender",
+      "value": "recruiter@example.com",
+      "note": "Sender"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#email-summary",
+      "value": "Interview scheduling and next steps",
+      "note": "Summary"
+    },
+    {
+      "t": 5,
+      "act": "select",
+      "selector": "#email-priority",
+      "value": "high",
+      "note": "Priority"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#email-follow-up-date",
+      "value": "2026-01-12",
+      "note": "Follow-up date"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Create thread"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#email-list .card",
+      "note": "Wait for list item"
+    }
+  ]
+}

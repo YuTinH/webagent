@@ -1,0 +1,105 @@
+{
+  "task_id": "C2-2025-004",
+  "family": "C",
+  "episode_id": "ep-001",
+  "priority": 2,
+  "seed": 42,
+  "time": "2025-11-18T14:00:00Z",
+  "persona": {
+    "reason": "wrong_item",
+    "preference": "refund_to_card"
+  },
+  "goal": "Hello, please Submit a return request for order O-10001 because the wrong item arrived.. Asap.",
+  "inputs": {
+    "order_id": "O-10001",
+    "item_sku": "WM-5521",
+    "reason": "wrong_item",
+    "refund_method": "original_payment"
+  },
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "preconditions": [],
+  "memory_keys": [
+    "returns.last.id",
+    "returns.last.order_id",
+    "returns.last.refund_amount",
+    "returns.last.state"
+  ],
+  "success_criteria": [
+    "mem('returns.last.state') == 'submitted'",
+    "mem('returns.last.order_id') == 'O-10001'",
+    "mem('returns.last.reason') == 'wrong_item'",
+    "url().includes('/shop.local/returns/confirm.html')"
+  ],
+  "artifacts": [
+    "return_label_pdf",
+    "refund_confirmation"
+  ],
+  "rubrics": {
+    "SR": 1.0,
+    "LH-F1": 0.5
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "dependencies": [
+    "B1-2025-001"
+  ],
+  "error_recovery": {
+    "on_timeout": "capture_state_and_abort",
+    "on_network_error": {
+      "strategy": "retry",
+      "max_retries": 3,
+      "retry_delay_ms": 1000
+    },
+    "on_element_not_found": {
+      "strategy": "wait_and_retry",
+      "wait_seconds": 10
+    },
+    "on_assertion_fail": {
+      "strategy": "save_trace_and_report",
+      "capture_screenshot": true,
+      "capture_dom": true,
+      "capture_memory": true
+    },
+    "on_precondition_fail": "abort_with_warning"
+  },
+  "scoring_checkpoints": [
+    {
+      "id": "cp_c2_1",
+      "name": "cp_c2 checkpoint 1",
+      "assertion": "mem('returns.last.state') == 'submitted'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "cp_c2_2",
+      "name": "cp_c2 checkpoint 2",
+      "assertion": "mem('returns.last.order_id') == 'O-10001'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "cp_c2_3",
+      "name": "cp_c2 checkpoint 3",
+      "assertion": "mem('returns.last.reason') == 'wrong_item'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "cp_c2_4",
+      "name": "cp_c2 checkpoint 4",
+      "assertion": "url().includes('/shop.local/returns/confirm.html')",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "module_group": "return",
+  "canonical_task_dir": "C2-return",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

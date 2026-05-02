@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "description": "First prototype batch of compositional workflow goals.",
+  "quality_policy": {
+    "requirements_file": "tasks/workflow_quality_requirements.json",
+    "audit_script": "rl_memory/scripts/audit_workflow_goal_quality.py",
+    "latest_audit_json": ".task_sync_meta/workflow_goal_quality_audit.json",
+    "latest_audit_md": ".task_sync_meta/workflow_goal_quality_audit.md"
+  },
+  "goals": [
+    {"goal_id": "WF-NEWCOMER-001", "theme": "newcomer", "goal_file": "WF-NEWCOMER-001.json", "oracle_file": "WF-NEWCOMER-001.json"},
+    {"goal_id": "WF-NEWCOMER-002", "theme": "newcomer", "goal_file": "WF-NEWCOMER-002.json", "oracle_file": "WF-NEWCOMER-002.json"},
+    {"goal_id": "WF-SECURITY-001", "theme": "security", "goal_file": "WF-SECURITY-001.json", "oracle_file": "WF-SECURITY-001.json"},
+    {"goal_id": "WF-EDUCATION-001", "theme": "education", "goal_file": "WF-EDUCATION-001.json", "oracle_file": "WF-EDUCATION-001.json"},
+    {"goal_id": "WF-EDUCATION-002", "theme": "education", "goal_file": "WF-EDUCATION-002.json", "oracle_file": "WF-EDUCATION-002.json"},
+    {"goal_id": "WF-SUPPORT-001", "theme": "support", "goal_file": "WF-SUPPORT-001.json", "oracle_file": "WF-SUPPORT-001.json"},
+    {"goal_id": "WF-TRAVEL-001", "theme": "travel", "goal_file": "WF-TRAVEL-001.json", "oracle_file": "WF-TRAVEL-001.json"}
+  ]
+}

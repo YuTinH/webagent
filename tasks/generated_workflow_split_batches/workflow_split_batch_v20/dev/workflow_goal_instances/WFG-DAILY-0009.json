@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-DAILY-0009",
+  "theme": "daily",
+  "difficulty": 7,
+  "instruction": "Close the daily route by preparing the household stack first, finishing the food-and-subscription bundle, and ending with a synced routine calendar.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "daily_order_bundle_prepared",
+      "service_stack_prepared",
+      "food_order_pending",
+      "subscription_active",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "lease_active"
+  ],
+  "target_state": [
+    "daily_order_bundle_prepared",
+    "service_stack_prepared",
+    "food_order_pending",
+    "subscription_active",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_DAILY_BUNDLE_SUBSCRIPTION_PREP; bundle-prep daily workflows should end with an explicit routine-scheduling step."
+}

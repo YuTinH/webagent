@@ -1,0 +1,51 @@
+{
+  "task_id": "L4-2025-2FA",
+  "family": "L",
+  "goal": "Ensure you move 2FA to the device Galaxy Fold 7.",
+  "inputs": {
+    "new_device_name": "iPhone 15 Pro",
+    "verification_code": "123456"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('security.mfa.current_device') == 'Galaxy Fold 7'",
+    "mem('security.mfa_history.last.device_name') == 'Galaxy Fold 7'",
+    "exists(\"#twofa-history-list .card:has-text('Galaxy Fold 7')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_l4_1",
+      "name": "cp_l4 checkpoint 1",
+      "assertion": "mem('security.mfa.current_device') == 'Galaxy Fold 7'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l4_2",
+      "name": "cp_l4 checkpoint 2",
+      "assertion": "mem('security.mfa_history.last.device_name') == 'Galaxy Fold 7'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l4_3",
+      "name": "cp_l4 checkpoint 3",
+      "assertion": "exists(\"#twofa-history-list .card:has-text('Galaxy Fold 7')\")",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "security.local"
+  ],
+  "module_group": "2fa_device",
+  "canonical_task_dir": "L4-2fa-device",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

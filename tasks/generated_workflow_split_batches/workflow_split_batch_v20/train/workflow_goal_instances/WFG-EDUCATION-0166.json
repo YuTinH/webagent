@@ -1,0 +1,40 @@
+{
+  "goal_id": "WFG-EDUCATION-0166",
+  "theme": "education",
+  "difficulty": 7,
+  "instruction": "Close the resource-submission workflow by securing study resources first, submitting the assignment, downloading the certificate artifact, activating the rental listing, and ending with the calendar synced.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "assignment_resources_provisioned",
+      "assignment_submitted",
+      "certificate_downloaded",
+      "rental_listing_active",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "course_enrolled",
+    "education_account_activated"
+  ],
+  "target_state": [
+    "assignment_resources_provisioned",
+    "assignment_submitted",
+    "certificate_downloaded",
+    "rental_listing_active",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_EDUCATION_RESOURCE_CERT; resource-submission education workflows should continue into rental readiness after submission and certificate steps."
+}

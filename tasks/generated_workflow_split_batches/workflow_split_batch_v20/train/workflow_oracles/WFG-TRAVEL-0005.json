@@ -1,0 +1,376 @@
+{
+  "goal_id": "WFG-TRAVEL-0005",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full readiness route to completion and do not stop before clearance is checked, check-in is completed, and the commute route is confirmed."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "role": "required",
+      "produces": [
+        "airport_transfer_arranged"
+      ]
+    },
+    {
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "travel_booking_confirmed"
+      ]
+    },
+    {
+      "module_id": "MODULE_CHECK_IN",
+      "role": "required",
+      "produces": [
+        "check_in_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_COMMUTE_ROUTE",
+      "role": "required",
+      "produces": [
+        "commute_route_checked"
+      ]
+    },
+    {
+      "module_id": "MODULE_LONG_HAUL_TRIP",
+      "role": "alternative",
+      "produces": [
+        "flight_booked",
+        "mobility_clearance_verified",
+        "travel_booking_confirmed",
+        "trip_booked",
+        "visa_approved"
+      ]
+    },
+    {
+      "module_id": "MODULE_VISA_REQUIREMENTS",
+      "role": "required",
+      "produces": [
+        "mobility_clearance_verified",
+        "visa_requirements_checked"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_AIRPORT_TRANSFER",
+      "to": "MODULE_CHECK_IN",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_BOOK_FLIGHT",
+      "to": "MODULE_AIRPORT_TRANSFER",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_CHECK_IN",
+      "to": "MODULE_COMMUTE_ROUTE",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_LONG_HAUL_TRIP",
+      "to": "MODULE_VISA_REQUIREMENTS",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_VISA_REQUIREMENTS",
+      "to": "MODULE_AIRPORT_TRANSFER",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_VISA_REQUIREMENTS",
+      "to": "MODULE_BOOK_FLIGHT",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_visa_flight_transfer_checkin_commute",
+      "required_modules": [
+        "MODULE_VISA_REQUIREMENTS",
+        "MODULE_BOOK_FLIGHT",
+        "MODULE_AIRPORT_TRANSFER",
+        "MODULE_CHECK_IN",
+        "MODULE_COMMUTE_ROUTE"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-TRAVEL-0005-M1",
+        "WFG-TRAVEL-0005-M2",
+        "WFG-TRAVEL-0005-M3",
+        "WFG-TRAVEL-0005-M4",
+        "WFG-TRAVEL-0005-M5"
+      ],
+      "terminal_predicates": [
+        "flight_booked",
+        "mobility_clearance_verified",
+        "airport_transfer_arranged",
+        "check_in_completed",
+        "commute_route_checked",
+        "visa_requirements_checked"
+      ]
+    },
+    {
+      "path_id": "path_longhaul_visa_transfer_checkin_commute",
+      "required_modules": [
+        "MODULE_LONG_HAUL_TRIP",
+        "MODULE_VISA_REQUIREMENTS",
+        "MODULE_AIRPORT_TRANSFER",
+        "MODULE_CHECK_IN",
+        "MODULE_COMMUTE_ROUTE"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-TRAVEL-0005-M6",
+        "WFG-TRAVEL-0005-M7",
+        "WFG-TRAVEL-0005-M8",
+        "WFG-TRAVEL-0005-M9",
+        "WFG-TRAVEL-0005-M10"
+      ],
+      "terminal_predicates": [
+        "flight_booked",
+        "mobility_clearance_verified",
+        "airport_transfer_arranged",
+        "check_in_completed",
+        "commute_route_checked",
+        "visa_requirements_checked"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M1",
+      "module_id": "MODULE_VISA_REQUIREMENTS",
+      "binding_id": "BIND_E10_VISA_REQUIREMENTS",
+      "binding_task_id": "E10-2025-VISA",
+      "parameter_values": {
+        "destination_country": "France",
+        "passport_country": "China"
+      },
+      "description": "Check the visa requirements for France using a China passport.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "mobility_clearance_verified",
+          "visa_requirements_checked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M2",
+      "module_id": "MODULE_BOOK_FLIGHT",
+      "binding_id": "BIND_E1_BOOK_FLIGHT",
+      "binding_task_id": "E1-2025-FLIGHT",
+      "parameter_values": {
+        "departure": "Guangzhou",
+        "destination": "Tokyo",
+        "depart_date": "2026-05-10",
+        "passengers": "1",
+        "class": "economy",
+        "flight_number": "MF8330",
+        "price": 450.0
+      },
+      "description": "Book a flight from Guangzhou to Tokyo on 2026-05-10 for 1 passenger.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "travel_booking_confirmed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M3",
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "binding_id": "BIND_E3_AIRPORT_TRANSFER",
+      "binding_task_id": "E3-2025-TRANSFER",
+      "parameter_values": {},
+      "description": "Book airport transfer and choose self_drive when the vehicle is healthy, otherwise choose taxi.",
+      "expected_observables": [
+        "ANY[ALL[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken'], mem('trips.transfer.method') == 'taxi'], ALL[NOT[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken']], mem('trips.transfer.method') == 'self_drive']]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "airport_transfer_arranged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M4",
+      "module_id": "MODULE_CHECK_IN",
+      "binding_id": "BIND_E4_CHECK_IN",
+      "binding_task_id": "E4-2025-CHECKIN",
+      "parameter_values": {},
+      "description": "Online check-in for flight",
+      "expected_observables": [
+        "text(\"#pnr\") == \"PNR9ZZ\"",
+        "text(\"#ticket-status\") == \"Rebooked\"",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "check_in_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M5",
+      "module_id": "MODULE_COMMUTE_ROUTE",
+      "binding_id": "BIND_E8_COMMUTE_ROUTE",
+      "binding_task_id": "E8-2025-COMMUTE",
+      "parameter_values": {
+        "origin": "家",
+        "destination": "办公室",
+        "commute_time": "08:00",
+        "transport_mode": "all"
+      },
+      "description": "Check your daily commute route and cost.",
+      "expected_observables": [
+        "ANY[ALL[json('env','world_state.location_context.tier') == 'suburban', mem('commute.last_search.cost') == 120.0], ALL[NOT[json('env','world_state.location_context.tier') == 'suburban'], mem('commute.last_search.cost') == 35.0]]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "commute_route_checked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M6",
+      "module_id": "MODULE_LONG_HAUL_TRIP",
+      "binding_id": "BIND_E7_LONG_HAUL_TRIP",
+      "binding_task_id": "E7-LONG-HAUL",
+      "parameter_values": {
+        "destination": "Tokyo",
+        "passport_number": "P2468101"
+      },
+      "description": "Apply for a Tokyo visa with passport P2468101, wait for approval, then book the Tokyo flight from Shenzhen on 2026-05-09.",
+      "expected_observables": [
+        "url().includes('/trip.local/manage.html')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "flight_booked",
+          "mobility_clearance_verified",
+          "travel_booking_confirmed",
+          "trip_booked",
+          "visa_approved"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M7",
+      "module_id": "MODULE_VISA_REQUIREMENTS",
+      "binding_id": "BIND_E10_VISA_REQUIREMENTS",
+      "binding_task_id": "E10-2025-VISA",
+      "parameter_values": {
+        "destination_country": "France",
+        "passport_country": "China"
+      },
+      "description": "Check the visa requirements for France using a China passport.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "mobility_clearance_verified",
+          "visa_requirements_checked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M8",
+      "module_id": "MODULE_AIRPORT_TRANSFER",
+      "binding_id": "BIND_E3_AIRPORT_TRANSFER",
+      "binding_task_id": "E3-2025-TRANSFER",
+      "parameter_values": {},
+      "description": "Book airport transfer and choose self_drive when the vehicle is healthy, otherwise choose taxi.",
+      "expected_observables": [
+        "ANY[ALL[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken'], mem('trips.transfer.method') == 'taxi'], ALL[NOT[ANY[json('env','world_state.vehicle_context.condition') == 'under_repair', json('env','world_state.vehicle_context.condition') == 'broken']], mem('trips.transfer.method') == 'self_drive']]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "airport_transfer_arranged"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M9",
+      "module_id": "MODULE_CHECK_IN",
+      "binding_id": "BIND_E4_CHECK_IN",
+      "binding_task_id": "E4-2025-CHECKIN",
+      "parameter_values": {},
+      "description": "Online check-in for flight",
+      "expected_observables": [
+        "text(\"#pnr\") == \"PNR9ZZ\"",
+        "text(\"#ticket-status\") == \"Rebooked\"",
+        "url().includes('status=rebooked')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "check_in_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-TRAVEL-0005-M10",
+      "module_id": "MODULE_COMMUTE_ROUTE",
+      "binding_id": "BIND_E8_COMMUTE_ROUTE",
+      "binding_task_id": "E8-2025-COMMUTE",
+      "parameter_values": {
+        "origin": "家",
+        "destination": "办公室",
+        "commute_time": "08:00",
+        "transport_mode": "all"
+      },
+      "description": "Check your daily commute route and cost.",
+      "expected_observables": [
+        "ANY[ALL[json('env','world_state.location_context.tier') == 'suburban', mem('commute.last_search.cost') == 120.0], ALL[NOT[json('env','world_state.location_context.tier') == 'suburban'], mem('commute.last_search.cost') == 35.0]]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "commute_route_checked"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "flight_booked",
+      "mobility_clearance_verified",
+      "airport_transfer_arranged",
+      "check_in_completed",
+      "commute_route_checked",
+      "visa_requirements_checked"
+    ],
+    "checkpoint_predicates": [
+      "airport_transfer_arranged",
+      "check_in_completed",
+      "commute_route_checked",
+      "flight_booked",
+      "mobility_clearance_verified",
+      "travel_booking_confirmed",
+      "trip_booked",
+      "visa_approved",
+      "visa_requirements_checked"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

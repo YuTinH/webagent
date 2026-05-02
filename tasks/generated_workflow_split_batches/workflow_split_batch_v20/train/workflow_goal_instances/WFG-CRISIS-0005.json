@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-CRISIS-0005",
+  "theme": "crisis",
+  "difficulty": 7,
+  "instruction": "Finish the reset-liquidity packet only after password reset is complete, emergency liquidity is secured, the balance is reviewed, and a dispute is submitted.",
+  "visible_constraints": {
+    "deadline_days": 1,
+    "preferred_outcomes": [
+      "password_reset_completed",
+      "emergency_liquidity_secured",
+      "account_balance_reviewed",
+      "transaction_dispute_submitted"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "password_reset_completed",
+    "emergency_liquidity_secured",
+    "account_balance_reviewed",
+    "transaction_dispute_submitted"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CRISIS_ACCESS_LIQUIDITY; reset-driven crisis workflows should continue from liquidity support into explicit balance review and dispute handling."
+}

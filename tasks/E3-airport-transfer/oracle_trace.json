@@ -1,0 +1,30 @@
+{
+  "task_id": "E3-2025-TRANSFER",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/trip.local/transfer.html?clean=true",
+      "note": "Open transfer booking page"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#transfer-method",
+      "value": "self_drive",
+      "note": "Select transfer method"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('Confirm')",
+      "note": "Click confirm button"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#transfer-method",
+      "note": "Wait for booking status marker"
+    }
+  ]
+}

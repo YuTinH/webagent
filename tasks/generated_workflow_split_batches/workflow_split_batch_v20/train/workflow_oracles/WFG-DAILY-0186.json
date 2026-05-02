@@ -1,0 +1,389 @@
+{
+  "goal_id": "WFG-DAILY-0186",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either use the item-listing route before bundle prep, subscription activation, and calendar sync, or use the second-hand-sale route before the same bundle, subscription, and follow-up closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "role": "required",
+      "produces": [
+        "coupon_available",
+        "daily_order_bundle_prepared",
+        "order_price_secured",
+        "service_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_FRESH_SUBSCRIPTION",
+      "role": "required",
+      "produces": [
+        "subscription_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_GROCERY_RUN",
+      "role": "required",
+      "produces": [
+        "daily_order_bundle_prepared",
+        "grocery_order_pending"
+      ]
+    },
+    {
+      "module_id": "MODULE_SECOND_HAND_ITEM_LISTING",
+      "role": "alternative",
+      "produces": [
+        "market_listing_active",
+        "resale_listing_activated"
+      ]
+    },
+    {
+      "module_id": "MODULE_SECOND_HAND_SALE",
+      "role": "alternative",
+      "produces": [
+        "resale_listing_activated",
+        "sale_listing_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_COUPON_MANAGEMENT",
+      "to": "MODULE_GROCERY_RUN",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_FRESH_SUBSCRIPTION",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_GROCERY_RUN",
+      "to": "MODULE_FRESH_SUBSCRIPTION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_SECOND_HAND_ITEM_LISTING",
+      "to": "MODULE_COUPON_MANAGEMENT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_SECOND_HAND_SALE",
+      "to": "MODULE_COUPON_MANAGEMENT",
+      "kind": "alternative"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_listing_coupon_grocery_subscription_calendar",
+      "required_modules": [
+        "MODULE_SECOND_HAND_ITEM_LISTING",
+        "MODULE_COUPON_MANAGEMENT",
+        "MODULE_GROCERY_RUN",
+        "MODULE_FRESH_SUBSCRIPTION",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0186-M1",
+        "WFG-DAILY-0186-M2",
+        "WFG-DAILY-0186-M3",
+        "WFG-DAILY-0186-M4",
+        "WFG-DAILY-0186-M5"
+      ],
+      "terminal_predicates": [
+        "resale_listing_activated",
+        "daily_order_bundle_prepared",
+        "subscription_active",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_sale_coupon_grocery_subscription_calendar",
+      "required_modules": [
+        "MODULE_SECOND_HAND_SALE",
+        "MODULE_COUPON_MANAGEMENT",
+        "MODULE_GROCERY_RUN",
+        "MODULE_FRESH_SUBSCRIPTION",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0186-M6",
+        "WFG-DAILY-0186-M7",
+        "WFG-DAILY-0186-M8",
+        "WFG-DAILY-0186-M9",
+        "WFG-DAILY-0186-M10"
+      ],
+      "terminal_predicates": [
+        "resale_listing_activated",
+        "daily_order_bundle_prepared",
+        "subscription_active",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-DAILY-0186-M1",
+      "module_id": "MODULE_SECOND_HAND_ITEM_LISTING",
+      "binding_id": "BIND_B6_SECOND_HAND_ITEM_LISTING",
+      "binding_task_id": "B6-2025-MARKET",
+      "parameter_values": {
+        "name": "Vintage Desk Lamp",
+        "description": "Working condition, minor scratches, includes bulb.",
+        "price": "50",
+        "category": "furniture",
+        "photo_name": ""
+      },
+      "description": "List a second-hand item: 'Vintage Desk Lamp' for 50 in 'furniture' category.",
+      "expected_observables": [
+        "url().includes('/market.local/index.html?listed=true')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "market_listing_active",
+          "resale_listing_activated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0186-M2",
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "binding_id": "BIND_B10_COUPON_MANAGEMENT",
+      "binding_task_id": "B10-2025-COUPONS",
+      "parameter_values": {
+        "name": "Spring Saver",
+        "code": "SAVE20",
+        "type": "discount",
+        "value": "20.0",
+        "min_spend": "100.0",
+        "expiry_date": "2026-04-30"
+      },
+      "description": "Add a discount coupon SAVE20 worth 20.0 off with a minimum spend of 100.0.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coupon_available",
+          "daily_order_bundle_prepared",
+          "order_price_secured",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0186-M3",
+      "module_id": "MODULE_GROCERY_RUN",
+      "binding_id": "BIND_B7_GROCERY_RUN",
+      "binding_task_id": "B7-2025-GROCERYSUB",
+      "parameter_values": {
+        "plan_name": "Weekly Grocery Basket",
+        "frequency": "weekly",
+        "items": "Fruit, Vegetables, Eggs",
+        "price_per_delivery": 180,
+        "next_delivery_date": "2026-02-15"
+      },
+      "description": "Set up a weekly grocery subscription plan.",
+      "expected_observables": [
+        "url().includes('/food.local/subscription.html')",
+        "exists(\"#subscriptions-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "daily_order_bundle_prepared",
+          "grocery_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0186-M4",
+      "module_id": "MODULE_FRESH_SUBSCRIPTION",
+      "binding_id": "BIND_B2_FRESH_SUBSCRIPTION",
+      "binding_task_id": "B2-2025-FRESHSUB",
+      "parameter_values": {
+        "name": "Family Box 10",
+        "price": "99",
+        "next_delivery_date": "2026-01-10",
+        "items": "fruit, vegetables, yogurt"
+      },
+      "description": "Create a fresh-food subscription named 'Family Box 10' with bi-weekly delivery, price 99 per delivery, and next delivery date 2026-01-10.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "subscription_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0186-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0186-M6",
+      "module_id": "MODULE_SECOND_HAND_SALE",
+      "binding_id": "BIND_B11_SECOND_HAND_SALE",
+      "binding_task_id": "B11-2025-GIGLISTING",
+      "parameter_values": {
+        "item_name": "Apartment Deep Cleaning Consultation",
+        "description": "Offer a professional home cleaning consultation and quote site visit.",
+        "price": "100",
+        "category": "service"
+      },
+      "description": "Post a professional gig listing for Apartment Deep Cleaning Consultation in the service category at 100.",
+      "expected_observables": [
+        "ANY[ALL[json('env','world_state.skills.certified') == true, mem('market.listed_items.last.price') == 200.0], ALL[NOT[json('env','world_state.skills.certified') == true], mem('market.listed_items.last.price') == 100.0]]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "resale_listing_activated",
+          "sale_listing_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0186-M7",
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "binding_id": "BIND_B10_COUPON_MANAGEMENT",
+      "binding_task_id": "B10-2025-COUPONS",
+      "parameter_values": {
+        "name": "Spring Saver",
+        "code": "SAVE20",
+        "type": "discount",
+        "value": "20.0",
+        "min_spend": "100.0",
+        "expiry_date": "2026-04-30"
+      },
+      "description": "Add a discount coupon SAVE20 worth 20.0 off with a minimum spend of 100.0.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coupon_available",
+          "daily_order_bundle_prepared",
+          "order_price_secured",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0186-M8",
+      "module_id": "MODULE_GROCERY_RUN",
+      "binding_id": "BIND_B7_GROCERY_RUN",
+      "binding_task_id": "B7-2025-GROCERYSUB",
+      "parameter_values": {
+        "plan_name": "Weekly Grocery Basket",
+        "frequency": "weekly",
+        "items": "Fruit, Vegetables, Eggs",
+        "price_per_delivery": 180,
+        "next_delivery_date": "2026-02-15"
+      },
+      "description": "Set up a weekly grocery subscription plan.",
+      "expected_observables": [
+        "url().includes('/food.local/subscription.html')",
+        "exists(\"#subscriptions-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "daily_order_bundle_prepared",
+          "grocery_order_pending"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0186-M9",
+      "module_id": "MODULE_FRESH_SUBSCRIPTION",
+      "binding_id": "BIND_B2_FRESH_SUBSCRIPTION",
+      "binding_task_id": "B2-2025-FRESHSUB",
+      "parameter_values": {
+        "name": "Family Box 10",
+        "price": "99",
+        "next_delivery_date": "2026-01-10",
+        "items": "fruit, vegetables, yogurt"
+      },
+      "description": "Create a fresh-food subscription named 'Family Box 10' with bi-weekly delivery, price 99 per delivery, and next delivery date 2026-01-10.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "subscription_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0186-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "resale_listing_activated",
+      "daily_order_bundle_prepared",
+      "subscription_active",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_synced",
+      "coupon_available",
+      "daily_order_bundle_prepared",
+      "grocery_order_pending",
+      "market_listing_active",
+      "order_price_secured",
+      "resale_listing_activated",
+      "sale_listing_active",
+      "service_stack_prepared",
+      "subscription_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

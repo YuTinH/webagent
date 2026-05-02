@@ -1,0 +1,38 @@
+{
+  "task_id": "J5-2025-CERT",
+  "family": "J",
+  "goal": "Your task is to apply for the Certified Python Expert certification.",
+  "inputs": {},
+  "preconditions": [],
+  "success_criteria": [
+    "mem('world_state.skills.certified') == 'True'",
+    "mem('world_state.skills.last_certificate') == 'Certified Python Expert'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_j5_1",
+      "name": "cp_j5 checkpoint 1",
+      "assertion": "mem('world_state.skills.certified') == 'True'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_j5_2",
+      "name": "cp_j5 checkpoint 2",
+      "assertion": "mem('world_state.skills.last_certificate') == 'Certified Python Expert'",
+      "weight": 0.5,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "school.local"
+  ],
+  "module_group": "skill_certification",
+  "canonical_task_dir": "J5-skill-certification",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

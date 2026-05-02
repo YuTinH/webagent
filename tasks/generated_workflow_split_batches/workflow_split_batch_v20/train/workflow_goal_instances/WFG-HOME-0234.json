@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-HOME-0234",
+  "theme": "home",
+  "difficulty": 7,
+  "instruction": "Close the home-readiness route by securing housing first, activating utilities next, and ending with both camera verification and device readiness complete, and finish with the thermostat schedule configured.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "utilities_active",
+      "camera_config_verified",
+      "home_device_readiness_confirmed",
+      "home_service_monitored",
+      "thermostat_schedule_configured"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "utilities_active",
+    "camera_config_verified",
+    "home_device_readiness_confirmed",
+    "home_service_monitored",
+    "thermostat_schedule_configured"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_HOME_ZTRAIN_04_MONITOR_READINESS_DUAL; monitor-readiness home workflows should continue into thermostat scheduling after device checks."
+}

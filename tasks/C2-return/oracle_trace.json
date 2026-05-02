@@ -1,0 +1,30 @@
+{
+  "task_id": "C2-2025-004",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/shop.local/orders.html?clean=true&task=C2-2025-004"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": ".return-order-btn[data-order-id='O-10001']"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#return-reasons .reason-option[data-reason='wrong_item']"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "#submit-return-btn"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#return-id"
+    }
+  ]
+}

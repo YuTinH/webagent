@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-CAREER-0189",
+  "theme": "career",
+  "difficulty": 6,
+  "instruction": "Finish the career follow-up packet only after conference administration is recorded, the receipt is archived, deadline coordination is captured, the career signal is strengthened, and a job follow-up is created.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "conference_admin_recorded",
+      "receipt_archived",
+      "deadline_coordination_recorded",
+      "career_signal_strengthened",
+      "job_application_followup_created"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "conference_admin_recorded",
+    "receipt_archived",
+    "deadline_coordination_recorded",
+    "career_signal_strengthened",
+    "job_application_followup_created"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 65,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CAREER_DEADLINE_SIGNAL_LOOP; conference-signal career workflows should continue into explicit job follow-up rather than stopping once the signal is strengthened."
+}

@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-EDUCATION-0297",
+  "theme": "education",
+  "difficulty": 7,
+  "instruction": "Close the study-resource workflow by enrolling first, provisioning resources, submitting the assignment, downloading the certificate artifact, and ending with the calendar synced.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "course_enrolled",
+      "assignment_resources_provisioned",
+      "assignment_submitted",
+      "certificate_downloaded",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "education_account_activated"
+  ],
+  "target_state": [
+    "course_enrolled",
+    "assignment_resources_provisioned",
+    "assignment_submitted",
+    "certificate_downloaded",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_EDUCATION_ZTRAIN_10_COURSE_RESOURCE_DUAL; course-resource education workflows should include a concrete submission step before the certificate and calendar closure."
+}

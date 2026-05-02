@@ -1,0 +1,42 @@
+{
+  "task_id": "I2-2025-APPREPAIR",
+  "family": "I",
+  "goal": "Your task is to request an oven repair service.",
+  "inputs": {
+    "appliance": "Oven",
+    "serial_number": "OVN-4401",
+    "problem": "Heating element not working",
+    "service_date": "2026-03-01"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('appliance_repairs.requests.last.appliance') == 'Oven'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_state",
+      "name": "Criterion 1 state set",
+      "assertion": "mem('appliance_repairs.requests.last.appliance') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "mem('appliance_repairs.requests.last.appliance') == 'Oven'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_1_state"
+      ]
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "appliance_repair",
+  "canonical_task_dir": "I2-appliance-repair",
+  "variant_kind": "distinct",
+  "lifecycle_status": "deprecated_invalid"
+}

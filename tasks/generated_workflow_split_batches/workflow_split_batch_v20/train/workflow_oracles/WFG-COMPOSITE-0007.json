@@ -1,0 +1,362 @@
+{
+  "goal_id": "WFG-COMPOSITE-0007",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either use the standard autopay route before archival and calendar sync, or use the complex-autopay route before the same archival and calendar closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_AUTOPAY",
+      "role": "alternative",
+      "produces": [
+        "autopay_enabled"
+      ]
+    },
+    {
+      "module_id": "MODULE_BANK_OPENING",
+      "role": "required",
+      "produces": [
+        "bank_account_active",
+        "payment_method_available"
+      ]
+    },
+    {
+      "module_id": "MODULE_BILL_AGGREGATION",
+      "role": "required",
+      "produces": [
+        "account_issue_triaged",
+        "bills_aggregated"
+      ]
+    },
+    {
+      "module_id": "MODULE_COMPLEX_AUTOPAY",
+      "role": "alternative",
+      "produces": [
+        "autopay_enabled",
+        "payment_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "role": "required",
+      "produces": [
+        "receipt_archived"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_AUTOPAY",
+      "to": "MODULE_RECEIPT_ARCHIVING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_BANK_OPENING",
+      "to": "MODULE_BILL_AGGREGATION",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_BILL_AGGREGATION",
+      "to": "MODULE_AUTOPAY",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_BILL_AGGREGATION",
+      "to": "MODULE_COMPLEX_AUTOPAY",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_COMPLEX_AUTOPAY",
+      "to": "MODULE_RECEIPT_ARCHIVING",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_RECEIPT_ARCHIVING",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_bank_bills_autopay_archive_calendar",
+      "required_modules": [
+        "MODULE_BANK_OPENING",
+        "MODULE_BILL_AGGREGATION",
+        "MODULE_AUTOPAY",
+        "MODULE_RECEIPT_ARCHIVING",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-COMPOSITE-0007-M1",
+        "WFG-COMPOSITE-0007-M2",
+        "WFG-COMPOSITE-0007-M3",
+        "WFG-COMPOSITE-0007-M4",
+        "WFG-COMPOSITE-0007-M5"
+      ],
+      "terminal_predicates": [
+        "bank_account_active",
+        "bills_aggregated",
+        "autopay_enabled",
+        "receipt_archived",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_bank_bills_complex_archive_calendar",
+      "required_modules": [
+        "MODULE_BANK_OPENING",
+        "MODULE_BILL_AGGREGATION",
+        "MODULE_COMPLEX_AUTOPAY",
+        "MODULE_RECEIPT_ARCHIVING",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-COMPOSITE-0007-M6",
+        "WFG-COMPOSITE-0007-M7",
+        "WFG-COMPOSITE-0007-M8",
+        "WFG-COMPOSITE-0007-M9",
+        "WFG-COMPOSITE-0007-M10"
+      ],
+      "terminal_predicates": [
+        "bank_account_active",
+        "bills_aggregated",
+        "autopay_enabled",
+        "receipt_archived",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M1",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Morgan Wu",
+        "phone": "555-0161",
+        "address": "27 Market St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M2",
+      "module_id": "MODULE_BILL_AGGREGATION",
+      "binding_id": "BIND_D8_BILL_AGGREGATION",
+      "binding_task_id": "D8-2025-BILLAGG",
+      "parameter_values": {
+        "name": "电力公司",
+        "type": "utility",
+        "account_id": "ACCT-12345"
+      },
+      "description": "Add a new utility bill source named '电力公司' with type 'utility' and account ID 'ACCT-12345'. Then synchronize this bill source.",
+      "expected_observables": [
+        "url().includes('/bank.local/bill-aggregation.html')",
+        "exists(\"#bill-sources-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_issue_triaged",
+          "bills_aggregated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M3",
+      "module_id": "MODULE_AUTOPAY",
+      "binding_id": "BIND_D3_AUTOPAY",
+      "binding_task_id": "D3-2025-AUTOPAY",
+      "parameter_values": {
+        "payee": "Green Power",
+        "amount": "280",
+        "account_number": "WTR-3345"
+      },
+      "description": "Enable autopay for Green Power with account WTR-3345 and a monthly limit of 280.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "autopay_enabled"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M4",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M6",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Morgan Wu",
+        "phone": "555-0161",
+        "address": "27 Market St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M7",
+      "module_id": "MODULE_BILL_AGGREGATION",
+      "binding_id": "BIND_D8_BILL_AGGREGATION",
+      "binding_task_id": "D8-2025-BILLAGG",
+      "parameter_values": {
+        "name": "电力公司",
+        "type": "utility",
+        "account_id": "ACCT-12345"
+      },
+      "description": "Add a new utility bill source named '电力公司' with type 'utility' and account ID 'ACCT-12345'. Then synchronize this bill source.",
+      "expected_observables": [
+        "url().includes('/bank.local/bill-aggregation.html')",
+        "exists(\"#bill-sources-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "account_issue_triaged",
+          "bills_aggregated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M8",
+      "module_id": "MODULE_COMPLEX_AUTOPAY",
+      "binding_id": "BIND_Z7_COMPLEX_AUTOPAY",
+      "binding_task_id": "Z7-complex-autopay",
+      "parameter_values": {},
+      "description": "Search your email for the enterprise Electricity Dept bill with account UTIL-7710, then enable autopay for that exact account with a monthly limit of 310.",
+      "expected_observables": [
+        "text('#success-summary') includes 'UTIL-7710'"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "autopay_enabled",
+          "payment_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M9",
+      "module_id": "MODULE_RECEIPT_ARCHIVING",
+      "binding_id": "BIND_F5_RECEIPT_ARCHIVE",
+      "binding_task_id": "F5-2025-ARCHIVE2",
+      "parameter_values": {
+        "file_path": "taxi_invoice_march.pdf"
+      },
+      "description": "Archive taxi_invoice_march.pdf as a receipt.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "receipt_archived"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-COMPOSITE-0007-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "bank_account_active",
+      "bills_aggregated",
+      "autopay_enabled",
+      "receipt_archived",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "account_issue_triaged",
+      "autopay_enabled",
+      "bank_account_active",
+      "bills_aggregated",
+      "calendar_event_synced",
+      "payment_method_available",
+      "payment_stack_prepared",
+      "receipt_archived"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

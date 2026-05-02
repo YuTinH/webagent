@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Inbox - Work Mail</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">📧 Work Mail</div>
+      <div class="navlinks">
+        <a href="../work.local/email.html" class="active">Inbox</a>
+        <a href="../work.local/calendar.html">Calendar</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Inbox</h1>
+      <div class="search-box" style="display:flex; gap:10px">
+        <input type="text" class="input search-input" placeholder="Search mail..." id="email-search">
+        <button id="email-search-btn" class="btn secondary" onclick="loadEmails()">Search Inbox</button>
+      </div>
+    </div>
+    
+    <div class="card soft" style="padding:0" id="email-list">
+        <!-- Emails loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const workEmailParams = new URLSearchParams(window.location.search);
+  const requestedWorkEmailTaskId = workEmailParams.get('task') || '';
+  const workEmailTaskId = resolveTaskId(requestedWorkEmailTaskId || '');
+  async function loadEmails() {
+    const list = document.getElementById('email-list');
+    const query = document.getElementById('email-search').value.toLowerCase();
+    list.innerHTML = '<div class="loading">Loading...</div>';
+    
+    try {
+      const env = await loadEnv();
+      const emails = env.work?.emails || [];
+      
+      const filtered = emails.filter(e => 
+        e.subject.toLowerCase().includes(query) || 
+        e.sender.toLowerCase().includes(query) ||
+        e.body.toLowerCase().includes(query)
+      );
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div style="padding:40px; text-align:center; color:var(--muted)">No emails found</div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(e => `
+        <div id="email-item-${e.id}" class="email-item" onclick="viewEmail('${e.id}')" style="padding:16px; border-bottom:1px solid var(--border); cursor:pointer">
+            <div style="font-weight:700">${e.subject}</div>
+            <div style="display:flex; justify-content:space-between; color:var(--muted); font-size:14px; margin-top:4px">
+                <span>From: ${e.sender}</span>
+                <span>${e.date}</span>
+            </div>
+            <div style="font-size:12px; color:#999; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${e.body}</div>
+        </div>
+      `).join('');
+    } catch (e) {
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function viewEmail(id) {
+    const params = new URLSearchParams({ id });
+    if (workEmailTaskId) {
+      params.set('task', workEmailTaskId);
+    }
+    window.location.href = `email-detail.html?${params.toString()}`;
+  }
+
+  document.addEventListener('DOMContentLoaded', loadEmails);
+  </script>
+
+
+

@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-TRAVEL-0013",
+  "theme": "travel",
+  "difficulty": 7,
+  "instruction": "Finish the visa-mobility workflow only after mobility clearance is verified, transfer is arranged, transit balance is topped up, and the commute route is checked.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "visa_requirements_checked",
+      "flight_booked",
+      "airport_transfer_arranged",
+      "transit_balance_topped_up",
+      "commute_route_checked"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "visa_requirements_checked",
+    "flight_booked",
+    "airport_transfer_arranged",
+    "transit_balance_topped_up",
+    "commute_route_checked"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_TRAVEL_VISA_MOBILITY_PREP; visa-and-mobility travel workflows should continue into final commute-route readiness."
+}

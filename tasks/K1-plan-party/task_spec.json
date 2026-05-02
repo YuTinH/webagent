@@ -1,0 +1,51 @@
+{
+  "task_id": "K1-2025-GROUPJOIN",
+  "family": "K",
+  "goal": "Join the Local Foodies group.",
+  "inputs": {
+    "group_name": "Springfield Neighborhood"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('social.groups.GRP-003.status') == 'joined'",
+    "url().includes('/social.local/my-groups.html')",
+    "exists('#my-groups-list .badge.ok')"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "cp_k1_1",
+      "name": "cp_k1 checkpoint 1",
+      "assertion": "mem('social.groups.GRP-003.status') == 'joined'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_k1_2",
+      "name": "cp_k1 checkpoint 2",
+      "assertion": "url().includes('/social.local/my-groups.html')",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_k1_3",
+      "name": "cp_k1 checkpoint 3",
+      "assertion": "exists('#my-groups-list .badge.ok')",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "social.local"
+  ],
+  "module_group": "rsvp_event",
+  "canonical_task_dir": "K4-rsvp-event",
+  "variant_kind": "exact_alias",
+  "lifecycle_status": "deprecated_duplicate"
+}

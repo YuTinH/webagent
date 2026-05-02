@@ -1,0 +1,84 @@
+{
+  "task_id": "G3-2025-HEALTH",
+  "family": "G",
+  "goal": "Complete the following task: submit insurance claim CLM-6602 for appointment APT-9012 under policy P-9012 for 180.",
+  "inputs": {
+    "visit_id": "V-5567",
+    "policy_id": "P-9001",
+    "claim_id": "CLM-5501",
+    "appointment_id": "APT-9001",
+    "amount": 250
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('insurance.claim.last.id') == 'CLM-6602'",
+    "mem('insurance.claim.last.status') == 'processing'",
+    "mem('insurance.claim.last.appointment_id') == 'APT-9012'",
+    "mem('insurance.claim.last.amount') == '180.0'",
+    "mem('insurance.claim.last.policy_id') == 'P-9012'",
+    "exists('#claim-state')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_g3_1",
+      "name": "cp_g3 checkpoint 1",
+      "assertion": "mem('insurance.claim.last.id') == 'CLM-6602'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g3_2",
+      "name": "cp_g3 checkpoint 2",
+      "assertion": "mem('insurance.claim.last.status') == 'processing'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g3_3",
+      "name": "cp_g3 checkpoint 3",
+      "assertion": "mem('insurance.claim.last.appointment_id') == 'APT-9012'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g3_4",
+      "name": "cp_g3 checkpoint 4",
+      "assertion": "mem('insurance.claim.last.amount') == '180.0'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g3_5",
+      "name": "cp_g3 checkpoint 5",
+      "assertion": "mem('insurance.claim.last.policy_id') == 'P-9012'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g3_6",
+      "name": "cp_g3 checkpoint 6",
+      "assertion": "exists('#claim-state')",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "health.local"
+  ],
+  "module_group": "medical_claim",
+  "canonical_task_dir": "G3-medical-claim",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

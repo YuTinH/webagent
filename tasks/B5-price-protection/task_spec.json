@@ -1,0 +1,50 @@
+{
+  "task_id": "B5-2025-PRICE",
+  "family": "B",
+  "goal": "Submit a price protection claim for order O-10002.",
+  "inputs": {
+    "order_id": "O-10002"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('orders.O-10002.claims.price_protect.state') == 'submitted'",
+    "url().includes('/shop.local/price-protection.html?status=submitted')",
+    "exists('.status-badge.submitted')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_b6_1",
+      "name": "cp_b6 checkpoint 1",
+      "assertion": "mem('orders.O-10002.claims.price_protect.state') == 'submitted'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_b6_2",
+      "name": "cp_b6 checkpoint 2",
+      "assertion": "url().includes('/shop.local/price-protection.html?status=submitted')",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_b6_3",
+      "name": "cp_b6 checkpoint 3",
+      "assertion": "exists('.status-badge.submitted')",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "shop.local"
+  ],
+  "module_group": "price_protection",
+  "canonical_task_dir": "B5-price-protection",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

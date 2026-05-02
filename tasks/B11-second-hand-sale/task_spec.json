@@ -1,0 +1,58 @@
+{
+  "task_id": "B11-2025-GIGLISTING",
+  "family": "B",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Your task is to post a professional gig listing.",
+  "inputs": {
+    "item_name": "Apartment Deep Cleaning Consultation",
+    "description": "Offer a professional home cleaning consultation and quote site visit.",
+    "price": 100.0,
+    "category": "service"
+  },
+  "allowed_domains": [
+    "market.local"
+  ],
+  "preconditions": [],
+  "dependencies": [],
+  "memory_keys": [
+    "market.listed_items.last.id"
+  ],
+  "success_criteria": [
+    "ANY[ALL[json('env','world_state.skills.certified') == true, mem('market.listed_items.last.price') == 200.0], ALL[NOT[json('env','world_state.skills.certified') == true], mem('market.listed_items.last.price') == 100.0]]"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "scoring_checkpoints": [
+    {
+      "id": "cp_service_price_uncertified",
+      "name": "Default service pricing when uncertified",
+      "assertion": "mem('market.listed_items.last.price') == 100.0",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": [],
+      "when": "NOT[json('env','world_state.skills.certified') == true]"
+    },
+    {
+      "id": "cp_service_price_certified",
+      "name": "Premium service pricing when certified",
+      "assertion": "mem('market.listed_items.last.price') == 200.0",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": [],
+      "when": "json('env','world_state.skills.certified') == true"
+    }
+  ],
+  "module_group": "second_hand_sale",
+  "canonical_task_dir": "B11-second-hand-sale",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

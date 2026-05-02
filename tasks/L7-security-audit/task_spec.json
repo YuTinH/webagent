@@ -1,0 +1,69 @@
+{
+  "task_id": "L7-2025-CLOUDROTATE",
+  "family": "L",
+  "goal": "Rotate credentials for Cloud Storage and Dev Platform using API-only rotation.",
+  "inputs": {},
+  "preconditions": [],
+  "success_criteria": [
+    "mem('security.rotation.status') == 'complete'",
+    "json('env','security.last_rotation.providers.0') == 'cloud'",
+    "json('env','security.last_rotation.providers.1') == 'dev'",
+    "mem('security.rotation.method') == 'api-only'",
+    "count('.rotation-complete') == 2"
+  ],
+  "timeout": 300,
+  "scoring_checkpoints": [
+    {
+      "id": "cp_l3_1",
+      "name": "cp_l3 checkpoint 1",
+      "assertion": "mem('security.rotation.status') == 'complete'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l3_2",
+      "name": "cp_l3 checkpoint 2",
+      "assertion": "json('env','security.last_rotation.providers.0') == 'cloud'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l3_3",
+      "name": "cp_l3 checkpoint 3",
+      "assertion": "json('env','security.last_rotation.providers.1') == 'dev'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l3_4",
+      "name": "cp_l3 checkpoint 4",
+      "assertion": "mem('security.rotation.method') == 'api-only'",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_l3_5",
+      "name": "cp_l3 checkpoint 5",
+      "assertion": "count('.rotation-complete') == 2",
+      "weight": 0.2,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "security.local"
+  ],
+  "module_group": "security_audit",
+  "canonical_task_dir": "L7-security-audit",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

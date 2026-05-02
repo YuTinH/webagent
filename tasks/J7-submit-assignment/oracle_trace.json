@@ -1,0 +1,23 @@
+{
+  "task_id": "J7-2025-ASSIGNSUB",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/my-learning.html?clean=true&task=J7-2025-ASSIGNSUB",
+      "note": "Open My Learning page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#submit-default-assignment-btn",
+      "note": "Submit the recommended assignment draft"
+    },
+    {
+      "t": 2,
+      "act": "wait",
+      "selector": "#assignment-submissions-list .course-card",
+      "note": "Wait for the submission card to appear"
+    }
+  ]
+}

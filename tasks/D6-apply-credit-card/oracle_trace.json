@@ -1,0 +1,51 @@
+{
+  "task_id": "D6-2025-CARDREPLACE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/cards.html?clean=true&task=D6-2025-CARDREPLACE"
+    },
+    {
+      "t": 1,
+      "act": "wait",
+      "selector": "#cards-grid .card-item"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "button:has-text('Freeze Card')"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "button:has-text('Replace Card')"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "button:has-text('Replace Card')"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 6,
+      "act": "type",
+      "selector": "#otp-input",
+      "value": "123456"
+    },
+    {
+      "t": 7,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 8,
+      "act": "wait",
+      "selector": "#cards-grid .badge.ok"
+    }
+  ]
+}

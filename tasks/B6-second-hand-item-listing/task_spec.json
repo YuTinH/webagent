@@ -1,0 +1,90 @@
+{
+  "task_id": "B6-2025-MARKET",
+  "family": "B",
+  "goal": "List a second-hand item: 'Vintage Desk Lamp' for 50 in 'furniture' category.",
+  "inputs": {
+    "name": "Vintage Desk Lamp",
+    "description": "Working condition, minor scratches, includes bulb.",
+    "price": 50,
+    "category": "furniture",
+    "photo_name": ""
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/market.local/index.html?listed=true')",
+    "mem('market.listed_items.last.name') == 'Vintage Desk Lamp'",
+    "mem('market.listed_items.last.price') == '50.0'",
+    "mem('market.listed_items.last.category') == 'furniture'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "url().includes('/market.local/index.html?listed=true')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Criterion 2 state set",
+      "assertion": "mem('market.listed_items.last.name') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "mem('market.listed_items.last.name') == 'Vintage Desk Lamp'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_state",
+      "name": "Criterion 3 state set",
+      "assertion": "mem('market.listed_items.last.price') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "mem('market.listed_items.last.price') == '50.0'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_3_state"
+      ]
+    },
+    {
+      "id": "crit_4_state",
+      "name": "Criterion 4 state set",
+      "assertion": "mem('market.listed_items.last.category') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "mem('market.listed_items.last.category') == 'furniture'",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_4_state"
+      ]
+    }
+  ],
+  "allowed_domains": [
+    "market.local"
+  ],
+  "module_group": "second_hand_item_listing",
+  "canonical_task_dir": "B6-second-hand-item-listing",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

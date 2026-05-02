@@ -1,0 +1,29 @@
+{
+  "task_id": "B9-2025-EVENTBOOKING",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/event-tickets.html?clean=true&task=B9-2025-EVENTBOOKING",
+      "note": "Open event tickets page"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#events-list .btn.pri",
+      "note": "Buy the first available ticket"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Confirm purchase"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#tickets-list .card .badge.ok",
+      "note": "Wait for active ticket badge"
+    }
+  ]
+}

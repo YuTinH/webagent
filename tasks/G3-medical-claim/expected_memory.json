@@ -1,0 +1,16 @@
+{
+  "insurance.claim.last.id": {
+    "key": "insurance.claim.last.id",
+    "value": "CLM-5501",
+    "ts": "2025-12-06T10:02:00Z",
+    "source": "G3-2025-103",
+    "confidence": 1.0
+  },
+  "insurance.claim.last.status": {
+    "key": "insurance.claim.last.status",
+    "value": "submitted",
+    "ts": "2025-12-06T10:02:00Z",
+    "source": "G3-2025-103",
+    "confidence": 1.0
+  }
+}

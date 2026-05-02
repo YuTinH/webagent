@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Plans - </title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.plan-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  transition: .2s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--pri);
+}
+.plan-card.active {
+  border-color: var(--ok);
+  background: rgba(16, 185, 129, 0.05);
+}
+.plan-card.active::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--ok);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.plan-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.plan-price {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.plan-price span {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.plan-features li::before {
+  content: '✓';
+  color: var(--ok);
+  font-weight: 700;
+}
+.meter-select {
+  margin-bottom: 32px;
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      
+    </div>
+    <div class="navlinks">
+      <a href="../energy.local/index.html">Home</a>
+      <a href="../energy.local/usage.html">Usage Analysis</a>
+      <a href="../energy.local/plan.html" class="active">Energy Plans</a>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">Energy Plans</h1>
+
+  <div class="meter-select">
+    <div class="form-group">
+      <label for="meter-id">Meter ID</label>
+      <select id="meter-id" onchange="loadCurrentPlan()">
+        <option value="M-321">M-321 ()</option>
+        <option value="M-322">M-322 ()</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="plan-grid">
+    <div class="plan-card" id="plan-standard">
+      <div class="plan-name">Standard Saver</div>
+      <div class="plan-price">¥0.58 <span>/ kWh</span></div>
+      <ul class="plan-features">
+        <li>Flat rate for all-day usage</li>
+        <li>Simple monthly billing</li>
+        <li>Best for stable household consumption</li>
+      </ul>
+      <button id="select-plan-standard" class="btn" onclick="selectPlan('standard')">Choose Standard Saver</button>
+    </div>
+
+    <div class="plan-card" id="plan-green_offpeak">
+      <div class="plan-name">Green Off-Peak</div>
+      <div class="plan-price">¥0.38 <span>/ kWh ()</span></div>
+      <ul class="plan-features">
+        <li> (22:00-06:00)</li>
+        <li>100% </li>
+        <li>Ideal for night charging and automation</li>
+      </ul>
+      <button id="select-plan-green_offpeak" class="btn pri" onclick="selectPlan('green_offpeak')">Choose Green Off-Peak</button>
+    </div>
+
+    <div class="plan-card" id="plan-premium_flat_rate">
+      <div class="plan-name">Premium Flat Rate</div>
+      <div class="plan-price">¥0.88 <span>/ kWh</span></div>
+      <ul class="plan-features">
+        <li>Priority support and premium service</li>
+        <li>Rate protection during peak seasons</li>
+        <li>Designed for high-usage households</li>
+      </ul>
+      <button id="select-plan-premium-flat-rate" class="btn" onclick="selectPlan('premium_flat_rate')">Choose Premium Flat Rate</button>
+    </div>
+  </div>
+
+  <div class="footer">
+     · Synthetic UI for Web Agent Research
+  </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+let currentPlan = 'standard';
+
+async function loadCurrentPlan() {
+  const meterId = document.getElementById('meter-id').value;
+  
+  // Clear active states
+  document.querySelectorAll('.plan-card').forEach(card => {
+    card.classList.remove('active');
+    card.querySelector('button').disabled = false;
+    card.querySelector('button').textContent = card.querySelector('button').dataset.defaultLabel || card.querySelector('button').textContent;
+  });
+
+  try {
+    const env = await loadEnv();
+    const meter = env.meters?.[meterId];
+    if (meter && meter.plan) {
+      currentPlan = meter.plan;
+      const activeCard = document.getElementById(`plan-${currentPlan}`);
+      if (activeCard) {
+        activeCard.classList.add('active');
+        const btn = activeCard.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = 'Current Plan';
+      }
+    }
+  } catch (e) {
+    console.error("Failed to load plan info:", e);
+  }
+}
+
+async function selectPlan(planId) {
+  const meterId = document.getElementById('meter-id').value;
+  
+  if (planId === currentPlan) {
+    Toast.info('This meter is already on the selected plan.');
+    return;
+  }
+
+  Toast.info(` ${planId} ...`);
+
+  try {
+    const response = await send(resolveTaskId('I5-2025-ENERGY'), 'set_energy_plan', {
+      meterId: meterId,
+      plan: planId
+    });
+
+    if (response && (response.success || response.redirect)) {
+      Toast.success('!');
+      // If server returns redirect, common.js handles it.
+      // If not, we reload manually or update UI.
+      // Fallback manual update if no redirect (though server.py sends redirect)
+      setTimeout(loadCurrentPlan, 500); 
+    } else {
+        // Fallback for test environment network issues
+        console.warn('Response invalid, attempting fallback reload...');
+        window.location.href = `${window.RelRoot}energy.local/plan.html?updated=true`;
+    }
+  } catch (error) {
+    console.error('Details:', error);
+    if (error.message.includes('Network Error')) {
+        console.warn('Network error detected, attempting fallback redirect...');
+        window.location.href = `${window.RelRoot}energy.local/plan.html?updated=true`;
+    } else {
+        Toast.error('Error, please try again.');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadCurrentPlan);
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.plan-card button').forEach((btn) => {
+    btn.dataset.defaultLabel = btn.textContent;
+  });
+});
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

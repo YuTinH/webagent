@@ -1,0 +1,37 @@
+{
+  "goal_id": "WFG-TRAVEL-0094",
+  "theme": "travel",
+  "difficulty": 8,
+  "instruction": "Close the mobility-topup route by confirming clearance first, arranging transfer, topping up transit balance, and ending only after the commute route is checked.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "mobility_clearance_verified",
+      "airport_transfer_arranged",
+      "transit_balance_topped_up",
+      "commute_route_checked",
+      "visa_requirements_checked"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "mobility_clearance_verified",
+    "airport_transfer_arranged",
+    "transit_balance_topped_up",
+    "commute_route_checked",
+    "visa_requirements_checked"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_TRAVEL_CLEARANCE_TOPUP_ALIGNMENT; mobility-topup workflows should continue through final commute confirmation on both alternative routes."
+}

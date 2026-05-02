@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> - Nebula</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+.course-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.course-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent);
+  pointer-events: none;
+}
+.course-badge {
+  background: var(--ok);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+.course-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.course-instructor {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--pri);
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+}
+.progress-text {
+  font-size: 13px;
+  color: var(--muted);
+}
+.course-actions .btn {
+  margin-top: 20px;
+}
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+.empty-state-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula</div>
+    <div class="navlinks">
+      <a href="../school.local/index.html">Home</a>
+      <a href="../school.local/catalog.html">Catalog</a>
+      <a href="../school.local/my-learning.html" class="active">My Learning</a>
+    </div>
+    <div style="margin-left:auto">
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">My Learning</h1>
+
+  <div id="purchase-banner" class="card soft" style="display:none; margin-bottom:24px"></div>
+  <div id="assignment-banner" class="card soft" style="display:none; margin-bottom:24px"></div>
+  <div id="assignment-task-card" class="card soft" style="margin-bottom:24px">
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap">
+      <div>
+        <div style="font-weight:700">Submit Assignment</div>
+        <div style="color:var(--muted); font-size:14px">Create a new assignment submission from My Learning.</div>
+      </div>
+      <button id="open-assignment-modal-btn" class="btn pri" onclick="openAssignmentModal()">Submit Assignment</button>
+    </div>
+  </div>
+
+  <div id="enrolled-courses-grid" class="course-grid">
+    <div class="empty-state">
+      <div class="empty-state-icon">📚</div>
+      <div>Loading enrolled courses...</div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px">
+    <h2 style="margin-bottom:16px">Purchased Ebooks</h2>
+    <div id="owned-books-grid" class="course-grid">
+      <div class="empty-state">
+        <div class="empty-state-icon">📘</div>
+        <div>Loading purchased ebooks...</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px">
+    <h2 style="margin-bottom:16px">Assignment Submissions</h2>
+    <div id="assignment-submissions-list" class="course-grid">
+      <div class="empty-state">
+        <div class="empty-state-icon">📝</div>
+        <div>Loading assignment submissions...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Nebula · Synthetic UI for Web Agent Research</div>
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const learningParams = new URLSearchParams(window.location.search);
+const learningTaskId = resolveTaskId(learningParams.get('task') || 'J1-2025-ENROLL');
+const assignmentTaskId = learningTaskId === 'J7-2025-ASSIGNSUB'
+  ? learningTaskId
+  : resolveTaskId('J7-2025-ASSIGNSUB');
+
+async function submitAssignment(payload) {
+  await send(assignmentTaskId, 'submit_assignment', payload);
+  setTimeout(loadEnrolledCourses, 400);
+}
+
+function openAssignmentModal() {
+  new Modal({
+    title: 'Submit Assignment',
+    content: `
+      <div class="form">
+        <label>Course ID</label>
+        <input id="assignment-course-id" class="input" placeholder="e.g. ML202">
+
+        <label>Assignment Title</label>
+        <input id="assignment-title" class="input" placeholder="e.g. ML202 Project Draft">
+
+        <label>File Name</label>
+        <input id="assignment-file-name" class="input" placeholder="e.g. ml202_project_draft.pdf">
+
+        <label>Submission Note</label>
+        <textarea id="assignment-note" class="input" rows="3" placeholder="Add a short submission note"></textarea>
+      </div>
+    `,
+    confirmText: 'Submit Assignment',
+    onConfirm: async () => {
+      const courseId = document.getElementById('assignment-course-id').value.trim();
+      const assignmentTitle = document.getElementById('assignment-title').value.trim();
+      const fileName = document.getElementById('assignment-file-name').value.trim();
+      const submissionNote = document.getElementById('assignment-note').value.trim();
+
+      if (!courseId || !assignmentTitle || !fileName) {
+        Toast.error('Enter a course ID, assignment title, and file name.');
+        return false;
+      }
+
+      await submitAssignment({
+        course_id: courseId,
+        assignment_title: assignmentTitle,
+        file_name: fileName,
+        submission_note: submissionNote
+      });
+      return true;
+    }
+  }).open();
+}
+
+async function loadEnrolledCourses() {
+  const gridContainer = document.getElementById('enrolled-courses-grid');
+  const booksContainer = document.getElementById('owned-books-grid');
+  const purchaseBanner = document.getElementById('purchase-banner');
+  const assignmentBanner = document.getElementById('assignment-banner');
+  const assignmentTaskCard = document.getElementById('assignment-task-card');
+  const assignmentTaskCopy = document.getElementById('assignment-task-copy');
+  const assignmentsContainer = document.getElementById('assignment-submissions-list');
+  gridContainer.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-state-icon">📚</div>
+      <div>Loading enrolled courses...</div>
+    </div>
+  `;
+  booksContainer.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-state-icon">📘</div>
+      <div>Loading purchased ebooks...</div>
+    </div>
+  `;
+  assignmentsContainer.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-state-icon">📝</div>
+      <div>Loading assignment submissions...</div>
+    </div>
+  `;
+
+  const course = { // Mock data for now (should fetch from API in real app)
+    'DL101': {
+      title: 'Web Agent',
+      instructor: 'Masteryth',
+      progress: 75
+    },
+    'ML202': {
+      title: '机器学习进阶',
+      instructor: 'Alice',
+      progress: 0
+    },
+    'ART205': {
+      title: 'Creative Systems Studio',
+      instructor: 'Nina',
+      progress: 20
+    }
+  };
+
+  try {
+    const env = await loadEnv();
+    const enrolledCourses = env.courses || {};
+    const ownedBooks = env.library?.books || {};
+    const assignmentSubmissions = env.courses?.assignments || {};
+    const params = new URLSearchParams(window.location.search);
+    const newBookId = params.get('book_id');
+    const latestSubmissionId = params.get('submission_id');
+
+    if (params.get('new_book') === 'true') {
+      purchaseBanner.style.display = 'block';
+      purchaseBanner.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:16px">
+          <div>
+            <div style="font-weight:700">Ebook added to My Learning</div>
+            <div style="color:var(--muted); font-size:14px">Your purchase is complete and your ebook is now available below.</div>
+          </div>
+          <span class="badge ok">Purchased</span>
+        </div>
+      `;
+    } else {
+      purchaseBanner.style.display = 'none';
+    }
+
+    if (params.get('submitted') === 'true') {
+      assignmentBanner.style.display = 'block';
+      assignmentBanner.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:16px">
+          <div>
+            <div style="font-weight:700">Assignment submitted</div>
+            <div style="color:var(--muted); font-size:14px">The assignment submission is now on file below.</div>
+          </div>
+          <span class="badge ok">Submitted</span>
+        </div>
+      `;
+    } else {
+      assignmentBanner.style.display = 'none';
+    }
+
+    let coursesToRender = [];
+    for (const courseId in enrolledCourses) {
+      if (enrolledCourses[courseId].state === 'enrolled') {
+        const details = course[courseId] || { title: ` ${courseId}`, instructor: '', progress: 0 };
+        coursesToRender.push({ id: courseId, ...details });
+      }
+    }
+
+    if (coursesToRender.length > 0) {
+      gridContainer.innerHTML = coursesToRender.map(course => `
+        <div class="course-card">
+          <div class="course-badge">Enrolled</div>
+          <div class="course-title">${course.title}</div>
+          <div class="course-instructor">Instructor: ${course.instructor}</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${course.progress}%"></div></div>
+          <div class="progress-text">Progress: ${course.progress}%</div>
+          <div class="course-actions">
+            <button class="btn pri">Continue Course</button>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      gridContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">📚</div>
+          <div>No enrolled courses yet.</div>
+          <a href="${window.RelRoot}school.local/catalog.html" class="btn pri" style="margin-top:20px">Browse Catalog</a>
+        </div>
+      `;
+    }
+
+    const purchasedBooks = Object.entries(ownedBooks)
+      .filter(([_, book]) => book && book.owned)
+      .map(([id, book]) => ({ id, ...book }))
+      .sort((a, b) => (a.id === newBookId ? -1 : b.id === newBookId ? 1 : 0));
+
+    if (purchasedBooks.length > 0) {
+      booksContainer.innerHTML = purchasedBooks.map(book => `
+        <div class="course-card">
+          <div class="course-badge">Owned</div>
+          <div class="course-title">${book.title || book.id}</div>
+          <div class="course-instructor">Book ID: ${book.id}</div>
+          <div class="progress-text">Purchase recorded in your digital library.</div>
+          <div class="course-actions">
+            <a href="${window.RelRoot}school.local/ebook.html?id=${book.id}" class="btn pri">View Ebook Details</a>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      booksContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">📘</div>
+          <div>No purchased ebooks yet.</div>
+        </div>
+      `;
+    }
+
+    const submissions = Object.entries(assignmentSubmissions)
+      .filter(([id, submission]) => id !== 'last' && submission && submission.status)
+      .map(([id, submission]) => ({ id, ...submission }))
+      .sort((a, b) => (a.id === latestSubmissionId ? -1 : b.id === latestSubmissionId ? 1 : 0));
+
+    if (submissions.length > 0) {
+      assignmentsContainer.innerHTML = submissions.map(submission => `
+        <div class="course-card">
+          <div class="course-badge">Submitted</div>
+          <div class="course-title">${submission.title}</div>
+          <div class="course-instructor">Course: ${submission.course_id}</div>
+          <div class="progress-text">Attachment: ${submission.file_name}</div>
+          <div class="progress-text">Status: ${submission.status}</div>
+          <div class="course-actions">
+            <button class="btn pri" disabled>Submission Recorded</button>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      assignmentsContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">📝</div>
+          <div>No assignment submissions yet.</div>
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.error("Failed to load enrolled courses:", e);
+    gridContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <div>Error, please try again.</div>
+      </div>
+    `;
+    booksContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <div>Error, please try again.</div>
+      </div>
+    `;
+    assignmentsContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <div>Error, please try again.</div>
+      </div>
+    `;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadEnrolledCourses);
+</script>
+
+<!-- Distractor: Chat Widget -->
+<div class="chat-widget" onclick="Toast.info('Chat support busy. Please try later.')">
+  <span style="font-size:24px">💬</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

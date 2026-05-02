@@ -1,0 +1,57 @@
+{
+  "task_id": "F4-2025-TAXFILE",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/taxes.html?clean=true&task=F4-2025-TAXFILE",
+      "note": "Open tax docs"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri",
+      "note": "Open upload modal"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#doc-name",
+      "value": "W2-2025",
+      "note": "Doc name"
+    },
+    {
+      "t": 3,
+      "act": "select",
+      "selector": "#doc-type",
+      "value": "W2",
+      "note": "Doc type"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#doc-amount",
+      "value": "8888",
+      "note": "Amount"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#doc-date",
+      "value": "2025-12-30",
+      "note": "Date"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm",
+      "note": "Submit"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#tax-docs-list .card",
+      "note": "Wait for item"
+    }
+  ]
+}

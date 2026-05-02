@@ -1,0 +1,43 @@
+{
+  "task_id": "L2-2025-DSR",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/security.local/data-deletion.html?clean=true&task=L2-2025-DSR"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "button.btn.pri"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#request-type",
+      "value": "export"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#platform-name",
+      "value": "Facebook"
+    },
+    {
+      "t": 4,
+      "act": "type",
+      "selector": "#data-scope",
+      "value": "posts, photos, messages"
+    },
+    {
+      "t": 5,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 6,
+      "act": "wait",
+      "selector": "#requests-list .card:has-text('Facebook')"
+    }
+  ]
+}

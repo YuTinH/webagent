@@ -1,0 +1,30 @@
+{
+  "task_id": "K1-2025-GROUPJOIN",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/social.local/index.html?clean=true&task=K1-2025-GROUPJOIN"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#groups-list .card:nth-of-type(3) button.btn.pri"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": "#rules-check"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "#join-modal button.btn.pri"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#my-groups-list .badge.ok"
+    }
+  ]
+}

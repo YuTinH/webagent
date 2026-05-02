@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-SECURITY-0211",
+  "theme": "security",
+  "difficulty": 8,
+  "instruction": "Close the data-exit route by completing the account-exit prep first, updating the credential vault, submitting deletion, completing the audit, and ending with a synced follow-up reminder.",
+  "visible_constraints": {
+    "deadline_days": 5,
+    "preferred_outcomes": [
+      "account_exit_prepared",
+      "access_surface_reviewed",
+      "credential_vault_updated",
+      "deletion_request_submitted",
+      "security_audit_completed",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "account_exit_prepared",
+    "access_surface_reviewed",
+    "credential_vault_updated",
+    "deletion_request_submitted",
+    "security_audit_completed",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        4,
+        5
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_ZTRAIN_02_EXIT_DELETION_DUAL; account-exit security workflows should carry a concrete follow-up reminder after deletion and audit closure."
+}

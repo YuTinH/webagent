@@ -1,0 +1,37 @@
+{
+  "task_id": "K2-2025-010",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/social.local/split.html?clean=true",
+      "note": "Open split page"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#month",
+      "value": "2025-11",
+      "note": "Select November settlement"
+    },
+    {
+      "t": 2,
+      "act": "select",
+      "selector": "#split-rule",
+      "value": "by_amount",
+      "note": "Select amount-based split"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "button.btn.pri.lg",
+      "note": "Submit settlement"
+    },
+    {
+      "t": 4,
+      "act": "wait",
+      "selector": "#month",
+      "note": "Wait for redirected settlement page"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "task_id": "D3-2025-AUTOPAY",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/bank.local/autopay.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "type",
+      "selector": "#payee",
+      "value": "Neighborhood Internet"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#account-number",
+      "value": "FIBER-9012"
+    },
+    {
+      "t": 3,
+      "act": "type",
+      "selector": "#amount",
+      "value": "120"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#setup-btn"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#success-card"
+    }
+  ]
+}

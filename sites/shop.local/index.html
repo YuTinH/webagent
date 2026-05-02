@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>Nebula Mall - Products</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">Nebula Mall</div>
+    <div class="navlinks">
+      <a href="index.html" class="active">Home</a>
+      <a href="orders.html">Orders</a>
+      <a href="cart.html">Cart</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Featured Products</h1>
+  <div id="products-grid" class="grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:20px">
+    <div class="loading">Loading products...</div>
+  </div>
+</div>
+
+<script>
+async function loadProducts() {
+  const grid = document.getElementById('products-grid');
+  try {
+    const res = await fetch('../api/products');
+    const data = await res.json();
+    if (data.success && data.products) {
+      grid.innerHTML = data.products.map(p => `
+        <div class="product-card" onclick="location.href='product.html?id=${p.sku}'" style="border:1px solid var(--border); border-radius:12px; padding:16px; cursor:pointer; background:var(--card)">
+          <div style="height:150px; background:#f1f5f9; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:48px">
+            ${p.category === 'electronics' ? '🖱️' : '📦'}
+          </div>
+          <div style="margin-top:12px; font-weight:600; min-height:44px">${p.name}</div>
+          <div style="font-size:24px; font-weight:700; color:var(--pri); margin:8px 0">$${p.price.toFixed(2)}</div>
+          <div style="font-size:12px; color:var(--muted)">Stock: ${p.stock} units</div>
+        </div>
+      `).join('');
+    }
+  } catch(e) {
+    grid.innerHTML = '<div class="error">Load failed. Please check server.</div>';
+  }
+}
+document.addEventListener('DOMContentLoaded', loadProducts);
+</script>
+</body>
+</html>

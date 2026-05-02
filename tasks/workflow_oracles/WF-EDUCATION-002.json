@@ -1,0 +1,106 @@
+{
+  "goal_id": "WF-EDUCATION-002",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Certificate can be reached through either course enrollment or skills certification."
+  },
+  "module_nodes": [
+    {"module_id": "MODULE_COURSE_ENROLLMENT", "role": "alternative", "produces": ["course_enrolled"]},
+    {"module_id": "MODULE_SKILL_CERTIFICATION", "role": "alternative", "produces": ["skill_certified"]},
+    {"module_id": "MODULE_DOWNLOAD_CERT", "role": "required", "produces": ["certificate_downloaded"]}
+  ],
+  "dependency_edges": [
+    {"from": "MODULE_COURSE_ENROLLMENT", "to": "MODULE_DOWNLOAD_CERT", "kind": "alternative", "condition": "course path"},
+    {"from": "MODULE_SKILL_CERTIFICATION", "to": "MODULE_DOWNLOAD_CERT", "kind": "alternative", "condition": "certification path"}
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_course",
+      "required_modules": [
+        "MODULE_COURSE_ENROLLMENT",
+        "MODULE_DOWNLOAD_CERT"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WF-EDUCATION-002-M1",
+        "WF-EDUCATION-002-M3"
+      ],
+      "terminal_predicates": [
+        "course_enrolled",
+        "certificate_downloaded"
+      ]
+    },
+    {
+      "path_id": "path_skill",
+      "required_modules": [
+        "MODULE_SKILL_CERTIFICATION",
+        "MODULE_DOWNLOAD_CERT"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WF-EDUCATION-002-M2",
+        "WF-EDUCATION-002-M3"
+      ],
+      "terminal_predicates": [
+        "skill_certified",
+        "certificate_downloaded"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WF-EDUCATION-002-M1",
+      "module_id": "MODULE_COURSE_ENROLLMENT",
+      "binding_task_id": "J1-2025-ENROLL",
+      "parameter_values": {"courseId": "DS301"},
+      "description": "Enroll in DS301 to unlock a downloadable learning credential.",
+      "expected_observables": [
+        "url().includes('/school.local/my-learning.html')",
+        "json('env','courses.DS301.state') == 'enrolled'"
+      ],
+      "instantiated_effects": {
+        "adds": ["course_enrolled"],
+        "writes_state": {"course_id": "DS301"}
+      }
+    },
+    {
+      "invocation_id": "WF-EDUCATION-002-M2",
+      "module_id": "MODULE_SKILL_CERTIFICATION",
+      "binding_task_id": "J5-2025-CERT",
+      "parameter_values": {},
+      "description": "Complete the skills certification path instead of taking the course path.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": ["skill_certified"]
+      }
+    },
+    {
+      "invocation_id": "WF-EDUCATION-002-M3",
+      "module_id": "MODULE_DOWNLOAD_CERT",
+      "binding_task_id": "J8-2025-CERTISSUE",
+      "parameter_values": {},
+      "description": "Download the resulting certificate once eligibility is available.",
+      "expected_observables": [
+        "url().includes('/school.local/certification.html')",
+        "exists(\"button:has-text('Apply Now')\")"
+      ],
+      "instantiated_effects": {
+        "adds": ["certificate_downloaded"]
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "certificate_downloaded"
+    ],
+    "checkpoint_predicates": [
+      "course_enrolled",
+      "skill_certified",
+      "certificate_downloaded"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 0.75,
+    "recovery_bonus": 0.25
+  }
+}

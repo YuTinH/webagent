@@ -1,0 +1,240 @@
+{
+  "goal_id": "WFG-DAILY-0073",
+  "composition": {
+    "composition_type": "single_path",
+    "num_semantically_distinct_paths": 1,
+    "distinctness_rule": "Reach the target through the full housekeeping, coupon, listing, sale, and subscription chain rather than through a shorter resale subset."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "role": "required",
+      "produces": [
+        "coupon_available",
+        "daily_order_bundle_prepared",
+        "order_price_secured",
+        "service_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_FRESH_SUBSCRIPTION",
+      "role": "required",
+      "produces": [
+        "subscription_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_HOUSEKEEPING_BOOKING",
+      "role": "required",
+      "produces": [
+        "housekeeping_service_booked",
+        "service_stack_prepared"
+      ]
+    },
+    {
+      "module_id": "MODULE_SECOND_HAND_ITEM_LISTING",
+      "role": "required",
+      "produces": [
+        "market_listing_active",
+        "resale_listing_activated"
+      ]
+    },
+    {
+      "module_id": "MODULE_SECOND_HAND_SALE",
+      "role": "required",
+      "produces": [
+        "resale_listing_activated",
+        "sale_listing_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_COUPON_MANAGEMENT",
+      "to": "MODULE_SECOND_HAND_ITEM_LISTING",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_HOUSEKEEPING_BOOKING",
+      "to": "MODULE_COUPON_MANAGEMENT",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_SECOND_HAND_ITEM_LISTING",
+      "to": "MODULE_SECOND_HAND_SALE",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_SECOND_HAND_SALE",
+      "to": "MODULE_FRESH_SUBSCRIPTION",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_service_coupon_listing_sale_subscription",
+      "required_modules": [
+        "MODULE_HOUSEKEEPING_BOOKING",
+        "MODULE_COUPON_MANAGEMENT",
+        "MODULE_SECOND_HAND_ITEM_LISTING",
+        "MODULE_SECOND_HAND_SALE",
+        "MODULE_FRESH_SUBSCRIPTION"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-DAILY-0073-M1",
+        "WFG-DAILY-0073-M2",
+        "WFG-DAILY-0073-M3",
+        "WFG-DAILY-0073-M4",
+        "WFG-DAILY-0073-M5"
+      ],
+      "terminal_predicates": [
+        "service_stack_prepared",
+        "order_price_secured",
+        "resale_listing_activated",
+        "market_listing_active",
+        "sale_listing_active",
+        "subscription_active"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-DAILY-0073-M1",
+      "module_id": "MODULE_HOUSEKEEPING_BOOKING",
+      "binding_id": "BIND_B8_HOUSEKEEPING_BOOKING",
+      "binding_task_id": "B8-2025-HOUSEKEEPING",
+      "parameter_values": {
+        "service_type": "deep_cleaning",
+        "service_date": "2026-01-18",
+        "service_time": "13:00",
+        "instructions": "Focus on kitchen and bathroom"
+      },
+      "description": "Book a deep cleaning session for 2026-01-18 at 13:00.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "housekeeping_service_booked",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0073-M2",
+      "module_id": "MODULE_COUPON_MANAGEMENT",
+      "binding_id": "BIND_B10_COUPON_MANAGEMENT",
+      "binding_task_id": "B10-2025-COUPONS",
+      "parameter_values": {
+        "name": "Spring Saver",
+        "code": "SAVE20",
+        "type": "discount",
+        "value": "20.0",
+        "min_spend": "100.0",
+        "expiry_date": "2026-04-30"
+      },
+      "description": "Add a discount coupon SAVE20 worth 20.0 off with a minimum spend of 100.0.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coupon_available",
+          "daily_order_bundle_prepared",
+          "order_price_secured",
+          "service_stack_prepared"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0073-M3",
+      "module_id": "MODULE_SECOND_HAND_ITEM_LISTING",
+      "binding_id": "BIND_B6_SECOND_HAND_ITEM_LISTING",
+      "binding_task_id": "B6-2025-MARKET",
+      "parameter_values": {
+        "name": "Vintage Desk Lamp",
+        "description": "Working condition, minor scratches, includes bulb.",
+        "price": "50",
+        "category": "furniture",
+        "photo_name": ""
+      },
+      "description": "List a second-hand item: 'Vintage Desk Lamp' for 50 in 'furniture' category.",
+      "expected_observables": [
+        "url().includes('/market.local/index.html?listed=true')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "market_listing_active",
+          "resale_listing_activated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0073-M4",
+      "module_id": "MODULE_SECOND_HAND_SALE",
+      "binding_id": "BIND_B11_SECOND_HAND_SALE",
+      "binding_task_id": "B11-2025-GIGLISTING",
+      "parameter_values": {
+        "item_name": "Apartment Deep Cleaning Consultation",
+        "description": "Offer a professional home cleaning consultation and quote site visit.",
+        "price": "100",
+        "category": "service"
+      },
+      "description": "Post a professional gig listing for Apartment Deep Cleaning Consultation in the service category at 100.",
+      "expected_observables": [
+        "ANY[ALL[json('env','world_state.skills.certified') == true, mem('market.listed_items.last.price') == 200.0], ALL[NOT[json('env','world_state.skills.certified') == true], mem('market.listed_items.last.price') == 100.0]]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "resale_listing_activated",
+          "sale_listing_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-DAILY-0073-M5",
+      "module_id": "MODULE_FRESH_SUBSCRIPTION",
+      "binding_id": "BIND_B2_FRESH_SUBSCRIPTION",
+      "binding_task_id": "B2-2025-FRESHSUB",
+      "parameter_values": {
+        "name": "Family Box 10",
+        "price": "99",
+        "next_delivery_date": "2026-01-10",
+        "items": "fruit, vegetables, yogurt"
+      },
+      "description": "Create a fresh-food subscription named 'Family Box 10' with bi-weekly delivery, price 99 per delivery, and next delivery date 2026-01-10.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "subscription_active"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "service_stack_prepared",
+      "order_price_secured",
+      "resale_listing_activated",
+      "market_listing_active",
+      "sale_listing_active",
+      "subscription_active"
+    ],
+    "checkpoint_predicates": [
+      "coupon_available",
+      "daily_order_bundle_prepared",
+      "housekeeping_service_booked",
+      "market_listing_active",
+      "order_price_secured",
+      "resale_listing_activated",
+      "sale_listing_active",
+      "service_stack_prepared",
+      "subscription_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

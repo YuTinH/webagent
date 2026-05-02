@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>shop.local - Subscribe</title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">🛍️ Shop.local</div>
+      <div class="navlinks">
+        <a href="../shop.local/index.html">Home</a>
+        <a href="../shop.local/orders.html">Orders</a>
+        <a href="../shop.local/subscriptions.html" class="active">Subscribe</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Subscribe</h1>
+    </div>
+
+    <div id="subscriptions-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Subscriptions loaded here -->
+    </div>
+  </div>
+
+  <script>
+  function normalizeSubscriptions(env) {
+    const normalized = {};
+    const legacySubs = env.subscriptions || {};
+    Object.entries(legacySubs).forEach(([id, sub]) => {
+      if (typeof sub !== 'object' || !sub) return;
+      normalized[id] = {
+        name: sub.name || 'Subscription',
+        plan: sub.plan || '',
+        price: sub.price || sub.amount || 'N/A',
+        frequency: sub.frequency || 'month',
+        next_billing_date: sub.next_billing_date || sub.nextBillingDate || '',
+        status: sub.status || 'active'
+      };
+    });
+
+    const foodSubs = env.food?.subscriptions || {};
+    if (foodSubs && typeof foodSubs === 'object') {
+      Object.entries(foodSubs).forEach(([id, sub]) => {
+        if (id === 'last' || typeof sub !== 'object' || !sub) return;
+        normalized[id] = {
+          name: sub.name || 'Subscription',
+          plan: sub.plan || '',
+          price: sub.price || sub.amount || 'N/A',
+          frequency: sub.frequency || 'month',
+          next_billing_date: sub.next_billing_date || sub.nextBillingDate || '',
+          status: sub.status || 'active'
+        };
+      });
+      if (foodSubs.last && typeof foodSubs.last === 'object') {
+        const last = foodSubs.last;
+        const inferredId = String(last.subscription_id || last.id || '');
+        if (inferredId) {
+          normalized[inferredId] = {
+            name: last.name || 'Subscription',
+            plan: last.plan || '',
+            price: last.price || last.amount || 'N/A',
+            frequency: last.frequency || 'month',
+            next_billing_date: last.next_billing_date || last.nextBillingDate || '',
+            status: last.status || 'active'
+          };
+        }
+      }
+    }
+    return normalized;
+  }
+
+  async function loadSubscriptions() {
+    const list = document.getElementById('subscriptions-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const subscriptions = normalizeSubscriptions(env);
+      
+      if (Object.keys(subscriptions).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">🗓️</div>
+            <div style="color:var(--muted)">ActiveSubscribe</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = Object.entries(subscriptions).map(([id, sub]) => `
+        <div class="card soft">
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${sub.name || 'Subscribe'} (#${id})</h3>
+              <div style="color:var(--muted); font-size:14px">
+                ${sub.plan || ''} | ¥${sub.price || 'N/A'} / ${sub.frequency || ''}
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:600">Details: ${sub.next_billing_date || 'N/A'}</div>
+              <div style="color:var(--muted); font-size:13px">Status: <span class="badge ${sub.status === 'active' ? 'ok' : 'warn'}">${sub.status === 'active' ? 'Active' : 'Cancel'}</span></div>
+            </div>
+          </div>
+          
+            <div style="display:flex; gap:8px">
+            <button class="btn" id="request-subscription-refund-${id}" onclick="requestRefund('${id}')" ${sub.status !== 'active' ? 'disabled' : ''}>Request Refund</button>
+            <button class="btn secondary" id="cancel-subscription-${id}" onclick="cancelSubscription('${id}')" ${sub.status !== 'active' ? 'disabled' : ''}>Cancel Subscription</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function requestRefund(id) {
+    new Modal({
+      title: 'Request Subscription Refund',
+      content: `
+        <div class="form">
+          <label>Subscription ID</label>
+          <input class="input" value="${id}" readonly>
+          <label>Refund Reason</label>
+          <textarea id="refund-reason" class="input" rows="3" placeholder="Why should the subscription be refunded?"></textarea>
+          <label>Days Used</label>
+          <input id="days-used" type="number" class="input" value="0">
+        </div>
+      `,
+      confirmText: 'Submit Refund Request',
+      onConfirm: async () => {
+        const reason = document.getElementById('refund-reason').value;
+        const daysUsed = parseInt(document.getElementById('days-used').value);
+        
+        if (!reason || isNaN(daysUsed)) {
+          Toast.error("Enter a refund reason and days used.");
+          return;
+        }
+
+        await send(resolveTaskId('C3-2025-REFUND'), 'request_prorated_refund', {
+          subscription_id: id,
+          reason: reason,
+          days_used: daysUsed
+        });
+        
+        setTimeout(loadSubscriptions, 500);
+      }
+    }).open();
+  }
+
+  function cancelSubscription(id) {
+    new Modal({
+      title: 'Cancel Subscription',
+      content: `Cancel subscription ${id}?`,
+      confirmText: 'Confirm Cancellation',
+      onConfirm: async () => {
+        await send(resolveTaskId('C8-2025-CANCELSUB'), 'cancel_subscription', {
+          subscription_id: id
+        });
+        setTimeout(loadSubscriptions, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadSubscriptions);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+{
+  "task_id": "J3-2025-TICKETS",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/school.local/event-tickets.html?clean=true&task=J3-2025-TICKETS"
+    },
+    {
+      "t": 1,
+      "act": "click",
+      "selector": "#events-list .card:nth-of-type(3) button.btn.pri"
+    },
+    {
+      "t": 2,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 3,
+      "act": "wait",
+      "selector": "#tickets-list .card .badge.ok"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#tickets-list .card button.btn:not([disabled])"
+    },
+    {
+      "t": 5,
+      "act": "type",
+      "selector": "#recipient-id",
+      "value": "S112233"
+    },
+    {
+      "t": 6,
+      "act": "click",
+      "selector": ".modal-confirm"
+    },
+    {
+      "t": 7,
+      "act": "wait",
+      "selector": "#tickets-list .card .badge.pri"
+    }
+  ]
+}

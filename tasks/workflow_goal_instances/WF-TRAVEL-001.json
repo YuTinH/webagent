@@ -1,0 +1,33 @@
+{
+  "goal_id": "WF-TRAVEL-001",
+  "theme": "travel",
+  "difficulty": 3,
+  "instruction": "Get tomorrow's trip departure-ready: book the flight, complete online check-in, and arrange airport transfer before leaving for the airport.",
+  "visible_constraints": {
+    "deadline_days": 1,
+    "preferred_outcomes": [
+      "avoid_missed_departure"
+    ]
+  },
+  "initial_world_state": {
+    "flight_booked": false,
+    "check_in_completed": false,
+    "airport_transfer_arranged": false,
+    "vehicle_condition": "healthy"
+  },
+  "target_state": [
+    "flight_booked",
+    "check_in_completed",
+    "airport_transfer_arranged"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "initial_world_state.vehicle_condition",
+      "type": "enum_swap",
+      "values": ["healthy", "under_repair", "broken"]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 3,
+  "notes": "Prototype travel workflow with state-dependent transfer choice downstream."
+}

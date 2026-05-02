@@ -1,0 +1,37 @@
+{
+  "task_id": "H7-2025-VEHICLEADDR",
+  "steps": [
+    {
+      "t": 0,
+      "act": "open",
+      "url": "http://localhost:8014/gov.local/vehicle-registration.html?clean=true"
+    },
+    {
+      "t": 1,
+      "act": "select",
+      "selector": "#vehicle-select",
+      "value": "V-8821"
+    },
+    {
+      "t": 2,
+      "act": "type",
+      "selector": "#new-address",
+      "value": "742 Evergreen Terrace"
+    },
+    {
+      "t": 3,
+      "act": "click",
+      "selector": "#notify-insurance"
+    },
+    {
+      "t": 4,
+      "act": "click",
+      "selector": "#submit-vehicle-address"
+    },
+    {
+      "t": 5,
+      "act": "wait",
+      "selector": "#vehicle-list div:has-text('742 Evergreen Terrace')"
+    }
+  ]
+}

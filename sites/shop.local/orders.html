@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Orders - Nebula</title>
+<link rel="stylesheet" href="../static/skin.css">
+<link rel="stylesheet" href="../static/components.css">
+<style>
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.order-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--border);
+}
+.order-id {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text);
+}
+.order-status {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.order-status.confirmed { background: var(--ok-bg); color: var(--ok); }
+.order-status.shipped { background: var(--pri-bg); color: var(--pri); }
+.order-status.delivered { background: var(--ok-bg); color: var(--ok); }
+.order-status.cancelled { background: var(--err-bg); color: var(--err); }
+.order-status.pending { background: var(--warn-bg); color: var(--warn); }
+.order-items {
+  margin-bottom: 16px;
+}
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.item-thumb {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.item-info {
+  flex: 1;
+}
+.item-name {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.item-details {
+  color: var(--muted);
+  font-size: 14px;
+}
+.item-price {
+  font-weight: 600;
+  font-size: 15px;
+}
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border);
+}
+.order-total {
+  font-size: 18px;
+  font-weight: 700;
+}
+.order-actions .btn {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+.empty-state-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+.return-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 12000;
+}
+.return-modal {
+  width: min(560px, calc(100vw - 32px));
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.return-modal h3 {
+  margin: 0 0 8px;
+}
+.return-modal p {
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+.return-reasons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.reason-option {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.reason-option.selected {
+  border-color: var(--pri);
+  background: rgba(59, 130, 246, 0.12);
+}
+.return-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="navbar">
+  <div class="inner">
+    <div class="brand">
+      <div class="logo"></div>
+      Nebula
+    </div>
+    <div class="navlinks">
+      <a href="../shop.local/index.html">Home</a>
+      <a href="../shop.local/orders.html" class="active">Orders</a>
+      <a href="../pay.local/wallet/cards.html">Saved Cards</a>
+    </div>
+    <div style="display:flex; gap:16px; margin-left:16px">
+      <button class="wishlist-icon-btn" onclick="openWishlist()" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; position:relative">
+        ❤️
+        <span id="wishlist-count" class="cart-count" style="display:none">0</span>
+      </button>
+      <button class="cart-icon-btn" onclick="openCartDrawer()" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; position:relative">
+        🛒
+        <span id="cart-count" class="cart-count" style="display:none">0</span>
+      </button>
+      <button id="user-menu-btn" style="background:none; border:none; color:var(--text); font-size:20px; cursor:pointer">
+        👤
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="__toast" class="toast"></div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <h1 style="font-size:28px; font-weight:700; margin:24px 0">My Orders</h1>
+
+  <div style="display:flex; justify-content:flex-end; margin:-8px 0 16px">
+    <button id="refresh-latest-order-btn" class="btn secondary" type="button" onclick="refreshLatestOrderStatus()">
+      Refresh Latest Delivery Status
+    </button>
+  </div>
+
+  <!-- Orders List -->
+  <div id="orders-list" class="orders-list">
+    <div class="empty-state">
+      <div class="empty-state-icon">📦</div>
+      <div>Loading your recent orders...</div>
+    </div>
+  </div>
+
+  <div id="return-modal-backdrop" class="return-modal-backdrop">
+    <div class="return-modal">
+      <h3>Return Order</h3>
+      <p>Select a return reason to submit your request.</p>
+      <div id="return-reasons" class="return-reasons">
+        <div class="reason-option" data-reason="defective">Defective</div>
+        <div class="reason-option" data-reason="wrong_item">Wrong Item</div>
+        <div class="reason-option" data-reason="not_as_described">Not as Described</div>
+        <div class="reason-option" data-reason="changed_mind">Changed Mind</div>
+      </div>
+      <div class="return-modal-actions">
+        <button class="btn" type="button" onclick="closeReturnModal()">Cancel</button>
+        <button class="btn ok" id="submit-return-btn" type="button" onclick="submitReturnRequest()">Submit Return</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Nebula · Synthetic UI for Web Agent Research
+  </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="../static/common.js"></script>
+<script src="../static/components.js"></script>
+<script>
+const ordersParams = new URLSearchParams(window.location.search);
+const requestedOrdersTaskId = ordersParams.get('task') || '';
+const ordersTaskId = resolveTaskId(requestedOrdersTaskId || '');
+let userMenuDropdown = null;
+let currentReturnOrderId = null;
+let latestRefreshableOrderId = '';
+
+async function syncLatestOrderState(orders) {
+  const latestOrder = Array.isArray(orders) && orders.length > 0 ? orders[0] : null;
+  if (!latestOrder || !latestOrder.state) return;
+  const keys = ['shop.orders.last.state', 'orders.last.state'];
+  await Promise.all(keys.map((key) => fetch(`${window.RelRoot}api/memory`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({key, value: String(latestOrder.state), source: 'system'})
+  })));
+}
+
+async function fetchOrdersSnapshot() {
+  const resp = await fetch(window.RelRoot + 'api/orders');
+  const data = await resp.json();
+  return (data.orders || []).sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+}
+
+// Initialize components on load
+window.addEventListener('DOMContentLoaded', () => {
+  // User menu dropdown
+  userMenuDropdown = new Dropdown(document.getElementById('user-menu-btn'), {
+    align: 'right',
+    items: [
+      { icon: '👤', label: 'My Account', value: 'account' },
+      { icon: '📦', label: 'My Orders', value: 'orders' },
+      { icon: '❤️', label: '', value: 'wishlist' },
+      { type: 'divider' },
+      { icon: '⚙️', label: '', value: 'settings' },
+      { icon: '🚪', label: 'Login', value: 'logout' }
+    ],
+    onSelect: (item) => {
+      if (item.value === 'orders') {
+        const target = new URL(window.RelRoot + 'shop.local/orders.html', window.location.href);
+        if (ordersTaskId) target.searchParams.set('task', ordersTaskId);
+        window.location.href = target.toString();
+      }
+      else if (item.value === 'wishlist') openWishlist();
+      else if (item.value === 'account') Toast.info('');
+      else if (item.value === 'settings') Toast.info('');
+      else if (item.value === 'logout') Toast.info('Login');
+    }
+  });
+});
+
+async function loadOrders() {
+  const listContainer = document.getElementById('orders-list');
+  listContainer.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-state-icon">📦</div>
+      <div>Loading your recent orders...</div>
+    </div>
+  `;
+
+  try {
+    const orders = await fetchOrdersSnapshot();
+    syncLatestRefreshButton(orders);
+    await syncLatestOrderState(orders);
+
+    if (orders.length > 0) {
+      renderOrders(orders);
+    } else {
+      listContainer.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">📦</div>
+          <div>No orders found for this account.</div>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Details:', error);
+    listContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <div>Error, please try again.</div>
+      </div>
+    `;
+    Toast.error('');
+  }
+}
+
+function syncLatestRefreshButton(orders) {
+  const button = document.getElementById('refresh-latest-order-btn');
+  if (!button) return;
+  const activeOrder = (orders || []).find((order) => !['delivered', 'cancelled'].includes(order.state));
+  latestRefreshableOrderId = activeOrder ? activeOrder.id : '';
+  button.disabled = !latestRefreshableOrderId;
+  button.textContent = latestRefreshableOrderId ? 'Refresh Latest Delivery Status' : 'No Active Delivery';
+}
+
+function renderOrders(orders) {
+  const listContainer = document.getElementById('orders-list');
+  listContainer.innerHTML = orders.map(order => `
+    <div class="order-card" data-order-id="${order.id}">
+      <div class="order-header">
+        <div class="order-id">Details: ${order.id}</div>
+        <div class="order-status ${order.state}">${mapOrderStatus(order.state)}</div>
+      </div>
+      <div class="order-items">
+        ${order.items.map(item => `
+          <div class="order-item">
+            <div class="item-thumb">${getCategoryIcon(item.category || 'default')}</div>
+            <div class="item-info">
+              <div class="item-name">${escapeHtml(item.name)}</div>
+              <div class="item-details">Qty: ${item.quantity}</div>
+            </div>
+            <div class="item-price">¥${(item.price * item.quantity).toFixed(2)}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="order-footer">
+        <div class="order-total">Total: ¥${order.total.toFixed(2)}</div>
+        <div class="order-actions">
+          <button class="btn" onclick="trackOrder('${order.id}')">Track</button>
+          <button class="btn return-order-btn order-return-order-btn" data-order-id="${order.id}" onclick="openReturnModal('${order.id}')">Return</button>
+          <button class="btn" onclick="viewOrderDetails('${order.id}')">Details</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function mapOrderStatus(status) {
+  const statusMap = {
+    'confirmed': 'Confirm',
+    'shipped': '',
+    'delivered': 'Delivered',
+    'cancelled': 'Cancel',
+    'pending': 'Pending'
+  };
+  return statusMap[status] || status;
+}
+
+function trackOrder(orderId) {
+  Toast.info(` ${orderId}...`);
+  const target = new URL(window.RelRoot + 'shop.local/track.html', window.location.href);
+  target.searchParams.set('order_id', orderId);
+  if (ordersTaskId) target.searchParams.set('task', ordersTaskId);
+  window.location.href = target.toString();
+}
+
+function viewOrderDetails(orderId) {
+  Toast.info(` ${orderId} Details...`);
+  const target = new URL(window.RelRoot + `shop.local/order/confirmation/${orderId}`, window.location.href);
+  if (ordersTaskId) target.searchParams.set('task', ordersTaskId);
+  window.location.href = target.toString();
+}
+
+function openReturnModal(orderId) {
+  currentReturnOrderId = orderId;
+  document.querySelectorAll('#return-reasons .reason-option').forEach((el) => el.classList.remove('selected'));
+  const backdrop = document.getElementById('return-modal-backdrop');
+  backdrop.style.display = 'flex';
+}
+
+function closeReturnModal() {
+  const backdrop = document.getElementById('return-modal-backdrop');
+  backdrop.style.display = 'none';
+  currentReturnOrderId = null;
+}
+
+async function submitReturnRequest() {
+  const selected = document.querySelector('#return-reasons .reason-option.selected');
+  if (!selected || !currentReturnOrderId) {
+    Toast.error('Please choose a reason first.');
+    return;
+  }
+  const reason = selected.getAttribute('data-reason');
+  await send(ordersTaskId || 'C2-2025-004', 'submit_return_request', {
+    order_id: currentReturnOrderId,
+    reason,
+    method: 'original_payment'
+  });
+  closeReturnModal();
+}
+
+async function refreshLatestOrderStatus() {
+  if (!latestRefreshableOrderId) {
+    Toast.info('No active order needs a delivery refresh.');
+    return;
+  }
+  await fetch(`${window.RelRoot}api/debug/time_travel`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({days: 3})
+  });
+  await loadOrders();
+}
+
+function getCategoryIcon(category) {
+  const icons = {
+    'electronics': '🖱️', 'home': '🏠', 'books': '📚', 'sports': '⚽', 'fashion': '👕', 'toys': '🧸', 'food': '🍜'
+  };
+  return icons[category] || '📦';
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+document.addEventListener('DOMContentLoaded', loadOrders);
+document.addEventListener('click', (event) => {
+  const option = event.target.closest('#return-reasons .reason-option');
+  if (!option) {
+    return;
+  }
+  document.querySelectorAll('#return-reasons .reason-option').forEach((el) => el.classList.remove('selected'));
+  option.classList.add('selected');
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../";</script>
+  <meta charset="utf-8">
+  <title>work.local - </title>
+  <link rel="stylesheet" href="../static/skin.css">
+  <link rel="stylesheet" href="../static/components.css">
+  <script src="../static/common.js"></script>
+  <script src="../static/components.js"></script>
+</head>
+<body class="page">
+  <div class="navbar">
+    <div class="inner">
+      <div class="brand">💼 Work.local</div>
+      <div class="navlinks">
+        <a href="../work.local/dashboard.html">Dashboard</a>
+        <a href="../work.local/calendar.html">Calendar</a>
+        <a href="../work.local/paper-submission.html" class="active">Paper Submission</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width:800px">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+      <h1>Paper Submissions</h1>
+      <button class="btn pri" id="open-submit-paper-modal-btn" onclick="openSubmitPaperModal()">Submit Paper</button>
+    </div>
+
+    <div id="submissions-list" style="display:flex; flex-direction:column; gap:16px">
+      <!-- Submissions loaded here -->
+    </div>
+  </div>
+
+  <script>
+  const paperParams = new URLSearchParams(window.location.search);
+  const requestedPaperTaskId = paperParams.get('task') || 'F8-2025-PAPERSUB';
+  const paperTaskId = resolveTaskId(requestedPaperTaskId);
+
+  async function loadSubmissions() {
+    const list = document.getElementById('submissions-list');
+    list.innerHTML = '<div class="loading">Loading......</div>';
+    
+    try {
+      const env = await loadEnv();
+      const submissions = env.work?.paper_submissions || {};
+      
+      if (Object.keys(submissions).length === 0) {
+        list.innerHTML = `
+          <div class="card soft" style="text-align:center; padding:48px">
+            <div style="font-size:48px; margin-bottom:16px">📄</div>
+            <div style="color:var(--muted)">No submissions yet.</div>
+          </div>
+        `;
+        return;
+      }
+
+	      list.innerHTML = Object.entries(submissions).filter(([id]) => id !== 'last').map(([id, submission]) => `
+	        <div class="card soft">
+	          <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 4px 0">${submission.title || ''} (${id})</h3>
+              <div style="color:var(--muted); font-size:14px">Details: ${submission.journal || ''}</div>
+            </div>
+            <div style="text-align:right">
+	              <div style="font-weight:600">Status: <span class="badge ${submission.status === 'accepted' ? 'ok' : (submission.status === 'rejected' ? 'error' : 'warn')}">${submission.status}</span>
+	                ${submission.fees_paid ? '<span class="badge ok" style="margin-left:4px">Fees Paid</span>' : ''}
+	              </div>
+	              <div style="color:var(--muted); font-size:13px">Date: ${submission.submitted_at || 'N/A'}</div>
+	            </div>
+	          </div>
+	          <div style="font-size:13px; color:var(--muted); margin-bottom:8px">Track: ${submission.track || 'general'}</div>
+	          <div style="font-size:13px; color:var(--muted); margin-bottom:12px">${submission.abstract || ''}</div>
+	          
+	          <div style="display:flex; gap:8px">
+	            <button class="btn" id="track-submission-${id}" onclick="trackSubmission('${id}')">View Status</button>
+            <button class="btn pri" id="pay-submission-fees-${id}" onclick="payFees('${id}')" ${(submission.status !== 'accepted' && submission.status !== 'submitted') || submission.fees_paid ? 'disabled' : ''}>${submission.fees_paid ? 'Fees Paid' : 'Pay Fees'}</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (e) {
+      console.error(e);
+      list.innerHTML = '<div class="error">Load failed</div>';
+    }
+  }
+
+  function openSubmitPaperModal() {
+    new Modal({
+      title: 'Submit Paper',
+      content: `
+        <div class="form">
+          <label>Paper Title</label>
+          <input id="paper-title" class="input" placeholder="Details: Transformer">
+          
+          <label>Journal or Venue</label>
+          <input id="journal-name" class="input" placeholder="Details: Nature, IEEE Transactions">
+          
+	          <label>Authors (comma separated)</label>
+	          <input id="authors" class="input" placeholder="Details: , ">
+
+	          <label>Abstract</label>
+	          <textarea id="paper-abstract" class="input" rows="4" placeholder="Summarize the contribution and scope of the paper"></textarea>
+
+	          <label>Submission Track</label>
+	          <select id="paper-track" class="input">
+	            <option value="">Choose a track</option>
+	            <option value="research">Research</option>
+	            <option value="industry">Industry</option>
+	            <option value="short-paper">Short Paper</option>
+	          </select>
+
+	          <label>Paper File</label>
+	          <input id="paper-file" type="text" class="input" placeholder="e.g. my_paper.pdf">
+        </div>
+      `,
+      confirmText: 'Submit Paper',
+      onConfirm: async () => {
+	        const title = document.getElementById('paper-title').value;
+	        const journal = document.getElementById('journal-name').value;
+	        const authors = document.getElementById('authors').value.split(',').map(s => s.trim()).filter(Boolean);
+	        const abstract = document.getElementById('paper-abstract').value.trim() || 'Submitted for benchmark review.';
+	        const track = document.getElementById('paper-track').value.trim() || 'research';
+	        const file = document.getElementById('paper-file').value;
+	        
+	        if (!title || !journal || !file) {
+	          Toast.error("Enter the submission title, venue, and file.");
+	          return false;
+	        }
+
+	        await send(paperTaskId, 'submit_paper', {
+	          title: title,
+	          journal: journal,
+	          authors: authors,
+	          abstract: abstract,
+	          track: track,
+	          file: file
+	        });
+        await loadSubmissions();
+        return true;
+      }
+    }).open();
+  }
+
+  function trackSubmission(id) {
+    Toast.info(`Checking status for ${id}...`);
+    // In a real app, this would fetch latest status from backend
+  }
+
+  function payFees(id) {
+    new Modal({
+      title: 'Pay Publication Fees',
+      content: `Pay publication fees for submission ${id}?`,
+      confirmText: 'Pay Fees',
+      onConfirm: async () => {
+        await send(paperTaskId, 'pay_publication_fees', {
+          submission_id: id
+        });
+        setTimeout(loadSubmissions, 500);
+      }
+    }).open();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadSubmissions();
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

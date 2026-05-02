@@ -1,0 +1,357 @@
+{
+  "goal_id": "WFG-HEALTH-0319",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Either start from the insurance-policy route before appointment, refill, vaccine management, and calendar sync, or start from health-plan activation before the same appointment, refill, vaccine, and follow-up closure."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_DOCTOR_APPT",
+      "role": "required",
+      "produces": [
+        "medical_appointment_booked"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_HEALTH_PLAN_ACTIVATION",
+      "role": "alternative",
+      "produces": [
+        "care_continuity_established",
+        "coverage_path_active",
+        "health_plan_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_INSURANCE_POLICY",
+      "role": "alternative",
+      "produces": [
+        "coverage_path_active",
+        "insurance_policy_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_PRESCRIPTION_REFILL",
+      "role": "required",
+      "produces": [
+        "care_continuity_established",
+        "prescription_refilled"
+      ]
+    },
+    {
+      "module_id": "MODULE_VACCINE_MGMT",
+      "role": "required",
+      "produces": [
+        "vaccination_record_updated"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_DOCTOR_APPT",
+      "to": "MODULE_PRESCRIPTION_REFILL",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_HEALTH_PLAN_ACTIVATION",
+      "to": "MODULE_DOCTOR_APPT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_INSURANCE_POLICY",
+      "to": "MODULE_DOCTOR_APPT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_PRESCRIPTION_REFILL",
+      "to": "MODULE_VACCINE_MGMT",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_VACCINE_MGMT",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_policy_appt_refill_vaccine_calendar",
+      "required_modules": [
+        "MODULE_INSURANCE_POLICY",
+        "MODULE_DOCTOR_APPT",
+        "MODULE_PRESCRIPTION_REFILL",
+        "MODULE_VACCINE_MGMT",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HEALTH-0319-M1",
+        "WFG-HEALTH-0319-M2",
+        "WFG-HEALTH-0319-M3",
+        "WFG-HEALTH-0319-M4",
+        "WFG-HEALTH-0319-M5"
+      ],
+      "terminal_predicates": [
+        "coverage_path_active",
+        "medical_appointment_booked",
+        "care_continuity_established",
+        "vaccination_record_updated",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_plan_appt_refill_vaccine_calendar",
+      "required_modules": [
+        "MODULE_HEALTH_PLAN_ACTIVATION",
+        "MODULE_DOCTOR_APPT",
+        "MODULE_PRESCRIPTION_REFILL",
+        "MODULE_VACCINE_MGMT",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-HEALTH-0319-M6",
+        "WFG-HEALTH-0319-M7",
+        "WFG-HEALTH-0319-M8",
+        "WFG-HEALTH-0319-M9",
+        "WFG-HEALTH-0319-M10"
+      ],
+      "terminal_predicates": [
+        "coverage_path_active",
+        "medical_appointment_booked",
+        "care_continuity_established",
+        "vaccination_record_updated",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-HEALTH-0319-M1",
+      "module_id": "MODULE_INSURANCE_POLICY",
+      "binding_id": "BIND_G2_INSURANCE_POLICY",
+      "binding_task_id": "G2-2025-INSURANCE",
+      "parameter_values": {
+        "plan_name": "Premium Plus Plan",
+        "provider": "Prime Shield"
+      },
+      "description": "Purchase the Premium Plus Plan from Prime Shield.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "coverage_path_active",
+          "insurance_policy_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0319-M2",
+      "module_id": "MODULE_DOCTOR_APPT",
+      "binding_id": "BIND_G1_DOCTOR_APPT",
+      "binding_task_id": "G1-2025-HEALTH",
+      "parameter_values": {
+        "appointmentId": "APT-9060",
+        "doctorId": "DR-015",
+        "slot": "2025-12-14T10:20"
+      },
+      "description": "Book doctor appointment APT-9060 with doctor DR-015 at 2025-12-14T10:20.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "medical_appointment_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0319-M3",
+      "module_id": "MODULE_PRESCRIPTION_REFILL",
+      "binding_id": "BIND_G7_PRESCRIPTION_REFILL",
+      "binding_task_id": "G7-2025-HEALTH",
+      "parameter_values": {
+        "prescriptionId": "RX-1001",
+        "medication": "Amoxicillin 250mg"
+      },
+      "description": "Refill prescription RX-1001 (Amoxicillin 250mg).",
+      "expected_observables": [
+        "url().includes(\"/health.local/records.html\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "care_continuity_established",
+          "prescription_refilled"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0319-M4",
+      "module_id": "MODULE_VACCINE_MGMT",
+      "binding_id": "BIND_G6_VACCINE_MGMT",
+      "binding_task_id": "G6-2025-VACCINE",
+      "parameter_values": {
+        "vaccine_type": "mmr",
+        "appointment_date": "2025-12-19",
+        "appointment_time": "11:00"
+      },
+      "description": "Book an MMR vaccine appointment for 2025-12-19 at 11:00.",
+      "expected_observables": [
+        "exists('#records-list .badge.ok')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "vaccination_record_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0319-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0319-M6",
+      "module_id": "MODULE_HEALTH_PLAN_ACTIVATION",
+      "binding_id": "BIND_G5_HEALTH_PLAN",
+      "binding_task_id": "G5-2025-PLAN",
+      "parameter_values": {},
+      "description": "Activate the Premium Health Plan.",
+      "expected_observables": [
+        "exists('#plan-premium.active')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "care_continuity_established",
+          "coverage_path_active",
+          "health_plan_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0319-M7",
+      "module_id": "MODULE_DOCTOR_APPT",
+      "binding_id": "BIND_G1_DOCTOR_APPT",
+      "binding_task_id": "G1-2025-HEALTH",
+      "parameter_values": {
+        "appointmentId": "APT-9060",
+        "doctorId": "DR-015",
+        "slot": "2025-12-14T10:20"
+      },
+      "description": "Book doctor appointment APT-9060 with doctor DR-015 at 2025-12-14T10:20.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "medical_appointment_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0319-M8",
+      "module_id": "MODULE_PRESCRIPTION_REFILL",
+      "binding_id": "BIND_G7_PRESCRIPTION_REFILL",
+      "binding_task_id": "G7-2025-HEALTH",
+      "parameter_values": {
+        "prescriptionId": "RX-1001",
+        "medication": "Amoxicillin 250mg"
+      },
+      "description": "Refill prescription RX-1001 (Amoxicillin 250mg).",
+      "expected_observables": [
+        "url().includes(\"/health.local/records.html\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "care_continuity_established",
+          "prescription_refilled"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0319-M9",
+      "module_id": "MODULE_VACCINE_MGMT",
+      "binding_id": "BIND_G6_VACCINE_MGMT",
+      "binding_task_id": "G6-2025-VACCINE",
+      "parameter_values": {
+        "vaccine_type": "mmr",
+        "appointment_date": "2025-12-19",
+        "appointment_time": "11:00"
+      },
+      "description": "Book an MMR vaccine appointment for 2025-12-19 at 11:00.",
+      "expected_observables": [
+        "exists('#records-list .badge.ok')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "vaccination_record_updated"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-HEALTH-0319-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "coverage_path_active",
+      "medical_appointment_booked",
+      "care_continuity_established",
+      "vaccination_record_updated",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_synced",
+      "care_continuity_established",
+      "coverage_path_active",
+      "health_plan_active",
+      "insurance_policy_active",
+      "medical_appointment_booked",
+      "prescription_refilled",
+      "vaccination_record_updated"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

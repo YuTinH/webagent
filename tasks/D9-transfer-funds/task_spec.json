@@ -1,0 +1,96 @@
+{
+  "task_id": "D9-2025-TRANSPORTBUDGET",
+  "family": "D",
+  "episode_id": "ep-gen",
+  "priority": 1,
+  "seed": 42,
+  "time": "2025-12-01T10:00:00Z",
+  "persona": {
+    "automation_preference": "medium"
+  },
+  "goal": "Adjust transport budget after a funds transfer decision.",
+  "inputs": {
+    "category": "transport",
+    "limit": 150
+  },
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "preconditions": [
+    "mem('banking.balance.savings') > 0"
+  ],
+  "dependencies": [
+    "D1-check-balance"
+  ],
+  "memory_keys": [
+    "finance.budgets.transport.limit"
+  ],
+  "success_criteria": [
+    "url().includes('/bank.local/budget.html?updated=true')",
+    "mem('finance.budgets.transport.limit') == 150",
+    "text('#limit-transport') includes '150'",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "rubrics": {
+    "SR": 1.0
+  },
+  "timeout": 300,
+  "step_timeout": 30,
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Criterion 1 final",
+      "assertion": "url().includes('/bank.local/budget.html?updated=true')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_state",
+      "name": "Criterion 2 state set",
+      "assertion": "mem('finance.budgets.transport.limit') != ''",
+      "weight": 0.4,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Criterion 2 final",
+      "assertion": "mem('finance.budgets.transport.limit') == 150",
+      "weight": 0.6,
+      "required": true,
+      "depends_on": [
+        "crit_2_state"
+      ]
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Criterion 3 final",
+      "assertion": "text('#limit-transport') includes '150'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Criterion 4 final",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Criterion 5 final",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "module_group": "transfer_funds",
+  "canonical_task_dir": "D9-transfer-funds",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

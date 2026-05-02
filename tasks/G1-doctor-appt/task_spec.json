@@ -1,0 +1,52 @@
+{
+  "task_id": "G1-2025-HEALTH",
+  "family": "G",
+  "goal": "Complete the following task: book doctor appointment APT-9060 with doctor DR-015 at 2025-12-14T10:20.",
+  "inputs": {
+    "appointmentId": "APT-9001",
+    "doctorId": "DR-001",
+    "slot": "2025-12-02T09:00"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('health.appointment.last_id') == 'APT-9060'",
+    "mem('health.appointment.doctor_id') == 'DR-015'",
+    "mem('health.appointment.slot') == '2025-12-14T10:20'"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_g1_1",
+      "name": "cp_g1 checkpoint 1",
+      "assertion": "mem('health.appointment.last_id') == 'APT-9060'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g1_2",
+      "name": "cp_g1 checkpoint 2",
+      "assertion": "mem('health.appointment.doctor_id') == 'DR-015'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_g1_3",
+      "name": "cp_g1 checkpoint 3",
+      "assertion": "mem('health.appointment.slot') == '2025-12-14T10:20'",
+      "weight": 0.3333333333333333,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "health.local"
+  ],
+  "module_group": "doctor_appt",
+  "canonical_task_dir": "G1-doctor-appt",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

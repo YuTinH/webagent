@@ -1,0 +1,31 @@
+{
+  "goal_id": "WFG-NEWCOMER-0284",
+  "theme": "newcomer",
+  "difficulty": 5,
+  "instruction": "Finish out the newcomer route after activating banking and finishing the mobile plan switch.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "bank_account_active",
+      "mobile_plan_updated"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "bank_account_active",
+    "mobile_plan_updated"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 39,
+  "max_module_invocations": 6,
+  "notes": "Generated from BP_NEWCOMER_ZTRAIN_09_BANK_SWITCH_DUAL; the same bank-plus-switch target can be reached through either utility setup or address proof after housing. Training-only expansion variant 9, derived from BP_NEWCOMER_BANK_SWITCH_DUAL."
+}

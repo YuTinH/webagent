@@ -1,0 +1,42 @@
+{
+  "goal_id": "WFG-FINANCE-0013",
+  "theme": "finance",
+  "difficulty": 7,
+  "instruction": "Close the investment-funding workflow by activating the investment path, completing the transfer, updating the budget limit, archiving the receipt record, and ending with a synced follow-up reminder.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "must_avoid": [
+      "transfer_left_pending"
+    ],
+    "preferred_outcomes": [
+      "investment_account_active",
+      "transfer_completed",
+      "budget_limit_updated",
+      "receipt_archived",
+      "calendar_event_synced"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "investment_account_active",
+    "transfer_completed",
+    "budget_limit_updated",
+    "receipt_archived",
+    "calendar_event_synced"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_FINANCE_INVESTMENT_FUNDING; active-investment finance workflows should schedule a follow-up after archival."
+}

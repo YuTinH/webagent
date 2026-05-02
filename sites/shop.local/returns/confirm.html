@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.RelRoot = "../../";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirm - Nebula</title>
+<link rel="stylesheet" href="../../static/skin.css">
+<style>
+.confirmation-container { max-width: 700px; margin: 0 auto; }
+.success-banner { background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(16,185,129,0.1)); border: 1px solid rgba(34,197,94,0.3); border-radius: var(--radius); padding: 40px; text-align: center; margin-bottom: 32px; }
+.success-icon { font-size: 80px; margin-bottom: 20px; }
+.success-title { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+.success-subtitle { color: var(--muted); font-size: 15px; }
+.info-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+.info-title { font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.info-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; font-size: 14px; }
+.info-key { color: var(--muted); }
+.info-value { font-weight: 500; }
+.timeline { position: relative; padding-left: 32px; margin-top: 20px; }
+.timeline-item { position: relative; padding-bottom: 24px; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot { position: absolute; left: -32px; width: 16px; height: 16px; border-radius: 50%; background: var(--ok); border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--ok); }
+.timeline-item.pending .timeline-dot { background: var(--muted); box-shadow: 0 0 0 2px var(--muted); }
+.timeline-line { position: absolute; left: -24px; top: 16px; bottom: -8px; width: 2px; background: var(--border); }
+.timeline-item:last-child .timeline-line { display: none; }
+.timeline-time { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.timeline-title { font-weight: 600; margin-bottom: 4px; }
+.timeline-desc { font-size: 13px; color: var(--muted); }
+.action-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 32px; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="brand"><div class="logo"></div> Nebula</div>
+    <div class="navlinks">
+      <a href="../../shop.local/index.html">Home</a>
+      <a href="../../shop.local/orders.html">Information</a>
+      <a href="../../pay.local/wallet/cards.html">Information</a>
+    </div>
+    <div class="search"><input placeholder="Search..."></div>
+    <div style="display:flex; gap:16px; margin-left:16px">
+      <a href="../../shop.local/cart.html" style="color:var(--text); text-decoration:none; font-size:20px">🛒</a>
+    </div>
+  </div>
+</div>
+<div id="__toast" class="toast"></div>
+
+<div class="container">
+  <div class="breadcrumbs" style="margin:20px 0">
+    <a href="../../shop.local/index.html">Home</a> /
+    <a href="../../shop.local/orders.html">Information</a> /
+    <span>Confirm</span>
+  </div>
+
+  <!-- Loading -->
+  <div id="loading" style="text-align:center; padding:60px 20px; color:var(--muted)">
+    <div style="font-size:48px; margin-bottom:20px">⏳</div>
+    <div>...</div>
+  </div>
+
+  <!-- Content -->
+  <div id="content" class="confirmation-container" style="display:none">
+    <div class="success-banner">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Submit！</div>
+      <div class="success-subtitle">Details: <span id="return-id" class="badge ok"></span></div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-title">📋 </div>
+      <div class="info-grid">
+        <div class="info-key">Details:</div>
+        <div class="info-value" id="return-number">-</div>
+        <div class="info-key">Details:</div>
+        <div class="info-value" id="order-id">-</div>
+        <div class="info-key">Details:</div>
+        <div class="info-value" id="created-time">-</div>
+        <div class="info-key">Details:</div>
+        <div class="info-value" id="refund-amount" style="color:#60a5fa; font-weight:600">-</div>
+        <div class="info-key">Status:</div>
+        <div class="info-value"><span id="return-status" class="badge ok">Submit</span></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-title">🚚 </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+          <div class="timeline-time" id="step1-time">Information</div>
+          <div class="timeline-title">Submit</div>
+          <div class="timeline-desc">Submit，</div>
+        </div>
+        <div class="timeline-item pending">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+          <div class="timeline-time">Pending</div>
+          <div class="timeline-title">Information</div>
+          <div class="timeline-desc">1-2</div>
+        </div>
+        <div class="timeline-item pending">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+          <div class="timeline-time">Pending</div>
+          <div class="timeline-title">Information</div>
+          <div class="timeline-desc">3-5</div>
+        </div>
+        <div class="timeline-item pending">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">Pending</div>
+          <div class="timeline-title">Information</div>
+          <div class="timeline-desc">Information</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <a href="../../shop.local/orders.html" class="btn">Back</a>
+      <a href="../../shop.local/index.html" class="btn pri">Information</a>
+    </div>
+  </div>
+
+  <div class="footer">Nebula · Synthetic UI for Web Agent Research</div>
+</div>
+
+<script src="../../static/common.js"></script>
+<script>
+async function loadReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const returnId = params.get('id');
+
+  if (!returnId) {
+    showError('');
+    return;
+  }
+
+  try {
+    // Note: The returns endpoint might need to be implemented
+    // For now, we'll use local data and memory
+    const memResponse = await fetch('../../api/memory?key=returns.last.id');
+    const mem = await memResponse.json();
+
+    if (!mem.success || mem.key !== 'returns.last.id' || mem.value !== returnId) {
+      // Fallback: show success with returnId
+      renderReturn({
+        id: returnId,
+        state: 'submitted',
+        refund_amount: 24.99,
+        created_at: new Date().toISOString()
+      });
+    } else {
+      // Load additional memory data
+      const orderIdMem = await fetch('../api/memory?key=returns.last.order_id');
+      const stateMem = await fetch('../api/memory?key=returns.last.state');
+      const amountMem = await fetch('../api/memory?key=returns.last.refund_amount');
+
+      const orderId = await orderIdMem.json();
+      const state = await stateMem.json();
+      const amount = await amountMem.json();
+
+      renderReturn({
+        id: returnId,
+        order_id: orderId.success ? orderId.value : 'O-10001',
+        state: state.success ? state.value : 'submitted',
+        refund_amount: amount.success ? parseFloat(amount.value) : 24.99,
+        created_at: new Date().toISOString()
+      });
+    }
+  } catch (err) {
+    console.error('Failed to load return:', err);
+    // Show basic success page anyway
+    renderReturn({
+      id: returnId,
+      state: 'submitted',
+      refund_amount: 24.99,
+      created_at: new Date().toISOString()
+    });
+  }
+}
+
+function renderReturn(return) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+
+  document.getElementById('return-id').textContent = return.id;
+  document.getElementById('return-number').textContent = return.id;
+  document.getElementById('order-id').textContent = return.order_id || '-';
+  document.getElementById('created-time').textContent = new Date(return.created_at).toLocaleString('zh-CN');
+  document.getElementById('refund-amount').textContent = `¥${return.refund_amount.toFixed(2)}`;
+  document.getElementById('return-status').textContent = getStatusText(return.state);
+  document.getElementById('step1-time').textContent = formatTime(new Date(return.created_at));
+}
+
+function getStatusText(state) {
+  const texts = {
+    'submitted': 'Submit',
+    'approved': '',
+    'rejected': 'Decline',
+    'refunded': ''
+  };
+  return texts[state] || state;
+}
+
+function formatTime(date) {
+  const now = new Date();
+  const diff = (now - date) / 1000;
+  if (diff < 60) return '';
+  if (diff < 3600) return `${Math.floor(diff / 60)}`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}`;
+  return date.toLocaleString('zh-CN');
+}
+
+function showError(msg) {
+  document.getElementById('loading').innerHTML = `
+    <div style="font-size:64px; margin-bottom:20px; opacity:0.5">❌</div>
+    <div style="font-size:18px; margin-bottom:24px">${msg}</div>
+    <a href="../../shop.local/orders.html" class="btn pri">Back</a>
+  `;
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('__toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+loadReturn();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-SECURITY-0147",
+  "theme": "security",
+  "difficulty": 7,
+  "instruction": "Close the security-exit workflow by exporting the account first, reviewing privacy and credentials, completing the audit, and ending with formal data deletion.",
+  "visible_constraints": {
+    "deadline_days": 3,
+    "preferred_outcomes": [
+      "account_data_exported",
+      "account_exit_prepared",
+      "access_surface_reviewed",
+      "privacy_settings_updated",
+      "credential_vault_updated",
+      "security_audit_completed",
+      "deletion_request_submitted"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "account_data_exported",
+    "account_exit_prepared",
+    "access_surface_reviewed",
+    "privacy_settings_updated",
+    "credential_vault_updated",
+    "security_audit_completed",
+    "deletion_request_submitted"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        2,
+        3
+      ]
+    }
+  ],
+  "max_steps": 70,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_SECURITY_WORKFLOW_EXIT_SURFACE; security exit workflows should end with a deletion request after export, review, and audit rather than stopping once the audit is complete."
+}

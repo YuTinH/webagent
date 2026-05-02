@@ -1,0 +1,383 @@
+{
+  "goal_id": "WFG-SOCIAL-0146",
+  "composition": {
+    "composition_type": "multi_path",
+    "num_semantically_distinct_paths": 2,
+    "distinctness_rule": "Follow one full social route to completion and do not stop before the event follow-up synced to the calendar."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_CHARITY_DONATION",
+      "role": "alternative",
+      "produces": [
+        "donation_completed",
+        "social_contribution_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "role": "required",
+      "produces": [
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "module_id": "MODULE_EVENT_TICKETS",
+      "role": "required",
+      "produces": [
+        "event_ticket_booked"
+      ]
+    },
+    {
+      "module_id": "MODULE_GIFT_POOLING",
+      "role": "alternative",
+      "produces": [
+        "gift_pool_created",
+        "social_commitment_recorded",
+        "social_contribution_completed"
+      ]
+    },
+    {
+      "module_id": "MODULE_ROOMMATE_EXPENSE_SPLIT",
+      "role": "required",
+      "produces": [
+        "shared_expenses_settled"
+      ]
+    },
+    {
+      "module_id": "MODULE_RSVP_EVENT",
+      "role": "required",
+      "produces": [
+        "event_rsvp_completed",
+        "social_commitment_recorded"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_CHARITY_DONATION",
+      "to": "MODULE_RSVP_EVENT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_EVENT_TICKETS",
+      "to": "MODULE_EMAIL_CALENDAR",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_GIFT_POOLING",
+      "to": "MODULE_RSVP_EVENT",
+      "kind": "alternative"
+    },
+    {
+      "from": "MODULE_ROOMMATE_EXPENSE_SPLIT",
+      "to": "MODULE_EVENT_TICKETS",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_RSVP_EVENT",
+      "to": "MODULE_ROOMMATE_EXPENSE_SPLIT",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_donation_rsvp_split_ticket_extended",
+      "required_modules": [
+        "MODULE_CHARITY_DONATION",
+        "MODULE_RSVP_EVENT",
+        "MODULE_ROOMMATE_EXPENSE_SPLIT",
+        "MODULE_EVENT_TICKETS",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-SOCIAL-0146-M1",
+        "WFG-SOCIAL-0146-M2",
+        "WFG-SOCIAL-0146-M3",
+        "WFG-SOCIAL-0146-M4",
+        "WFG-SOCIAL-0146-M5"
+      ],
+      "terminal_predicates": [
+        "event_rsvp_completed",
+        "social_commitment_recorded",
+        "social_contribution_completed",
+        "shared_expenses_settled",
+        "event_ticket_booked",
+        "calendar_event_synced"
+      ]
+    },
+    {
+      "path_id": "path_gift_rsvp_split_ticket_extended",
+      "required_modules": [
+        "MODULE_GIFT_POOLING",
+        "MODULE_RSVP_EVENT",
+        "MODULE_ROOMMATE_EXPENSE_SPLIT",
+        "MODULE_EVENT_TICKETS",
+        "MODULE_EMAIL_CALENDAR"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-SOCIAL-0146-M6",
+        "WFG-SOCIAL-0146-M7",
+        "WFG-SOCIAL-0146-M8",
+        "WFG-SOCIAL-0146-M9",
+        "WFG-SOCIAL-0146-M10"
+      ],
+      "terminal_predicates": [
+        "event_rsvp_completed",
+        "social_commitment_recorded",
+        "social_contribution_completed",
+        "shared_expenses_settled",
+        "event_ticket_booked",
+        "calendar_event_synced"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M1",
+      "module_id": "MODULE_CHARITY_DONATION",
+      "binding_id": "BIND_K3_CHARITY_DONATION",
+      "binding_task_id": "K3-2025-CHARITY",
+      "parameter_values": {
+        "charity_name": "社区基金",
+        "amount": "200",
+        "tax_deductible": true
+      },
+      "description": "Donate 200 to 社区基金 and request a tax-deductible receipt.",
+      "expected_observables": [
+        "exists('#donations-list .card')"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "donation_completed",
+          "social_contribution_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M2",
+      "module_id": "MODULE_RSVP_EVENT",
+      "binding_id": "BIND_K4_RSVP_EVENT",
+      "binding_task_id": "K4-2025-RSVPGROUP",
+      "parameter_values": {
+        "group_name": "Tech Enthusiasts"
+      },
+      "description": "RSVP by joining the Tech Enthusiasts organizer group.",
+      "expected_observables": [
+        "url().includes('/social.local/my-groups.html')",
+        "exists(\"#my-groups-list .badge.ok\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_rsvp_completed",
+          "social_commitment_recorded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M3",
+      "module_id": "MODULE_ROOMMATE_EXPENSE_SPLIT",
+      "binding_id": "BIND_K2_AA_SPLIT",
+      "binding_task_id": "K2-2025-010",
+      "parameter_values": {
+        "month": "2025-11",
+        "rules": "by_amount"
+      },
+      "description": "Settle shared expenses for November using amount-based split.",
+      "expected_observables": [
+        "url().includes('/social.local/split.html')",
+        "url().includes('month=2025-11')",
+        "exists(\"#month\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "shared_expenses_settled"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M4",
+      "module_id": "MODULE_EVENT_TICKETS",
+      "binding_id": "BIND_J3_EVENT_TICKETS",
+      "binding_task_id": "J3-2025-TICKETS",
+      "parameter_values": {
+        "event_name": "Outdoor Film Meetup",
+        "price": 30,
+        "recipient_id": "S112233"
+      },
+      "description": "Buy a ticket for Outdoor Film Meetup and transfer it to S112233.",
+      "expected_observables": [
+        "exists(\"#tickets-list .card .badge.pri\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M5",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M6",
+      "module_id": "MODULE_GIFT_POOLING",
+      "binding_id": "BIND_K5_GIFT_POOLING",
+      "binding_task_id": "K5-2025-GIFTPOOL",
+      "parameter_values": {
+        "charity_name": "团队礼物基金",
+        "amount": "300",
+        "tax_deductible": false
+      },
+      "description": "Create a gift pool donation entry for the team celebration.",
+      "expected_observables": [
+        "exists(\"#donations-list .card\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "gift_pool_created",
+          "social_commitment_recorded",
+          "social_contribution_completed"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M7",
+      "module_id": "MODULE_RSVP_EVENT",
+      "binding_id": "BIND_K4_RSVP_EVENT",
+      "binding_task_id": "K4-2025-RSVPGROUP",
+      "parameter_values": {
+        "group_name": "Tech Enthusiasts"
+      },
+      "description": "RSVP by joining the Tech Enthusiasts organizer group.",
+      "expected_observables": [
+        "url().includes('/social.local/my-groups.html')",
+        "exists(\"#my-groups-list .badge.ok\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_rsvp_completed",
+          "social_commitment_recorded"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M8",
+      "module_id": "MODULE_ROOMMATE_EXPENSE_SPLIT",
+      "binding_id": "BIND_K2_AA_SPLIT",
+      "binding_task_id": "K2-2025-010",
+      "parameter_values": {
+        "month": "2025-11",
+        "rules": "by_amount"
+      },
+      "description": "Settle shared expenses for November using amount-based split.",
+      "expected_observables": [
+        "url().includes('/social.local/split.html')",
+        "url().includes('month=2025-11')",
+        "exists(\"#month\")",
+        "NOT[url().includes('about:blank')]",
+        "NOT[url().includes('chrome-error://')]"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "shared_expenses_settled"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M9",
+      "module_id": "MODULE_EVENT_TICKETS",
+      "binding_id": "BIND_J3_EVENT_TICKETS",
+      "binding_task_id": "J3-2025-TICKETS",
+      "parameter_values": {
+        "event_name": "Outdoor Film Meetup",
+        "price": 30,
+        "recipient_id": "S112233"
+      },
+      "description": "Buy a ticket for Outdoor Film Meetup and transfer it to S112233.",
+      "expected_observables": [
+        "exists(\"#tickets-list .card .badge.pri\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "event_ticket_booked"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-SOCIAL-0146-M10",
+      "module_id": "MODULE_EMAIL_CALENDAR",
+      "binding_id": "BIND_Z4_EMAIL_CALENDAR",
+      "binding_task_id": "Z4-2025-EMAIL",
+      "parameter_values": {
+        "email_subject": "项目启动会邀请"
+      },
+      "description": "Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.",
+      "expected_observables": [
+        "exists(\"#event-list .card:has-text('Client Kickoff')\")"
+      ],
+      "instantiated_effects": {
+        "adds": [
+          "calendar_event_synced"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "event_rsvp_completed",
+      "social_commitment_recorded",
+      "social_contribution_completed",
+      "shared_expenses_settled",
+      "event_ticket_booked",
+      "calendar_event_synced"
+    ],
+    "checkpoint_predicates": [
+      "calendar_event_synced",
+      "donation_completed",
+      "event_rsvp_completed",
+      "event_ticket_booked",
+      "gift_pool_created",
+      "shared_expenses_settled",
+      "social_commitment_recorded",
+      "social_contribution_completed"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

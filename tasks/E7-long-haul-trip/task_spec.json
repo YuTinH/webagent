@@ -1,0 +1,82 @@
+{
+  "task_id": "E7-LONG-HAUL",
+  "family": "E",
+  "goal": "Apply for a Japan visa with passport J24681012, wait for approval, then book the Japan flight from Shenzhen on 2026-05-09.",
+  "inputs": {
+    "destination": "Japan",
+    "passport_number": "E88888888"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "mem('gov.visa_applications.last.status') == 'approved'",
+    "mem('gov.visa_applications.last.destination') == 'Japan'",
+    "mem('travel.flight.last.pnr') includes 'PNR-'",
+    "mem('travel.flight.last.destination') == 'Japan'",
+    "mem('trip_booked') == 'true'",
+    "url().includes('/trip.local/manage.html')"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_e7_1",
+      "name": "cp_e7 checkpoint 1",
+      "assertion": "mem('gov.visa_applications.last.status') == 'approved'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e7_2",
+      "name": "cp_e7 checkpoint 2",
+      "assertion": "mem('gov.visa_applications.last.destination') == 'Japan'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e7_3",
+      "name": "cp_e7 checkpoint 3",
+      "assertion": "mem('travel.flight.last.pnr') includes 'PNR-'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e7_4",
+      "name": "cp_e7 checkpoint 4",
+      "assertion": "mem('travel.flight.last.destination') == 'Japan'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e7_5",
+      "name": "cp_e7 checkpoint 5",
+      "assertion": "mem('trip_booked') == 'true'",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_e7_6",
+      "name": "cp_e7 checkpoint 6",
+      "assertion": "url().includes('/trip.local/manage.html')",
+      "weight": 0.16666666666666666,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "gov.local",
+    "trip.local"
+  ],
+  "module_group": "long_haul_trip",
+  "canonical_task_dir": "E7-long-haul-trip",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

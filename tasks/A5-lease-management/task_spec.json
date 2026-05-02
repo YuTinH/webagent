@@ -1,0 +1,63 @@
+{
+  "task_id": "A5-2025-LEASE",
+  "family": "A",
+  "goal": "Add lease contract CTR-2101 with monthly rent 1200 ending on 2027-06-30.",
+  "inputs": {
+    "lease_id": "CTR-2101",
+    "rent": 1200,
+    "deposit": 3500,
+    "end_date": "2027-06-30"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "json('env','housing.leases.CTR-2101.status') == 'active'",
+    "json('env','housing.leases.CTR-2101.end_date') == '2027-06-30'",
+    "json('env','housing.leases.CTR-2101.rent') == '1200'",
+    "exists(\"#leases-list .lease-card:has-text('Contract #CTR-2101')\")"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "cp_a5_1",
+      "name": "cp_a5 checkpoint 1",
+      "assertion": "json('env','housing.leases.CTR-2101.status') == 'active'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a5_2",
+      "name": "cp_a5 checkpoint 2",
+      "assertion": "json('env','housing.leases.CTR-2101.end_date') == '2027-06-30'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a5_3",
+      "name": "cp_a5 checkpoint 3",
+      "assertion": "json('env','housing.leases.CTR-2101.rent') == '1200'",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    },
+    {
+      "id": "cp_a5_4",
+      "name": "cp_a5 checkpoint 4",
+      "assertion": "exists(\"#leases-list .lease-card:has-text('Contract #CTR-2101')\")",
+      "weight": 0.25,
+      "required": true,
+      "depends_on": [],
+      "when": ""
+    }
+  ],
+  "allowed_domains": [
+    "housing.local"
+  ],
+  "module_group": "lease_contract_registration",
+  "canonical_task_dir": "A5-lease-management",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

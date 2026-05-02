@@ -1,0 +1,244 @@
+{
+  "goal_id": "WFG-NEWCOMER-0017",
+  "composition": {
+    "composition_type": "single_path",
+    "num_semantically_distinct_paths": 1,
+    "distinctness_rule": "Reach the target through the full home, utility, proof, address-alignment, and bank-opening chain rather than through a shorter settlement subset."
+  },
+  "module_nodes": [
+    {
+      "module_id": "MODULE_ADDRESS_CHANGE",
+      "role": "required",
+      "produces": [
+        "address_records_aligned",
+        "mailing_address_current",
+        "permit_readiness_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_ADDRESS_PROOF",
+      "role": "required",
+      "produces": [
+        "address_confirmation_verified",
+        "address_proof_available",
+        "residency_record_verified"
+      ]
+    },
+    {
+      "module_id": "MODULE_BANK_OPENING",
+      "role": "required",
+      "produces": [
+        "bank_account_active",
+        "payment_method_available"
+      ]
+    },
+    {
+      "module_id": "MODULE_FIND_HOME",
+      "role": "required",
+      "produces": [
+        "address_known",
+        "housing_secured",
+        "lease_active"
+      ]
+    },
+    {
+      "module_id": "MODULE_UTILITY_SETUP",
+      "role": "required",
+      "produces": [
+        "address_confirmation_verified",
+        "electricity_active",
+        "residency_record_verified",
+        "utilities_active"
+      ]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "MODULE_ADDRESS_CHANGE",
+      "to": "MODULE_BANK_OPENING",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_ADDRESS_PROOF",
+      "to": "MODULE_ADDRESS_CHANGE",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_FIND_HOME",
+      "to": "MODULE_UTILITY_SETUP",
+      "kind": "hard"
+    },
+    {
+      "from": "MODULE_UTILITY_SETUP",
+      "to": "MODULE_ADDRESS_PROOF",
+      "kind": "hard"
+    }
+  ],
+  "success_paths": [
+    {
+      "path_id": "path_home_utility_proof_change_bank",
+      "required_modules": [
+        "MODULE_FIND_HOME",
+        "MODULE_UTILITY_SETUP",
+        "MODULE_ADDRESS_PROOF",
+        "MODULE_ADDRESS_CHANGE",
+        "MODULE_BANK_OPENING"
+      ],
+      "optional_modules": [],
+      "reference_invocation_ids": [
+        "WFG-NEWCOMER-0017-M1",
+        "WFG-NEWCOMER-0017-M2",
+        "WFG-NEWCOMER-0017-M3",
+        "WFG-NEWCOMER-0017-M4",
+        "WFG-NEWCOMER-0017-M5"
+      ],
+      "terminal_predicates": [
+        "lease_active",
+        "utilities_active",
+        "address_proof_available",
+        "mailing_address_current",
+        "bank_account_active"
+      ]
+    }
+  ],
+  "reference_invocations": [
+    {
+      "invocation_id": "WFG-NEWCOMER-0017-M1",
+      "module_id": "MODULE_FIND_HOME",
+      "binding_id": "BIND_A1_FIND_HOME",
+      "binding_task_id": "A1-2025-HOME",
+      "parameter_values": {
+        "propertyId": "PROP-428",
+        "leaseTerm": "12"
+      },
+      "description": "Find and rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $21200/month, then pick the largest area. Set lease term to 12 months and then apply.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_known",
+          "housing_secured",
+          "lease_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0017-M2",
+      "module_id": "MODULE_UTILITY_SETUP",
+      "binding_id": "BIND_A3_UTILITY_SETUP",
+      "binding_task_id": "A3-2025-UTIL",
+      "parameter_values": {
+        "address": "123 Main St, Springfield",
+        "services": [
+          "electricity",
+          "water",
+          "broadband"
+        ],
+        "plans": {
+          "electricity": "standard",
+          "water": "standard",
+          "broadband": "postpaid-auto"
+        }
+      },
+      "description": "Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "electricity_active",
+          "residency_record_verified",
+          "utilities_active"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0017-M3",
+      "module_id": "MODULE_ADDRESS_PROOF",
+      "binding_id": "BIND_A6_ADDRESS_PROOF",
+      "binding_task_id": "A6-2025-PROOF",
+      "parameter_values": {
+        "docType": "utility_bill",
+        "fileName": "tenancy_record.pdf"
+      },
+      "description": "Upload a utility bill named tenancy_record.pdf as address proof.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_confirmation_verified",
+          "address_proof_available",
+          "residency_record_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0017-M4",
+      "module_id": "MODULE_ADDRESS_CHANGE",
+      "binding_id": "BIND_H1_ADDRESS_CHANGE",
+      "binding_task_id": "H1-2025-ADDRCHANGE",
+      "parameter_values": {
+        "new_address": "123 Main St, Springfield",
+        "zip_code": "94107",
+        "proof_document": "tenancy_record.pdf"
+      },
+      "description": "Submit an address change to 123 Main St, Springfield with zip code 94107.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "address_records_aligned",
+          "mailing_address_current",
+          "permit_readiness_verified"
+        ],
+        "removes": []
+      }
+    },
+    {
+      "invocation_id": "WFG-NEWCOMER-0017-M5",
+      "module_id": "MODULE_BANK_OPENING",
+      "binding_id": "BIND_A2_BANK_OPENING",
+      "binding_task_id": "A2-2025-BANK-OPEN",
+      "parameter_values": {
+        "fullname": "Alex Chen",
+        "phone": "555-0102",
+        "address": "123 Main St, Springfield"
+      },
+      "description": "Open a new bank account and enable 2FA before finishing.",
+      "expected_observables": [],
+      "instantiated_effects": {
+        "adds": [
+          "bank_account_active",
+          "payment_method_available"
+        ],
+        "removes": []
+      }
+    }
+  ],
+  "evaluation": {
+    "final_success": [
+      "lease_active",
+      "utilities_active",
+      "address_proof_available",
+      "mailing_address_current",
+      "bank_account_active"
+    ],
+    "checkpoint_predicates": [
+      "address_confirmation_verified",
+      "address_known",
+      "address_proof_available",
+      "address_records_aligned",
+      "bank_account_active",
+      "electricity_active",
+      "housing_secured",
+      "lease_active",
+      "mailing_address_current",
+      "payment_method_available",
+      "permit_readiness_verified",
+      "residency_record_verified",
+      "utilities_active"
+    ],
+    "unnecessary_module_penalty": 0.2,
+    "invalid_transition_penalty": 1.25,
+    "recovery_bonus": 0.0
+  }
+}

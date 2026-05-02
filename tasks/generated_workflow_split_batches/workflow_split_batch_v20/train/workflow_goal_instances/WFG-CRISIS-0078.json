@@ -1,0 +1,41 @@
+{
+  "goal_id": "WFG-CRISIS-0078",
+  "theme": "crisis",
+  "difficulty": 7,
+  "instruction": "Close the illness-side replacement route by logging the intake first, restoring access, requesting the replacement card, reviewing the balance, and ending with a transaction dispute filed.",
+  "visible_constraints": {
+    "deadline_days": 1,
+    "preferred_outcomes": [
+      "illness_report_submitted",
+      "crisis_intake_completed",
+      "password_reset_completed",
+      "replacement_card_requested",
+      "account_balance_reviewed",
+      "transaction_dispute_submitted"
+    ]
+  },
+  "initial_world_state": [
+    "bank_account_active"
+  ],
+  "target_state": [
+    "illness_report_submitted",
+    "crisis_intake_completed",
+    "password_reset_completed",
+    "replacement_card_requested",
+    "account_balance_reviewed",
+    "transaction_dispute_submitted"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        1,
+        2
+      ]
+    }
+  ],
+  "max_steps": 65,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_CRISIS_ILLNESS_CONTAINMENT_ROUTE; illness-side replacement workflows should continue from card replacement into balance review and dispute handling."
+}

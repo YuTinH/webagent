@@ -1,0 +1,1578 @@
+# Instruction Catalog By Task
+
+Total tasks: 72
+
+## A1-find-home
+- unique instructions: 30
+- requirement ids present in sampled flows: 15
+- examples:
+  - [newcomer] goal=cheapest|budget=none|term=6: Complete the following task: find and rent the cheapest one-bedroom apartment in the city center. Sort by lowest price first. Choose 6 months as the lease term if prompted.
+  - [newcomer] goal=most_expensive|budget=none|term=6: Rent the most expensive house in the suburban area. First order the listings by highest price first. Choose 6 months as the lease term if prompted.
+  - [newcomer] goal=largest_area_under_budget|budget=3000|term=6: Please rent the largest-area studio apartment in the central city area. Use a budget limit of $3000/month and choose the listing with the most square meters. Choose 6 months as the lease term if prompted.
+- branches:
+  - goal=best_rated_under_budget|budget=2200|term=12 (3)
+    - Find and rent the best-rated family house in the suburban area. Only consider listings up to $2200/month, then pick the best review rating. Use a 12-month lease term before applying.
+    - Rent the best-rated apartment in the central city area. Then only consider listings up to $2200/month, then pick the best review rating Set lease term to 12 months and then apply.
+    - ... 1 more
+  - goal=best_rated_under_budget|budget=3000|term=12 (1)
+    - Complete the following task: please rent the best-rated studio apartment in the city center. Set a maximum budget of $3000/month and choose the highest-rated listing within budget. Set lease term to 12 months and then apply.
+  - goal=best_rated_under_budget|budget=3000|term=6 (1)
+    - Rent the best-rated one-bedroom apartment in the central city area. Then use a budget cap of $3000/month and select the top-rated option under that cap Use a 6-month lease term before applying.
+  - goal=best_rated_under_budget|budget=3400|term=12 (1)
+    - Please rent the best-rated townhouse in the suburb. Use a budget cap of $3400/month and select the top-rated option under that cap. Choose 12 months as the lease term if prompted.
+  - goal=cheapest|budget=none|term=6 (2)
+    - Complete the following task: find and rent the cheapest one-bedroom apartment in the city center. Sort by lowest price first. Choose 6 months as the lease term if prompted.
+    - Rent the cheapest apartment in the city downtown. Sort by lowest price first. Use a 6-month lease term before applying.
+  - goal=largest_area_under_budget|budget=1800|term=6 (2)
+    - Please rent the largest-area apartment in the city center. Use a budget limit of $1800/month and choose the listing with the most square meters. Set lease term to 6 months and then apply.
+    - Rent the largest-area one-bedroom apartment in the city downtown. Only consider listings at or below $1800/month, then pick the largest area. Choose 6 months as the lease term if prompted.
+  - goal=largest_area_under_budget|budget=2200|term=12 (1)
+    - Complete the following task: rent the largest-area apartment in the city center. Use a budget limit of $2200/month and choose the listing with the most square meters. Set lease term to 12 months and then apply.
+  - goal=largest_area_under_budget|budget=2600|term=12 (1)
+    - Your task is to please rent the largest-area family house in the suburb. Only consider listings at or below $2600/month, then pick the largest area. Use a 12-month lease term before applying.
+  - ... 7 more branches
+
+## A2-bank-opening
+- unique instructions: 6
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] name=Jamie Lee|enable_2fa=0: Open a standard bank account without enabling 2FA.
+  - [newcomer] name=Alex Chen|enable_2fa=1: Complete the following task: open a new bank account and enable 2FA before finishing.
+  - [newcomer] name=Alex Chen|enable_2fa=1: Ensure you open a new bank account and enable 2FA before finishing.
+- branches:
+  - name=Alex Chen|enable_2fa=1 (4)
+    - Complete the following task: open a new bank account and enable 2FA before finishing.
+    - Ensure you open a new bank account and enable 2FA before finishing.
+    - ... 2 more
+  - name=Jamie Lee|enable_2fa=0 (2)
+    - Open a standard bank account without enabling 2FA.
+    - Your task is to open a standard bank account without enabling 2FA.
+
+## A3-utility-setup
+- unique instructions: 3
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] payee=City_Utilities|account=UTIL-9910|amount=320: Connect utilities with City Utilities using account UTIL-9910 and a monthly cap of 320.
+  - [newcomer] payee=City_Utilities|account=UTIL-7788|amount=260: Complete the following task: set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.
+  - [newcomer] payee=City_Utilities|account=UTIL-7788|amount=260: Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.
+- branches:
+  - payee=City_Utilities|account=UTIL-7788|amount=260 (2)
+    - Complete the following task: set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.
+    - Set up utilities with City Utilities using account UTIL-7788 and a monthly cap of 260.
+  - payee=City_Utilities|account=UTIL-9910|amount=320 (1)
+    - Connect utilities with City Utilities using account UTIL-9910 and a monthly cap of 320.
+
+## A4-mobile-plan
+- unique instructions: 10
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] plan_id=starter: Switch your mobile plan to Starter.
+  - [newcomer] plan_id=pro: Upgrade your mobile plan to Pro.
+  - [newcomer] plan_id=starter: Your task is to switch your mobile plan to Starter.
+- branches:
+  - plan_id=pro (4)
+    - Complete the following task: upgrade your mobile plan to Pro.
+    - Ensure you upgrade your mobile plan to Pro.
+    - ... 2 more
+  - plan_id=starter (3)
+    - Ensure you switch your mobile plan to Starter.
+    - Switch your mobile plan to Starter.
+    - ... 1 more
+  - plan_id=unlimited (3)
+    - Ensure you switch your mobile plan to Unlimited.
+    - Switch your mobile plan to Unlimited.
+    - ... 1 more
+
+## A5-lease-management
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] lease=CTR-2101|rent=1200|end=2027-06-30: Your task is to add lease contract CTR-2101 with monthly rent 1200 ending on 2027-06-30.
+  - [newcomer] lease=CTR-5503|rent=980|end=2026-12-31: Ensure you add lease contract CTR-5503 with monthly rent 980 ending on 2026-12-31.
+  - [newcomer] lease=CTR-3402|rent=1450|end=2027-09-15: Add lease contract CTR-3402 with monthly rent 1450 ending on 2027-09-15.
+- branches:
+  - lease=CTR-2101|rent=1200|end=2027-06-30 (4)
+    - Add lease contract CTR-2101 with monthly rent 1200 ending on 2027-06-30.
+    - Complete the following task: add lease contract CTR-2101 with monthly rent 1200 ending on 2027-06-30.
+    - ... 2 more
+  - lease=CTR-3402|rent=1450|end=2027-09-15 (4)
+    - Add lease contract CTR-3402 with monthly rent 1450 ending on 2027-09-15.
+    - Complete the following task: add lease contract CTR-3402 with monthly rent 1450 ending on 2027-09-15.
+    - ... 2 more
+  - lease=CTR-5503|rent=980|end=2026-12-31 (4)
+    - Add lease contract CTR-5503 with monthly rent 980 ending on 2026-12-31.
+    - Complete the following task: add lease contract CTR-5503 with monthly rent 980 ending on 2026-12-31.
+    - ... 2 more
+
+## A6-address-proof
+- unique instructions: 11
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] doc=lease_agreement|file=lease_contract_2026.pdf: Upload a lease agreement named lease_contract_2026.pdf as address proof.
+  - [newcomer] doc=utility_bill|file=utility_bill_dec.pdf: Upload a utility bill named utility_bill_dec.pdf as address proof.
+  - [newcomer] doc=bank_statement|file=bank_statement_q1.pdf: Upload a bank statement named bank_statement_q1.pdf as address proof.
+- branches:
+  - doc=bank_statement|file=bank_statement_q1.pdf (4)
+    - Complete the following task: upload a bank statement named bank_statement_q1.pdf as address proof.
+    - Upload a bank statement named bank_statement_q1. Then pdf as address proof.
+    - ... 2 more
+  - doc=lease_agreement|file=lease_contract_2026.pdf (3)
+    - Complete the following task: upload a lease agreement named lease_contract_2026.pdf as address proof.
+    - Upload a lease agreement named lease_contract_2026. Then pdf as address proof.
+    - ... 1 more
+  - doc=utility_bill|file=utility_bill_dec.pdf (4)
+    - Complete the following task: upload a utility bill named utility_bill_dec.pdf as address proof.
+    - Upload a utility bill named utility_bill_dec. Then pdf as address proof.
+    - ... 2 more
+
+## B1-shopping
+- unique instructions: 8
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] option=keyboard|native_requirement_branch: Your task is to purchase a mechanical keyboard.
+  - [newcomer] option=mouse|native_requirement_branch: Complete the following task: purchase a wireless mouse.
+  - [newcomer] option=keyboard|native_requirement_branch: Purchase a mechanical keyboard.
+- branches:
+  - option=keyboard|native_requirement_branch (4)
+    - Complete the following task: purchase a mechanical keyboard.
+    - Ensure you purchase a mechanical keyboard.
+    - ... 2 more
+  - option=mouse|native_requirement_branch (4)
+    - Complete the following task: purchase a wireless mouse.
+    - Ensure you purchase a wireless mouse.
+    - ... 2 more
+
+## B2-fresh-subscription
+- unique instructions: 82
+- requirement ids present in sampled flows: 58
+- examples:
+  - [newcomer] goal=activate_by_date|frequency=monthly|price=129|date=2026-02-14: Complete the following task: create a fresh-food subscription named 'Green Box 14' with monthly delivery, price 129 per delivery, and next delivery date 2026-02-14.
+  - [newcomer] goal=activate_by_date|frequency=monthly|price=169|date=2026-02-07: Your task is to create a fresh-food subscription named 'Wellness Box 07' with monthly delivery, price 169 per delivery, and next delivery date 2026-02-07.
+  - [newcomer] goal=activate_weekly_budget|frequency=weekly|price=119|date=2026-02-14: Subscribe to a weekly fresh-food plan under 120 per delivery. Use plan name 'Family Box 14', set next delivery date to 2026-02-14, and complete activation.
+- branches:
+  - goal=activate_by_date|frequency=bi-weekly|price=119|date=2026-01-24 (1)
+    - Complete the following task: create a fresh-food subscription named 'Family Box 24' with bi-weekly delivery, price 119 per delivery, and next delivery date 2026-01-24.
+  - goal=activate_by_date|frequency=bi-weekly|price=129|date=2026-01-17 (1)
+    - Your task is to create a fresh-food subscription named 'Wellness Box 17' with bi-weekly delivery, price 129 per delivery, and next delivery date 2026-01-17.
+  - goal=activate_by_date|frequency=bi-weekly|price=149|date=2026-02-14 (2)
+    - Create a fresh-food subscription named 'Fresh Box 14' with bi-weekly delivery, price 149 per delivery, and next delivery date 2026-02-14.
+    - Create a fresh-food subscription named 'Wellness Box 14' with bi-weekly delivery, price 149 per delivery, and next delivery date 2026-02-14.
+  - goal=activate_by_date|frequency=bi-weekly|price=169|date=2026-01-10 (1)
+    - Your task is to create a fresh-food subscription named 'Wellness Box 10' with bi-weekly delivery, price 169 per delivery, and next delivery date 2026-01-10.
+  - goal=activate_by_date|frequency=bi-weekly|price=169|date=2026-01-24 (2)
+    - Create a fresh-food subscription named 'Green Box 24' with bi-weekly delivery, price 169 per delivery, and next delivery date 2026-01-24.
+    - Create a fresh-food subscription named 'Wellness Box 24' with bi-weekly delivery, price 169 per delivery, and next delivery date 2026-01-24.
+  - goal=activate_by_date|frequency=bi-weekly|price=169|date=2026-02-14 (1)
+    - Create a fresh-food subscription named 'Wellness Box 14' with bi-weekly delivery, price 169 per delivery, and next delivery date 2026-02-14.
+  - goal=activate_by_date|frequency=bi-weekly|price=189|date=2026-01-24 (1)
+    - Your task is to create a fresh-food subscription named 'Wellness Box 24' with bi-weekly delivery, price 189 per delivery, and next delivery date 2026-01-24.
+  - goal=activate_by_date|frequency=bi-weekly|price=189|date=2026-02-07 (1)
+    - Create a fresh-food subscription named 'Wellness Box 07' with bi-weekly delivery, price 189 per delivery, and next delivery date 2026-02-07.
+  - ... 50 more branches
+
+## B3-housekeeping-booking
+- unique instructions: 10
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] type=regular_cleaning|date=2026-01-15|time=09:00: Book a regular cleaning visit for 2026-01-15 at 09:00.
+  - [newcomer] type=move_out_cleaning|date=2026-01-22|time=15:00: Schedule a move-out cleaning for 2026-01-22 at 15:00.
+  - [newcomer] type=move_out_cleaning|date=2026-01-22|time=15:00: Schedule a move-out cleaning for 2026-01-22 at 15:00.
+- branches:
+  - type=deep_cleaning|date=2026-01-18|time=13:00 (3)
+    - Book a deep cleaning session for 2026-01-18 at 13:00.
+    - Complete the following task: book a deep cleaning session for 2026-01-18 at 13:00.
+    - ... 1 more
+  - type=move_out_cleaning|date=2026-01-22|time=15:00 (4)
+    - Complete the following task: schedule a move-out cleaning for 2026-01-22 at 15:00.
+    - Ensure you schedule a move-out cleaning for 2026-01-22 at 15:00.
+    - ... 2 more
+  - type=regular_cleaning|date=2026-01-15|time=09:00 (3)
+    - Book a regular cleaning visit for 2026-01-15 at 09:00.
+    - Complete the following task: book a regular cleaning visit for 2026-01-15 at 09:00.
+    - ... 1 more
+
+## B4-food-delivery
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] restaurant=RES-001|items=Classic_Burger+Cheese_Deluxe|promo=none: Order Classic Burger and Cheese Deluxe from Burger Kingpin.
+  - [newcomer] restaurant=RES-001|items=Classic_Burger+Fries|promo=SAVE20: Order Classic Burger and Fries from Burger Kingpin using promo code SAVE20.
+  - [newcomer] restaurant=RES-001|items=Classic_Burger+Cheese_Deluxe|promo=none: Your task is to order Classic Burger and Cheese Deluxe from Burger Kingpin.
+- branches:
+  - restaurant=RES-001|items=Classic_Burger+Cheese_Deluxe|promo=none (4)
+    - Complete the following task: order Classic Burger and Cheese Deluxe from Burger Kingpin.
+    - Ensure you order Classic Burger and Cheese Deluxe from Burger Kingpin.
+    - ... 2 more
+  - restaurant=RES-001|items=Classic_Burger+Fries|promo=SAVE20 (4)
+    - Complete the following task: order Classic Burger and Fries from Burger Kingpin using promo code SAVE20.
+    - Ensure you order Classic Burger and Fries from Burger Kingpin using promo code SAVE20.
+    - ... 2 more
+  - restaurant=RES-002|items=Margherita+Garlic_Knots|promo=none (4)
+    - Complete the following task: order Margherita and Garlic Knots from Pizza Palace.
+    - Ensure you order Margherita and Garlic Knots from Pizza Palace.
+    - ... 2 more
+
+## B5-coupon-management
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] code=SAVE20|type=discount|value=20.0|min=100.0: Your task is to add a fixed discount coupon SAVE20 worth 20 off with a minimum spend of 100.
+  - [newcomer] code=WEEKEND15|type=percentage|value=15.0|min=80.0: Add a percentage coupon WEEKEND15 worth 15 percent off with a minimum spend of 80.
+  - [newcomer] code=WEEKEND15|type=percentage|value=15.0|min=80.0: Your task is to add a percentage coupon WEEKEND15 worth 15 percent off with a minimum spend of 80.
+- branches:
+  - code=RESCUE10|type=discount|value=10.0|min=50.0 (4)
+    - Add a fixed discount coupon RESCUE10 worth 10 off with a minimum spend of 50.
+    - Complete the following task: add a fixed discount coupon RESCUE10 worth 10 off with a minimum spend of 50.
+    - ... 2 more
+  - code=SAVE20|type=discount|value=20.0|min=100.0 (4)
+    - Add a fixed discount coupon SAVE20 worth 20 off with a minimum spend of 100.
+    - Complete the following task: add a fixed discount coupon SAVE20 worth 20 off with a minimum spend of 100.
+    - ... 2 more
+  - code=WEEKEND15|type=percentage|value=15.0|min=80.0 (4)
+    - Add a percentage coupon WEEKEND15 worth 15 percent off with a minimum spend of 80.
+    - Complete the following task: add a percentage coupon WEEKEND15 worth 15 percent off with a minimum spend of 80.
+    - ... 2 more
+
+## B5-price-protection
+- unique instructions: 11
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] order=O-10002: Complete the following task: submit a price protection claim for order O-10002.
+  - [daily] order=O-10003: Ensure you submit a price protection claim for order O-10003.
+  - [daily] order=O-10002: Submit a price protection claim for order O-10002.
+- branches:
+  - order=O-10001 (4)
+    - Complete the following task: submit a price protection claim for order O-10001.
+    - Ensure you submit a price protection claim for order O-10001.
+    - ... 2 more
+  - order=O-10002 (3)
+    - Complete the following task: submit a price protection claim for order O-10002.
+    - Ensure you submit a price protection claim for order O-10002.
+    - ... 1 more
+  - order=O-10003 (4)
+    - Complete the following task: submit a price protection claim for order O-10003.
+    - Ensure you submit a price protection claim for order O-10003.
+    - ... 2 more
+
+## B7-second-hand-sale
+- unique instructions: 8
+- requirement ids present in sampled flows: 2
+- examples:
+  - [daily] option=service|native_requirement_branch: Post a professional gig listing.
+  - [daily] option=sell|native_requirement_branch: List a second-hand item for sale.
+  - [daily] option=service|native_requirement_branch: Your task is to post a professional gig listing.
+- branches:
+  - option=sell|native_requirement_branch (4)
+    - Complete the following task: list a second-hand item for sale.
+    - Ensure you list a second-hand item for sale.
+    - ... 2 more
+  - option=service|native_requirement_branch (4)
+    - Complete the following task: post a professional gig listing.
+    - Ensure you post a professional gig listing.
+    - ... 2 more
+
+## C1-logistics-fix
+- unique instructions: 10
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] issue=missing|order=O-98321: Open a logistics ticket for order O-98321 with issue type missing.
+  - [daily] issue=damaged|order=O-98321: Your task is to open a logistics ticket for order O-98321 with issue type damaged.
+  - [daily] issue=delayed|order=O-98321: Open a logistics ticket for order O-98321 with issue type delayed.
+- branches:
+  - issue=damaged|order=O-98321 (3)
+    - Ensure you open a logistics ticket for order O-98321 with issue type damaged.
+    - Open a logistics ticket for order O-98321 with issue type damaged.
+    - ... 1 more
+  - issue=delayed|order=O-98321 (3)
+    - Complete the following task: open a logistics ticket for order O-98321 with issue type delayed.
+    - Ensure you open a logistics ticket for order O-98321 with issue type delayed.
+    - ... 1 more
+  - issue=missing|order=O-98321 (4)
+    - Complete the following task: open a logistics ticket for order O-98321 with issue type missing.
+    - Ensure you open a logistics ticket for order O-98321 with issue type missing.
+    - ... 2 more
+
+## C2-return
+- unique instructions: 2
+- requirement ids present in sampled flows: 1
+- examples:
+  - [daily] order=O-10001|reason=changed_mind: Your task is to submit a return request for order O-10001 because you changed your mind.
+  - [career] order=O-10001|reason=changed_mind: Complete the following task: submit a return request for order O-10001 because you changed your mind.
+- branches:
+  - order=O-10001|reason=changed_mind (2)
+    - Complete the following task: submit a return request for order O-10001 because you changed your mind.
+    - Your task is to submit a return request for order O-10001 because you changed your mind.
+
+## C3-subscription-refund
+- unique instructions: 8
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] sub=SUB-9932|refund=10.0: Complete the following task: request a prorated refund for subscription SUB-9932 because the monthly plan is no longer needed.
+  - [newcomer] sub=SUB-9932|refund=10.0: Complete the following task: request a prorated refund for subscription SUB-9932 because the monthly plan is no longer needed.
+  - [newcomer] sub=SUB-9932|refund=10.0: Ensure you request a prorated refund for subscription SUB-9932 because the monthly plan is no longer needed.
+- branches:
+  - sub=SUB-8821|refund=133.33 (4)
+    - Complete the following task: request a prorated refund for subscription SUB-8821 because the service is no longer needed.
+    - Ensure you request a prorated refund for subscription SUB-8821 because the service is no longer needed.
+    - ... 2 more
+  - sub=SUB-9932|refund=10.0 (4)
+    - Complete the following task: request a prorated refund for subscription SUB-9932 because the monthly plan is no longer needed.
+    - Ensure you request a prorated refund for subscription SUB-9932 because the monthly plan is no longer needed.
+    - ... 2 more
+
+## C4-warranty-claim
+- unique instructions: 3
+- requirement ids present in sampled flows: 2
+- examples:
+  - [daily] serial=WM-88-2025-PL7|order=O-10125: Your task is to submit a warranty claim for serial WM-88-2025-PL7 from order O-10125.
+  - [career] serial=AC-11-2025-ZK2|order=O-10124: Submit a warranty claim for serial AC-11-2025-ZK2 from order O-10124.
+  - [leisure] serial=WM-88-2025-PL7|order=O-10125: Submit a warranty claim for serial WM-88-2025-PL7 from order O-10125.
+- branches:
+  - serial=AC-11-2025-ZK2|order=O-10124 (1)
+    - Submit a warranty claim for serial AC-11-2025-ZK2 from order O-10124.
+  - serial=WM-88-2025-PL7|order=O-10125 (2)
+    - Submit a warranty claim for serial WM-88-2025-PL7 from order O-10125.
+    - Your task is to submit a warranty claim for serial WM-88-2025-PL7 from order O-10125.
+
+## C5-leave-review
+- unique instructions: 1
+- requirement ids present in sampled flows: 1
+- examples:
+  - [leisure] merchant=Northwind_Cafe|rating=4|blacklist=0: Leave a 4-star review for Northwind Cafe without blacklisting the merchant.
+- branches:
+  - merchant=Northwind_Cafe|rating=4|blacklist=0 (1)
+    - Leave a 4-star review for Northwind Cafe without blacklisting the merchant.
+
+## D1-check-balance
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [daily] account_type=total: Open the bank dashboard and check the total balance view.
+  - [daily] account_type=total: Complete the following task: open the bank dashboard and check the total balance view.
+  - [daily] account_type=savings: Ensure you open the bank dashboard and switch to the savings balance view.
+- branches:
+  - account_type=checking (4)
+    - Complete the following task: open the bank dashboard and switch to the checking balance view.
+    - Ensure you open the bank dashboard and switch to the checking balance view.
+    - ... 2 more
+  - account_type=savings (4)
+    - Complete the following task: open the bank dashboard and switch to the savings balance view.
+    - Ensure you open the bank dashboard and switch to the savings balance view.
+    - ... 2 more
+  - account_type=total (4)
+    - Complete the following task: open the bank dashboard and check the total balance view.
+    - Ensure you open the bank dashboard and check the total balance view.
+    - ... 2 more
+
+## D2-budget-report
+- unique instructions: 4
+- requirement ids present in sampled flows: 1
+- examples:
+  - [newcomer] option=tight|native_requirement_branch: Set a tight budget for utilities.
+  - [newcomer] option=tight|native_requirement_branch: Ensure you set a tight budget for utilities.
+  - [daily] option=tight|native_requirement_branch: Ensure you set a tight budget for utilities.
+- branches:
+  - option=tight|native_requirement_branch (4)
+    - Complete the following task: set a tight budget for utilities.
+    - Ensure you set a tight budget for utilities.
+    - ... 2 more
+
+## D3-autopay
+- unique instructions: 16
+- requirement ids present in sampled flows: 6
+- examples:
+  - [daily] payee=Neighborhood_Gas_Co|account=GAS-1188|amount=75: Enable autopay for Neighborhood Gas Co with account GAS-1188 and a monthly limit of 75.
+  - [daily] payee=Electricity_Dept|account=UTIL-2201|amount=180: Enable autopay for Electricity Dept with account UTIL-2201 and a monthly limit of 180.
+  - [daily] payee=City_Water_Board|account=WATER-4408|amount=95: Ensure you enable autopay for City Water Board with account WATER-4408 and a monthly limit of 95.
+- branches:
+  - payee=City_Water_Board|account=WATER-4408|amount=95 (3)
+    - Enable autopay for City Water Board with account WATER-4408 and a monthly limit of 95.
+    - Ensure you enable autopay for City Water Board with account WATER-4408 and a monthly limit of 95.
+    - ... 1 more
+  - payee=Electricity_Dept|account=UTIL-2201|amount=180 (3)
+    - Complete the following task: enable autopay for Electricity Dept with account UTIL-2201 and a monthly limit of 180.
+    - Enable autopay for Electricity Dept with account UTIL-2201 and a monthly limit of 180.
+    - ... 1 more
+  - payee=Electricity_Dept|account=UTIL-6602|amount=260 (3)
+    - Complete the following task: enable autopay for Electricity Dept with account UTIL-6602 and a monthly limit of 260.
+    - Enable autopay for Electricity Dept with account UTIL-6602 and a monthly limit of 260.
+    - ... 1 more
+  - payee=Electricity_Dept|account=UTIL-7710|amount=310 (2)
+    - Complete the following task: enable autopay for Electricity Dept with account UTIL-7710 and a monthly limit of 310.
+    - Enable autopay for Electricity Dept with account UTIL-7710 and a monthly limit of 310.
+  - payee=Neighborhood_Gas_Co|account=GAS-1188|amount=75 (3)
+    - Enable autopay for Neighborhood Gas Co with account GAS-1188 and a monthly limit of 75.
+    - Ensure you enable autopay for Neighborhood Gas Co with account GAS-1188 and a monthly limit of 75.
+    - ... 1 more
+  - payee=Neighborhood_Internet|account=FIBER-9012|amount=120 (2)
+    - Enable autopay for Neighborhood Internet with account FIBER-9012 and a monthly limit of 120.
+    - Your task is to enable autopay for Neighborhood Internet with account FIBER-9012 and a monthly limit of 120.
+
+## D4-card-replacement
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] new_last4=2468: Complete the following task: replace the current card and set the new card digits to 2468.
+  - [daily] new_last4=8888: Replace the current card and set the new card digits to 8888.
+  - [daily] new_last4=7777: Replace the current card and set the new card digits to 7777.
+- branches:
+  - new_last4=2468 (4)
+    - Complete the following task: replace the current card and set the new card digits to 2468.
+    - Ensure you replace the current card and set the new card digits to 2468.
+    - ... 2 more
+  - new_last4=7777 (4)
+    - Complete the following task: replace the current card and set the new card digits to 7777.
+    - Ensure you replace the current card and set the new card digits to 7777.
+    - ... 2 more
+  - new_last4=8888 (4)
+    - Complete the following task: replace the current card and set the new card digits to 8888.
+    - Ensure you replace the current card and set the new card digits to 8888.
+    - ... 2 more
+
+## D5-tax-preparation
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [daily] type=statement|amount=420.0|date=2025-12-15: Upload the tax document Monthly Statement as a statement for 420.0 dated 2025-12-15.
+  - [daily] type=statement|amount=420.0|date=2025-12-15: Upload the tax document Monthly Statement as a statement for 420. Then 0 dated 2025-12-15.
+  - [daily] type=statement|amount=420.0|date=2025-12-15: Upload the tax document Monthly Statement as a statement for 420. Then 0 dated 2025-12-15.
+- branches:
+  - type=invoice|amount=150.0|date=2025-12-01 (4)
+    - Complete the following task: upload the tax document Office Supply Invoice as an invoice for 150.0 dated 2025-12-01.
+    - Upload the tax document Office Supply Invoice as an invoice for 150. Then 0 dated 2025-12-01.
+    - ... 2 more
+  - type=receipt|amount=88.5|date=2025-12-03 (4)
+    - Complete the following task: upload the tax document Client Dinner Receipt as a receipt for 88.5 dated 2025-12-03.
+    - Upload the tax document Client Dinner Receipt as a receipt for 88. Then 5 dated 2025-12-03.
+    - ... 2 more
+  - type=statement|amount=420.0|date=2025-12-15 (4)
+    - Complete the following task: upload the tax document Monthly Statement as a statement for 420.0 dated 2025-12-15.
+    - Upload the tax document Monthly Statement as a statement for 420. Then 0 dated 2025-12-15.
+    - ... 2 more
+
+## D6-investment-account
+- unique instructions: 11
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] name=Income_Builder|type=funds|deposit=1500.0: Open an Income Builder investment account of type funds with an initial deposit of 1500.
+  - [daily] name=Growth_Portfolio|type=stocks|deposit=1000.0: Ensure you open a Growth Portfolio investment account of type stocks with an initial deposit of 1000.
+  - [daily] name=Retirement_Shield|type=retirement|deposit=2000.0: Open a Retirement Shield investment account of type retirement with an initial deposit of 2000.
+- branches:
+  - name=Growth_Portfolio|type=stocks|deposit=1000.0 (4)
+    - Complete the following task: open a Growth Portfolio investment account of type stocks with an initial deposit of 1000.
+    - Ensure you open a Growth Portfolio investment account of type stocks with an initial deposit of 1000.
+    - ... 2 more
+  - name=Income_Builder|type=funds|deposit=1500.0 (4)
+    - Complete the following task: open an Income Builder investment account of type funds with an initial deposit of 1500.
+    - Ensure you open an Income Builder investment account of type funds with an initial deposit of 1500.
+    - ... 2 more
+  - name=Retirement_Shield|type=retirement|deposit=2000.0 (3)
+    - Complete the following task: open a Retirement Shield investment account of type retirement with an initial deposit of 2000.
+    - Open a Retirement Shield investment account of type retirement with an initial deposit of 2000.
+    - ... 1 more
+
+## E1-commute-route
+- unique instructions: 4
+- requirement ids present in sampled flows: 1
+- examples:
+  - [newcomer] option=check|native_requirement_branch: Complete the following task: check your daily commute route and cost.
+  - [newcomer] option=check|native_requirement_branch: Check your daily commute route and cost.
+  - [newcomer] option=check|native_requirement_branch: Check your daily commute route and cost.
+- branches:
+  - option=check|native_requirement_branch (4)
+    - Check your daily commute route and cost.
+    - Complete the following task: check your daily commute route and cost.
+    - ... 2 more
+
+## E2-transport-topup
+- unique instructions: 16
+- requirement ids present in sampled flows: 6
+- examples:
+  - [daily] mode=auto_recharge|threshold=15|amount=80: Your task is to enable auto recharge when balance drops below 15 and reload 80 each time.
+  - [daily] mode=topup|amount=30: Top up the transport card by 30.
+  - [daily] mode=topup|amount=200: Ensure you top up the transport card by 200.
+- branches:
+  - mode=auto_recharge|threshold=10|amount=60 (4)
+    - Complete the following task: enable auto recharge when balance drops below 10 and reload 60 each time.
+    - Enable auto recharge when balance drops below 10 and reload 60 each time.
+    - ... 2 more
+  - mode=auto_recharge|threshold=15|amount=80 (3)
+    - Complete the following task: enable auto recharge when balance drops below 15 and reload 80 each time.
+    - Enable auto recharge when balance drops below 15 and reload 80 each time.
+    - ... 1 more
+  - mode=topup|amount=120 (2)
+    - Complete the following task: top up the transport card by 120.
+    - Top up the transport card by 120.
+  - mode=topup|amount=200 (3)
+    - Ensure you top up the transport card by 200.
+    - Top up the transport card by 200.
+    - ... 1 more
+  - mode=topup|amount=30 (1)
+    - Top up the transport card by 30.
+  - mode=topup|amount=50 (3)
+    - Complete the following task: top up the transport card by 50.
+    - Top up the transport card by 50.
+    - ... 1 more
+
+## E3-airport-transfer
+- unique instructions: 8
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] option=drive|native_requirement_branch: Reserve airport parking for driving.
+  - [newcomer] option=drive|native_requirement_branch: Reserve airport parking for driving.
+  - [daily] option=drive|native_requirement_branch: Reserve airport parking for driving.
+- branches:
+  - option=drive|native_requirement_branch (4)
+    - Complete the following task: reserve airport parking for driving.
+    - Ensure you reserve airport parking for driving.
+    - ... 2 more
+  - option=taxi|native_requirement_branch (4)
+    - Book a taxi for airport transfer.
+    - Complete the following task: book a taxi for airport transfer.
+    - ... 2 more
+
+## E4-visa-requirements
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] destination=France: Your task is to check the visa requirements for France.
+  - [newcomer] destination=Japan: Complete the following task: check the tourist visa requirements for Japan.
+  - [newcomer] destination=Japan: Your task is to check the tourist visa requirements for Japan.
+- branches:
+  - destination=France (4)
+    - Check the visa requirements for France.
+    - Complete the following task: check the visa requirements for France.
+    - ... 2 more
+  - destination=Japan (4)
+    - Check the tourist visa requirements for Japan.
+    - Complete the following task: check the tourist visa requirements for Japan.
+    - ... 2 more
+  - destination=Singapore (4)
+    - Check the visa requirements for Singapore.
+    - Complete the following task: check the visa requirements for Singapore.
+    - ... 2 more
+
+## E5-expense-report
+- unique instructions: 17
+- requirement ids present in sampled flows: 5
+- examples:
+  - [newcomer] report=EXP-7742|total=1520|pnr=PNR-7742: Ensure you submit travel expense report EXP-7742 for 1520 linked to PNR-7742.
+  - [daily] report=EXP-5520|total=480|pnr=PNR-5520: Submit travel expense report EXP-5520 for 480 linked to PNR-5520.
+  - [daily] report=EXP-3344|total=1200|pnr=PNR-0000: Your task is to submit travel expense report EXP-3344 for 1200 linked to PNR-0000.
+- branches:
+  - report=EXP-3344|total=1200|pnr=PNR-0000 (1)
+    - Your task is to submit travel expense report EXP-3344 for 1200 linked to PNR-0000.
+  - report=EXP-5520|total=480|pnr=PNR-5520 (4)
+    - Complete the following task: submit travel expense report EXP-5520 for 480 linked to PNR-5520.
+    - Ensure you submit travel expense report EXP-5520 for 480 linked to PNR-5520.
+    - ... 2 more
+  - report=EXP-6631|total=860|pnr=PNR-6631 (4)
+    - Complete the following task: submit travel expense report EXP-6631 for 860 linked to PNR-6631.
+    - Ensure you submit travel expense report EXP-6631 for 860 linked to PNR-6631.
+    - ... 2 more
+  - report=EXP-7742|total=1520|pnr=PNR-7742 (4)
+    - Complete the following task: submit travel expense report EXP-7742 for 1520 linked to PNR-7742.
+    - Ensure you submit travel expense report EXP-7742 for 1520 linked to PNR-7742.
+    - ... 2 more
+  - report=EXP-8810|total=235|pnr=PNR-8810 (4)
+    - Complete the following task: submit travel expense report EXP-8810 for 235 linked to PNR-8810.
+    - Ensure you submit travel expense report EXP-8810 for 235 linked to PNR-8810.
+    - ... 2 more
+
+## E6-flight-change
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [daily] policy=min-cost|date=2025-01-16: Rebook flight PNR9ZZ with the lowest fare replacement policy for 2025-01-16.
+  - [daily] policy=min-cost|date=2025-01-16: Ensure you rebook flight PNR9ZZ with the lowest fare replacement policy for 2025-01-16.
+  - [daily] policy=min-cost|date=2025-01-16: Your task is to rebook flight PNR9ZZ with the lowest fare replacement policy for 2025-01-16.
+- branches:
+  - policy=flexible-change|date=2025-01-18 (4)
+    - Complete the following task: rebook flight PNR9ZZ with the flexible change policy for 2025-01-18.
+    - Ensure you rebook flight PNR9ZZ with the flexible change policy for 2025-01-18.
+    - ... 2 more
+  - policy=min-cost|date=2025-01-16 (4)
+    - Complete the following task: rebook flight PNR9ZZ with the lowest fare replacement policy for 2025-01-16.
+    - Ensure you rebook flight PNR9ZZ with the lowest fare replacement policy for 2025-01-16.
+    - ... 2 more
+  - policy=morning-priority|date=2025-01-17 (4)
+    - Complete the following task: rebook flight PNR9ZZ with the morning departure priority policy for 2025-01-17.
+    - Ensure you rebook flight PNR9ZZ with the morning departure priority policy for 2025-01-17.
+    - ... 2 more
+
+## E7-long-haul-trip
+- unique instructions: 22
+- requirement ids present in sampled flows: 6
+- examples:
+  - [newcomer] destination=France|date=2026-03-06: Ensure you apply for a France visa with passport F99887766, wait for approval, then book the France flight from Beijing on 2026-03-06.
+  - [newcomer] destination=Japan|date=2026-02-10: Ensure you apply for a Japan visa with passport E12345678, wait for approval, then book the Japan flight from Shanghai on 2026-02-10.
+  - [newcomer] destination=France|date=2026-03-06: Complete the following task: apply for a France visa with passport F99887766, wait for approval, then book the France flight from Beijing on 2026-03-06.
+- branches:
+  - destination=France|date=2026-03-06 (3)
+    - Apply for a France visa with passport F99887766, wait for approval, then book the France flight from Beijing on 2026-03-06.
+    - Complete the following task: apply for a France visa with passport F99887766, wait for approval, then book the France flight from Beijing on 2026-03-06.
+    - ... 1 more
+  - destination=France|date=2026-06-14 (4)
+    - Apply for a France visa with passport F13579135, wait for approval, then book the France flight from Nanjing on 2026-06-14.
+    - Complete the following task: apply for a France visa with passport F13579135, wait for approval, then book the France flight from Nanjing on 2026-06-14.
+    - ... 2 more
+  - destination=Japan|date=2026-02-10 (4)
+    - Apply for a Japan visa with passport E12345678, wait for approval, then book the Japan flight from Shanghai on 2026-02-10.
+    - Complete the following task: apply for a Japan visa with passport E12345678, wait for approval, then book the Japan flight from Shanghai on 2026-02-10.
+    - ... 2 more
+  - destination=Japan|date=2026-05-09 (4)
+    - Apply for a Japan visa with passport J24681012, wait for approval, then book the Japan flight from Shenzhen on 2026-05-09.
+    - Complete the following task: apply for a Japan visa with passport J24681012, wait for approval, then book the Japan flight from Shenzhen on 2026-05-09.
+    - ... 2 more
+  - destination=USA|date=2026-04-12 (3)
+    - Apply for a USA visa with passport U55667788, wait for approval, then book the USA flight from Guangzhou on 2026-04-12.
+    - Complete the following task: apply for a USA visa with passport U55667788, wait for approval, then book the USA flight from Guangzhou on 2026-04-12.
+    - ... 1 more
+  - destination=USA|date=2026-07-20 (4)
+    - Apply for a USA visa with passport U22446688, wait for approval, then book the USA flight from Chengdu on 2026-07-20.
+    - Complete the following task: apply for a USA visa with passport U22446688, wait for approval, then book the USA flight from Chengdu on 2026-07-20.
+    - ... 2 more
+
+## F1-calendar-aggregation
+- unique instructions: 22
+- requirement ids present in sampled flows: 6
+- examples:
+  - [newcomer] title=Visa_Interview|date=2026-01-24|time=08:45|type=personal: Ensure you add a personal event Visa Interview on 2026-01-24 at 08:45.
+  - [newcomer] title=Team_Sync|date=2026-01-15|time=10:00|type=work: Add a work event Team Sync on 2026-01-15 at 10:00.
+  - [newcomer] title=Team_Sync|date=2026-01-15|time=10:00|type=work: Ensure you add a work event Team Sync on 2026-01-15 at 10:00.
+- branches:
+  - title=Budget_Workshop|date=2026-01-27|time=13:30|type=work (3)
+    - Add a work event Budget Workshop on 2026-01-27 at 13:30.
+    - Complete the following task: add a work event Budget Workshop on 2026-01-27 at 13:30.
+    - ... 1 more
+  - title=Dentist_Follow-up|date=2026-01-16|time=15:30|type=personal (3)
+    - Add a personal event Dentist Follow-up on 2026-01-16 at 15:30.
+    - Ensure you add a personal event Dentist Follow-up on 2026-01-16 at 15:30.
+    - ... 1 more
+  - title=Investor_Call|date=2026-01-22|time=16:00|type=work (4)
+    - Add a work event Investor Call on 2026-01-22 at 16:00.
+    - Complete the following task: add a work event Investor Call on 2026-01-22 at 16:00.
+    - ... 2 more
+  - title=Product_Review|date=2026-01-20|time=09:15|type=work (4)
+    - Add a work event Product Review on 2026-01-20 at 09:15.
+    - Complete the following task: add a work event Product Review on 2026-01-20 at 09:15.
+    - ... 2 more
+  - title=Team_Sync|date=2026-01-15|time=10:00|type=work (4)
+    - Add a work event Team Sync on 2026-01-15 at 10:00.
+    - Complete the following task: add a work event Team Sync on 2026-01-15 at 10:00.
+    - ... 2 more
+  - title=Visa_Interview|date=2026-01-24|time=08:45|type=personal (4)
+    - Add a personal event Visa Interview on 2026-01-24 at 08:45.
+    - Complete the following task: add a personal event Visa Interview on 2026-01-24 at 08:45.
+    - ... 2 more
+
+## F2-conference-reg
+- unique instructions: 10
+- requirement ids present in sampled flows: 3
+- examples:
+  - [daily] report=EXP-2201|total=980|pnr=PNR-2201: Submit the conference registration expense report EXP-2201 for 980 linked to PNR-2201.
+  - [daily] report=EXP-4410|total=1420|pnr=PNR-4410: Submit the conference booth and travel expense report EXP-4410 for 1420 linked to PNR-4410.
+  - [daily] report=EXP-4410|total=1420|pnr=PNR-4410: Submit the conference booth and travel expense report EXP-4410 for 1420 linked to PNR-4410.
+- branches:
+  - report=EXP-2201|total=980|pnr=PNR-2201 (4)
+    - Complete the following task: submit the conference registration expense report EXP-2201 for 980 linked to PNR-2201.
+    - Ensure you submit the conference registration expense report EXP-2201 for 980 linked to PNR-2201.
+    - ... 2 more
+  - report=EXP-3302|total=650|pnr=PNR-3302 (2)
+    - Complete the following task: submit the workshop reimbursement expense report EXP-3302 for 650 linked to PNR-3302.
+    - Ensure you submit the workshop reimbursement expense report EXP-3302 for 650 linked to PNR-3302.
+  - report=EXP-4410|total=1420|pnr=PNR-4410 (4)
+    - Complete the following task: submit the conference booth and travel expense report EXP-4410 for 1420 linked to PNR-4410.
+    - Ensure you submit the conference booth and travel expense report EXP-4410 for 1420 linked to PNR-4410.
+    - ... 2 more
+
+## F3-paper-submission
+- unique instructions: 20
+- requirement ids present in sampled flows: 6
+- examples:
+  - [newcomer] title=Stateful_Web_Memory_Agents|journal=NeurIPS_Datasets_and_Benchmarks: Your task is to submit the paper Stateful Web Memory Agents to NeurIPS Datasets and Benchmarks using file stateful_web_memory_agents.pdf.
+  - [newcomer] title=Stateful_Web_Memory_Agents|journal=NeurIPS_Datasets_and_Benchmarks: Complete the following task: submit the paper Stateful Web Memory Agents to NeurIPS Datasets and Benchmarks using file stateful_web_memory_agents.pdf.
+  - [newcomer] title=Counterfactual_Browser_Chains|journal=ICLR_Workshop_on_Interactive_Agents: Submit the paper Counterfactual Browser Chains to the ICLR Workshop on Interactive Agents using file counterfactual_browser_chains.pdf.
+- branches:
+  - title=Branch-Aware_Benchmarking|journal=EMNLP_Findings (4)
+    - Complete the following task: submit the paper Branch-Aware Benchmarking to EMNLP Findings using file branch_aware_benchmarking.pdf.
+    - Submit the paper Branch-Aware Benchmarking to EMNLP Findings using file branch_aware_benchmarking. Then pdf.
+    - ... 2 more
+  - title=Continual_Web_Agents|journal=Nature_Machine_Intelligence (2)
+    - Complete the following task: submit the paper Continual Web Agents to Nature Machine Intelligence using file continual_web_agents.pdf.
+    - Submit the paper Continual Web Agents to Nature Machine Intelligence using file continual_web_agents.pdf.
+  - title=Counterfactual_Browser_Chains|journal=ICLR_Workshop_on_Interactive_Agents (4)
+    - Complete the following task: submit the paper Counterfactual Browser Chains to the ICLR Workshop on Interactive Agents using file counterfactual_browser_chains.pdf.
+    - Submit the paper Counterfactual Browser Chains to the ICLR Workshop on Interactive Agents using file counterfactual_browser_chains. Then pdf.
+    - ... 2 more
+  - title=Memory-Aware_Browser_Benchmark|journal=ACL_Findings (3)
+    - Submit the paper Memory-Aware Browser Benchmark to ACL Findings using file memory_browser_benchmark. Then pdf.
+    - Submit the paper Memory-Aware Browser Benchmark to ACL Findings using file memory_browser_benchmark.pdf.
+    - ... 1 more
+  - title=Persistent_Planning_in_Web_RL|journal=IEEE_Transactions_on_Pattern_Analysis (4)
+    - Complete the following task: submit the paper Persistent Planning in Web RL to IEEE Transactions on Pattern Analysis using file persistent_planning_webrl.pdf.
+    - Submit the paper Persistent Planning in Web RL to IEEE Transactions on Pattern Analysis using file persistent_planning_webrl. Then pdf.
+    - ... 2 more
+  - title=Stateful_Web_Memory_Agents|journal=NeurIPS_Datasets_and_Benchmarks (3)
+    - Complete the following task: submit the paper Stateful Web Memory Agents to NeurIPS Datasets and Benchmarks using file stateful_web_memory_agents.pdf.
+    - Submit the paper Stateful Web Memory Agents to NeurIPS Datasets and Benchmarks using file stateful_web_memory_agents.pdf.
+    - ... 1 more
+
+## F4-email-tracking
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] subject=Budget_Review_Request|sender=finance@example.com: Track the email thread Budget Review Request from finance@example.com.
+  - [newcomer] subject=Project_Kickoff_Follow-up|sender=manager@example.com: Track the email thread Project Kickoff Follow-up from manager@example.com.
+  - [newcomer] subject=Paper_Revision_Notes|sender=editor@example.com: Track the email thread Paper Revision Notes from editor@example.com.
+- branches:
+  - subject=Budget_Review_Request|sender=finance@example.com (4)
+    - Complete the following task: track the email thread Budget Review Request from finance@example.com.
+    - Track the email thread Budget Review Request from finance@example. Then com.
+    - ... 2 more
+  - subject=Paper_Revision_Notes|sender=editor@example.com (4)
+    - Complete the following task: track the email thread Paper Revision Notes from editor@example.com.
+    - Track the email thread Paper Revision Notes from editor@example. Then com.
+    - ... 2 more
+  - subject=Project_Kickoff_Follow-up|sender=manager@example.com (4)
+    - Complete the following task: track the email thread Project Kickoff Follow-up from manager@example.com.
+    - Track the email thread Project Kickoff Follow-up from manager@example. Then com.
+    - ... 2 more
+
+## F5-receipt-archive
+- unique instructions: 16
+- requirement ids present in sampled flows: 6
+- examples:
+  - [newcomer] type=contract|file=insurance_policy.pdf: Archive insurance_policy. Then pdf as a contract.
+  - [daily] type=receipt|file=taxi_invoice_march.pdf: Archive taxi_invoice_march. Then pdf as a receipt.
+  - [daily] type=contract|file=roommate_agreement.pdf: Complete the following task: archive roommate_agreement.pdf as a contract.
+- branches:
+  - type=contract|file=insurance_policy.pdf (2)
+    - Archive insurance_policy. Then pdf as a contract.
+    - Archive insurance_policy.pdf as a contract.
+  - type=contract|file=roommate_agreement.pdf (2)
+    - Archive roommate_agreement.pdf as a contract.
+    - Complete the following task: archive roommate_agreement.pdf as a contract.
+  - type=id_card|file=resident_id_scan.pdf (3)
+    - Archive resident_id_scan. Then pdf as an identity document.
+    - Archive resident_id_scan.pdf as an identity document.
+    - ... 1 more
+  - type=other|file=conference_receipt.pdf (3)
+    - Archive conference_receipt.pdf as a general document.
+    - Complete the following task: archive conference_receipt.pdf as a general document.
+    - ... 1 more
+  - type=receipt|file=taxi_invoice_march.pdf (4)
+    - Archive taxi_invoice_march. Then pdf as a receipt.
+    - Archive taxi_invoice_march.pdf as a receipt.
+    - ... 2 more
+  - type=receipt|file=utility_bill_dec.pdf (2)
+    - Archive utility_bill_dec. Then pdf as a receipt.
+    - Your task is to archive utility_bill_dec.pdf as a receipt.
+
+## G1-doctor-appt
+- unique instructions: 24
+- requirement ids present in sampled flows: 6
+- examples:
+  - [newcomer] appointment=APT-9048|doctor=DR-012: Your task is to book doctor appointment APT-9048 with doctor DR-012 at 2025-12-11T16:45.
+  - [newcomer] appointment=APT-9048|doctor=DR-012: Ensure you book doctor appointment APT-9048 with doctor DR-012 at 2025-12-11T16:45.
+  - [newcomer] appointment=APT-9036|doctor=DR-010: Ensure you book doctor appointment APT-9036 with doctor DR-010 at 2025-12-09T08:30.
+- branches:
+  - appointment=APT-9001|doctor=DR-001 (4)
+    - Book doctor appointment APT-9001 with doctor DR-001 at 2025-12-02T09:00.
+    - Complete the following task: book doctor appointment APT-9001 with doctor DR-001 at 2025-12-02T09:00.
+    - ... 2 more
+  - appointment=APT-9012|doctor=DR-004 (4)
+    - Book doctor appointment APT-9012 with doctor DR-004 at 2025-12-04T14:30.
+    - Complete the following task: book doctor appointment APT-9012 with doctor DR-004 at 2025-12-04T14:30.
+    - ... 2 more
+  - appointment=APT-9024|doctor=DR-007 (4)
+    - Book doctor appointment APT-9024 with doctor DR-007 at 2025-12-06T11:15.
+    - Complete the following task: book doctor appointment APT-9024 with doctor DR-007 at 2025-12-06T11:15.
+    - ... 2 more
+  - appointment=APT-9036|doctor=DR-010 (4)
+    - Book doctor appointment APT-9036 with doctor DR-010 at 2025-12-09T08:30.
+    - Complete the following task: book doctor appointment APT-9036 with doctor DR-010 at 2025-12-09T08:30.
+    - ... 2 more
+  - appointment=APT-9048|doctor=DR-012 (4)
+    - Book doctor appointment APT-9048 with doctor DR-012 at 2025-12-11T16:45.
+    - Complete the following task: book doctor appointment APT-9048 with doctor DR-012 at 2025-12-11T16:45.
+    - ... 2 more
+  - appointment=APT-9060|doctor=DR-015 (4)
+    - Book doctor appointment APT-9060 with doctor DR-015 at 2025-12-14T10:20.
+    - Complete the following task: book doctor appointment APT-9060 with doctor DR-015 at 2025-12-14T10:20.
+    - ... 2 more
+
+## G2-insurance-policy
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [daily] plan=plan-premium-plus|provider=Prime_Shield: Your task is to purchase the Premium Plus Plan from Prime Shield.
+  - [daily] plan=plan-premium-plus|provider=Prime_Shield: Purchase the Premium Plus Plan from Prime Shield.
+  - [daily] plan=plan-premium-plus|provider=Prime_Shield: Your task is to purchase the Premium Plus Plan from Prime Shield.
+- branches:
+  - plan=plan-basic|provider=Nova_Health (4)
+    - Complete the following task: purchase the Basic Care Plan from Nova Health.
+    - Ensure you purchase the Basic Care Plan from Nova Health.
+    - ... 2 more
+  - plan=plan-family-flex|provider=Harbor_Mutual (4)
+    - Complete the following task: purchase the Family Flex Plan from Harbor Mutual.
+    - Ensure you purchase the Family Flex Plan from Harbor Mutual.
+    - ... 2 more
+  - plan=plan-premium-plus|provider=Prime_Shield (4)
+    - Complete the following task: purchase the Premium Plus Plan from Prime Shield.
+    - Ensure you purchase the Premium Plus Plan from Prime Shield.
+    - ... 2 more
+
+## G3-medical-claim
+- unique instructions: 4
+- requirement ids present in sampled flows: 3
+- examples:
+  - [career] claim=CLM-7714|policy=P-9024|amount=320.0: Your task is to submit insurance claim CLM-7714 for appointment APT-9024 under policy P-9024 for 320.
+  - [career] claim=CLM-6602|policy=P-9012|amount=180.0: Submit insurance claim CLM-6602 for appointment APT-9012 under policy P-9012 for 180.
+  - [leisure] claim=CLM-5501|policy=P-9001|amount=250.0: Submit insurance claim CLM-5501 for appointment APT-9001 under policy P-9001 for 250.
+- branches:
+  - claim=CLM-5501|policy=P-9001|amount=250.0 (1)
+    - Submit insurance claim CLM-5501 for appointment APT-9001 under policy P-9001 for 250.
+  - claim=CLM-6602|policy=P-9012|amount=180.0 (2)
+    - Complete the following task: submit insurance claim CLM-6602 for appointment APT-9012 under policy P-9012 for 180.
+    - Submit insurance claim CLM-6602 for appointment APT-9012 under policy P-9012 for 180.
+  - claim=CLM-7714|policy=P-9024|amount=320.0 (1)
+    - Your task is to submit insurance claim CLM-7714 for appointment APT-9024 under policy P-9024 for 320.
+
+## G4-gym-membership
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] rx=RX-2202|med=Ibuprofen_400mg: Refill prescription RX-2202 for Ibuprofen 400mg.
+  - [newcomer] rx=RX-3303|med=Vitamin_D_1000IU: Refill prescription RX-3303 for Vitamin D 1000IU.
+  - [newcomer] rx=RX-3303|med=Vitamin_D_1000IU: Refill prescription RX-3303 for Vitamin D 1000IU.
+- branches:
+  - rx=RX-1001|med=Amoxicillin_250mg (4)
+    - Complete the following task: refill prescription RX-1001 for Amoxicillin 250mg.
+    - Ensure you refill prescription RX-1001 for Amoxicillin 250mg.
+    - ... 2 more
+  - rx=RX-2202|med=Ibuprofen_400mg (4)
+    - Complete the following task: refill prescription RX-2202 for Ibuprofen 400mg.
+    - Ensure you refill prescription RX-2202 for Ibuprofen 400mg.
+    - ... 2 more
+  - rx=RX-3303|med=Vitamin_D_1000IU (4)
+    - Complete the following task: refill prescription RX-3303 for Vitamin D 1000IU.
+    - Ensure you refill prescription RX-3303 for Vitamin D 1000IU.
+    - ... 2 more
+
+## G5-health-plan
+- unique instructions: 8
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] plan_id=premium: Your task is to activate the Premium Health Plan.
+  - [newcomer] plan_id=standard: Complete the following task: activate the Standard Health Plan.
+  - [newcomer] plan_id=premium: Activate the Premium Health Plan.
+- branches:
+  - plan_id=premium (4)
+    - Activate the Premium Health Plan.
+    - Complete the following task: activate the Premium Health Plan.
+    - ... 2 more
+  - plan_id=standard (4)
+    - Activate the Standard Health Plan.
+    - Complete the following task: activate the Standard Health Plan.
+    - ... 2 more
+
+## G6-vaccine-mgmt
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] type=mmr|date=2025-12-19|time=11:00: Ensure you book an MMR vaccine appointment for 2025-12-19 at 11:00.
+  - [newcomer] type=mmr|date=2025-12-19|time=11:00: Book an MMR vaccine appointment for 2025-12-19 at 11:00.
+  - [newcomer] type=mmr|date=2025-12-19|time=11:00: Book an MMR vaccine appointment for 2025-12-19 at 11:00.
+- branches:
+  - type=covid|date=2025-12-18|time=10:00 (4)
+    - Book a COVID-19 booster appointment for 2025-12-18 at 10:00.
+    - Complete the following task: book a COVID-19 booster appointment for 2025-12-18 at 10:00.
+    - ... 2 more
+  - type=flu|date=2025-12-17|time=09:00 (4)
+    - Book a flu vaccine appointment for 2025-12-17 at 09:00.
+    - Complete the following task: book a flu vaccine appointment for 2025-12-17 at 09:00.
+    - ... 2 more
+  - type=mmr|date=2025-12-19|time=11:00 (4)
+    - Book an MMR vaccine appointment for 2025-12-19 at 11:00.
+    - Complete the following task: book an MMR vaccine appointment for 2025-12-19 at 11:00.
+    - ... 2 more
+
+## H1-address-change
+- unique instructions: 11
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] zip=54321|address=88_River_Rd,_Springfield: Complete the following task: submit an address change to 88 River Rd, Springfield with zip code 54321.
+  - [newcomer] zip=10011|address=21_Harbor_Ave,_Springfield: Ensure you submit an address change to 21 Harbor Ave, Springfield with zip code 10011.
+  - [newcomer] zip=54321|address=88_River_Rd,_Springfield: Ensure you submit an address change to 88 River Rd, Springfield with zip code 54321.
+- branches:
+  - zip=10011|address=21_Harbor_Ave,_Springfield (3)
+    - Ensure you submit an address change to 21 Harbor Ave, Springfield with zip code 10011.
+    - Submit an address change to 21 Harbor Ave, Springfield with zip code 10011.
+    - ... 1 more
+  - zip=12345|address=742_Evergreen_Terrace (4)
+    - Complete the following task: submit an address change to 742 Evergreen Terrace with zip code 12345.
+    - Ensure you submit an address change to 742 Evergreen Terrace with zip code 12345.
+    - ... 2 more
+  - zip=54321|address=88_River_Rd,_Springfield (4)
+    - Complete the following task: submit an address change to 88 River Rd, Springfield with zip code 54321.
+    - Ensure you submit an address change to 88 River Rd, Springfield with zip code 54321.
+    - ... 2 more
+
+## H2-vehicle-address-update
+- unique instructions: 9
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] vehicle=V-8821|notify=0|address=88_River_Rd,_Springfield: Ensure you update vehicle V-8821 to 88 River Rd, Springfield without notifying insurance.
+  - [newcomer] vehicle=V-8821|notify=1|address=21_Harbor_Ave,_Springfield: Ensure you update vehicle V-8821 to 21 Harbor Ave, Springfield and notify insurance.
+  - [newcomer] vehicle=V-8821|notify=1|address=742_Evergreen_Terrace: Update vehicle V-8821 to 742 Evergreen Terrace and notify insurance.
+- branches:
+  - vehicle=V-8821|notify=0|address=88_River_Rd,_Springfield (4)
+    - Complete the following task: update vehicle V-8821 to 88 River Rd, Springfield without notifying insurance.
+    - Ensure you update vehicle V-8821 to 88 River Rd, Springfield without notifying insurance.
+    - ... 2 more
+  - vehicle=V-8821|notify=1|address=21_Harbor_Ave,_Springfield (2)
+    - Ensure you update vehicle V-8821 to 21 Harbor Ave, Springfield and notify insurance.
+    - Update vehicle V-8821 to 21 Harbor Ave, Springfield and notify insurance.
+  - vehicle=V-8821|notify=1|address=742_Evergreen_Terrace (3)
+    - Complete the following task: update vehicle V-8821 to 742 Evergreen Terrace and notify insurance.
+    - Update vehicle V-8821 to 742 Evergreen Terrace and notify insurance.
+    - ... 1 more
+
+## H3-permit-renewal
+- unique instructions: 8
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] expiry=2027-03-15|payment=alipay: Ensure you renew permit RP-2024-77 to 2027-03-15 and pay with Alipay.
+  - [newcomer] expiry=2027-03-15|payment=alipay: Your task is to renew permit RP-2024-77 to 2027-03-15 and pay with Alipay.
+  - [newcomer] expiry=2027-03-15|payment=alipay: Complete the following task: renew permit RP-2024-77 to 2027-03-15 and pay with Alipay.
+- branches:
+  - expiry=2026-12-01|payment=card (4)
+    - Complete the following task: renew permit RP-2024-77 to 2026-12-01 and pay by card.
+    - Ensure you renew permit RP-2024-77 to 2026-12-01 and pay by card.
+    - ... 2 more
+  - expiry=2027-03-15|payment=alipay (4)
+    - Complete the following task: renew permit RP-2024-77 to 2027-03-15 and pay with Alipay.
+    - Ensure you renew permit RP-2024-77 to 2027-03-15 and pay with Alipay.
+    - ... 2 more
+
+## H4-parking-permit
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] type=business|plate=B-90888|months=6: Apply for a business parking permit for plate B-90888 for 6 months.
+  - [newcomer] type=residential|plate=C-55021|months=3: Apply for a residential parking permit for plate C-55021 for 3 months.
+  - [newcomer] type=residential|plate=A-12345|months=12: Apply for a residential parking permit for plate A-12345 for 12 months.
+- branches:
+  - type=business|plate=B-90888|months=6 (4)
+    - Apply for a business parking permit for plate B-90888 for 6 months.
+    - Complete the following task: apply for a business parking permit for plate B-90888 for 6 months.
+    - ... 2 more
+  - type=residential|plate=A-12345|months=12 (4)
+    - Apply for a residential parking permit for plate A-12345 for 12 months.
+    - Complete the following task: apply for a residential parking permit for plate A-12345 for 12 months.
+    - ... 2 more
+  - type=residential|plate=C-55021|months=3 (4)
+    - Apply for a residential parking permit for plate C-55021 for 3 months.
+    - Complete the following task: apply for a residential parking permit for plate C-55021 for 3 months.
+    - ... 2 more
+
+## I1-smart-bulb-setup
+- unique instructions: 10
+- requirement ids present in sampled flows: 3
+- examples:
+  - [daily] device=BULB-101|location=Bedroom|color=rgb: Set up smart bulb BULB-101 in the Bedroom using RGB mode.
+  - [daily] device=BULB-101|location=Bedroom|color=rgb: Ensure you set up smart bulb BULB-101 in the Bedroom using RGB mode.
+  - [daily] device=BULB-303|location=Study|color=white: Your task is to set up smart bulb BULB-303 in the Study using white mode.
+- branches:
+  - device=BULB-101|location=Bedroom|color=rgb (3)
+    - Ensure you set up smart bulb BULB-101 in the Bedroom using RGB mode.
+    - Set up smart bulb BULB-101 in the Bedroom using RGB mode.
+    - ... 1 more
+  - device=BULB-202|location=Kitchen|color=warm_white (4)
+    - Complete the following task: set up smart bulb BULB-202 in the Kitchen using warm white mode.
+    - Ensure you set up smart bulb BULB-202 in the Kitchen using warm white mode.
+    - ... 2 more
+  - device=BULB-303|location=Study|color=white (3)
+    - Ensure you set up smart bulb BULB-303 in the Study using white mode.
+    - Set up smart bulb BULB-303 in the Study using white mode.
+    - ... 1 more
+
+## I2-appliance-repair
+- unique instructions: 8
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] option=oven|native_requirement_branch: Ensure you request an oven repair service.
+  - [newcomer] option=car|native_requirement_branch: Complete the following task: request a vehicle repair service.
+  - [newcomer] option=oven|native_requirement_branch: Request an oven repair service.
+- branches:
+  - option=car|native_requirement_branch (4)
+    - Complete the following task: request a vehicle repair service.
+    - Ensure you request a vehicle repair service.
+    - ... 2 more
+  - option=oven|native_requirement_branch (4)
+    - Complete the following task: request an oven repair service.
+    - Ensure you request an oven repair service.
+    - ... 2 more
+
+## I4-smart-meter
+- unique instructions: 20
+- requirement ids present in sampled flows: 6
+- examples:
+  - [daily] reading=11888.40: Complete the following task: submit a smart meter reading of 11888.40 kWh.
+  - [daily] reading=12111.10: Submit a smart meter reading of 12111. Then 10 kWh.
+  - [daily] reading=12111.10: Complete the following task: submit a smart meter reading of 12111.10 kWh.
+- branches:
+  - reading=11888.40 (3)
+    - Complete the following task: submit a smart meter reading of 11888.40 kWh.
+    - Submit a smart meter reading of 11888.40 kWh.
+    - ... 1 more
+  - reading=12111.10 (4)
+    - Complete the following task: submit a smart meter reading of 12111.10 kWh.
+    - Submit a smart meter reading of 12111. Then 10 kWh.
+    - ... 2 more
+  - reading=12500.50 (4)
+    - Complete the following task: submit a smart meter reading of 12500.50 kWh.
+    - Submit a smart meter reading of 12500. Then 50 kWh.
+    - ... 2 more
+  - reading=12765.35 (4)
+    - Complete the following task: submit a smart meter reading of 12765.35 kWh.
+    - Submit a smart meter reading of 12765. Then 35 kWh.
+    - ... 2 more
+  - reading=13020.75 (3)
+    - Submit a smart meter reading of 13020. Then 75 kWh.
+    - Submit a smart meter reading of 13020.75 kWh.
+    - ... 1 more
+  - reading=13333.90 (2)
+    - Submit a smart meter reading of 13333. Then 90 kWh.
+    - Submit a smart meter reading of 13333.90 kWh.
+
+## I5-energy-optimize
+- unique instructions: 8
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] option=green|native_requirement_branch: Ensure you switch to an eco-friendly energy plan.
+  - [daily] option=green|native_requirement_branch: Switch to an eco-friendly energy plan.
+  - [daily] option=premium|native_requirement_branch: Switch to an all-day premium energy plan.
+- branches:
+  - option=green|native_requirement_branch (4)
+    - Complete the following task: switch to an eco-friendly energy plan.
+    - Ensure you switch to an eco-friendly energy plan.
+    - ... 2 more
+  - option=premium|native_requirement_branch (4)
+    - Complete the following task: switch to an all-day premium energy plan.
+    - Ensure you switch to an all-day premium energy plan.
+    - ... 2 more
+
+## J1-course-enroll
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] course=ML202: Ensure you enroll in course ML202.
+  - [newcomer] course=DL101: Enroll in course DL101.
+  - [newcomer] course=ML202: Enroll in course ML202.
+- branches:
+  - course=ART205 (4)
+    - Complete the following task: enroll in course ART205.
+    - Enroll in course ART205.
+    - ... 2 more
+  - course=DL101 (4)
+    - Complete the following task: enroll in course DL101.
+    - Enroll in course DL101.
+    - ... 2 more
+  - course=ML202 (4)
+    - Complete the following task: enroll in course ML202.
+    - Enroll in course ML202.
+    - ... 2 more
+
+## J2-library-service
+- unique instructions: 11
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] student=S123456|book=智能体的崛起|pickup=2026-03-15: Complete the following task: apply for a library card for 张三 and reserve 智能体的崛起 for pickup on 2026-03-15.
+  - [newcomer] student=S654321|book=Web_Automation_Patterns|pickup=2026-03-18: Ensure you apply for a library card for 李四 and reserve Web Automation Patterns for pickup on 2026-03-18.
+  - [newcomer] student=S123456|book=智能体的崛起|pickup=2026-03-15: Apply for a library card for 张三 and reserve 智能体的崛起 for pickup on 2026-03-15.
+- branches:
+  - student=S123456|book=智能体的崛起|pickup=2026-03-15 (3)
+    - Apply for a library card for 张三 and reserve 智能体的崛起 for pickup on 2026-03-15.
+    - Complete the following task: apply for a library card for 张三 and reserve 智能体的崛起 for pickup on 2026-03-15.
+    - ... 1 more
+  - student=S654321|book=Web_Automation_Patterns|pickup=2026-03-18 (4)
+    - Apply for a library card for 李四 and reserve Web Automation Patterns for pickup on 2026-03-18.
+    - Complete the following task: apply for a library card for 李四 and reserve Web Automation Patterns for pickup on 2026-03-18.
+    - ... 2 more
+  - student=S888999|book=Playwright_in_Practice|pickup=2026-03-20 (4)
+    - Apply for a library card for 王五 and reserve Playwright in Practice for pickup on 2026-03-20.
+    - Complete the following task: apply for a library card for 王五 and reserve Playwright in Practice for pickup on 2026-03-20.
+    - ... 2 more
+
+## J3-event-tickets
+- unique instructions: 15
+- requirement ids present in sampled flows: 5
+- examples:
+  - [daily] event=Outdoor_Film_Meetup|status=refunded: Buy a ticket for Outdoor Film Meetup and then refund it.
+  - [daily] event=Open_Lecture_Night|status=refunded: Buy a ticket for Open Lecture Night and then refund it.
+  - [daily] event=Outdoor_Film_Meetup|status=transferred: Your task is to buy a ticket for Outdoor Film Meetup and transfer it to S112233.
+- branches:
+  - event=Campus_Music_Fest|status=refunded (1)
+    - Buy a ticket for Campus Music Fest and then refund it.
+  - event=Campus_Music_Fest|status=transferred (4)
+    - Buy a ticket for Campus Music Fest and transfer it to S987654.
+    - Complete the following task: buy a ticket for Campus Music Fest and transfer it to S987654.
+    - ... 2 more
+  - event=Open_Lecture_Night|status=refunded (4)
+    - Buy a ticket for Open Lecture Night and then refund it.
+    - Complete the following task: buy a ticket for Open Lecture Night and then refund it.
+    - ... 2 more
+  - event=Outdoor_Film_Meetup|status=refunded (3)
+    - Buy a ticket for Outdoor Film Meetup and then refund it.
+    - Complete the following task: buy a ticket for Outdoor Film Meetup and then refund it.
+    - ... 1 more
+  - event=Outdoor_Film_Meetup|status=transferred (3)
+    - Buy a ticket for Outdoor Film Meetup and transfer it to S112233.
+    - Ensure you buy a ticket for Outdoor Film Meetup and transfer it to S112233.
+    - ... 1 more
+
+## J4-gear-rental
+- unique instructions: 17
+- requirement ids present in sampled flows: 6
+- examples:
+  - [daily] name=Trail_Backpack|price=22: List Trail Backpack as rental gear for 22 per day.
+  - [daily] name=Climbing_Helmet|price=12: Complete the following task: list Climbing Helmet as rental gear for 12 per day.
+  - [daily] name=Snow_Goggles|price=16: List Snow Goggles as rental gear for 16 per day.
+- branches:
+  - name=Camping_Tent|price=28 (3)
+    - Complete the following task: list Camping Tent as rental gear for 28 per day.
+    - Ensure you list Camping Tent as rental gear for 28 per day.
+    - ... 1 more
+  - name=Climbing_Helmet|price=12 (2)
+    - Complete the following task: list Climbing Helmet as rental gear for 12 per day.
+    - List Climbing Helmet as rental gear for 12 per day.
+  - name=Kayak_Paddle|price=18 (3)
+    - Complete the following task: list Kayak Paddle as rental gear for 18 per day.
+    - List Kayak Paddle as rental gear for 18 per day.
+    - ... 1 more
+  - name=Mountain_Bike|price=35 (3)
+    - Ensure you list Mountain Bike as rental gear for 35 per day.
+    - List Mountain Bike as rental gear for 35 per day.
+    - ... 1 more
+  - name=Snow_Goggles|price=16 (2)
+    - Complete the following task: list Snow Goggles as rental gear for 16 per day.
+    - List Snow Goggles as rental gear for 16 per day.
+  - name=Trail_Backpack|price=22 (4)
+    - Complete the following task: list Trail Backpack as rental gear for 22 per day.
+    - Ensure you list Trail Backpack as rental gear for 22 per day.
+    - ... 2 more
+
+## J5-skill-certification
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] certificate=Certified_Operations_Specialist: Complete the following task: apply for the Certified Operations Specialist certification.
+  - [newcomer] certificate=Certified_Python_Expert: Apply for the Certified Python Expert certification.
+  - [newcomer] certificate=Certified_Operations_Specialist: Apply for the Certified Operations Specialist certification.
+- branches:
+  - certificate=Certified_Data_Analyst (4)
+    - Apply for the Certified Data Analyst certification.
+    - Complete the following task: apply for the Certified Data Analyst certification.
+    - ... 2 more
+  - certificate=Certified_Operations_Specialist (4)
+    - Apply for the Certified Operations Specialist certification.
+    - Complete the following task: apply for the Certified Operations Specialist certification.
+    - ... 2 more
+  - certificate=Certified_Python_Expert (4)
+    - Apply for the Certified Python Expert certification.
+    - Complete the following task: apply for the Certified Python Expert certification.
+    - ... 2 more
+
+## K1-plan-party
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] group=GRP-002: Join the Tech Enthusiasts group.
+  - [newcomer] group=GRP-001: Join the Springfield Neighborhood group.
+  - [newcomer] group=GRP-003: Join the Local Foodies group.
+- branches:
+  - group=GRP-001 (4)
+    - Complete the following task: join the Springfield Neighborhood group.
+    - Ensure you join the Springfield Neighborhood group.
+    - ... 2 more
+  - group=GRP-002 (4)
+    - Complete the following task: join the Tech Enthusiasts group.
+    - Ensure you join the Tech Enthusiasts group.
+    - ... 2 more
+  - group=GRP-003 (4)
+    - Complete the following task: join the Local Foodies group.
+    - Ensure you join the Local Foodies group.
+    - ... 2 more
+
+## K2-roommate-split
+- unique instructions: 18
+- requirement ids present in sampled flows: 6
+- examples:
+  - [newcomer] month=2025-10|rules=equal: Ensure you settle roommate expenses for 2025-10 using equal split.
+  - [newcomer] month=2025-12|rules=by_percentage: Settle roommate expenses for 2025-12 using split by percentage.
+  - [newcomer] month=2025-11|rules=by_amount: Your task is to settle roommate expenses for 2025-11 using split by amount.
+- branches:
+  - month=2025-10|rules=by_amount (1)
+    - Settle roommate expenses for 2025-10 using split by amount.
+  - month=2025-10|rules=equal (3)
+    - Ensure you settle roommate expenses for 2025-10 using equal split.
+    - Settle roommate expenses for 2025-10 using equal split.
+    - ... 1 more
+  - month=2025-11|rules=by_amount (3)
+    - Ensure you settle roommate expenses for 2025-11 using split by amount.
+    - Settle roommate expenses for 2025-11 using split by amount.
+    - ... 1 more
+  - month=2025-11|rules=equal (4)
+    - Complete the following task: settle roommate expenses for 2025-11 using equal split.
+    - Ensure you settle roommate expenses for 2025-11 using equal split.
+    - ... 2 more
+  - month=2025-12|rules=by_percentage (4)
+    - Complete the following task: settle roommate expenses for 2025-12 using split by percentage.
+    - Ensure you settle roommate expenses for 2025-12 using split by percentage.
+    - ... 2 more
+  - month=2025-12|rules=equal (3)
+    - Complete the following task: settle roommate expenses for 2025-12 using equal split.
+    - Settle roommate expenses for 2025-12 using equal split.
+    - ... 1 more
+
+## K3-charity-donation
+- unique instructions: 11
+- requirement ids present in sampled flows: 3
+- examples:
+  - [daily] charity=爱心午餐|amount=50.0|tax=0: Donate 50 to 爱心午餐 without requesting a tax-deductible receipt.
+  - [daily] charity=爱心午餐|amount=50.0|tax=0: Complete the following task: donate 50 to 爱心午餐 without requesting a tax-deductible receipt.
+  - [daily] charity=社区基金|amount=200.0|tax=1: Donate 200 to 社区基金 and request a tax-deductible receipt.
+- branches:
+  - charity=希望工程|amount=100.0|tax=1 (4)
+    - Complete the following task: donate 100 to 希望工程 and request a tax-deductible receipt.
+    - Donate 100 to 希望工程 and request a tax-deductible receipt.
+    - ... 2 more
+  - charity=爱心午餐|amount=50.0|tax=0 (4)
+    - Complete the following task: donate 50 to 爱心午餐 without requesting a tax-deductible receipt.
+    - Donate 50 to 爱心午餐 without requesting a tax-deductible receipt.
+    - ... 2 more
+  - charity=社区基金|amount=200.0|tax=1 (3)
+    - Complete the following task: donate 200 to 社区基金 and request a tax-deductible receipt.
+    - Donate 200 to 社区基金 and request a tax-deductible receipt.
+    - ... 1 more
+
+## L1-password-manager
+- unique instructions: 20
+- requirement ids present in sampled flows: 6
+- examples:
+  - [newcomer] site=Notion|user=workspace.bot_at_example.com: Your task is to add a password manager entry for Notion using username workspace.bot@example.com.
+  - [newcomer] site=AWS Billing|user=infra-finance_at_example.com: Add a password manager entry for AWS Billing using username infra-finance@example.com.
+  - [newcomer] site=Notion|user=workspace.bot_at_example.com: Add a password manager entry for Notion using username workspace.bot@example.com.
+- branches:
+  - site=AWS Billing|user=infra-finance_at_example.com (4)
+    - Add a password manager entry for AWS Billing using username infra-finance@example. Then com.
+    - Add a password manager entry for AWS Billing using username infra-finance@example.com.
+    - ... 2 more
+  - site=Anthropic Console|user=api.ops_at_example.com (3)
+    - Add a password manager entry for Anthropic Console using username api.ops@example.com.
+    - Complete the following task: add a password manager entry for Anthropic Console using username api.ops@example.com.
+    - ... 1 more
+  - site=GitHub|user=masteryth_at_example.com (3)
+    - Add a password manager entry for GitHub using username masteryth@example. Then com.
+    - Add a password manager entry for GitHub using username masteryth@example.com.
+    - ... 1 more
+  - site=Notion|user=workspace.bot_at_example.com (4)
+    - Add a password manager entry for Notion using username workspace. Then bot@example com.
+    - Add a password manager entry for Notion using username workspace.bot@example.com.
+    - ... 2 more
+  - site=OpenRouter|user=lab-eval_at_example.com (3)
+    - Add a password manager entry for OpenRouter using username lab-eval@example. Then com.
+    - Add a password manager entry for OpenRouter using username lab-eval@example.com.
+    - ... 1 more
+  - site=Overleaf|user=paper.drafts_at_example.com (3)
+    - Add a password manager entry for Overleaf using username paper. Then drafts@example com.
+    - Add a password manager entry for Overleaf using username paper.drafts@example.com.
+    - ... 1 more
+
+## L2-data-deletion
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] type=export|platform=Facebook: Submit an export request to Facebook covering posts, photos, and messages.
+  - [newcomer] type=deletion|platform=Discord: Submit a deletion request to Discord covering messages and the account profile.
+  - [newcomer] type=deletion|platform=Discord: Your task is to submit a deletion request to Discord covering messages and the account profile.
+- branches:
+  - type=deletion|platform=Discord (4)
+    - Complete the following task: submit a deletion request to Discord covering messages and the account profile.
+    - Ensure you submit a deletion request to Discord covering messages and the account profile.
+    - ... 2 more
+  - type=deletion|platform=Google (4)
+    - Complete the following task: submit a deletion request to Google covering search history and location history.
+    - Ensure you submit a deletion request to Google covering search history and location history.
+    - ... 2 more
+  - type=export|platform=Facebook (4)
+    - Complete the following task: submit an export request to Facebook covering posts, photos, and messages.
+    - Ensure you submit an export request to Facebook covering posts, photos, and messages.
+    - ... 2 more
+
+## L3-security-audit
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] providers=cloud-dev|method=api-only: Rotate credentials for Cloud Storage and Dev Platform using API-only rotation.
+  - [newcomer] providers=cloud-dev|method=api-only: Ensure you rotate credentials for Cloud Storage and Dev Platform using API-only rotation.
+  - [newcomer] providers=cloud-dev|method=api-only: Your task is to rotate credentials for Cloud Storage and Dev Platform using API-only rotation.
+- branches:
+  - providers=cloud-dev|method=api-only (4)
+    - Complete the following task: rotate credentials for Cloud Storage and Dev Platform using API-only rotation.
+    - Ensure you rotate credentials for Cloud Storage and Dev Platform using API-only rotation.
+    - ... 2 more
+  - providers=mail-cloud|method=mfa+api (4)
+    - Complete the following task: rotate credentials for Mail Service and Cloud Storage using MFA + API rotation.
+    - Ensure you rotate credentials for Mail Service and Cloud Storage using MFA + API rotation.
+    - ... 2 more
+  - providers=mail-dev|method=ssh+api (4)
+    - Complete the following task: rotate credentials for Mail Service and Dev Platform using SSH + API rotation.
+    - Ensure you rotate credentials for Mail Service and Dev Platform using SSH + API rotation.
+    - ... 2 more
+
+## L4-2fa-device
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] device=Pixel_9_Pro: Your task is to move 2FA to the device Pixel 9 Pro.
+  - [newcomer] device=Galaxy_Fold_7: Your task is to move 2FA to the device Galaxy Fold 7.
+  - [newcomer] device=Pixel_9_Pro: Move 2FA to the device Pixel 9 Pro.
+- branches:
+  - device=Galaxy_Fold_7 (4)
+    - Complete the following task: move 2FA to the device Galaxy Fold 7.
+    - Ensure you move 2FA to the device Galaxy Fold 7.
+    - ... 2 more
+  - device=Pixel_9_Pro (4)
+    - Complete the following task: move 2FA to the device Pixel 9 Pro.
+    - Ensure you move 2FA to the device Pixel 9 Pro.
+    - ... 2 more
+  - device=iPhone_16 (4)
+    - Complete the following task: move 2FA to the device iPhone 16.
+    - Ensure you move 2FA to the device iPhone 16.
+    - ... 2 more
+
+## M1-lost-card
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] last4=1234: Report the card ending in 1234 as lost and freeze it immediately.
+  - [daily] last4=1234: Complete the following task: report the card ending in 1234 as lost and freeze it immediately.
+  - [daily] last4=5678: Ensure you report the card ending in 5678 as lost and freeze it immediately.
+- branches:
+  - last4=1234 (4)
+    - Complete the following task: report the card ending in 1234 as lost and freeze it immediately.
+    - Ensure you report the card ending in 1234 as lost and freeze it immediately.
+    - ... 2 more
+  - last4=5678 (4)
+    - Complete the following task: report the card ending in 5678 as lost and freeze it immediately.
+    - Ensure you report the card ending in 5678 as lost and freeze it immediately.
+    - ... 2 more
+  - last4=7777 (4)
+    - Complete the following task: report the card ending in 7777 as lost and freeze it immediately.
+    - Ensure you report the card ending in 7777 as lost and freeze it immediately.
+    - ... 2 more
+
+## M2-supply-disruption
+- unique instructions: 15
+- requirement ids present in sampled flows: 5
+- examples:
+  - [newcomer] alt=ALT-303|action=cancel_order: Resolve the disruption by cancelling the Spare Water Filter order and requesting a refund.
+  - [daily] alt=ALT-303|action=cancel_order: Your task is to resolve the disruption by cancelling the Spare Water Filter order and requesting a refund.
+  - [daily] alt=ALT-303|action=cancel_order: Ensure you resolve the disruption by cancelling the Spare Water Filter order and requesting a refund.
+- branches:
+  - alt=ALT-101|action=switch_to_pickup (3)
+    - Complete the following task: resolve the disruption by switching 生鲜蔬菜包 to pickup mode.
+    - Resolve the disruption by switching 生鲜蔬菜包 to pickup mode.
+    - ... 1 more
+  - alt=ALT-202|action=keep_shipping (2)
+    - Ensure you resolve the disruption by rerouting Baby Formula shipping.
+    - Resolve the disruption by rerouting Baby Formula shipping.
+  - alt=ALT-303|action=cancel_order (4)
+    - Complete the following task: resolve the disruption by cancelling the Spare Water Filter order and requesting a refund.
+    - Ensure you resolve the disruption by cancelling the Spare Water Filter order and requesting a refund.
+    - ... 2 more
+  - alt=ALT-404|action=switch_to_pickup (3)
+    - Ensure you resolve the disruption by switching Prescription Cold Pack to pharmacy pickup mode.
+    - Resolve the disruption by switching Prescription Cold Pack to pharmacy pickup mode.
+    - ... 1 more
+  - alt=ALT-505|action=cancel_order (3)
+    - Ensure you resolve the disruption by cancelling the Desk Air Purifier shipment and requesting a refund.
+    - Resolve the disruption by cancelling the Desk Air Purifier shipment and requesting a refund.
+    - ... 1 more
+
+## M3-illness-reporting
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] type=illness|end=2026-01-18: Submit an illness report for high fever and sore throat until 2026-01-18.
+  - [newcomer] type=illness|end=2026-01-25: Your task is to submit an illness report for migraine recovery day until 2026-01-25.
+  - [newcomer] type=illness|end=2026-01-25: Complete the following task: submit an illness report for migraine recovery day until 2026-01-25.
+- branches:
+  - type=illness|end=2026-01-18 (4)
+    - Complete the following task: submit an illness report for high fever and sore throat until 2026-01-18.
+    - Ensure you submit an illness report for high fever and sore throat until 2026-01-18.
+    - ... 2 more
+  - type=illness|end=2026-01-25 (4)
+    - Complete the following task: submit an illness report for migraine recovery day until 2026-01-25.
+    - Ensure you submit an illness report for migraine recovery day until 2026-01-25.
+    - ... 2 more
+  - type=isolation|end=2026-01-22 (4)
+    - Complete the following task: submit an isolation report for close contact quarantine until 2026-01-22.
+    - Ensure you submit an isolation report for close contact quarantine until 2026-01-22.
+    - ... 2 more
+
+## Z1-order-arrival
+- unique instructions: 4
+- requirement ids present in sampled flows: 1
+- examples:
+  - [newcomer] option=wait|native_requirement_branch: Wait for your order to be delivered.
+  - [newcomer] option=wait|native_requirement_branch: Wait for your order to be delivered.
+  - [newcomer] option=wait|native_requirement_branch: Your task is to wait for your order to be delivered.
+- branches:
+  - option=wait|native_requirement_branch (4)
+    - Complete the following task: wait for your order to be delivered.
+    - Ensure you wait for your order to be delivered.
+    - ... 2 more
+
+## Z2-investment-growth
+- unique instructions: 9
+- requirement ids present in sampled flows: 3
+- examples:
+  - [daily] name=Income_Builder|type=funds|deposit=1200: Open an Income Builder funds account with 1200 and verify the balance grows to 1260.00 after time passes.
+  - [daily] name=Income_Builder|type=funds|deposit=1200: Open an Income Builder funds account with 1200 and verify the balance grows to 1260.00 after time passes.
+  - [daily] name=Income_Builder|type=funds|deposit=1200: Your task is to open an Income Builder funds account with 1200 and verify the balance grows to 1260.00 after time passes.
+- branches:
+  - name=Growth_Starter|type=stocks|deposit=1000 (2)
+    - Open a Growth Starter stocks account with 1000 and verify the balance grows to 1050.00 after time passes.
+    - Your task is to open a Growth Starter stocks account with 1000 and verify the balance grows to 1050.00 after time passes.
+  - name=Income_Builder|type=funds|deposit=1200 (3)
+    - Open an Income Builder funds account with 1200 and verify the balance grows to 1260. Then 00 after time passes.
+    - Open an Income Builder funds account with 1200 and verify the balance grows to 1260.00 after time passes.
+    - ... 1 more
+  - name=Retire_Smart|type=retirement|deposit=2000 (4)
+    - Complete the following task: open a Retire Smart retirement account with 2000 and verify the balance grows to 2100.00 after time passes.
+    - Open a Retire Smart retirement account with 2000 and verify the balance grows to 2100. Then 00 after time passes.
+    - ... 2 more
+
+## Z3-live-auction
+- unique instructions: 9
+- requirement ids present in sampled flows: 3
+- examples:
+  - [daily] bid=140: Place a bid of 140 in the live auction and become the highest bidder.
+  - [daily] bid=180: Place a bid of 180 in the live auction and become the highest bidder.
+  - [daily] bid=250: Place a bid of 250 in the live auction and become the highest bidder.
+- branches:
+  - bid=140 (4)
+    - Complete the following task: place a bid of 140 in the live auction and become the highest bidder.
+    - Ensure you place a bid of 140 in the live auction and become the highest bidder.
+    - ... 2 more
+  - bid=180 (1)
+    - Place a bid of 180 in the live auction and become the highest bidder.
+  - bid=250 (4)
+    - Complete the following task: place a bid of 250 in the live auction and become the highest bidder.
+    - Ensure you place a bid of 250 in the live auction and become the highest bidder.
+    - ... 2 more
+
+## Z4-email-calendar
+- unique instructions: 12
+- requirement ids present in sampled flows: 3
+- examples:
+  - [newcomer] title=Client_Kickoff|date=2026-01-12|time=09:30: Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.
+  - [newcomer] title=Wellness_Check|date=2026-01-19|time=11:45: Sync the clinic@example.com wellness email into the calendar as Wellness Check on 2026-01-19 at 11:45.
+  - [newcomer] title=Patent_Review|date=2026-01-14|time=14:00: Sync the legal@example.com patent review email into the calendar as Patent Review on 2026-01-14 at 14:00.
+- branches:
+  - title=Client_Kickoff|date=2026-01-12|time=09:30 (4)
+    - Complete the following task: sync the client@example.com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.
+    - Sync the client@example. Then com kickoff email into the calendar as Client Kickoff on 2026-01-12 at 09:30.
+    - ... 2 more
+  - title=Patent_Review|date=2026-01-14|time=14:00 (4)
+    - Complete the following task: sync the legal@example.com patent review email into the calendar as Patent Review on 2026-01-14 at 14:00.
+    - Sync the legal@example. Then com patent review email into the calendar as Patent Review on 2026-01-14 at 14:00.
+    - ... 2 more
+  - title=Wellness_Check|date=2026-01-19|time=11:45 (4)
+    - Complete the following task: sync the clinic@example.com wellness email into the calendar as Wellness Check on 2026-01-19 at 11:45.
+    - Sync the clinic@example. Then com wellness email into the calendar as Wellness Check on 2026-01-19 at 11:45.
+    - ... 2 more
+
+## Z5-password-recovery
+- unique instructions: 8
+- requirement ids present in sampled flows: 2
+- examples:
+  - [newcomer] user=byteblaze|password=ByteBlaze#2026: Your task is to recover the password for byteblaze and set a new password ByteBlaze#2026.
+  - [newcomer] user=user123|password=newpass123: Recover the password for user123 and set a new password newpass123.
+  - [newcomer] user=byteblaze|password=ByteBlaze#2026: Recover the password for byteblaze and set a new password ByteBlaze#2026.
+- branches:
+  - user=byteblaze|password=ByteBlaze#2026 (4)
+    - Complete the following task: recover the password for byteblaze and set a new password ByteBlaze#2026.
+    - Ensure you recover the password for byteblaze and set a new password ByteBlaze#2026.
+    - ... 2 more
+  - user=user123|password=newpass123 (4)
+    - Complete the following task: recover the password for user123 and set a new password newpass123.
+    - Ensure you recover the password for user123 and set a new password newpass123.
+    - ... 2 more
+
+## Z6-customer-service
+- unique instructions: 17
+- requirement ids present in sampled flows: 6
+- examples:
+  - [newcomer] order=O-10001: Ask customer service to check order O-10001.
+  - [newcomer] order=O-10005: Ensure you ask customer service to check order O-10005.
+  - [newcomer] order=O-10004: Ask customer service to check order O-10004.
+- branches:
+  - order=O-10001 (3)
+    - Ask customer service to check order O-10001.
+    - Complete the following task: ask customer service to check order O-10001.
+    - ... 1 more
+  - order=O-10002 (2)
+    - Ask customer service to check order O-10002.
+    - Ensure you ask customer service to check order O-10002.
+  - order=O-10003 (2)
+    - Ask customer service to check order O-10003.
+    - Complete the following task: ask customer service to check order O-10003.
+  - order=O-10004 (3)
+    - Ask customer service to check order O-10004.
+    - Complete the following task: ask customer service to check order O-10004.
+    - ... 1 more
+  - order=O-10005 (3)
+    - Ask customer service to check order O-10005.
+    - Ensure you ask customer service to check order O-10005.
+    - ... 1 more
+  - order=O-10006 (4)
+    - Ask customer service to check order O-10006.
+    - Complete the following task: ask customer service to check order O-10006.
+    - ... 2 more
+
+## Z7-complex-autopay
+- unique instructions: 19
+- requirement ids present in sampled flows: 6
+- examples:
+  - [daily] email=billing-electricity-2201|account=UTIL-2201: Complete the following task: search your email for the Electricity Dept bill with account UTIL-2201, then enable autopay for that exact account with a monthly limit of 180.
+  - [daily] email=billing-gas-1188|account=GAS-1188: Ensure you search your email for the Neighborhood Gas Co bill with account GAS-1188, then enable autopay for that exact account with a monthly limit of 75.
+  - [daily] email=billing-water-4408|account=WATER-4408: Search your email for the City Water Board bill with account WATER-4408, then enable autopay for that exact account with a monthly limit of 95.
+- branches:
+  - email=billing-electricity-2201|account=UTIL-2201 (3)
+    - Complete the following task: search your email for the Electricity Dept bill with account UTIL-2201, then enable autopay for that exact account with a monthly limit of 180.
+    - Search your email for the Electricity Dept bill with account UTIL-2201, then enable autopay for that exact account with a monthly limit of 180.
+    - ... 1 more
+  - email=billing-electricity-6602|account=UTIL-6602 (4)
+    - Complete the following task: search your email for the premium Electricity Dept bill with account UTIL-6602, then enable autopay for that exact account with a monthly limit of 260.
+    - Ensure you search your email for the premium Electricity Dept bill with account UTIL-6602, then enable autopay for that exact account with a monthly limit of 260.
+    - ... 2 more
+  - email=billing-electricity-7710|account=UTIL-7710 (3)
+    - Complete the following task: search your email for the enterprise Electricity Dept bill with account UTIL-7710, then enable autopay for that exact account with a monthly limit of 310.
+    - Ensure you search your email for the enterprise Electricity Dept bill with account UTIL-7710, then enable autopay for that exact account with a monthly limit of 310.
+    - ... 1 more
+  - email=billing-fiber-9012|account=FIBER-9012 (2)
+    - Complete the following task: search your email for the Neighborhood Internet bill with account FIBER-9012, then enable autopay for that exact account with a monthly limit of 120.
+    - Your task is to search your email for the Neighborhood Internet bill with account FIBER-9012, then enable autopay for that exact account with a monthly limit of 120.
+  - email=billing-gas-1188|account=GAS-1188 (3)
+    - Ensure you search your email for the Neighborhood Gas Co bill with account GAS-1188, then enable autopay for that exact account with a monthly limit of 75.
+    - Search your email for the Neighborhood Gas Co bill with account GAS-1188, then enable autopay for that exact account with a monthly limit of 75.
+    - ... 1 more
+  - email=billing-water-4408|account=WATER-4408 (4)
+    - Complete the following task: search your email for the City Water Board bill with account WATER-4408, then enable autopay for that exact account with a monthly limit of 95.
+    - Ensure you search your email for the City Water Board bill with account WATER-4408, then enable autopay for that exact account with a monthly limit of 95.
+    - ... 2 more

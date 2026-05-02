@@ -1,0 +1,94 @@
+{
+  "task_id": "D8-2025-BILLAGG",
+  "family": "D",
+  "goal": "Add a new utility bill source named '电力公司' with type 'utility' and account ID 'ACCT-12345'. Then synchronize this bill source.",
+  "inputs": {
+    "name": "电力公司",
+    "type": "utility",
+    "account_id": "ACCT-12345"
+  },
+  "preconditions": [],
+  "success_criteria": [
+    "url().includes('/bank.local/bill-aggregation.html')",
+    "mem('bills.sources.last.status') == 'active'",
+    "mem('bills.sources.last.name') == '电力公司'",
+    "mem('bills.sources.last.account_id') == 'ACCT-12345'",
+    "mem('bills.sources.last.last_synced') != ''",
+    "exists(\"#bill-sources-list .card\")",
+    "NOT[url().includes('about:blank')]",
+    "NOT[url().includes('chrome-error://')]"
+  ],
+  "scoring_checkpoints": [
+    {
+      "id": "crit_1_final",
+      "name": "Bill aggregation page opened",
+      "assertion": "url().includes('/bank.local/bill-aggregation.html')",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_2_final",
+      "name": "Source active",
+      "assertion": "mem('bills.sources.last.status') == 'active'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_3_final",
+      "name": "Source name matches",
+      "assertion": "mem('bills.sources.last.name') == '电力公司'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_4_final",
+      "name": "Account id matches",
+      "assertion": "mem('bills.sources.last.account_id') == 'ACCT-12345'",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_5_final",
+      "name": "Source synced",
+      "assertion": "mem('bills.sources.last.last_synced') != ''",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_6_final",
+      "name": "Bill source card visible",
+      "assertion": "exists(\"#bill-sources-list .card\")",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_7_final",
+      "name": "Not blank page",
+      "assertion": "NOT[url().includes('about:blank')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    },
+    {
+      "id": "crit_8_final",
+      "name": "Not chrome error",
+      "assertion": "NOT[url().includes('chrome-error://')]",
+      "weight": 1.0,
+      "required": true,
+      "depends_on": []
+    }
+  ],
+  "allowed_domains": [
+    "bank.local"
+  ],
+  "module_group": "bill_aggregation",
+  "canonical_task_dir": "D8-bill-aggregation",
+  "variant_kind": "distinct",
+  "lifecycle_status": "active"
+}

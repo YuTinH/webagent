@@ -1,0 +1,39 @@
+{
+  "goal_id": "WFG-TRAVEL-0131",
+  "theme": "travel",
+  "difficulty": 8,
+  "instruction": "Close the clearance-booking route by booking the trip and stay in full, arranging transfer, and ending only after expenses are submitted.",
+  "visible_constraints": {
+    "deadline_days": 4,
+    "preferred_outcomes": [
+      "hotel_booked",
+      "mobility_clearance_verified",
+      "travel_booking_confirmed",
+      "visa_requirements_checked",
+      "expense_report_submitted",
+      "airport_transfer_arranged"
+    ]
+  },
+  "initial_world_state": [],
+  "target_state": [
+    "hotel_booked",
+    "mobility_clearance_verified",
+    "travel_booking_confirmed",
+    "visa_requirements_checked",
+    "expense_report_submitted",
+    "airport_transfer_arranged"
+  ],
+  "counterfactual_axes": [
+    {
+      "path": "visible_constraints.deadline_days",
+      "type": "numeric_shift",
+      "values": [
+        3,
+        4
+      ]
+    }
+  ],
+  "max_steps": 60,
+  "max_module_invocations": 5,
+  "notes": "Generated from BP_TRAVEL_WORKFLOW_CLEARANCE_BOOKING; clearance-booking workflows should include an explicit transfer-arrangement step before expense closure."
+}
