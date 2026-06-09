@@ -12,8 +12,12 @@
 <div class="navbar">
   <div class="inner"><div class="brand">Nebula Bank</div></div>
 </div>
-<div class="container" style="max-width:600px">
+<div class="container" style="max-width:760px">
     <h1>Set Up Autopay</h1>
+    <div class="card soft" id="autopay-source-panel" style="margin-bottom:16px">
+        <h2 style="font-size:18px;margin:0 0 12px">Autopay Instructions</h2>
+        <div id="autopay-source-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px"></div>
+    </div>
     <div class="card soft" id="autopay-form-container">
         <div class="form">
             <div class="form-group">
@@ -28,6 +32,18 @@
                 <label>Monthly Limit</label>
                 <input type="number" id="amount" class="input" value="200">
             </div>
+            <div class="form-group">
+                <label>Authorization Code</label>
+                <input type="text" id="authorization-code" class="input" placeholder="Code from active instruction">
+            </div>
+            <div class="form-group">
+                <label>Payment Day</label>
+                <input type="text" id="payment-day" class="input" placeholder="Day from active instruction">
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;margin:10px 0 14px">
+                <input type="checkbox" id="autopay-source-reviewed">
+                <span>Active instruction matched to payee, account, limit, payment day, and authorization code</span>
+            </label>
             <button type="button" id="setup-btn" class="btn pri lg" style="width:100%" onclick="setupAutopay()">Confirm</button>
         </div>
     </div>
@@ -43,6 +59,40 @@ window.RelRoot = "../";
 const urlParams = new URLSearchParams(window.location.search);
 const requestedAutopayTaskId = urlParams.get('task') || 'D3-2025-AUTOPAY';
 const autopayTaskId = resolveTaskId(requestedAutopayTaskId);
+const runtimeAutopaySource = {
+    id: 'autopay-instruction-active',
+    status: 'active',
+    payee: getTaskInputValue('payee', urlParams.get('payee') || 'Neighborhood Internet'),
+    account_number: getTaskInputValue('account_number', urlParams.get('acc') || 'FIBER-9012'),
+    monthly_cap: String(getTaskInputValue('amount', urlParams.get('amount') || '120')),
+    authorization_code: getTaskInputValue('authorization_code', urlParams.get('auth_code') || 'AP-NEIGH-120'),
+    payment_day: String(getTaskInputValue('payment_day', urlParams.get('payment_day') || '')),
+    note: 'Current billing instruction'
+};
+const fallbackAutopaySources = [
+    {
+        id: 'autopay-instruction-old',
+        status: 'archived',
+        payee: 'Neighborhood Internet',
+        account_number: 'FIBER-7744',
+        monthly_cap: '95',
+        authorization_code: 'AP-OLD-7744',
+        payment_day: '8',
+        note: 'Superseded after account migration'
+    },
+    {
+        id: 'autopay-instruction-draft',
+        status: 'draft',
+        payee: 'City Utilities',
+        account_number: 'UTIL-7710',
+        monthly_cap: '310',
+        authorization_code: 'AP-DRAFT-UTIL',
+        payment_day: '12',
+        note: 'Draft from a different biller'
+    },
+    runtimeAutopaySource
+];
+let selectedAutopaySource = null;
 
 function getAutopayPrefill(key, fallback = '') {
     if (key === 'account_number') {
@@ -51,29 +101,85 @@ function getAutopayPrefill(key, fallback = '') {
     return urlParams.get(key) || fallback;
 }
 
+function renderAutopaySources(sources) {
+    const list = document.getElementById('autopay-source-list');
+    list.innerHTML = sources.map((src, index) => `
+        <div class="source-card" id="autopay-source-${index + 1}" style="border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--card)">
+            <div style="font-weight:700">${src.payee || ''}</div>
+            <div class="muted" style="font-size:13px;line-height:1.5;margin-top:6px">
+                <div>Status: ${src.status || ''}</div>
+                <div>Account: ${src.account_number || ''}</div>
+                <div>Monthly limit: ${src.monthly_cap || ''}</div>
+                <div>Authorization: ${src.authorization_code || ''}</div>
+                <div>Payment day: ${src.payment_day || 'not specified'}</div>
+                <div>${src.note || ''}</div>
+            </div>
+            <button type="button" id="review-autopay-source-${index + 1}" class="btn sm" style="margin-top:10px" onclick="reviewAutopaySource('${src.id}')">Review Instruction</button>
+        </div>
+    `).join('');
+}
+
+function reviewAutopaySource(sourceId) {
+    const sources = window.__autopaySources || fallbackAutopaySources;
+    const src = sources.find(item => String(item.id) === String(sourceId));
+    if (!src) return;
+    selectedAutopaySource = src;
+    document.querySelectorAll('#autopay-source-list .source-card').forEach(card => {
+        card.style.border = '1px solid var(--border)';
+    });
+    const index = sources.findIndex(item => String(item.id) === String(sourceId));
+    const card = document.getElementById(`autopay-source-${index + 1}`);
+    if (card) card.style.border = '2px solid var(--pri)';
+}
+
+window.__autopaySources = fallbackAutopaySources;
+renderAutopaySources(fallbackAutopaySources);
 document.getElementById('payee').value = getAutopayPrefill('payee', '');
 document.getElementById('account-number').value = getAutopayPrefill('account_number', '');
 document.getElementById('amount').value = getAutopayPrefill('amount', '');
+document.getElementById('authorization-code').value = getAutopayPrefill('authorization_code', '');
+document.getElementById('payment-day').value = getAutopayPrefill('payment_day', runtimeAutopaySource.payment_day || '');
 if (urlParams.get('state') === 'active') {
     document.getElementById('autopay-form-container').style.display = 'none';
     document.getElementById('success-card').style.display = 'block';
+    document.getElementById('autopay-source-panel').style.display = 'none';
     const payee = getAutopayPrefill('payee', document.getElementById('payee').value);
     const acc = getAutopayPrefill('account_number', document.getElementById('account-number').value);
     const amount = getAutopayPrefill('amount', document.getElementById('amount').value);
-    document.getElementById('success-summary').textContent = `${payee} · ${acc} · limit ${amount}`;
+    const paymentDay = getAutopayPrefill('payment_day', document.getElementById('payment-day').value);
+    document.getElementById('success-summary').textContent = `${payee} · ${acc} · limit ${amount}${paymentDay ? ` · day ${paymentDay}` : ''}`;
 }
 
 async function setupAutopay() {
     const payee = document.getElementById('payee').value.trim();
     const acc = document.getElementById('account-number').value;
     const amount = document.getElementById('amount').value;
+    const authorizationCode = document.getElementById('authorization-code').value.trim();
+    const paymentDay = document.getElementById('payment-day').value.trim();
+    const sourceReviewed = document.getElementById('autopay-source-reviewed').checked;
+    const requiresPaymentDay = String(autopayTaskId).includes('Z7-complex-autopay');
     if (!payee) { Toast.error("Please enter payee"); return; }
     if (!acc) { Toast.error("Please enter account number"); return; }
     if (!amount || Number(amount) <= 0) { Toast.error("Please enter a valid monthly limit"); return; }
+    if (requiresPaymentDay && !paymentDay) { Toast.error("Enter the payment day from the active instruction"); return; }
+    if (!selectedAutopaySource || !authorizationCode || !sourceReviewed) {
+        Toast.error("Review the active autopay instruction and enter its authorization code");
+        return;
+    }
     await send(autopayTaskId, 'setup_autopay', {
         payee: payee,
         account_number: acc,
-        amount: amount
+        amount: amount,
+        authorization_code: authorizationCode,
+        payment_day: paymentDay,
+        source_id: selectedAutopaySource?.id || '',
+        source_status: selectedAutopaySource?.status || '',
+        source_payee: selectedAutopaySource?.payee || '',
+        source_account_number: selectedAutopaySource?.account_number || '',
+        source_monthly_cap: selectedAutopaySource?.monthly_cap || '',
+        source_authorization_code: selectedAutopaySource?.authorization_code || '',
+        source_payment_day: selectedAutopaySource?.payment_day || '',
+        source_reviewed: sourceReviewed
     });
 }
 </script>

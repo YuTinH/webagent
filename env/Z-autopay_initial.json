@@ -1,0 +1,158 @@
+{
+  "work": {
+    "emails": [
+      {
+        "id": "kickoff-client-001",
+        "subject": "项目启动会邀请",
+        "sender": "client@example.com",
+        "to": "me@work.local",
+        "date": "2026-01-05",
+        "body": "Please add the kickoff meeting to your calendar. Event title: Client Kickoff. Date: 2026-01-12. Time: 09:30. Type: work. Location: Zoom Room Delta. Attendees: client@example.com and product@example.com. Calendar confirmation code: KC-0112-0930. Use the description Imported from client@example.com kickoff email."
+      },
+      {
+        "id": "kickoff-client-followup-002",
+        "subject": "Client Kickoff follow-up notes",
+        "sender": "client@example.com",
+        "to": "me@work.local",
+        "date": "2026-01-06",
+        "body": "Follow-up notes for the kickoff. This is not the calendar invitation; no new event should be created from this message."
+      },
+      {
+        "id": "kickoff-partner-003",
+        "subject": "项目启动会邀请",
+        "sender": "partner@example.com",
+        "to": "me@work.local",
+        "date": "2026-01-05",
+        "body": "Partner kickoff placeholder. Event title: Partner Sync. Date: 2026-01-13. Time: 10:00. Type: work."
+      },
+      {
+        "id": "job-thread-research-001",
+        "subject": "Research Engineer Next Steps",
+        "sender": "research-hiring@example.com",
+        "to": "me@work.local",
+        "date": "2026-01-07",
+        "body": "Research engineer interview scheduling and next steps. Please track this thread for follow-up."
+      },
+      {
+        "id": "job-thread-platform-002",
+        "subject": "Platform Engineer Application",
+        "sender": "talent@example.com",
+        "to": "me@work.local",
+        "date": "2026-01-08",
+        "body": "Platform engineer application status and recruiter next steps. Please track this thread for follow-up."
+      },
+      {
+        "id": "job-thread-mlsystems-003",
+        "subject": "ML Systems Interview Follow-up",
+        "sender": "mlsystems@example.com",
+        "to": "me@work.local",
+        "date": "2026-01-09",
+        "body": "ML systems interview follow-up with scheduling and next steps. Please track this thread for follow-up."
+      },
+      {
+        "id": "job-thread-science-004",
+        "subject": "Applied Scientist Recruiter Note",
+        "sender": "science-recruiting@example.com",
+        "to": "me@work.local",
+        "date": "2026-01-10",
+        "body": "Applied scientist recruiter note with interview scheduling and next steps. Please track this thread for follow-up."
+      },
+      {
+        "id": "job-thread-general-005",
+        "subject": "Job Application Follow-up",
+        "sender": "recruiter@example.com",
+        "to": "me@work.local",
+        "date": "2026-01-11",
+        "body": "Interview scheduling and next steps. Please track this thread for high-priority follow-up."
+      },
+      {
+        "id": "job-thread-decoy-006",
+        "subject": "Research Engineer Next Steps",
+        "sender": "newsletter@example.com",
+        "to": "me@work.local",
+        "date": "2026-01-08",
+        "body": "This is a newsletter digest with a similar subject. Do not track it as a recruiting follow-up thread."
+      },
+      {
+        "id": "billing-electricity-2201",
+        "subject": "Electricity Dept monthly bill and autopay reminder",
+        "sender": "billing@electricity.local",
+        "to": "me@work.local",
+        "date": "2026-01-04",
+        "body": "Your Electricity Dept account UTIL-2201 is due soon. Recommended monthly autopay limit: 180.",
+        "autopay": {
+          "payee": "Electricity Dept",
+          "account_number": "UTIL-2201",
+          "amount": "180"
+        }
+      },
+      {
+        "id": "billing-water-4408",
+        "subject": "City Water Board payment notice",
+        "sender": "billing@water.local",
+        "to": "me@work.local",
+        "date": "2026-01-06",
+        "body": "Your City Water Board account WATER-4408 should be enrolled with a monthly limit of 95.",
+        "autopay": {
+          "payee": "City Water Board",
+          "account_number": "WATER-4408",
+          "amount": "95"
+        }
+      },
+      {
+        "id": "billing-electricity-6602",
+        "subject": "Electricity Dept premium household statement",
+        "sender": "support@electricity.local",
+        "to": "me@work.local",
+        "date": "2026-01-08",
+        "body": "Premium household account UTIL-6602 can be placed on autopay with a monthly limit of 260.",
+        "autopay": {
+          "payee": "Electricity Dept",
+          "account_number": "UTIL-6602",
+          "amount": "260"
+        }
+      },
+      {
+        "id": "billing-gas-1188",
+        "subject": "Neighborhood Gas Co monthly billing notice",
+        "sender": "billing@gas.local",
+        "to": "me@work.local",
+        "date": "2026-01-10",
+        "body": "Neighborhood Gas Co account GAS-1188 is eligible for autopay with a monthly limit of 75.",
+        "autopay": {
+          "payee": "Neighborhood Gas Co",
+          "account_number": "GAS-1188",
+          "amount": "75"
+        }
+      },
+      {
+        "id": "billing-fiber-9012",
+        "subject": "Neighborhood Internet service invoice",
+        "sender": "support@fiber.local",
+        "to": "me@work.local",
+        "date": "2026-01-12",
+        "body": "Neighborhood Internet account FIBER-9012 should be set to autopay with a monthly limit of 120.",
+        "autopay": {
+          "payee": "Neighborhood Internet",
+          "account_number": "FIBER-9012",
+          "amount": "120"
+        }
+      },
+      {
+        "id": "billing-electricity-7710",
+        "subject": "Electricity Dept enterprise usage statement",
+        "sender": "enterprise@electricity.local",
+        "to": "me@work.local",
+        "date": "2026-01-14",
+        "body": "Enterprise Electricity Dept account UTIL-7710 may be enrolled in autopay with a monthly limit of 310. Use payment day 20 for the recurring debit.",
+        "autopay": {
+          "payee": "Electricity Dept",
+          "account_number": "UTIL-7710",
+          "amount": "310",
+          "payment_day": "20",
+          "authorization_code": "AP-UTIL-7710"
+        }
+      }
+    ]
+  }
+}

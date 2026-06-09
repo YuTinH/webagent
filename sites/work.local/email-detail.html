@@ -16,6 +16,7 @@
       <div class="navlinks">
         <a href="../work.local/email.html" class="active">Inbox</a>
         <a href="../work.local/calendar.html">Calendar</a>
+        <a id="email-tracking-nav-link" href="../work.local/email-tracking.html">Email Tracking</a>
       </div>
     </div>
   </div>
@@ -42,6 +43,7 @@
         <div id="autopay-payee"></div>
         <div id="autopay-account"></div>
         <div id="autopay-amount"></div>
+        <div id="autopay-payment-day"></div>
         <div id="autopay-followup" style="display:none; margin-top:8px"></div>
         <button id="setup-autopay-from-email" class="btn pri" style="margin-top:12px" onclick="openAutopay()">Open Bank Autopay</button>
       </div>
@@ -54,12 +56,38 @@
   let currentEmail = null;
   let emailLoadPromise = null;
 
+  function taskAwareEmailDetailHref(path) {
+    const params = new URLSearchParams();
+    ['clean', 'obfuscate', 'dlevel', 'dseed', 'obf_seed'].forEach(key => {
+      const value = emailDetailParams.get(key);
+      if (value !== null) params.set(key, value);
+    });
+    if (requestedEmailDetailTaskId) params.set('task', requestedEmailDetailTaskId);
+    const query = params.toString();
+    return query ? `${path}?${query}` : path;
+  }
+
+  function updateEmailDetailNavLinks() {
+    const trackingLink = document.getElementById('email-tracking-nav-link');
+    if (trackingLink) trackingLink.href = taskAwareEmailDetailHref('../work.local/email-tracking.html');
+  }
+
+  async function markEmailOpened(email) {
+    if (!email || !requestedEmailDetailTaskId) return;
+    await send(requestedEmailDetailTaskId, 'open_work_email', {
+      email_id: email.id
+    });
+    document.body.setAttribute('data-opened-email', 'true');
+  }
+
   function buildAutopayPayload() {
     if (!currentEmail || !currentEmail.autopay) return null;
     return {
       payee: currentEmail.autopay.payee,
       account_number: currentEmail.autopay.account_number,
       amount: String(currentEmail.autopay.amount),
+      payment_day: String(currentEmail.autopay.payment_day || getTaskInputValue('payment_day', '')),
+      authorization_code: currentEmail.autopay.authorization_code || getTaskInputValue('authorization_code', ''),
       source_email: currentEmail.id,
     };
   }
@@ -85,12 +113,14 @@
       document.getElementById('email-to').textContent = `To: ${currentEmail.to || 'me@work.local'}`;
       document.getElementById('email-date').textContent = `Date: ${currentEmail.date || ''}`;
       document.getElementById('email-body').textContent = currentEmail.body || '';
+      await markEmailOpened(currentEmail);
 
       if (currentEmail.autopay) {
         document.getElementById('autopay-panel').style.display = 'block';
         document.getElementById('autopay-payee').textContent = `Payee: ${currentEmail.autopay.payee}`;
         document.getElementById('autopay-account').textContent = `Account Number: ${currentEmail.autopay.account_number}`;
         document.getElementById('autopay-amount').textContent = `Monthly Limit: ${currentEmail.autopay.amount}`;
+        document.getElementById('autopay-payment-day').textContent = `Payment Day: ${currentEmail.autopay.payment_day || getTaskInputValue('payment_day', '')}`;
         const followup = document.getElementById('autopay-followup');
         if (followup) {
           followup.style.display = 'block';
@@ -121,7 +151,15 @@
       payee: payload.payee,
       acc: payload.account_number,
       amount: payload.amount,
+      payment_day: payload.payment_day,
       source_email: payload.source_email
+    });
+    if (payload.authorization_code) {
+      params.set('auth_code', payload.authorization_code);
+    }
+    ['clean', 'obfuscate', 'dlevel', 'dseed', 'obf_seed'].forEach(key => {
+      const value = emailDetailParams.get(key);
+      if (value !== null) params.set(key, value);
     });
     if (requestedEmailDetailTaskId) {
       params.set('task', requestedEmailDetailTaskId);
@@ -130,6 +168,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    updateEmailDetailNavLinks();
     void loadEmail();
   });
   </script>
